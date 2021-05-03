@@ -4,14 +4,16 @@
 
 The objective of this guide is to document how TiDB works in a database developer's view. It's a comprehensive resource for contributing to TiDB for both new and experienced contributors.
 
-The audience of this guide:
+The audience of this guide
 
 * TiDB contributors, both new and experienced.
 
-What you will get through this guide:
+What you will get through this guide
 
 * The design principles of TiDB key components.
 * The code architecture of TiDB key components and how they work together to provide basic database functionalities.
+
+**Visit** [**https://zz-jason.gitbook.io/tidb-dev-guide/**](https://zz-jason.gitbook.io/tidb-dev-guide/) **to read the latest rendered version of this guide**
 
 ### The structure of this guide
 
