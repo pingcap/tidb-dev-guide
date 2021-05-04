@@ -1,6 +1,6 @@
 # TiDB release management
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

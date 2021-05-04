@@ -1,6 +1,6 @@
 # Query executor internals
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

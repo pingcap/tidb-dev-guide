@@ -1,6 +1,6 @@
 # Communication and discussion
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

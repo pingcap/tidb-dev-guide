@@ -1,6 +1,6 @@
 # Guide to TiDB Development
 
-### About this guide
+## About this guide
 
 The objective of this guide is to document how TiDB works in a database developer's view. It's a comprehensive resource for contributing to TiDB for both new and experienced contributors.
 
@@ -15,7 +15,7 @@ What you will get through this guide
 
 **Visit** [**https://zz-jason.gitbook.io/tidb-dev-guide/**](https://zz-jason.gitbook.io/tidb-dev-guide/) **to read the latest rendered version of this guide**
 
-### The structure of this guide
+## The structure of this guide
 
 This guide is composed of 3 parts:
 
@@ -23,7 +23,7 @@ This guide is composed of 3 parts:
 * **Part 2:** typical database architecture. TiDB architecture is included in this part as well.
 * **Part 3:** TiDB key components, their design principles, and the code structure.
 
-### Contribute to this guide
+## Contribute to this guide
 
 * [ ] TODO \(@zz-jason\)
 

@@ -1,6 +1,6 @@
 # DQL execution
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

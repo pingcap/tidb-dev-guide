@@ -1,6 +1,6 @@
 # Traditional database concepts
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

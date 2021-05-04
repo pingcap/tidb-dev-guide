@@ -1,6 +1,6 @@
 # Workflow 1: fix a bug
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

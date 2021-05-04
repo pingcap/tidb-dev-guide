@@ -1,6 +1,6 @@
 # SQL plan management
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

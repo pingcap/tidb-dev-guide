@@ -40,11 +40,11 @@
 * [MVCC garbage collection](familiar-with-the-tidb-codebase/mvcc-garbage-collection.md)
 * [Communicate with the storage](familiar-with-the-tidb-codebase/communicate-with-the-storage.md)
 
-## Become an Expert
+## Be an Expert
 
-* [Introduction](become-an-expert/introduction.md)
-* [TiDB release management](become-an-expert/tidb-release-management.md)
-* [Manage a project](become-an-expert/manage-a-project.md)
-* [Communication and discussion](become-an-expert/communication-and-discussion.md)
-* [Useful resources](become-an-expert/useful-resources.md)
+* [Introduction](be-an-expert/introduction.md)
+* [TiDB release management](be-an-expert/tidb-release-management.md)
+* [Manage a project](be-an-expert/manage-a-project.md)
+* [Communication and discussion](be-an-expert/communication-and-discussion.md)
+* [Useful resources](be-an-expert/useful-resources.md)
 

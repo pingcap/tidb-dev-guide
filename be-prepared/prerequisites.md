@@ -5,15 +5,15 @@ Before getting a copy of the source code and building it, you may need to instal
 * `git`
 * `go`:1.13
 
-### macOS
+## macOS
 
-#### Install `git`:
+### Install `git`:
 
 ```bash
 brew install git
 ```
 
-#### Install `go` 1.13:
+### Install `go` 1.13:
 
 Download go binary package and unarchive it:
 
@@ -30,11 +30,11 @@ GOPATH=/path/to/your/gopath
 PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 ```
 
-### Linux
+## Linux
 
-### Windows
+## Windows
 
-### References
+## References
 
 1. [Download and install](https://golang.org/doc/install)
 2. [How to Write Go Code \(with GOPATH\)](https://golang.org/doc/gopath_code)

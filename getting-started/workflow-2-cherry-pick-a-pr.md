@@ -1,6 +1,6 @@
 # Workflow 2: cherry-pick a PR
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

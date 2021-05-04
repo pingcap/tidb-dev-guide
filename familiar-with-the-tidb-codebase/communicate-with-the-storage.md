@@ -1,6 +1,6 @@
 # Communicate with the storage
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

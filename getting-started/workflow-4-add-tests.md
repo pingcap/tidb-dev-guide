@@ -1,6 +1,6 @@
 # Workflow 4: add tests
 
-Target audience: 
+Target audience:
 
 What you will learn:
 

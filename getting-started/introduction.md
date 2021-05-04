@@ -6,5 +6,3 @@ Welcome to the **Getting Started** section! This section is mainly for the new c
 * How to make these contributions?
 * How to get help when you contributing?
 
-
-

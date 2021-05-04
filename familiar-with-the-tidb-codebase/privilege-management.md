@@ -1,6 +1,6 @@
 # Privilege management
 
-Target audience: 
+Target audience:
 
 What you will learn:
 
