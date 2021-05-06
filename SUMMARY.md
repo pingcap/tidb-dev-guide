@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Guide to TiDB Development](README.md)
+* [TiDB Development Guide](README.md)
 
 ## Be Prepared
 

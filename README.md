@@ -1,29 +1,29 @@
-# Guide to TiDB Development
+# TiDB Development Guide
 
-## About this guide
+### About this guide
 
-The objective of this guide is to document how TiDB works in a database developer's view. It's a comprehensive resource for contributing to TiDB for both new and experienced contributors.
+* **The target audience** of this guide is TiDB contributors, both new and experienced.
+* **The objective** of this guide is to help contributors becoming an expert in TiDB and distributed database systems.
+* **Read this doc at**: [https://zz-jason.gitbook.io/tidb-dev-guide/](https://zz-jason.gitbook.io/tidb-dev-guide/)
 
-The audience of this guide
+### The structure of this guide
 
-* TiDB contributors, both new and experienced.
+At present, the guide is composed of the following parts:
 
-What you will get through this guide
+1. **BE PREPARED**: helps you to install prerequired libraries and tools to set up your development environment.
+2. **GETTING STARTED**: helps you quickly get involved in the TiDB community, which illustrates what contributions you can make and how to quickly make one.
+3. **FAMILIAR WITH DISTRIBUTED DATABASE**: helps you to be familiar with basic distributed database concepts, build a knowledge base in your mind, including but not limited to SQL language, key components, algorithms in a distributed database. The audiences who are already familiar with these concepts can skip this section.
+4. **FAMILIAR WITH TIDB CODEBASE**: helps you to be familiar with TiDB architecture, design principles, and code structures.
+5. **BE AN EXPERT**: helps you to participate in team working, lead feature development, manage projects in the TiDB community.
 
-* The design principles of TiDB key components.
-* The code architecture of TiDB key components and how they work together to provide basic database functionalities.
+### Contribute to this guide
 
-**Visit** [**https://zz-jason.gitbook.io/tidb-dev-guide/**](https://zz-jason.gitbook.io/tidb-dev-guide/) **to read the latest rendered version of this guide**
+Contribute this doc at: [https://github.com/zz-jason/tidb-dev-guide](https://github.com/zz-jason/tidb-dev-guide), don't hesitate to file a pull request to:
 
-## The structure of this guide
+* fix typos and adjust some statements to make them clearer 
+* modify the contents if it's outdated
+* add new pages if somethings is missing
+* adjust the contents if the article structure is unreasonable
 
-This guide is composed of 3 parts:
-
-* **Part 1:** set up a development environment. Include how to compile, test, and debug TiDB.
-* **Part 2:** typical database architecture. TiDB architecture is included in this part as well.
-* **Part 3:** TiDB key components, their design principles, and the code structure.
-
-## Contribute to this guide
-
-* [ ] TODO \(@zz-jason\)
+Pointing out the mistakes is important as well. Don't hesitate to file an issue to report mistakes, or make suggestions, if you don't have enough time to refine the content.
 
