@@ -5,6 +5,10 @@
 ## Be Prepared
 
 * [Prerequisites](be-prepared/prerequisites.md)
+* [Setting up Vim](be-prepared/setting-up-vim.md)
+* [Setting up Emacs](be-prepared/setting-up-emacs.md)
+* [Setting up Visual Studio Code](be-prepared/setting-up-visual-studio-code.md)
+* [Setting up GoLand](be-prepared/setting-up-goland.md)
 
 ## Getting Started
 

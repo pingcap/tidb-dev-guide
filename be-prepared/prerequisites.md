@@ -45,3 +45,12 @@ You can run `git version` and `go version` to verify the installation.
 
 * TODO
 
+## Next
+
+After installing all the basic prerequisites, let's start to set-up set your IDE environment. You can pick one of the following articles which target at your favorite IDE:
+
+* [Vim](setting-up-vim.md)
+* [Emacs](setting-up-emacs.md)
+* [Visual Studio Code](setting-up-visual-studio-code.md)
+* [GoLand](setting-up-goland.md)
+
