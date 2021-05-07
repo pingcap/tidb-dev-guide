@@ -2,22 +2,19 @@
 
 * [TiDB Development Guide](README.md)
 
-## Be Prepared
+## Get Started
 
-* [Prerequisites](be-prepared/prerequisites.md)
-* [Setting up Vim](be-prepared/setting-up-vim.md)
-* [Setting up Emacs](be-prepared/setting-up-emacs.md)
-* [Setting up Visual Studio Code](be-prepared/setting-up-visual-studio-code.md)
-* [Setting up GoLand](be-prepared/setting-up-goland.md)
+* [Build TiDB from Source](get-started/build-tidb-from-source.md)
 
-## Getting Started
+## Get Involved
 
-* [Introduction](getting-started/introduction.md)
-* [Workflow 1: fix a bug](getting-started/workflow-1-fix-a-bug.md)
-* [Workflow 2: cherry-pick a PR](getting-started/workflow-2-cherry-pick-a-pr.md)
-* [Workflow 3: implement a feature](getting-started/workflow-3-implement-a-feature.md)
-* [Workflow 4: add tests](getting-started/workflow-4-add-tests.md)
-* [Getting help](getting-started/getting-help.md)
+* [Introduction](get-involved/introduction.md)
+* [Bug Reports](get-involved/bug-reports.md)
+* [Refactoring](get-involved/refactoring.md)
+* [Feature Proposals](get-involved/feature-proposals.md)
+* [Code Reviews](get-involved/code-reviews.md)
+* [Testing](get-involved/testing.md)
+* [Writing Documentation](get-involved/writing-documentation.md)
 
 ## Familiar with Distributed Database
 
