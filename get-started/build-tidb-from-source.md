@@ -1,10 +1,10 @@
-# Build TiDB from Source
+# Get the code, build and run
 
 ## Prerequisites
 
-- `git` any version.
-- `go` 1.13, higher version may work.
-- (optional) `mysql` 5.6, 5.7 or 8.0.
+* `git` any version.
+* `go` 1.13, higher version may work.
+* \(optional\) `mysql` 5.6, 5.7 or 8.0.
 
 The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please [install `git`](https://git-scm.com/downloads).
 
@@ -16,7 +16,7 @@ After build TiDB from source, you can use use [official mysql client](https://de
 
 Clone the source code to your development machine.
 
-```
+```text
 mkdir -p $GOPATH/src/github.com/pingcap
 cd $GOPATH/src/github.com/pingcap
 git clone https://github.com/pingcap/tidb.git
@@ -26,7 +26,7 @@ git clone https://github.com/pingcap/tidb.git
 
 Build TiDB from the source code.
 
-```
+```text
 cd $GOPATH/src/github.com/pingcap/tidb
 make
 ```
@@ -35,7 +35,7 @@ make
 
 Now you have the `tidb-server` binary under `bin` directory, execute it for a TiDB server instance.
 
-```
+```text
 cd $GOPATH/src/github.com/pingcap/tidb/bin
 ./tidb-server
 ```
@@ -46,6 +46,7 @@ This starts the TiDB server listening on port 4000 with embedded `unistore`.
 
 You can use official mysql client to connect to TiDB.
 
+```text
+mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> "
 ```
-mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> " 
-```
+

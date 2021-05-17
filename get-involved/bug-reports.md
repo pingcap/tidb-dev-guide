@@ -18,3 +18,4 @@ When the bug reported is recognized with consensus, you can ask for assignment a
 Later, open a pull request of the proposed fix and work with the reviewer.
 
 With no less than two reviewers approving the pull request, a committer checks if the contribution fulfills the requirements and merges the code to the codebase.
+

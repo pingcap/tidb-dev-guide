@@ -6,12 +6,12 @@ TiDB is developed by an open and friendly community. Everybody is cordially welc
 
 Contributing to TiDB goes beyond writing code for the project. Below, we list different opportunities to help the project:
 
-- [Bug Reports](bug-reports.md)
-- [Refactoring](refatoring.md)
-- [Feature Proposals](feature-proposal.md)
-- [Code Reviews](code-reviews.md)
-- [Testing](testing.md)
-- [Writing Documentation](writing-documentation.md)
+* [Bug Reports](bug-reports.md)
+* [Refactoring](https://github.com/zz-jason/tidb-dev-guide/tree/ed66b1ffff0502d39f3910eb80c3467e136af5e0/get-involved/refatoring.md)
+* [Feature Proposals](https://github.com/zz-jason/tidb-dev-guide/tree/ed66b1ffff0502d39f3910eb80c3467e136af5e0/get-involved/feature-proposal.md)
+* [Code Reviews](code-reviews.md)
+* [Testing](testing.md)
+* [Writing Documentation](writing-documentation.md)
 
 Any other question? Reach out to the [TiDB Internals forum](https://internals.tidb.io/) to get help!
 
@@ -22,3 +22,4 @@ Any other question? Reach out to the [TiDB Internals forum](https://internals.ti
 ### What are we looking for in Committers
 
 ### What are we looking for in Maintainers
+

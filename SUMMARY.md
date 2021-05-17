@@ -4,7 +4,15 @@
 
 ## Get Started
 
-* [Build TiDB from Source](get-started/build-tidb-from-source.md)
+* [Install Golang](get-started/install-golang.md)
+* [Get the code, build and run](get-started/build-tidb-from-source.md)
+* [Write and run unit tests](get-started/write-and-run-unit-tests.md)
+* [Commit code and submit a pull request](get-started/commit-code-and-submit-a-pull-request.md)
+* [Resolve review comments](get-started/resolve-review-comments.md)
+* [Debug and profile](get-started/debug-and-profile.md)
+* [Handle conflicts](get-started/handle-conflicts.md)
+* [Appendix I: Abbreviations in the community](get-started/appendix-i-abbreviations-in-the-community.md)
+* [Appendix II: Set up the pre-commit git hook](get-started/appendix-ii-set-up-the-pre-commit-git-hook.md)
 
 ## Get Involved
 
