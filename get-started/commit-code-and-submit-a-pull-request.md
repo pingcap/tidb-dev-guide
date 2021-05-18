@@ -7,5 +7,5 @@ including but not limited to:
 * what format needs to be followed for pull request title
 * what content needs to be filled in the pull request description
 * how to request pull request review from reviewers
-* how to get notified when the pull request recived review comments
+* how to get notified when the pull request received review comments
 
