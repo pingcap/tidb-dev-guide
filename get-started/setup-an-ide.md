@@ -16,7 +16,7 @@ Step 3. Open the TiDB project in GoLand.
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-Step 4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory, you may need to create this directory when it doesn't exist.
+Step 4. Add these 3 config files to `<tidb-dir>/.idea/runConfigurations/` directory, you may need to create this directory when it doesn't exist.
 
 Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to change them to absolutely path.
 
