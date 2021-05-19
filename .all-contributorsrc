@@ -14,6 +14,15 @@
         "content",
         "review"
       ]
+    },
+    {
+      "login": "zz-jason",
+      "name": "Jian Zhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5268763?v=4",
+      "profile": "http://zz-jason.github.io/",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
