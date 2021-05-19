@@ -4,7 +4,7 @@
 
 ## goland
 
-You can use GoLand to easily run or debug TiDB in many situations, .
+You can use GoLand to easily run or debug TiDB in many situations.
 
 0. make sure your `go` and `dlv` work well.
 1. open TiDB project in GoLand.
@@ -85,4 +85,3 @@ You can use GoLand to easily run or debug TiDB in many situations, .
 ## vim \(optional\)
 
 ## emacs \(optional\)
-
