@@ -2,7 +2,7 @@
 
 ## vs code
 
-## goland
+## GoLand
 
 You can use GoLand to easily run or debug TiDB in many situations.
 
