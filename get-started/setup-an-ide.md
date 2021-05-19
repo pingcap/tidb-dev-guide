@@ -12,54 +12,54 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 2. Open the TiDB project in GoLand.
 3. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
 
-  - unistore_4000.xml
-  ```xml
-  <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="tidb" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$" />
-      <package value="github.com/pingcap/tidb/tidb-server" />
-      <directory value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-  </component>
-  ```
+    - unistore_4000.xml
+    ```xml
+    <component name="ProjectRunConfigurationManager">
+      <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
+        <module name="tidb" />
+        <working_directory value="$PROJECT_DIR$" />
+        <kind value="PACKAGE" />
+        <filePath value="$PROJECT_DIR$" />
+        <package value="github.com/pingcap/tidb/tidb-server" />
+        <directory value="$PROJECT_DIR$" />
+        <method v="2" />
+      </configuration>
+    </component>
+    ```
 
-  - playground_attach_4001.xml
-  ```xml
-  <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="tidb" />
-      <working_directory value="$PROJECT_DIR$" />
-      <parameters value="--path=pd0:2379 --store=tikv --status=10081 -P 4001 " />
-      <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tidb-server/main.go" />
-      <package value="github.com/pingcap/tidb/tidb-server" />
-      <directory value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-  </component>
-  ```
+    - playground_attach_4001.xml
+    ```xml
+    <component name="ProjectRunConfigurationManager">
+      <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
+        <module name="tidb" />
+        <working_directory value="$PROJECT_DIR$" />
+        <parameters value="--path=pd0:2379 --store=tikv --status=10081 -P 4001 " />
+        <kind value="PACKAGE" />
+        <filePath value="$PROJECT_DIR$/tidb-server/main.go" />
+        <package value="github.com/pingcap/tidb/tidb-server" />
+        <directory value="$PROJECT_DIR$" />
+        <method v="2" />
+      </configuration>
+    </component>
+    ```
   
-  - unit_test.xml
-  ```xml
-  <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="tidb" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <framework value="gocheck" />
-      <kind value="DIRECTORY" />
-      <package value="github.com/pingcap/tidb" />
-      <directory value="$PROJECT_DIR$/planner/core" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="TestEnforceMPP" />
-      <method v="2" />
-    </configuration>
-  </component>
-  ```
+    - unit_test.xml
+    ```xml
+    <component name="ProjectRunConfigurationManager">
+      <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
+        <module name="tidb" />
+        <working_directory value="$PROJECT_DIR$" />
+        <go_parameters value="-i" />
+        <framework value="gocheck" />
+        <kind value="DIRECTORY" />
+        <package value="github.com/pingcap/tidb" />
+        <directory value="$PROJECT_DIR$/planner/core" />
+        <filePath value="$PROJECT_DIR$" />
+        <pattern value="TestEnforceMPP" />
+        <method v="2" />
+      </configuration>
+    </component>
+    ```
 
 4. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
