@@ -11,7 +11,7 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 Step 1. Setup `go` environment, see previous sections for more information.
 Step 2. Download `GoLand` [here](https://www.jetbrains.com/go/download/) and install it.
 Step 3. Open the TiDB project in GoLand.
-4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
+Step 4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
 
     - unistore_4000.xml
     ```xml
@@ -62,7 +62,7 @@ Step 3. Open the TiDB project in GoLand.
     </component>
     ```
 
-5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
+Step 5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
 
  - the first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
