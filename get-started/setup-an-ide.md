@@ -6,15 +6,19 @@
 
 You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB in many situations.
 
-> Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve and needn't any additional configuration. But in some cases, you may need to download a delve by yourself.
+Step 1. Clone [TiDB repo](https://github.com/pingcap/tidb) and setup `go` environment, see previous sections for more information.
 
-Step 1. Setup `go` environment, see previous sections for more information.
+Step 2. Download GoLand [here](https://www.jetbrains.com/go/download/) and install it.
 
-Step 2. Download `GoLand` [here](https://www.jetbrains.com/go/download/) and install it.
+![install goland](https://user-images.githubusercontent.com/30543181/118813503-c6f48c80-b8e1-11eb-93d3-cc937a4f0554.png)
 
 Step 3. Open the TiDB project in GoLand.
 
-Step 4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
+![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
+
+Step 4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory, you may need to create this directory when it doesn't exist.
+
+Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to change them to absolutely path.
 
 - unistore_4000.xml
 ```xml
@@ -65,9 +69,13 @@ Step 4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` director
 </component>
 ```
 
+![configs](https://user-images.githubusercontent.com/30543181/118813294-90b70d00-b8e1-11eb-909e-98ba52ba9bf8.png)
+
 Step 5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
+
+> Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve without any additional configuration. But in some cases, you may need to download a delve by yourself.
 
  - the first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
 
@@ -82,13 +90,14 @@ Step 5. Now you can see the run/debug configs in the right upper corner, but if 
 
 ![debug](https://user-images.githubusercontent.com/30543181/118771847-9860bc80-b8b5-11eb-856f-4b4f21d035de.png)
 
-
  - the third config is `unit test`, which makes you can run/debug TiDB's unit test.
 
 ![unit test config](https://user-images.githubusercontent.com/30543181/118767852-dad3ca80-b8b0-11eb-86ae-306bd4a995bc.png)
 
 ![unit test](https://user-images.githubusercontent.com/30543181/118769164-7285e880-b8b2-11eb-923e-c3eaffcddfd6.png)
    And you can modify the `Directory` and `Pattern` to run other tests.
+
+Step 6. Just click the run or debug button to enjoy your time of TiDB in GoLand!
 
 ## vim \(optional\)
 
