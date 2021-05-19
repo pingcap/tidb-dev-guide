@@ -6,7 +6,9 @@
 
 You can use GoLand to easily run or debug TiDB in many situations.
 
-0. make sure your `go` and `dlv` work well.
+> Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve and needn't any additional configuration. But in some cases, you may need to download a delve by yourself.
+
+0. make sure your `go` environment work well, see previous sections for more information.
 1. open TiDB project in GoLand.
 2. add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
 
