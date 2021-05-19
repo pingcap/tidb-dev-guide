@@ -61,7 +61,7 @@ You can use GoLand to easily run or debug TiDB in many situations.
   </component>
   ```
 
-3. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually.
+3. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
 
 
