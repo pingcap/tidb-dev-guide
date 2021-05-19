@@ -65,8 +65,6 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
 
-
-
  - the first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
  ![unistore config](https://user-images.githubusercontent.com/30543181/118766909-a4498000-b8af-11eb-8e20-9e2aff1a0b44.png)
  ![run in unistore](https://user-images.githubusercontent.com/30543181/118769645-f9d35c00-b8b2-11eb-9048-1b696ead2815.png)
@@ -81,9 +79,6 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 ![unit test config](https://user-images.githubusercontent.com/30543181/118767852-dad3ca80-b8b0-11eb-86ae-306bd4a995bc.png)
 ![unit test](https://user-images.githubusercontent.com/30543181/118769164-7285e880-b8b2-11eb-923e-c3eaffcddfd6.png)
    And you can modify the `Directory` and `Pattern` to run other tests.
- 
-
-
 
 ## vim \(optional\)
 
