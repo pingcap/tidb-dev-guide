@@ -4,7 +4,7 @@
 
 ## GoLand
 
-You can use GoLand to easily run or debug TiDB in many situations.
+You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB in many situations.
 
 > Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve and needn't any additional configuration. But in some cases, you may need to download a delve by yourself.
 
