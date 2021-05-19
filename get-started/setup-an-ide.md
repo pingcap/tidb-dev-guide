@@ -9,8 +9,9 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 > Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve and needn't any additional configuration. But in some cases, you may need to download a delve by yourself.
 
 1. Make sure your `go` environment works well, see previous sections for more information.
-2. Open the TiDB project in GoLand.
-3. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
+2. If you don't have GoLand, you just need to download it [here](https://www.jetbrains.com/go/download/) and install it.
+3. Open the TiDB project in GoLand.
+4. Add these config files to `<tidb-dir>/.idea/runConfigurations/` directory:
 
     - unistore_4000.xml
     ```xml
@@ -61,7 +62,7 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
     </component>
     ```
 
-4. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
+5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
 
 
