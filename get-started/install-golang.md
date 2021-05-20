@@ -2,10 +2,18 @@
 
 In order to build TiDB from source code, you need to have Go installed on your development environment.
 
+## TL;DR
+
+* Install Go1.13
+* Manage Go toolchain using gvm
+
+## Install Go1.13
+
 Most of TiDB developers are using Linux or MacOS, but if you are using Windows 10, you might want to have [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) prepared for better experience, although TiDB should compile and run on Windows 10, it is not expected to be deployed on Windows, and you might have to figure out many troubles on your own (although you are welcomed to share them on our [forum](https://internals.tidb.io/)).
 
-
 TiDB currently used Go1.13 to compile, but we have plan to upgrade the compiler to Go1.16 recently. You can of course go to [Go's download page](https://golang.org/dl/) and choose the version 1.13 and follow the [install instruction](https://golang.org/doc/install) to get the compiler installed.
+
+## Manage Go toolchain using gvm
 
 However, since we might update the compiler version in the near future, if you are under Linux or MacOS you are strongly suggested to try [gvm](https://github.com/moovweb/gvm) which stands for Go Version Manager.
 
