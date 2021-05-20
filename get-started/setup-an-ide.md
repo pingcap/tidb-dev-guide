@@ -14,10 +14,11 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-**Step 4**. Add these three config files to `<tidb-dir>/.idea/runConfigurations/` directory. You may need to create this directory when it doesn't exist.
+**Step 4**. Add these three config files to `<tidb-dir>/.idea/runConfigurations/` directory by following commands or add them manually.
 
-```
-$ mkdir -p .idea/runConfigurations/
+```sh
+$ cd <tidb-dir>
+$ mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
 $ cat <<EOF > unistore_4000.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
@@ -98,3 +99,7 @@ The third config is `unit test`, which makes you can run/debug TiDB's unit test.
 ## Vim
 
 ## Emacs
+
+---
+
+If you encounter any problems during your journey, do not hesitate to reach out on our developer forum at [https://internals.tidb.io/](https://internals.tidb.io/).
