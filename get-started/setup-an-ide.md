@@ -1,27 +1,24 @@
 # Setup an IDE
 
-## vs code
+## VS Code
 
 ## GoLand
 
 You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB in many situations.
 
-Step 1. Clone [TiDB repo](https://github.com/pingcap/tidb) and setup `go` environment, see previous sections for more information.
+**Step 1**. Clone [TiDB repo](https://github.com/pingcap/tidb) and setup `go` environment, see previous sections for more information.
 
-Step 2. Download GoLand [here](https://www.jetbrains.com/go/download/) and install it.
+**Step 2**. Download GoLand [here](https://www.jetbrains.com/go/download/) and install it.
 
-![install goland](https://user-images.githubusercontent.com/30543181/118813503-c6f48c80-b8e1-11eb-93d3-cc937a4f0554.png)
-
-Step 3. Open the TiDB project in GoLand.
+**Step 3**. Open the TiDB project in GoLand.
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-Step 4. Add these 3 config files to `<tidb-dir>/.idea/runConfigurations/` directory, you may need to create this directory when it doesn't exist.
+**Step 4**. Add these three config files to `<tidb-dir>/.idea/runConfigurations/` directory. You may need to create this directory when it doesn't exist.
 
-Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to change them to absolutely path.
-
-- unistore_4000.xml
-```xml
+```
+$ mkdir -p .idea/runConfigurations/
+$ cat <<EOF > unistore_4000.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
@@ -33,10 +30,9 @@ Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to ch
     <method v="2" />
   </configuration>
 </component>
-```
+EOF
 
-- playground_attach_4001.xml
-```xml
+$ cat <<EOF > playground_attach_4001.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
@@ -49,10 +45,9 @@ Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to ch
     <method v="2" />
   </configuration>
 </component>
-```
-  
-- unit_test.xml
-```xml
+EOF
+
+$ cat <<EOF > unit_test.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
     <module name="tidb" />
@@ -67,38 +62,39 @@ Note the variable `$PROJECT_DIR$` can be handled by GoLand, so you needn't to ch
     <method v="2" />
   </configuration>
 </component>
+EOF
+
+$ ls
+playground_attach_4001.xml
+unistore_4000.xml
+unit_test.xml
 ```
 
-![configs](https://user-images.githubusercontent.com/30543181/118813294-90b70d00-b8e1-11eb-909e-98ba52ba9bf8.png)
-
-Step 5. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
+**Step 5**. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
 
-> Goland uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve without any additional configuration. But in some cases, you may need to download a delve by yourself.
+> GoLand uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve without any additional configuration. But in some cases, you may need to download a delve by yourself.
 
- - the first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
+The first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
 
- ![unistore config](https://user-images.githubusercontent.com/30543181/118766909-a4498000-b8af-11eb-8e20-9e2aff1a0b44.png)
- 
- ![run in unistore](https://user-images.githubusercontent.com/30543181/118769645-f9d35c00-b8b2-11eb-9048-1b696ead2815.png)
+![unistore config](https://user-images.githubusercontent.com/30543181/118766909-a4498000-b8af-11eb-8e20-9e2aff1a0b44.png)
+![run in unistore](https://user-images.githubusercontent.com/30543181/118769645-f9d35c00-b8b2-11eb-9048-1b696ead2815.png)
 
- - the second config is `playground attach 4001`, which makes you can run/debug TiDB to attach a existed cluster, for example, [`tiup playground`](https://docs.pingcap.com/zh/tidb/stable/tiup-playground).
-   After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.
-   
+The second config is `playground attach 4001`, which makes you can run/debug TiDB to attach a existed cluster, for example, [`tiup playground`](https://docs.pingcap.com/tidb/stable/tiup-playground).
+
+After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.
+  
 ![playground attach config](https://user-images.githubusercontent.com/30543181/118767132-f38fb080-b8af-11eb-93cd-bdbe95ff2102.png)
-
 ![debug](https://user-images.githubusercontent.com/30543181/118771847-9860bc80-b8b5-11eb-856f-4b4f21d035de.png)
 
- - the third config is `unit test`, which makes you can run/debug TiDB's unit test.
+The third config is `unit test`, which makes you can run/debug TiDB's unit test. You may modify the `Directory` and `Pattern` to run other tests.
 
 ![unit test config](https://user-images.githubusercontent.com/30543181/118767852-dad3ca80-b8b0-11eb-86ae-306bd4a995bc.png)
-
 ![unit test](https://user-images.githubusercontent.com/30543181/118769164-7285e880-b8b2-11eb-923e-c3eaffcddfd6.png)
-   And you can modify the `Directory` and `Pattern` to run other tests.
 
-Step 6. Just click the run or debug button to enjoy your time of TiDB in GoLand!
+**Step 6**. Just click the run or debug button to enjoy your time of TiDB in GoLand!
 
-## vim \(optional\)
+## Vim
 
-## emacs \(optional\)
+## Emacs
