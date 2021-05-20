@@ -1,0 +1,34 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "tisonkun",
+      "name": "tison",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18818196?v=4",
+      "profile": "https://tisonkun.github.io/Miracle/",
+      "contributions": [
+        "content",
+        "review"
+      ]
+    },
+    {
+      "login": "zz-jason",
+      "name": "Jian Zhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5268763?v=4",
+      "profile": "http://zz-jason.github.io/",
+      "contributions": [
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "tidb-dev-guide",
+  "projectOwner": "zz-jason",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

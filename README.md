@@ -1,4 +1,7 @@
 # TiDB Development Guide
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
 
@@ -34,3 +37,24 @@ At present, the guide is composed of the following parts:
 ## Contribute to this guide
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://tisonkun.github.io/Miracle/"><img src="https://avatars.githubusercontent.com/u/18818196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tison</b></sub></a><br /><a href="#content-tisonkun" title="Content">🖋</a> <a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atisonkun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://zz-jason.github.io/"><img src="https://avatars.githubusercontent.com/u/5268763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jian Zhang</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azz-jason" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
