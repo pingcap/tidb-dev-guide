@@ -22,6 +22,8 @@ may not accept the pull requests.
 
 Once the pull request receives 2 LGTM from the maintainers, it can be merged.
 
+**Note**: This repo turns on "Require signed commits" option. See also [this page](https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/about-commit-signature-verification) to understand how to satisfy the requirement.
+
 ## How to add yourself to the contributors list
 
 At present, we only count content contribution and review contribution, once
