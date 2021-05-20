@@ -7,7 +7,7 @@ In order to build TiDB from source code, you need to have Go installed on your d
 * Install Go1.13
 * Manage Go toolchain using gvm
 
-## Install Go1.13
+## Install Go 1.13
 
 Most of TiDB developers are using Linux or MacOS, but if you are using Windows 10, you might want to have [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) prepared for better experience, although TiDB should compile and run on Windows 10, it is not expected to be deployed on Windows, and you might have to figure out many troubles on your own (although you are welcomed to share them on our [forum](https://internals.tidb.io/)).
 
@@ -39,4 +39,3 @@ For now, you can type `go version` in the shell to verify the installation.
 In the next chapter, you will learn how to obtain the source code of TiDB and how to build it.
 
 If you encounter any problems during your journey, do not hesitate to reach out on our developer forum at [https://internals.tidb.io/](https://internals.tidb.io/).
-
