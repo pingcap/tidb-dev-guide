@@ -5,7 +5,7 @@ To build TiDB from source code, you need to install Go in your development envir
 ## TL;DR
 
 * Install Go 1.13 follow the [install instruction](https://golang.org/doc/install)
-* Or manage Go toolchain using [gvm]((https://github.com/moovweb/gvm)
+* Or manage Go toolchain using [gvm](https://github.com/moovweb/gvm)
 
 ## Install Go 1.13
 
@@ -20,10 +20,8 @@ We might update the compiler version of TiDB in the near future. If you are usin
 To install gvm, run the following command:
 
 ```bash
-bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sh
 ```
-
-Change `base` to `zsh` if you are using `zsh`.
 
 Once you have gvm installed, you can have many different Go compilers with different versions managed by it. First of all, install Go1.13 and set it as default
 
