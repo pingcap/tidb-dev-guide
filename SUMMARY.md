@@ -8,10 +8,9 @@
 * [Get the code, build and run](get-started/build-tidb-from-source.md)
 * [Setup an IDE](get-started/setup-an-ide.md)
 * [Write and run unit tests](get-started/write-and-run-unit-tests.md)
-* [Commit code and submit a pull request](get-started/commit-code-and-submit-a-pull-request.md)
+* [Using Git](get-started/using-git.md)
 * [Resolve review comments](get-started/resolve-review-comments.md)
 * [Debug and profile](get-started/debug-and-profile.md)
-* [Handle conflicts](get-started/handle-conflicts.md)
 * [Appendix I: Abbreviations in the community](get-started/appendix-i-abbreviations-in-the-community.md)
 * [Appendix II: Set up the pre-commit git hook](get-started/appendix-ii-set-up-the-pre-commit-git-hook.md)
 
@@ -57,4 +56,3 @@
 * [Manage a project](be-an-expert/manage-a-project.md)
 * [Communication and discussion](be-an-expert/communication-and-discussion.md)
 * [Useful resources](be-an-expert/useful-resources.md)
-
