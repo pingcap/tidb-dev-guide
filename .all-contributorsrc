@@ -33,6 +33,15 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "qiancai",
+      "name": "Grace Cai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79440533?v=4",
+      "profile": "https://github.com/qiancai",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
