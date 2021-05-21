@@ -8,7 +8,7 @@
 * [Get the code, build and run](get-started/build-tidb-from-source.md)
 * [Setup an IDE](get-started/setup-an-ide.md)
 * [Write and run unit tests](get-started/write-and-run-unit-tests.md)
-* [Using Git](get-started/using-git.md)
+* [Commit code and submit a pull request](get-started/commit-code-and-submit-a-pull-request.md)
 * [Resolve review comments](get-started/resolve-review-comments.md)
 * [Debug and profile](get-started/debug-and-profile.md)
 * [Appendix I: Abbreviations in the community](get-started/appendix-i-abbreviations-in-the-community.md)

@@ -1,4 +1,4 @@
-# Using Git
+# Commit code and submit a pull request
 
 The TiDB project uses [Git](https://git-scm.com/) to manage its source code. In order to contribute, you'll need some familiarity with its features so that your changes can be incorporated into the codebase.
 
