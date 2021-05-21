@@ -4,8 +4,8 @@ To build TiDB from source code, you need to install Go in your development envir
 
 ## TL;DR
 
-* Install Go 1.13
-* Manage Go toolchain using gvm
+* Install Go 1.13 follow the [install instruction](https://golang.org/doc/install)
+* Or manage Go toolchain using [gvm]((https://github.com/moovweb/gvm)
 
 ## Install Go 1.13
 
@@ -35,6 +35,11 @@ gvm use go1.13 --default
 In the future, if we upgrade the compiler to Go1.16, you can then change `go1.13` to `go1.16` on the above two commands and rerun them, and you are then all set.
 
 For now, you can type `go version` in the shell to verify the installation.
+
+```
+$ go version
+go version go1.13.15 linux/amd64
+```
 
 In the next chapter, you will learn how to obtain the source code of TiDB and how to build it.
 
