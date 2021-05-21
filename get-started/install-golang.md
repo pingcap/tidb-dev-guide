@@ -17,7 +17,7 @@ Currently, TiDB uses Go 1.13 to compile the code, but we plan to upgrade the com
 
 We might update the compiler version of TiDB in the near future. If you are using Linux or MacOS, to manage Go versions in an easy way, you are recommended to try [Go Version Manager (gvm)](https://github.com/moovweb/gvm).
 
-To install gvm, use
+To install gvm, run the following command:
 
 ```bash
 bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
