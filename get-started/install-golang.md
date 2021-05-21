@@ -4,7 +4,7 @@ To build TiDB from source code, you need to install Go in your development envir
 
 ## TL;DR
 
-* Install Go1.13
+* Install Go 1.13
 * Manage Go toolchain using gvm
 
 ## Install Go 1.13
