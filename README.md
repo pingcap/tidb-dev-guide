@@ -1,6 +1,6 @@
 # TiDB Development Guide
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -51,6 +51,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://tisonkun.github.io/Miracle/"><img src="https://avatars.githubusercontent.com/u/18818196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tison</b></sub></a><br /><a href="#content-tisonkun" title="Content">🖋</a> <a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atisonkun" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="http://zz-jason.github.io/"><img src="https://avatars.githubusercontent.com/u/5268763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jian Zhang</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azz-jason" title="Reviewed Pull Requests">👀</a> <a href="#content-zz-jason" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/qiancai"><img src="https://avatars.githubusercontent.com/u/79440533?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Grace Cai</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aqiancai" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://ichn.xyz"><img src="https://avatars.githubusercontent.com/u/29735669?v=4?s=100" width="100px;" alt=""/><br /><sub><b>虎</b></sub></a><br /><a href="#content-ichn-hu" title="Content">🖋</a></td>
   </tr>
 </table>
 

@@ -42,6 +42,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "ichn-hu",
+      "name": "虎",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29735669?v=4",
+      "profile": "https://ichn.xyz",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
