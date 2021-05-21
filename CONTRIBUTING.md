@@ -22,15 +22,18 @@ may not accept the pull requests.
 
 Once the pull request receives 2 LGTM from the maintainers, it can be merged.
 
-**Note**: This repo turns on "Require signed commits" option. See also [this page](https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/about-commit-signature-verification) to understand how to satisfy the requirement.
-
 ## How to add yourself to the contributors list
 
 At present, we only count content contribution and review contribution, once
 you have successfully contributed to this guide, you can nominate yourself as a
 contributor by the following two commands in the related pull request:
 
-1. `@all-contributors please add @your_github_id for content` for content
-   contributions.
-2. `@all-contributors please add @your_github_id for review` for pull request
-   review contributions.
+1. for content contributions:
+   ```sh
+   @all-contributors please add @your_github_id for content
+   ```
+
+3. for pull request review contributions:
+   ```sh
+   @all-contributors please add @your_github_id for review
+   ```
