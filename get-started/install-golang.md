@@ -1,6 +1,6 @@
 # Install Golang
 
-In order to build TiDB from source code, you need to have Go installed on your development environment.
+To build TiDB from source code, you need to install Go in your development environment first. If Go is not installed yet, you can follow the instructions in this document for installation.
 
 ## TL;DR
 
