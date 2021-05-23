@@ -1,6 +1,6 @@
 # Commit code and submit a pull request
 
-The TiDB project uses [Git](https://git-scm.com/) to manage its source code. In order to contribute, you'll need some familiarity with its features so that your changes can be incorporated into the codebase.
+The TiDB project uses [Git](https://git-scm.com/) to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.
 
 The goal of this page is to cover some of the more common questions and problems new contributors face. Although some Git basics will be covered here, if you find that this is still a little too fast for you, it might make sense to first read some introductions to Git, such as the Beginner and Getting started sections of [this tutorial from Atlassian](https://www.atlassian.com/git/tutorials/what-is-version-control). GitHub also provides [documentation](https://docs.github.com/en/github/getting-started-with-github/set-up-git) and [guides](https://guides.github.com/introduction/git-handbook/) for beginners, or you can consult the more in depth [book from Git](https://git-scm.com/book/en/v2/).
 
