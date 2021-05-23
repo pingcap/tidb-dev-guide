@@ -12,7 +12,7 @@ The goal of this page is to cover some of the most common questions and problems
 
 Before creating a pull request, you need to make sure that you've installed Git, forked [pingcap/tidb](https://github.com/pingcap/tidb), and cloned the upstream repo to your PC. The instructions on this page use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.
 
-If you've cloned the upstream repo, then you will be able to reference it with `origin` in your local repo. Now you should set up a remote for the your fork via
+If you've cloned the upstream repo, you will be able to reference it using `origin` in your local repo. Next, you need to set up a remote for the repo your forked using the following command:
 
 ```bash
 git remote add dev https://github.com/username/tidb.git
