@@ -6,6 +6,15 @@
   "commit": false,
   "contributors": [
     {
+      "login": "LittleFall",
+      "name": "Zhi Qi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30543181?v=4",
+      "profile": "https://github.com/LittleFall",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
       "login": "tisonkun",
       "name": "tison",
       "avatar_url": "https://avatars.githubusercontent.com/u/18818196?v=4",
@@ -21,7 +30,26 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/5268763?v=4",
       "profile": "http://zz-jason.github.io/",
       "contributions": [
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "qiancai",
+      "name": "Grace Cai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79440533?v=4",
+      "profile": "https://github.com/qiancai",
+      "contributions": [
         "review"
+      ]
+    },
+    {
+      "login": "ichn-hu",
+      "name": "虎",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29735669?v=4",
+      "profile": "https://ichn.xyz",
+      "contributions": [
+        "content"
       ]
     }
   ],
