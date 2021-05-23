@@ -38,7 +38,7 @@ The following is a normal procedure that you're likely to use for the most commo
 4. Make some changes to the repo and test them.
 5. Stage your changes via `git add .` and then commit them with `git commit`. Making intermediate commits might be a good idea as well. Pay attention on unintentionally commit changes that should not be committed via `git add .`. You can use `git status` to check if the change set is correct.
 6. Push your changes to your fork: `git push --set-upstream dev issue-12345-fix`.
-7. [Open a PR](https://guides.github.com/activities/forking/#making-a-pull-request) from your fork to pingcap/tidb's master branch.
+7. Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see [Making a Pull Request](https://guides.github.com/activities/forking/#making-a-pull-request) in GitHub Guides.
 
 When opening a PR, take a look at the PR template and follow the commit message format, PR title format and checklists.
 
