@@ -18,7 +18,7 @@ If you've cloned the upstream repo, you will be able to reference it using `orig
 git remote add dev https://github.com/username/tidb.git
 ```
 
-You can check the remote setting via
+You can check the remote setting using the following command:
 
 ```bash
 git remote -v
