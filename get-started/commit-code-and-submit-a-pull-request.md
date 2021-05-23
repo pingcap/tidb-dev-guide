@@ -49,7 +49,7 @@ After creating a PR, if your reviewer requests for code changes, the procedure f
 3. Make, stage, and commit your additional changes just like before.
 4. Push those changes to your fork: `git push`.
 
-If your reviewer requests changes by GitHub suggestion, you can commit the suggestion from webpage. GitHub provides [documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes) on this case.
+If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides [documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes) for this case.
 
 ## Conflicts
 
