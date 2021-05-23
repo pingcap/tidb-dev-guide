@@ -36,7 +36,7 @@ The following is a normal procedure that you're likely to use for the most commo
 2. Get the latest changes from remote: git pull master.
 3. Make a new branch for your changes: `git checkout -b issue-12345-fix`.
 4. Make some changes to the repo and test them.
-5. Stage your changes via `git add .` and then commit them with `git commit`. Of course, making intermediate commits may be a good idea as well. Pay attention on unintentionally commit changes that should not be committed via `git add .`. You can use `git status` to check if the change set is correct.
+5. Stage your changes via `git add .` and then commit them with `git commit`. Making intermediate commits might be a good idea as well. Pay attention on unintentionally commit changes that should not be committed via `git add .`. You can use `git status` to check if the change set is correct.
 6. Push your changes to your fork: `git push --set-upstream dev issue-12345-fix`.
 7. [Open a PR](https://guides.github.com/activities/forking/#making-a-pull-request) from your fork to pingcap/tidb's master branch.
 
