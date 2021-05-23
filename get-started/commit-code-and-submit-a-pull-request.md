@@ -42,7 +42,7 @@ The following is a normal procedure that you're likely to use for the most commo
 
 When opening a PR, take a look at the PR template and follow the commit message format, PR title format and checklists.
 
-If your reviewer requests changes, the procedure for those changes looks much the same, with some steps skipped:
+After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:
 
 1. Switch to the branch that is the head: `git checkout issue-12345-fix`
 2. Ensure that you're making changes to the most recent version of your code: `git pull`.
