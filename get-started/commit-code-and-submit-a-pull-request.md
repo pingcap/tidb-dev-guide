@@ -30,7 +30,7 @@ git remote -v
 
 ## Standard Process
 
-Below is the normal procedure that you're likely to use for most minor changes and PRs:
+The following is a normal procedure that you're likely to use for the most common minor changes and PRs:
 
 1. Ensure that you're making your changes on top of master: `git checkout master`.
 2. Get the latest changes from remote: git pull master.
