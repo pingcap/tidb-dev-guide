@@ -40,7 +40,7 @@ The following is a normal procedure that you're likely to use for the most commo
 6. Push your changes to your fork: `git push --set-upstream dev issue-12345-fix`.
 7. Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see [Making a Pull Request](https://guides.github.com/activities/forking/#making-a-pull-request) in GitHub Guides.
 
-When opening a PR, take a look at the PR template and follow the commit message format, PR title format and checklists.
+When making a PR, take a look at the PR template and follow the commit message format, PR title format and checklists.
 
 After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:
 
