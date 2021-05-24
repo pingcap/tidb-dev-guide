@@ -15,7 +15,7 @@ Before creating a pull request, you need to make sure that you've installed Git,
 If you've cloned the upstream repo, you will be able to reference it using `origin` in your local repo. Next, you need to set up a remote for the repo your forked using the following command:
 
 ```bash
-git remote add dev https://github.com/username/tidb.git
+git remote add dev https://github.com/your_github_id/tidb.git
 ```
 
 You can check the remote setting using the following command:
