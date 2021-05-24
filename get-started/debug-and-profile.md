@@ -102,10 +102,76 @@ $ make server
 $ ./bin/tidb-server
 ```
 
-the above commands will get a standalone TiDB server running. Connect it with MySQL client and set up the schema.
+the above commands will get a standalone TiDB server running. Connect it with MySQL client
 
 ```
+$ mysql -u root -h 0.0.0.0 -P 4000 -D test --comments
 ```
+
+and set up the schema by the following SQL.
+
+```sql
+CREATE TABLE `t1` (
+  `a` timestamp NULL DEFAULT NULL,
+  `b` year(4) DEFAULT NULL,
+  KEY `a` (`a`),
+  KEY `b` (`b`)
+);
+insert into t1 values("2002-10-03 04:28:53", 2000);
+```
+
+Upon querying it with
+
+```sql
+select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b;
+```
+
+you will notice that the MySQL client complains with error
+
+```
+MySQL [test]> select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b;
+ERROR 1292 (22007): Incorrect time value: '{2000 0 0 0 0 0 0}'
+```
+
+and note in the shell session where the TiDB server is brought up, the log message prints the stack of the error
+
+```
+[2021/05/24 18:26:45.722 +08:00] [INFO] [conn.go:878] ["command dispatched failed"] [conn=3] [connInfo="id:3, addr:127.0.0.1:50554 status:10, collation:utf8_general_ci, user:root"] [command=Query] [status="inTxn:0, autocommit:1"] [sql="select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b"] [txn_mode=OPTIMISTIC] [err="[types:1292]Incorrect time value: '{2000 0 0 0 0 0 0}'\ngithub.com/pingcap/errors.AddStack\n\t/home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/errors.go:174\ngithub.com/pingcap/errors.(*Error).GenWithStackByArgs\n\t/home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/normalize.go:156\ngithub.com/pingcap/tidb/types.CoreTime.GoTime\n\t/home/ichn/Projects/pingcap/tidb/types/core_time.go:181\ngithub.com/pingcap/tidb/types.(*Time).ConvertTimeZone\n\t/home/ichn/Projects/pingcap/tidb/types/time.go:358\ngithub.com/pingcap/tidb/util/codec.EncodeMySQLTime\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:184\ngithub.com/pingcap/tidb/util/codec.encode\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:99\ngithub.com/pingcap/tidb/util/codec.EncodeKey\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:287\ngithub.com/pingcap/tidb/executor.(*innerWorker).constructLookupContent\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:526\ngithub.com/pingcap/tidb/executor.(*innerWorker).handleTask\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:487\ngithub.com/pingcap/tidb/executor.(*innerWorker).run\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:469\nruntime.goexit\n\t/home/ichn/.gvm/gos/go1.13/src/runtime/asm_amd64.s:1357"]
+```
+
+Read carefully and you will find `err="XXX"` pattern in the log, and you can use `echo` to make that message more human readable (replace `xxx` with the text you see in the log message).
+
+```
+$ echo "XXX"
+[types:1292]Incorrect time value: '{2000 0 0 0 0 0 0}'
+github.com/pingcap/errors.AddStack
+        /home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/errors.go:174
+github.com/pingcap/errors.(*Error).GenWithStackByArgs
+        /home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/normalize.go:156
+github.com/pingcap/tidb/types.CoreTime.GoTime
+        /home/ichn/Projects/pingcap/tidb/types/core_time.go:181
+github.com/pingcap/tidb/types.(*Time).ConvertTimeZone
+        /home/ichn/Projects/pingcap/tidb/types/time.go:358
+github.com/pingcap/tidb/util/codec.EncodeMySQLTime
+        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:184
+github.com/pingcap/tidb/util/codec.encode
+        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:99
+github.com/pingcap/tidb/util/codec.EncodeKey
+        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:287
+github.com/pingcap/tidb/executor.(*innerWorker).constructLookupContent
+        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:526
+github.com/pingcap/tidb/executor.(*innerWorker).handleTask
+        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:487
+github.com/pingcap/tidb/executor.(*innerWorker).run
+        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:469
+runtime.goexit
+        /home/ichn/.gvm/gos/go1.13/src/runtime/asm_amd64.s:1357
+```
+
+Now we know where the error is stemed from, let's take a closer look at the execution.
+
+Instinctively, let's break at the higherest level of the stack where it is specific enough to be only encountered by the SQL that make it panic.
+
 
 1. locate the code
 2. set a breakpoint
