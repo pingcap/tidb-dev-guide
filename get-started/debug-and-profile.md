@@ -189,6 +189,14 @@ Here, let's just set up a breakpoint at `executor.(*innerWorker).constructLookup
 
 ### Using delve to debug test case
 
+If test cases failed, you can also use delve to debug test case. Get the name of the test case, and then use
+
+```
+dlv test -- -check.f TestName
+```
+
+to start a 
+
 ### Understand how TiDB works through debugging
 
 ## Using `pprof` for profiling
