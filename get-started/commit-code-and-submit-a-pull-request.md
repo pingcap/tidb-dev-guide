@@ -34,34 +34,34 @@ The following is a normal procedure that you're likely to use for the most commo
 
 1. Ensure that you're making your changes on top of master and get the latest changes:
 
-```sh
-git checkout master
-git pull master
-```
+  ```sh
+  git checkout master
+  git pull master
+  ```
 
 2. Create a new branch for your changes:
 
-```sh
-git checkout -b my-changes
-```
+  ```sh
+  git checkout -b my-changes
+  ```
 
 3. Make some changes to the repo and test them.
 
 4. Commit your changes and push them to your `dev` remote repository:
 
-```sh
-# stage files you created/changed/deleted
-git add path/to/changed/file.go path/to/another/changed/file.go
+  ```sh
+  # stage files you created/changed/deleted
+  git add path/to/changed/file.go path/to/another/changed/file.go
 
-# commit changes staged, make sure the commit message is meaningful and readable
-git commit -s -m "pkg, pkg2, pkg3: what's changed"
+  # commit changes staged, make sure the commit message is meaningful and readable
+   git commit -s -m "pkg, pkg2, pkg3: what's changed"
 
-# optionally use `git status` to check if the change set is correct
-# git status
+  # optionally use `git status` to check if the change set is correct
+  # git status
 
-# push the change to your `dev` remote repository
-git push --set-upstream dev my-changes
-```
+  # push the change to your `dev` remote repository
+  git push --set-upstream dev my-changes
+  ```
 
 5. Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see [Making a Pull Request](https://guides.github.com/activities/forking/#making-a-pull-request) in GitHub Guides.
 
@@ -71,18 +71,18 @@ After creating a PR, if your reviewer requests for code changes, the procedure f
 
 1. Switch to the branch that is the head and get the latest changes:
 
-```sh
-git checkout my-changes
-git pull
-```
+  ```sh
+  git checkout my-changes
+  git pull
+  ```
 
 2. Make, stage, and commit your additional changes just like before.
 
 3. Push those changes to your fork
 
-```sh
-git push
-```
+  ```sh
+  git push
+  ```
 
 If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides [documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes) for this case.
 
