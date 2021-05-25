@@ -33,14 +33,14 @@ git remote -v
 The following is a normal procedure that you're likely to use for the most common minor changes and PRs:
 
 1. Ensure that you're making your changes on top of master: `git checkout master`.
-2. Get the latest changes from remote: git pull master.
+2. Get the latest changes from remote: `git pull master`.
 3. Make a new branch for your changes: `git checkout -b issue-12345-fix`.
 4. Make some changes to the repo and test them.
 5. Stage your changes via `git add .` and then commit them with `git commit`. Making intermediate commits might be a good idea as well. Pay attention on unintentionally commit changes that should not be committed via `git add .`. You can use `git status` to check if the change set is correct.
 6. Push your changes to your fork: `git push --set-upstream dev issue-12345-fix`.
 7. Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see [Making a Pull Request](https://guides.github.com/activities/forking/#making-a-pull-request) in GitHub Guides.
 
-When making a PR, take a look at the PR template and follow the commit message format, PR title format and checklists.
+When making a PR, take a look at the [PR template](https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md) and follow the commit message format, PR title format and checklists.
 
 After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:
 
