@@ -1,4 +1,4 @@
-# Query optimizer internals
+# SQL hints and plan management
 
 Target audience:
 

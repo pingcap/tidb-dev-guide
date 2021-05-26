@@ -2,11 +2,11 @@
 
 The TiDB project uses [Git](https://git-scm.com/) to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.
 
-The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows: 
+The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:
 
-- Beginner and Getting started sections of [this tutorial] (https://www.atlassian.com/git/tutorials) from Atlassian 
-- [Documentation](https://docs.github.com/en/github/getting-started-with-github/set-up-git) and [guides](https://guides.github.com/introduction/git-handbook/) for beginners from Github
-- More in-depth [book](https://git-scm.com/book/en/v2/) from Git
+* Beginner and Getting started sections of \[this tutorial\] \([https://www.atlassian.com/git/tutorials](https://www.atlassian.com/git/tutorials)\) from Atlassian 
+* [Documentation](https://docs.github.com/en/github/getting-started-with-github/set-up-git) and [guides](https://guides.github.com/introduction/git-handbook/) for beginners from Github
+* More in-depth [book](https://git-scm.com/book/en/v2/) from Git
 
 ## Prerequisites
 
@@ -34,34 +34,33 @@ The following is a normal procedure that you're likely to use for the most commo
 
 1. Ensure that you're making your changes on top of master and get the latest changes:
 
-  ```sh
-  git checkout master
-  git pull master
-  ```
+   ```bash
+   git checkout master
+   git pull master
+   ```
 
 2. Create a new branch for your changes:
 
-  ```sh
-  git checkout -b my-changes
-  ```
+   ```bash
+   git checkout -b my-changes
+   ```
 
 3. Make some changes to the repo and test them.
-
 4. Commit your changes and push them to your `dev` remote repository:
 
-  ```sh
-  # stage files you created/changed/deleted
-  git add path/to/changed/file.go path/to/another/changed/file.go
+   ```bash
+   # stage files you created/changed/deleted
+   git add path/to/changed/file.go path/to/another/changed/file.go
 
-  # commit changes staged, make sure the commit message is meaningful and readable
+   # commit changes staged, make sure the commit message is meaningful and readable
    git commit -s -m "pkg, pkg2, pkg3: what's changed"
 
-  # optionally use `git status` to check if the change set is correct
-  # git status
+   # optionally use `git status` to check if the change set is correct
+   # git status
 
-  # push the change to your `dev` remote repository
-  git push --set-upstream dev my-changes
-  ```
+   # push the change to your `dev` remote repository
+   git push --set-upstream dev my-changes
+   ```
 
 5. Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see [Making a Pull Request](https://guides.github.com/activities/forking/#making-a-pull-request) in GitHub Guides.
 
@@ -71,18 +70,17 @@ After creating a PR, if your reviewer requests for code changes, the procedure f
 
 1. Switch to the branch that is the head and get the latest changes:
 
-  ```sh
-  git checkout my-changes
-  git pull
-  ```
+   ```bash
+   git checkout my-changes
+   git pull
+   ```
 
 2. Make, stage, and commit your additional changes just like before.
-
 3. Push those changes to your fork
 
-  ```sh
-  git push
-  ```
+   ```bash
+   git push
+   ```
 
 If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides [documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes) for this case.
 
@@ -98,13 +96,13 @@ You're now ready to start the rebasing process. Checkout the branch with your ch
 
 When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one "rebase conflict." This happens when Git's attempt to reapply the changes fails because your changes conflicted with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like
 
-```
+```text
 CONFLICT (content): Merge conflict in file.go
 ```
 
 When you open these files, you'll see sections of the form
 
-```
+```text
 <<<<<<< HEAD
 Original code
 =======
@@ -137,3 +135,4 @@ git rebase --continue
 "Squashing" commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.
 
 You also may want to squash just the last few commits together, possibly because they only represent "fixups" and not real changes. For example, `git rebase --interactive HEAD~2` will allow you to edit the two commits only.
+

@@ -24,35 +24,30 @@
 * [Testing](get-involved/testing.md)
 * [Writing Documentation](get-involved/writing-documentation.md)
 
-## Familiar with Distributed Database
+## Understand TiDB
 
-* [Introduction](familiar-with-distributed-database/introduction.md)
-* [The SQL language](familiar-with-distributed-database/the-sql-language.md)
-* [Traditional database concepts](familiar-with-distributed-database/traditional-database-concepts.md)
-* [Distributed database overview](familiar-with-distributed-database/distributed-database-overview.md)
-* [TiDB overview](familiar-with-distributed-database/tidb-overview.md)
+* [Introduction of TiDB architecture](understand-tidb/introduction-of-tidb-architecture.md)
+* [MySQL protocol & session sanagement](understand-tidb/mysql-protocol-and-session-management.md)
+* [The lifecycle of a SQL](understand-tidb/the-lifecycle-of-a-sql.md)
+* [Privilege management](understand-tidb/privilege-management.md)
+* [DDL](understand-tidb/ddl.md)
+* [DML](understand-tidb/dml.md)
+* [Transaction processing](understand-tidb/transaction-processing.md)
+* [Overview of planner](understand-tidb/overview-of-planner.md)
+* [Logical optimization & rules](understand-tidb/logical-optimization-and-rules.md)
+* [Physical optimization](understand-tidb/physical-optimization.md)
+* [Table statistics](understand-tidb/table-statistics.md)
+* [Plan cache](understand-tidb/plan-cache.md)
+* [SQL hints and plan management](understand-tidb/sql-plan-management.md)
+* [Overview of the execution engine](understand-tidb/overview-of-the-execution-engine.md)
+* [Retrieving data from the storage layer](understand-tidb/communicate-with-the-storage.md)
+* [MVCC garbage collection](understand-tidb/mvcc-garbage-collection.md)
 
-## Familiar with the TiDB Codebase
+## Project Management
 
-* [Code structure overview](familiar-with-the-tidb-codebase/code-structure-overview.md)
-* [Session management](familiar-with-the-tidb-codebase/session-management.md)
-* [Privilege management](familiar-with-the-tidb-codebase/privilege-management.md)
-* [DDL execution](familiar-with-the-tidb-codebase/ddl-execution.md)
-* [DML execution](familiar-with-the-tidb-codebase/dml-execution.md)
-* [DQL execution](familiar-with-the-tidb-codebase/dql-execution.md)
-* [Query optimizer internals](familiar-with-the-tidb-codebase/query-optimizer-internals.md)
-* [Plan cache](familiar-with-the-tidb-codebase/plan-cache.md)
-* [SQL hints](familiar-with-the-tidb-codebase/sql-hints.md)
-* [SQL plan management](familiar-with-the-tidb-codebase/sql-plan-management.md)
-* [Query executor internals](familiar-with-the-tidb-codebase/query-executor-internals.md)
-* [Transaction processing](familiar-with-the-tidb-codebase/transaction-processing.md)
-* [MVCC garbage collection](familiar-with-the-tidb-codebase/mvcc-garbage-collection.md)
-* [Communicate with the storage](familiar-with-the-tidb-codebase/communicate-with-the-storage.md)
+* [Introduction](project-management/introduction.md)
+* [TiDB release management](project-management/tidb-release-management.md)
+* [Manage a project](project-management/manage-a-project.md)
+* [Communication and discussion](project-management/communication-and-discussion.md)
+* [Useful resources](project-management/useful-resources.md)
 
-## Be an Expert
-
-* [Introduction](be-an-expert/introduction.md)
-* [TiDB release management](be-an-expert/tidb-release-management.md)
-* [Manage a project](be-an-expert/manage-a-project.md)
-* [Communication and discussion](be-an-expert/communication-and-discussion.md)
-* [Useful resources](be-an-expert/useful-resources.md)
