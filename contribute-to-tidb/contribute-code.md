@@ -2,7 +2,7 @@
 
 TiDB is maintained, improved, and extended by code contributions. We welcome contributions to TiDB, but due to the size of the project and to preserve the high quality of the code base, we follow a contribution process that is explained in this document.
 
-**Please feel free to ask questions at any time.** Either create a topic on the [developer discussion forum](http://internals.tidb.io/) or comment on the GitHub issue you are working on.
+**Please feel free to ask questions at any time.** Either create a topic on the [TiDB Internals forum](https://internals.tidb.io/) or comment on the GitHub issue you are working on.
 
 Please read this document carefully before starting to work on a code contribution. Follow the process and guidelines explained below. Contributing to TiDB does _not_ start with opening a pull request. We expect contributors to reach out to us first to discuss the overall approach together. Without consensus with the TiDB committers, contributions might require substantial rework or will not be reviewed.
 
@@ -14,7 +14,7 @@ If you have a good idea for the contribution, you can proceed to the code contri
 
 ### TL;DR
 
-1. Discuss. Create a GitHub issue or create a topic on the [developer discussion forum](http://internals.tidb.io) and reach consensus.
+1. Discuss. Create a GitHub issue or create a topic on the [TiDB Internals forum](https://internals.tidb.io/) and reach consensus.
 2. Implement. Implement the change according to the approach agreed upon in the discussion.
 3. Review. Open a pull request and work with the reviewer.
 4. Merge. A committer of TiDB checks if the contribution fulfills the requirements and merges the code to the codebase.
@@ -25,7 +25,7 @@ The first step for making a contribution to TiDB is to reach consensus with the 
 
 In most cases, the discussion should happen on [GitHub issues](https://github.com/pingcap/tidb/issues).
 
-The following types of changes requires a dedicated topic on the [developer discussion forum](http://internals.tidb.io/):
+The following types of changes requires a dedicated topic on the [TiDB Internals forum](https://internals.tidb.io/):
 
 * big changes (major new feature; big refactors, involving multiple components)
 * potentially controversial changes or issues
@@ -52,9 +52,9 @@ Requirements for a GitHub issue to get consensus:
     * Impact on TiDB's build time
     * Dependencies and their licenses
 
-If a change is identified as a large or controversial change in the discussion on GitHub issue, it might require a [TiDB Design Document](make-proposal.md) or a discussion on the developer discussion forum to reach agreement and consensus.
+If a change is identified as a large or controversial change in the discussion on GitHub issue, it might require a [TiDB Design Document](make-proposal.md) or a discussion on the [TiDB Internals forum](https://internals.tidb.io/) to reach agreement and consensus.
 
-Contributors can expect to get a first reaction from a committer within a few days after opening the issue. If an issue doesn’t get any attention, we recommend reaching out to the developer discussion forum. Note that the community sometimes does not have the capacity to accept all incoming contributions.
+Contributors can expect to get a first reaction from a committer within a few days after opening the issue. If an issue doesn’t get any attention, we recommend reaching out to the [TiDB Internals forum](https://internals.tidb.io/). Note that the community sometimes does not have the capacity to accept all incoming contributions.
 
 Once all requirements for the issue are met, one could assign somebody to the issue to work on it.
 

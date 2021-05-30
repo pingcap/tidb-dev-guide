@@ -20,7 +20,7 @@ A hastily-proposed design document can hurt its chances of acceptance. Low-quali
 
 Although there is no single way to prepare for submitting a design document, it is generally a good idea to pursue feedback from other project developers beforehand, to ascertain that the design document may be desirable; having a consistent impact on the project requires concerted effort toward consensus-building.
 
-The most common preparations for writing and submitting a draft of design document is on the [developer discussion forum](http://internals.tidb.io/).
+The most common preparations for writing and submitting a draft of design document is on the [TiDB Internals forum](https://internals.tidb.io/).
 
 ## What is the process?
 

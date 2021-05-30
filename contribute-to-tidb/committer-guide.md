@@ -16,7 +16,7 @@ While private channels such as face to face discussion are useful for developmen
 
 While this principle applies to every contributor, it is especially important for committers. Here are some example applications of this principle:
 
-* When getting a project-related question from a personal channel, encourage the person to open a public thread in the discuss forum, so others in the community can benefit from the answer.
+* When getting a project-related question from a personal channel, encourage the person to open a public thread in the [TiDB Internals forum](https://internals.tidb.io/), so others in the community can benefit from the answer.
 * After an in-person discussion, send a summary to public channels (as an RFC or a discuss topic).
 
 ## Shepherd a Pull Request

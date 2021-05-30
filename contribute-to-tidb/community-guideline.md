@@ -4,7 +4,7 @@ TiDB governs by meritocracy and adopts a model consists of reviewer, committer, 
 
 ## General Development Process
 
-Everyone in the community is welcomed to send patches, documents, and propose new directions to the project. The key guideline here is to enable everyone in the community to get involved and participate the decision and development. When major changes are proposed, a design document should be sent to allow discussion by the community. We encourage public discussion, archivable channels such as GitHub issues and the [developer discussion forum](http://internals.tidb.io/), so that everyone in the community can participate and review the process later.
+Everyone in the community is welcomed to send patches, documents, and propose new directions to the project. The key guideline here is to enable everyone in the community to get involved and participate the decision and development. When major changes are proposed, a design document should be sent to allow discussion by the community. We encourage public discussion, archivable channels such as GitHub issues and the [TiDB Internals forum](https://internals.tidb.io/), so that everyone in the community can participate and review the process later.
 
 Code reviews are one of the key ways to ensure the quality of the code. High-quality code reviews prevent technical debt for long-term and are crucial to the success of the project. A pull request needs to be reviewed before it gets merged. A committer who has the expertise of the corresponding area would moderate the pull request and the merge the code when it is ready. The corresponding committer could request multiple reviewers who are familiar with the area of the code. We encourage contributors to request code reviews themselves and help review each other's code – remember everyone is volunteering their time to the community, high-quality code review itself costs as much as the actual code contribution, you could get your code quickly reviewed if you do others the same favor.
 
@@ -16,7 +16,7 @@ Committers are individuals who are granted the write access to the project. A co
 
 * Sustained contribution to the project, demonstrated by discussion over design documents, code reviews and proposals of new features, and other development activities. Being familiar with, and being able to take ownership on one or several areas of the project.
 * Quality of contributions: High-quality, readable code contributions indicated by pull requests that can be merged without a substantial code review. History of creating clean, maintainable code and including good test cases. Informative code reviews to help other contributors that adhere to a good standard.
-* Community involvement: active participation in the discussion forum, promote the projects via tutorials, talks and outreach. We encourage committers to collaborate broadly, e.g. do code reviews and discuss designs with community members that they do not interact physically.
+* Community involvement: active participation in the [TiDB Internals forum](https://internals.tidb.io/), promote the projects via tutorials, talks and outreach. We encourage committers to collaborate broadly, e.g. do code reviews and discuss designs with community members that they do not interact physically.
 
 ## Maintainers
 
