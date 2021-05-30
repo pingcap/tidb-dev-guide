@@ -14,15 +14,17 @@
 * [Appendix I: Abbreviations in the community](get-started/appendix-i-abbreviations-in-the-community.md)
 * [Appendix II: Set up the pre-commit git hook](get-started/appendix-ii-set-up-the-pre-commit-git-hook.md)
 
-## Get Involved
+## Contribute to TiDB
 
-* [Introduction](get-involved/introduction.md)
-* [Bug Reports](get-involved/bug-reports.md)
-* [Refactoring](get-involved/refactoring.md)
-* [Feature Proposals](get-involved/feature-proposals.md)
-* [Code Reviews](get-involved/code-reviews.md)
-* [Testing](get-involved/testing.md)
-* [Writing Documentation](get-involved/writing-documentation.md)
+* [Introduction](contribute-to-tidb/introduction.md)
+* [TiDB Community Guideline](contribute-to-tidb/community-guideline.md)
+* [Report a Bug](contribute-to-tidb/report-a-bug.md)
+* [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
+* [Contribute Code](contribute-to-tidb/contribute-code.md)
+* [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
+* [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
+* [Write Document](contribute-to-tidb/write-document.md)
+* [Committer Guide](contribute-to-tidb/committer-guide.md)
 
 ## Understand TiDB
 

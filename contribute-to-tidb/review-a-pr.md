@@ -1,4 +1,4 @@
-# Code Reviews
+# How to Review a Pull Request
 
 This guide is for all contributors that want to help with reviewing code contributions. Thank you for your effort - good reviews are one of the most important and crucial parts of an open source project. This guide should help the community to make reviews such that:
 
@@ -46,3 +46,14 @@ This is the detailed code review of the actual changes, covering:
 * Are the tests executing fast, i.e., are heavy-weight integration tests only used when necessary?
 * Does the code obey Golang linters enabled in TiDB?
 
+## Review with the @ti-chi-bot
+
+The TiDB community is using a service called [@ti-chi-bot](https://book.prow.tidb.io/#/en/) to help with the review of the pull requests.
+
+You can see the full list of commands accepted by the bot in [this page](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb).
+
+Here are the most frequent commands you are like gonna use during a review.
+
+* `/cc @reviewer` requests a review from the reviewer.
+* `/assign @committer` assigns a committer to help merge the pull request
+* GitHub reviewing `Approve` or `Request Changes` from reviewers or committers creates a LGTM or veto to the pull request.
