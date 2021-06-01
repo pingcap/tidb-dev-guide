@@ -1,6 +1,6 @@
 # TiDB Community Guideline
 
-TiDB governs by meritocracy and adopts a model consists of reviewer, committer, and maintainer. We believe that it is important to create an inclusive community where everyone can use, contribute to, and influence the direction of the project. See [the contributors page](https://github.com/apache/tvm/graphs/contributors) for the current list of contributors.
+TiDB governs by meritocracy and adopts a model consists of reviewer, committer, and maintainer. We believe that it is important to create an inclusive community where everyone can use, contribute to, and influence the direction of the project. See [the contributors page](https://github.com/pingcap/tidb/graphs/contributors) for the current list of contributors.
 
 ## General Development Process
 
