@@ -97,5 +97,4 @@ The third config is `unit test`, which makes you can run/debug TiDB's unit test.
 
 ## Emacs
 
-If you encounter any problems during your journey, do not hesitate to reach out on our developer forum at [https://internals.tidb.io/](https://internals.tidb.io/).
-
+If you encounter any problems during your journey, do not hesitate to reach out on the [TiDB Internals forum](https://internals.tidb.io/).

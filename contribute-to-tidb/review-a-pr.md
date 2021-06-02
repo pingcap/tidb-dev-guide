@@ -1,4 +1,4 @@
-# Code Reviews
+# How to Review a Pull Request
 
 This guide is for all contributors that want to help with reviewing code contributions. Thank you for your effort - good reviews are one of the most important and crucial parts of an open source project. This guide should help the community to make reviews such that:
 
@@ -11,7 +11,7 @@ Every review needs to check the following six aspects. We encourage to check the
 
 ## 1. Is the Contribution Well-Described?
 
-Check whether the contribution is sufficiently well-described to support a good review. Trivial changes and fixes do not need a long description. If the implementation is exactly according to a prior discussion on an issue or [developer discussion forum](https://internals.tidb.io/), only a short reference to that discussion is needed. If the implementation is different from the agreed approach in the consensus discussion, a detailed description of the implementation is required for any further review of the contribution.
+Check whether the contribution is sufficiently well-described to support a good review. Trivial changes and fixes do not need a long description. If the implementation is exactly according to a prior discussion on an issue or the [TiDB Internals forum](https://internals.tidb.io/), only a short reference to that discussion is needed. If the implementation is different from the agreed approach in the consensus discussion, a detailed description of the implementation is required for any further review of the contribution.
 
 Any pull request that changes functionality or behavior needs to describe the big picture of these changes, so that reviews know what to look for \(and don't have to dig through the code to hopefully understand what the change does\).
 
@@ -19,7 +19,7 @@ A contribution is well-described if the following questions 2, 3, and 4 can be a
 
 ## 2. Is There Consensus that the Change or Feature Should Go into TiDB?
 
-This question can be directly answered from the linked GitHub issue. For pull requests that are created without prior consensus, a discussion in issue or developer discussion forum to seek consensus will be needed.
+This question can be directly answered from the linked GitHub issue. For pull requests that are created without prior consensus, a discussion in issue or the [TiDB Internals forum](https://internals.tidb.io/) to seek consensus will be needed.
 
 For trivial pull requests, consensus needs to be checked in the pull request.
 
@@ -29,7 +29,7 @@ Some changes require attention and approval from specific members. For example, 
 
 ## 4. Does the Implementation Follow the Agreed Upon Overall Approach/Architecture?
 
-In this step, we check if a contribution follows the agreed upon approach from the previous discussion in issue or developer discussion forum.
+In this step, we check if a contribution follows the agreed upon approach from the previous discussion in issue or the [TiDB Internals forum](https://internals.tidb.io/).
 
 This question should be answerable from the Pull Request description or the linked discussion as much as possible.
 
@@ -46,3 +46,14 @@ This is the detailed code review of the actual changes, covering:
 * Are the tests executing fast, i.e., are heavy-weight integration tests only used when necessary?
 * Does the code obey Golang linters enabled in TiDB?
 
+## Review with the @ti-chi-bot
+
+The TiDB community is using a service called [@ti-chi-bot](https://book.prow.tidb.io/#/en/) to help with the review of the pull requests.
+
+You can see the full list of commands accepted by the bot in [this page](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb).
+
+Here are the most frequent commands you are like gonna use during a review.
+
+* `/cc @reviewer` requests a review from the reviewer.
+* `/assign @committer` assigns a committer to help merge the pull request
+* GitHub reviewing `Approve` or `Request Changes` from reviewers or committers creates a LGTM or veto to the pull request.
