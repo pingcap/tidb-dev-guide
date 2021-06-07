@@ -1,6 +1,5 @@
 # Debug and profile
 
-
 In this section, you will learn how to debug TiDB, which is very helpful not only for debugging, but also enables you to stop TiDB at any line of code, and inspect values and stacks. You will also learn how to profile TiDB to catch the performance bottleneck.
 
 ## Use delve for debugging
@@ -67,7 +66,7 @@ You should follow the instruction and execute the following command as the root 
 
 You should then retry attaching and it should work.
 
-Entering the debugging interface, you will find it familiar if you've worked with GDB. It is a interactive dialogue that allows you to interact with the execution of the tidb server attached on. You should type `help` into the dialogue and read the help messages.
+Entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is a interactive dialogue that allows you to interact with the execution of the tidb server attached on. You should type `help` into the dialogue and read the help messages.
 
 ### Using delve for debugging
 
@@ -83,102 +82,11 @@ where `[name]` stands for the name for the breakpoint, and `<linespec>` is the p
 
 Once the execution is paused, the context of the execution is fully preserved, and you are free to inspect the value of different variables, print the calling stack and even jump bewteen different goroutines. Once you are satisfied, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.
 
-Here is an example of how delve is typically used for understanding the execution.
+Basically, the following steps are typical when you are using debugger:
 
-In [tidb/issues/23609](https://github.com/pingcap/tidb/issues/23609), TiDB paniced upon the execution of a given SQL, and it is fixed in [tidb/pull/24051](https://github.com/pingcap/tidb/pull/24051).
-
-Before the fix, the commit ID is `05e584f145f12a31f76306b57dbc6633265f1dfc`, you can checkout this commit and trying to reproduce the problem stated in the issue.
-
-```
-$ git checkout 05e584f145f12a31f76306b57dbc6633265f1dfc
-$ make server
-$ ./bin/tidb-server
-```
-
-the above commands will get a standalone TiDB server running. Connect it with MySQL client
-
-```
-$ mysql -u root -h 0.0.0.0 -P 4000 -D test --comments
-```
-
-and set up the schema by the following SQL.
-
-```sql
-CREATE TABLE `t1` (
-  `a` timestamp NULL DEFAULT NULL,
-  `b` year(4) DEFAULT NULL,
-  KEY `a` (`a`),
-  KEY `b` (`b`)
-);
-insert into t1 values("2002-10-03 04:28:53", 2000);
-```
-
-Upon querying it with
-
-```sql
-select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b;
-```
-
-you will notice that the MySQL client complains with error
-
-```
-MySQL [test]> select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b;
-ERROR 1292 (22007): Incorrect time value: '{2000 0 0 0 0 0 0}'
-```
-
-and note in the shell session where the TiDB server is brought up, the log message prints the stack of the error
-
-```
-[2021/05/24 18:26:45.722 +08:00] [INFO] [conn.go:878] ["command dispatched failed"] [conn=3] [connInfo="id:3, addr:127.0.0.1:50554 status:10, collation:utf8_general_ci, user:root"] [command=Query] [status="inTxn:0, autocommit:1"] [sql="select /*+ inl_join (x,y) */ * from t1 x cross join t1 y on x.a=y.b"] [txn_mode=OPTIMISTIC] [err="[types:1292]Incorrect time value: '{2000 0 0 0 0 0 0}'\ngithub.com/pingcap/errors.AddStack\n\t/home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/errors.go:174\ngithub.com/pingcap/errors.(*Error).GenWithStackByArgs\n\t/home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/normalize.go:156\ngithub.com/pingcap/tidb/types.CoreTime.GoTime\n\t/home/ichn/Projects/pingcap/tidb/types/core_time.go:181\ngithub.com/pingcap/tidb/types.(*Time).ConvertTimeZone\n\t/home/ichn/Projects/pingcap/tidb/types/time.go:358\ngithub.com/pingcap/tidb/util/codec.EncodeMySQLTime\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:184\ngithub.com/pingcap/tidb/util/codec.encode\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:99\ngithub.com/pingcap/tidb/util/codec.EncodeKey\n\t/home/ichn/Projects/pingcap/tidb/util/codec/codec.go:287\ngithub.com/pingcap/tidb/executor.(*innerWorker).constructLookupContent\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:526\ngithub.com/pingcap/tidb/executor.(*innerWorker).handleTask\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:487\ngithub.com/pingcap/tidb/executor.(*innerWorker).run\n\t/home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:469\nruntime.goexit\n\t/home/ichn/.gvm/gos/go1.13/src/runtime/asm_amd64.s:1357"]
-```
-
-Read carefully and you will find `err="XXX"` pattern in the log, and you can use `echo` to make that message more human readable (replace `XXX` with the text you see in the log message).
-
-```
-$ echo "XXX"
-[types:1292]Incorrect time value: '{2000 0 0 0 0 0 0}'
-github.com/pingcap/errors.AddStack
-        /home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/errors.go:174
-github.com/pingcap/errors.(*Error).GenWithStackByArgs
-        /home/ichn/.gvm/pkgsets/go1.13/global/pkg/mod/github.com/pingcap/errors@v0.11.5-0.20201126102027-b0a155152ca3/normalize.go:156
-github.com/pingcap/tidb/types.CoreTime.GoTime
-        /home/ichn/Projects/pingcap/tidb/types/core_time.go:181
-github.com/pingcap/tidb/types.(*Time).ConvertTimeZone
-        /home/ichn/Projects/pingcap/tidb/types/time.go:358
-github.com/pingcap/tidb/util/codec.EncodeMySQLTime
-        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:184
-github.com/pingcap/tidb/util/codec.encode
-        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:99
-github.com/pingcap/tidb/util/codec.EncodeKey
-        /home/ichn/Projects/pingcap/tidb/util/codec/codec.go:287
-github.com/pingcap/tidb/executor.(*innerWorker).constructLookupContent
-        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:526
-github.com/pingcap/tidb/executor.(*innerWorker).handleTask
-        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:487
-github.com/pingcap/tidb/executor.(*innerWorker).run
-        /home/ichn/Projects/pingcap/tidb/executor/index_lookup_join.go:469
-runtime.goexit
-        /home/ichn/.gvm/gos/go1.13/src/runtime/asm_amd64.s:1357
-```
-
-Now we know where the error is stemed from, let's take a closer look at the execution.
-
-Instinctively, it is best to break at the higherest level of the stack where it is specific enough to be only encountered by the SQL that make it panic. The logic is, the higher the level of the stack is, the more steps you can track and the more information about how the bug occurs can be learnt, however if it is too high level, then the breakpoint might be encountered many times by other execution path that won't cause the expected bug. In this case, you should pick and try out different the stack level that best fits the trade off or using conditional breakpoints which we won't cover in this guide and is upon to your own discovery.
-
-Here, let's just set up a breakpoint at `executor.(*innerWorker).constructLookupContent` by
-
-```
-(dlv) b executor/index_lookup_join.go:487
-```
-
-
-1. locate the code
-2. set a breakpoint
-3. prepare data so that the execution needs to get through the breakpoint
-4. inspect values, follow the execution step by step
-
-
-
+1. locate the code and set a breakpoint
+2. prepare data so that the execution will get through the breakpoint, and pause there as expected
+3. inspect values, follow the execution step by step
 
 ### Using delve to debug test case
 
@@ -188,17 +96,79 @@ If test cases failed, you can also use delve to debug test case. Get the name of
 dlv test -- -check.f TestName
 ```
 
-to start a 
+at the corresponding package directory to start a debuging session that will stop at the entry of the test. For example, if you failed on `TearDownTest` in `executor/executor_test.go`, you need to get to `executor/` and run `dlv test -- -check.f TearDownTest` in your shell.
 
 ### Understand how TiDB works through debugging
 
+Other than debugging a bug, it is also recommanded to use debugger for understanding how TiDB works through tracking the execution step by step.
+
+There are some functions in TiDB that are critical to understand the internals of TiDB, and you should try to pause the execution there and then run TiDB step by step to help you better understand how TiDB works.
+
+For example,
+
+1. `[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)` is where every SQL is compiled and optimized
+2. `[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)` is where the SQL optimization starts
+3. `[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)` is where the SQL plan turns into executor, and where the SQL execution starts
+4. Each `Open`, `Next` and `Close` function of each executor marks the volcano-style execution logic
+
+As you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.
+
 ## Using `pprof` for profiling
 
-In most cases, if you are proposing performance related pull request, you need to using benchmark to show improvements or regression-free.
+For any database system, performance is always an important issue, and if you want to know where the performance bottleneck is, Go provides a powerful profiling tool called `pprof` for this purpose.
 
-including but not limited to:
+### Gathering runtime profiling information through HTTP end points
 
-* how to debug tidb
-* how to write benchmarks
-* how to profile
+Normally, when you have a TiDB server running, it will expose a profiling end point through HTTP at `http://127.0.0.1:10080/debug/pprof/profile`, and you can get the profile result through
 
+```bash
+$ curl -G "127.0.0.1:10080/debug/pprof/profile?seconds=45" > profile.profile
+$ go tool pprof -http 127.0.0.1:4001 profile.profile
+```
+
+which will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at `127.0.0.1:4001`, which contains the [flame graph](http://www.brendangregg.com/flamegraphs.html) of the execution and many more views that can help you diagnosis the performance bottleneck.
+
+Similarly, other runtime information can also be gathered through this end point, for example:
+
+- Goroutine:
+
+```bash
+curl -G "127.0.0.1:10080/debug/pprof/goroutine" > goroutine.profile
+```
+
+- Trace:
+
+```bash
+$ curl -G "127.0.0.1:10080/debug/pprof/trace?seconds=3" > trace.profile
+$ go tool trace -http 127.0.0.1:4001 trace.profile
+```
+
+- Heap:
+
+```bash
+$ curl -G "127.0.0.1:10080/debug/pprof/heap" > heap.profile
+$ go tool pprof -http 127.0.0.1:4001 heap.profile
+```
+
+You can refer to Go's [diagnostics document](https://golang.org/doc/diagnostics) for how these information can be analyzed.
+
+### Profiling during benchmarking
+
+When you are proposing performance related features for TiDB, it is recommended to also include a benchmark result to proof the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in `executor/benchmark.go`.
+
+For example, if you want to benchmark the window functions, there are already `BenchmarkWindow` in the benchmark tests, so you can run
+
+```bash
+$ cd executor
+$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
+```
+
+to get the benchmark result.
+
+If you find any performance regression, and you want to know how the regression is caused, you could use command like
+
+```bash
+$ ggo test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
+```
+
+to also generate the profling information, and you can then analyze them as described in the above section.
