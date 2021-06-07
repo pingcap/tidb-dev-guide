@@ -4,7 +4,7 @@ In this section, you will learn how to debug TiDB. It is very helpful not only f
 
 ## Use delve for debugging
 
-[Delve](https://github.com/go-delve/delve) is a debugger for the Go programming language, it provides GDB-like command-line debugging experience but is much more Go native.
+[Delve](https://github.com/go-delve/delve) is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native.
 
 ### Install delve
 
