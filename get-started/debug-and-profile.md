@@ -1,6 +1,6 @@
 # Debug and profile
 
-In this section, you will learn how to debug TiDB, which is very helpful not only for debugging, but also enables you to stop TiDB at any line of code, and inspect values and stacks. You will also learn how to profile TiDB to catch the performance bottleneck.
+In this section, you will learn how to debug TiDB. It is very helpful not only for debugging, but also enables you to hold TiDB at any line of code, and inspect values and stacks. You will also learn how to profile TiDB to catch the performance bottleneck.
 
 ## Use delve for debugging
 
