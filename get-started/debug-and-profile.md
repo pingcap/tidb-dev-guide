@@ -96,7 +96,7 @@ If test cases failed, you can also use delve to debug test case. Get the name of
 dlv test -- -check.f TestName
 ```
 
-at the corresponding package directory to start a debuging session that will stop at the entry of the test. For example, if you failed on `TearDownTest` in `executor/executor_test.go`, you need to get to `executor/` and run `dlv test -- -check.f TearDownTest` in your shell.
+at the corresponding package directory to start a debugging session that will stop at the entry of the test. For example, if you failed on `TearDownTest` in `executor/executor_test.go`, you need to get to `executor/` and run `dlv test -- -check.f TearDownTest` in your shell.
 
 ### Understand how TiDB works through debugging
 
