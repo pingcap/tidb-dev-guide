@@ -51,6 +51,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "bb7133",
+      "name": "bb7133",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1174042?v=4",
+      "profile": "https://github.com/bb7133",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
