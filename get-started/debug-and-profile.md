@@ -131,7 +131,7 @@ $ go tool pprof -http 127.0.0.1:4001 profile.profile
 
 The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at `127.0.0.1:4001`, which contains the [flame graph](http://www.brendangregg.com/flamegraphs.html) of the execution and more views that can help you diagnosis the performance bottleneck.
 
-Similarly, other runtime information can also be gathered through this end point, for example:
+Similarly, you can also gather other runtime information through this end point. For example:
 
 - Goroutine:
 
