@@ -47,13 +47,13 @@ $ ps 1394942
 1394942 pts/11   SNl    0:02 ./bin/tidb-server
 ```
 
-Once you got the PID, you can then attach delve onto it by
+Once you get the PID, you can attach delve onto it by running the following command:
 
 ```
 $ dlv attach 1394942
 ```
 
-You might encounter error messages like
+You might get error messages of the kernel security setting as follows:
 
 ```
 $ dlv attach 1394942
