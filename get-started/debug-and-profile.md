@@ -60,17 +60,17 @@ $ dlv attach 1394942
 Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing "0" to /proc/sys/kernel/yama/ptrace_scope
 ```
 
-You should follow the instruction and execute the following command as the root user to override the kernel security setting.
+To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.
 
 ```
 # echo 0 > /proc/sys/kernel/yama/ptrace_scope
 ```
 
-You should then retry attaching and it should work.
+Then retry attaching delve onto the PID and it should work.
 
 Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type `help` into the dialogue and read help messages.
 
-### Using delve for debugging
+### Use delve for debugging
 
 After attaching delve to the running TiDB server process, you can now set breakpoints, and the TiDB server will pause the execution at the breakpoints you specified.
 
@@ -80,15 +80,15 @@ To create a breakpoint, you can write
 break [name] <linespec>
 ```
 
-where `[name]` stands for the name for the breakpoint, and `<linespec>` is the position of a line of code in the source code.
+where `[name]` is the name for the breakpoint, and `<linespec>` is the position of a line of code in the source code.
 
 Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.
 
 Typically, you need to take the following steps when you are using a debugger:
 
-1. locate the code and set a breakpoint
-2. prepare data so that the execution will get through the breakpoint, and pause there as expected
-3. inspect values, follow the execution step by step
+1. Locate the code and set a breakpoint.
+2. Prepare data so that the execution will get through the breakpoint, and pause at the specified breakpoint as expected.
+3. Inspect values, and follow the execution step by step.
 
 ### Using delve to debug test case
 
@@ -98,28 +98,28 @@ If a test case fails, you can also use delve to debug the test case. Get the nam
 dlv test -- -check.f TestName
 ```
 
-at the corresponding package directory to start a debugging session that will stop at the entry of the test. For example, if you failed on `TearDownTest` in `executor/executor_test.go`, you need to get to `executor/` and run `dlv test -- -check.f TearDownTest` in your shell.
+For example, if you failed on `TearDownTest` in `executor/executor_test.go`, you need to go to the `executor/` directory,  and then  run `dlv test -- -check.f TearDownTest` in your shell.
 
 ### Understand how TiDB works through debugging
 
-Other than debugging a bug, it is also recommended to use the debugger for understanding how TiDB works through tracking the execution step by step.
+Besides debugging a bug, it is also recommended to use the debugger to understand how TiDB works through tracking the execution step by step.
 
 Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.
 
 For example,
 
-1. `[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)` is where every SQL is compiled and optimized
-2. `[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)` is where the SQL optimization starts
-3. `[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)` is where the SQL plan turns into executor, and where the SQL execution starts
-4. Each `Open`, `Next` and `Close` function of each executor marks the volcano-style execution logic
+1. `[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)` is where each SQL statement is compiled and optimized.
+2. `[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)` is where the SQL optimization starts.
+3. `[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)` is where the SQL plan turns into executor, and where the SQL execution starts.
+4. Each `Open`, `Next`, and `Close` function of each executor marks the volcano-style execution logic.
 
-As you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.
+When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.
 
 ## Using `pprof` for profiling
 
-For any database system, performance is always an important issue, and if you want to know where the performance bottleneck is, Go provides a powerful profiling tool called `pprof` for this purpose.
+For any database system, performance is always important. If you want to know where the performance bottleneck is, You can use a powerful profiling tool called `pprof` provided by Go.
 
-### Gathering runtime profiling information through HTTP end points
+### Gather runtime profiling information through HTTP end points
 
 When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at `http://127.0.0.1:10080/debug/pprof/profile`, and you can get the profile result by running the following commands:
 
@@ -152,11 +152,11 @@ $ curl -G "127.0.0.1:10080/debug/pprof/heap" > heap.profile
 $ go tool pprof -http 127.0.0.1:4001 heap.profile
 ```
 
-You can refer to Go's [diagnostics document](https://golang.org/doc/diagnostics) for how these information can be analyzed.
+To learn how the runtime information is analyzed, see Go's [diagnostics document](https://golang.org/doc/diagnostics).
 
 ### Profiling during benchmarking
 
-When you are proposing performance related features for TiDB, it is recommended to also include a benchmark result to proof the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in `executor/benchmark.go`.
+When you are proposing a performance-related feature for TiDB, it is recommended to also include a benchmark result as proof of the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in `executor/benchmark.go`.
 
 For example, if you want to benchmark the window functions, because `BenchmarkWindow` are already in the benchmark tests, you can run the following commands to get the benchmark result.
 
@@ -166,10 +166,10 @@ $ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 ```
 
 
-If you find any performance regression, and you want to know how the regression is caused, you could use command like
+If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:
 
 ```bash
 $ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
 ```
 
-to also generate the profling information, and you can then analyze them as described in the above section.
+to also generate the profiling information, and you can then analyze them as described in the above section.
