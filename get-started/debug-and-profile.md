@@ -105,7 +105,7 @@ at the corresponding package directory to start a debugging session that will st
 
 Other than debugging a bug, it is also recommended to use the debugger for understanding how TiDB works through tracking the execution step by step.
 
-There are some functions in TiDB that are critical to understand the internals of TiDB, and you should try to pause the execution there and then run TiDB step by step to help you better understand how TiDB works.
+Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.
 
 For example,
 
