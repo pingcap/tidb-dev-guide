@@ -85,7 +85,7 @@ where `[name]` stands for the name for the breakpoint, and `<linespec>` is the p
 
 Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.
 
-Basically, the following steps are typical when you are using debugger:
+Typically, you need to take the following steps when you are using a debugger:
 
 1. locate the code and set a breakpoint
 2. prepare data so that the execution will get through the breakpoint, and pause there as expected
