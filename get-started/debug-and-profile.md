@@ -39,7 +39,7 @@ $ pgrep tidb-server
 1394942
 ```
 
-If there are multiple PIDs listed, it might be that you have multiple tidb servers running, and you should figure out the PID of the tidb server you are planning to debug with using commands like `ps $PID` where `$PID` is the PID you are trying to know more about.
+If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as `ps $PID`, where `$PID` is the PID you are trying to know more about.
 
 ```
 $ ps 1394942
