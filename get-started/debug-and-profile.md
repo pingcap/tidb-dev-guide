@@ -166,7 +166,6 @@ $ cd executor
 $ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 ```
 
-to get the benchmark result.
 
 If you find any performance regression, and you want to know how the regression is caused, you could use command like
 
