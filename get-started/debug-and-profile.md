@@ -122,7 +122,7 @@ For any database system, performance is always an important issue, and if you wa
 
 ### Gathering runtime profiling information through HTTP end points
 
-Normally, when you have a TiDB server running, it will expose a profiling end point through HTTP at `http://127.0.0.1:10080/debug/pprof/profile`, and you can get the profile result through
+When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at `http://127.0.0.1:10080/debug/pprof/profile`, and you can get the profile result by running the following commands:
 
 ```bash
 $ curl -G "127.0.0.1:10080/debug/pprof/profile?seconds=45" > profile.profile
