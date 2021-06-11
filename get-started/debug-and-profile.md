@@ -24,7 +24,7 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 
 As mentioned in [Get the code, build and run](build-tidb-from-source.md), once you get the TiDB server running, you can try attaching the delve debugger.
 
-For example, you can typically build and run a standalone TiDB server by
+For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.
 
 ```
 $ make server
