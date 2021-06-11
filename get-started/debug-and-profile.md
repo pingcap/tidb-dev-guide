@@ -69,7 +69,7 @@ You should follow the instruction and execute the following command as the root 
 
 You should then retry attaching and it should work.
 
-Entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is a interactive dialogue that allows you to interact with the execution of the tidb server attached on. You should type `help` into the dialogue and read the help messages.
+Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type `help` into the dialogue and read help messages.
 
 ### Using delve for debugging
 
