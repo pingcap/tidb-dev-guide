@@ -93,7 +93,7 @@ Typically, you need to take the following steps when you are using a debugger:
 
 ### Using delve to debug test case
 
-If test cases failed, you can also use delve to debug test case. Get the name of the test case, and then use
+If a test case fails, you can also use delve to debug the test case. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test. 
 
 ```
 dlv test -- -check.f TestName
