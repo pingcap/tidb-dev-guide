@@ -159,7 +159,7 @@ You can refer to Go's [diagnostics document](https://golang.org/doc/diagnostics)
 
 When you are proposing performance related features for TiDB, it is recommended to also include a benchmark result to proof the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in `executor/benchmark.go`.
 
-For example, if you want to benchmark the window functions, there are already `BenchmarkWindow` in the benchmark tests, so you can run
+For example, if you want to benchmark the window functions, because `BenchmarkWindow` are already in the benchmark tests, you can run the following commands to get the benchmark result.
 
 ```bash
 $ cd executor
