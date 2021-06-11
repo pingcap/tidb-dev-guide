@@ -22,7 +22,7 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 
 ### Attach delve to a running TiDB process
 
-As mentioned in [Get the code, build and run](build-tidb-from-source.md), once you get the TiDB server running, you can try to attach the delve debugger.
+As mentioned in [Get the code, build and run](build-tidb-from-source.md), once you get the TiDB server running, you can try attaching the delve debugger.
 
 For example, you can typically build and run a standalone TiDB server by
 
