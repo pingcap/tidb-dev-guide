@@ -7,7 +7,7 @@ In this section, you will learn the following things:
 
 ## Use delve for debugging
 
-[Delve](https://github.com/go-delve/delve) is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native.
+[Delve](https://github.com/go-delve/delve) is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native that GDB.
 
 ### Install delve
 
@@ -80,7 +80,17 @@ To create a breakpoint, you can write
 break [name] <linespec>
 ```
 
-where `[name]` is the name for the breakpoint, and `<linespec>` is the position of a line of code in the source code.
+where `[name]` is the name for the breakpoint, and `<linespec>` is the position of a line of code in the source code. Note the name is optional.
+
+For example, the following command will create a breakpoint at the `Next` function of `HashJoinExec` (the line number can be subject to change due to the modification of the source code).
+
+```
+$ dlv debug tidb-server/main.go                                                                                                                                   148 ↵
+Type 'help' for list of commands.
+(dlv) break executor/join.go:653
+Breakpoint 1 (enabled) set at 0x36752d8 for github.com/pingcap/tidb/executor.(*HashJoinExec).Next() ./executor/join.go:653
+(dlv)
+```
 
 Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.
 
