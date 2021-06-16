@@ -11,7 +11,7 @@ The newtype pattern is perhaps most often used in Golang to get around type rest
 
 However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage. 
 
-```
+```go
 package main
 
 import (
