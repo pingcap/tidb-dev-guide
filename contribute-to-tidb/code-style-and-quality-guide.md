@@ -51,7 +51,7 @@ type struct S {}; func NewStruct() *S
 Once this is done, all functions must take the struct as a pointer:
 
 ``` go
-func (s *S) structMethod()`
+func (s *S) structMethod()
 ```
 
 Using pointers everywhere means we can no longer differentiate by the method signature when a function mutates the struct and when it simply reads data. It increases the chances of errors due to the struct ending up in an unintended state.
