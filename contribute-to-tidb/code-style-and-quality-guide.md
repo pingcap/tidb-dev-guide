@@ -38,3 +38,24 @@ func main() {
     fmt.Println(ping.Domain())
 }
 ```
+
+## Consider using values instead of pointers
+
+Many Go programmers over-use pointers and can benefit from the immutability of values.
+Go programs often return pointers to structs with a wrapper:
+
+``` go
+type struct S {}; func NewStruct() *S
+```
+
+Once this is done, all functions must take the struct as a pointer:
+
+``` go
+func (s *S) structMethod()`
+```
+
+Using pointers everywhere means we can no longer differentiate by the method signature when a function mutates the struct and when it simply reads data. It increases the chances of errors due to the struct ending up in an unintended state.
+
+Consider whether you can use the struct directly without a pointer. The main reason not to do this is to be able to meet the requirements of an interface.
+
+A C programmer might assume that pointers would always perform better. However, this is only the case for methods that are called frequently (generally in a for loop) or if the struct is very large. For infrequently accessed code and smaller structs, copying structs can actually perform significantly better because they avoid any GC overhead.
