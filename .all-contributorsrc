@@ -61,6 +61,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "gregwebs",
+      "name": "Greg Weber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1183?v=4",
+      "profile": "https://www.linkedin.com/in/gregabramowitzweber",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
