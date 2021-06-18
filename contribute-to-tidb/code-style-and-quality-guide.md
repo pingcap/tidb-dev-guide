@@ -41,8 +41,7 @@ func main() {
 
 ## Consider using values instead of pointers
 
-Many Go programmers over-use pointers as opposed to just using values directly.
-Go programs often return pointers to structs with a wrapper and then all functions use the struct as a pointer:
+Many Go programmers over-use pointers as opposed to just using values directly. Go programs often return pointers to structs with a wrapper and then all functions use the struct as a pointer:
 
 ``` go
 type struct S {}; func NewStruct() *S
