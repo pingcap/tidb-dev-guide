@@ -8,14 +8,14 @@ This guide is for all contributors that want to help with reviewing code contrib
 * We avoid situations where contributors and reviewers spend a lot of time refining a contribution that gets rejected later.
 
 
-## 1. Things to know before the code review
+## Things to know before the code review
 
 Why is code review important?
 
-* Erase bugs early
+* Eliminate bugs early
 * Make the project maintainable in the long run
 
-Some high level guidelines about code review in PingCAP (and mostly applies the TiDB community also):
+Some high level guidelines about code review in the TiDB community:
 
 ### Code review is more important than writing your own PR
 
@@ -24,13 +24,16 @@ Modern software development is about cooperation, and nowadays software is no lo
 ### It's the author's responsibility to get the PR merged
 
 We had a fierce debate on how to speed up the review process long long ago. What the role the reviewer and PR owner should play and what is each of their responsibility to get the PR merged faster.
-After the meeting, most of us agree with the conclusion that the PR owner is responsible for getting his PR merged. He is the one who most wanted to merge the PR into the repository. He is willing to lead that change. So he should try to do his best to have someone review his PR. The code reviewers should review the PR in time and give feedback, but it is not their responsibility to push the PR to be merged.
 
-### 2 LGTM for a PR to be accepted
+After the meeting, most of the participants agree with that the PR owner is responsible for getting PR merged.
 
-For most of the projects in PingCAP, we require 2 LGTM before the PR is accepted. There do have some exceptions, but this is the default setting. 2 LGTM ensures that even after the original PR author's resignation, there is someone familiar with the code and the project still keeps moving. And if that really happens, the code reviewer is the first person responsible for the code.
+If I am the PR author, I am the one who wants to merge the PR into the repository most. I'm willing to lead that change. So I'm supposed to do my best to have someone review the PR. The reviewers should review the PR in time and give feedback, but it is not their responsibility to push the PR to be merged.
 
-### Never give LGTM to to the code you don't understand
+### 2 Approvals for a PR to be accepted
+
+For most of the repositories in the TiDB community, we require 2 approvals before the PR is accepted. A few repositories require different number of approvals, but 2 approvals is the default setting. 2 approvals ensures that even after the original PR author's resignation, there is someone familiar with the code and the project still keeps moving. And if the author really resigns, the code reviewer is the first person responsible for the code.
+
+### Never give approval to to the code you don't understand
 
 A review should be thorough enough that the reviewer could explain the change at a reasonable level of detail to another developer. This ensures that the details of the code base are known to more than a single person. Remember: you are responsible for the code you reviewed, it is all about your reputation.
 
@@ -41,20 +44,25 @@ We encourage quick, small changes. 300 lines is basically normal people can comp
 ### One PR just does one thing
 
 To make the PR easier to understand and get merged faster, this is also highly encouraged.
-For example, a bug fix should be in a separate PR, a refactoring should be in a separate PR. No matter how small it is, like updating the package version, or even one line changes to fix a typo, the change does exactly one thing and gets it right.
 
-Principles of the code review
+For example, a bugfix should be in a separated PR, a refactoring should be in a separate PR. No matter how small it is, like updating the package version, or even one line changes to fix a typo, the change does exactly one thing and gets it right.
+
+### Principles of the code review
 
 * Technical facts and data overrules opinions and personal preferences
-* Software design is about trade-off and there is no perfect
+* Software design is about trade-off and there is no silver bullet
 
 Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.
 
-A common mistake is to focus too much on style. Style is important, that is why there are style guides. Just let the bot do most of the trivial work. The code reviewer is a human, he should focus on what the bot can not do. They must make sure that the logic is not broken by the changes, and the maintenance cost of the code base is not decreased.
+A common mistake is to focus too much on style. Style is important, that is why there are style guides. Just let the bot do most of the trivial work. The code reviewer is a human, who is supposed to focus on things beyond a bot can do. They must make sure that the logic is not broken by the changes, and the maintenance cost of the code base is not decreased.
 
-Sometimes, making choices can be tricky. There is a special optimization that can improve the overall performance by 30%. However, it introduces a totally different code path and every feature later on has to consider this code path specially, it means a huge maintenance burden. Should we accept or reject it? There is an emergency and someone has a PR to fix it, but that change is risky to introduce other kind of bugs. Should we accept or reject it?
+Sometimes, making choices can be tricky.
 
-The answer is always “it depends”. Software design is more like a kind of art than technology. It is about aesthetics and your taste of the codeTradeoffs are always there and there is no perfect solution sometimes. Still, there is a general standard (from @shenli, maybe we can call it "better than before?"):
+Said that there is a special optimization that can improve the overall performance by 30%. However, it introduces a totally different code path and every feature later on has to consider this code path specially, which means a huge maintenance burden. Shall we accept or reject it?
+
+Said that there is a critical bug and a PR is read to fix it, but the change is risky to introduce other kind of bugs. Shall we accept or reject it?
+
+The answer is always “it depends”. Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. Trade-offs are always there and there is no perfect solution sometimes. Still, there is a general standard (from [@shenli](https://github.com/shenli), maybe we can call it "better than before?"):
 
 * It is making something better, although not a perfect solution.
 * It can mitigate the pain of the user.
@@ -63,58 +71,96 @@ The answer is always “it depends”. Software design is more like a kind of ar
 Then the code can be accepted.
 
 Of course, code review should have some minimal requirements.
-For a bug fix PR, if there is no test case, ask the coder to add tests.
-For a performance PR, if no benchmark result is provided, ask the coder to add a benchmark result.
 
-## 2. What to look for in a code review
+For a bug fix PR, if it comes with no test case, the reviewer should ask the author to add tests.
+
+For a performance improvement PR, if no benchmark result is provided, the reviewer should ask the author to attach a benchmark result.
+
+## What to look for in a code review
 
 ### Design
 
-The most important thing to cover in a review is the overall design. Read the description of the PR, if it's not easy to understand, ask the coder to improve it. Does it integrate well with the rest of your system? Is now a good time to add this functionality?
+The most important thing to cover in a review is the overall design.
+
+Read the description of the PR, and if it's not easy to understand, ask the author to improve it. You may consider questions like:
+
+* Does the change integrate well with the rest of our system?
+* Is it a good time now to add this functionality?
 
 [TiDB Internals forum](https://internals.tidb.io/) is a place for discussion. For pull requests that are created without prior consensus, try to seek consensus there.
 
 ### Functionality
 
-Does this PR do what the developer intended? Is what the developer intended good for the users of this code?
-Mostly, we expect developers to test PRs well-enough by the time they get to code review. However, as the reviewer you should still be thinking about edge cases, looking for concurrency problems.
-You can validate the PR if you want. It’s hard to understand how some changes will impact a user when you’re just reading the code, such as a UI change. You can have the developer give you a demo of the functionality if it’s too inconvenient to try it yourself.
+* Does this PR do what the developer intend to do?
+* Is what the developer intend to do good for the users with this implementation?
+
+Basically, PR authors are expected to test their PRs well-enough before code reviews. However, as a reviewer you should still think about edge cases, especially for problems about concurrency.
+
+You can always validate the PR if you want. It's hard to understand how some changes will impact a user when you're just reading the code, such as a UI change. You can ask the PR author to give you a demo of the functionality if it's too inconvenient to try it yourself.
 
 ### Logic
 
-When there is some sort of parallel programming going on in the PR, it’s particularly important to think about the logic during a code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
-The human brain is just like a special machine, it is good at checking a small piece of logic before the states become too complex. Complexity is the biggest enemy of software.
+In the case that concurrent programming involved, it's particularly important to think about the logic in code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
+
+The human brain is just like a special machine, it is good at checking a small piece of logic before the states become too complex. Complexity is the biggest challenge of software.
 
 ### Complexity
 
-Is the PR more complex than it should be? Check this at every level of the PR—are individual lines too complex? Are functions too complex? Are classes too complex? “Too complex” usually means “can’t be understood quickly by readers.” It can also mean “developers are likely to introduce bugs when they try to call or modify this code.”
+Is the PR more complex than it should be? Check the following items for review the complexity of a PR:
 
-A particular type of complexity is over-engineering, where developers have made the code more generic than it needs to be, or added functionality that isn’t presently needed by the system. Reviewers should be especially vigilant about over-engineering. Encourage developers to solve the problem they know needs to be solved now, not the problem that the developer speculates might need to be solved in the future. 
+* Are individual lines too complex?
+* Are functions too complex?
+* Are classes too complex?
+
+"Too complex" usually means "can't be understood quickly by readers". It may also mean "developers are likely to introduce bugs when they try to call or modify this code".
+
+A particular type of complexity is over-engineering, where developers have made the code more generic than it needs to be, or added functionality that isn’t presently needed by the system. Reviewers should be especially vigilant about over-engineering. Encourage developers to solve problems must to be solved now, not problems that a developer speculates might need to be solved in the future. 
 
 ### Tests
 
-Ask for unit, integration, or end-to-end tests as appropriate for the change. In general, tests should be added in the same PR as the production code.
-Make sure that the tests in the PR are correct, sensible, and useful. Are they covering interesting cases? Are they readable? Does the PR lower overall test coverage? 
-Think of ways this code could break. Will the tests actually fail when the code is broken? If the code changes beneath them, will they start producing false positives? Does each test make simple and useful assertions? Are the tests separated appropriately between different test methods?
+A PR should be test covered, whether the tests are unit tests, integration tests, or end-to-end tests.
 
-Remember that tests are also code that has to be maintained. Don’t accept complexity in tests just because they aren’t part of the main binary.
-Last but not least, keep an eye on how long the single unit takes to run. Does it slow the CI?
+Ensure the tests in the PR are correct, sensible, and useful.
+
+* Are they covering interesting cases?
+* Are they readable?
+* Does the PR lower overall test coverage? 
+
+Simulate cases where the code may break.
+
+* Will the tests actually fail when the code is broken?
+* If the code changes beneath them, will they start producing false positives?
+* Does each test makes simple and useful assertions?
+* Are the tests separated appropriately between different test methods?
+
+Remember that tests are also code that have to be maintained, and thus do not accept unnecessary complexity in tests.
+
+Last but not least, keep an eye on how long a single unit takes to run. That is, whether or not the CI is slowed by the tests introduced.
 
 ### Naming
 
-Did the developer pick good names for everything? A good name is long enough to fully communicate what the item is or does, without being so long that it becomes hard to read.
+Does the developer pick good names for everything? A good name is long enough to fully communicate what the item is or does, without being so long that it becomes hard to read.
 
 ### Comments
 
-Did the developer write clear comments in understandable English? Are all of the comments actually necessary? Usually comments are useful when they explain why some code exists, and should not be explaining what some code is doing. If the code isn’t clear enough to explain itself, then the code should be made simpler. There are some exceptions (regular expressions and complex algorithms often benefit greatly from comments that explain what they’re doing, for example) but mostly comments are for information that the code itself can’t possibly contain, like the reasoning behind a decision.
-It can also be helpful to look at comments that were there before this PR. Maybe there is a TODO that can be removed now, a comment advising against this change being made, etc.
+* Does the developer write clear comments in understandable English?
+* Are all of the comments actually necessary?
+
+Usually comments are useful when they explain why the code exists, while not explain what the code is doing. If the code isn't clear enough to explain itself, then the code should be made simpler.
+
+There are some exceptions; for example, regular expressions and complex algorithms often benefit greatly from comments that explain what they’re doing. But mostly comments are for information that the code itself can hardly contain, like the reason behind a decision.
+
+It can also be helpful to look at comments existing before this PR. Maybe there is a `TODO` can be removed now, a comment advising against this change being made, etc.
+
 Note that comments are different from documentation of classes, modules, or functions, which should instead express the purpose of a piece of code, how it should be used, and how it behaves when used.
 
 ### Style
 
-Make sure the PR follows the appropriate style guides. For Go and Rust, there are built in tools with the compiler toolchain.
-If you want to improve some style point that isn’t in the style guide, you can comment that you think it would improve the code readability but isn’t mandatory. Don’t block PRs from being submitted based only on personal style preferences.
-The author of the PR should not include major style changes combined with other changes. For example, if the author wants to reformat the whole file, have them send you just the reformatting as one PR, and then send another PR with their functional changes after that. This has been explained as “One PR just does one thing” in the previous section.
+Make sure the PR follows our [code style and quality guide](code-style-and-quality-guide.md). For Go and Rust, there are built in tools with the compiler toolchain.
+
+If you want to improve style points outside the style guide, you can comment that you think it would improve the code readability but isn't mandatory. Don't block PRs from being submitted based only on personal style preferences.
+
+The PR author should not include major style changes combined with other changes. For example, if a PR wants to reformat the whole file should not make functional changes. This has been explained as "One PR just does one thing" in the previous section.
 
 ### Consistency
 
@@ -128,21 +174,32 @@ Either way, encourage the author to file a bug and add a TODO for cleaning up ex
 
 ### Documentation
 
-If a PR changes how users build, test, interact with, or release code, check to see that it also updates associated documentation, including READMEs, and any generated reference docs. If the PR deletes or deprecates code, consider whether the documentation should also be deleted. If documentation is missing, ask for it.
-Error Handling
-Be careful with error or exception handling. This is one of the most common places for bugs. Does the test cover the error code path? Does a panic make the whole process exit for server services? Does the code handle the resource releasing properly? Especially for Go programs involving concurrent goroutines, is there a goroutine leak or memory leak after the error?
+If a PR changes how users build, test, interact with, or release code, the reviewer are supposed to check whether it also updates related documentation, such as READMEs, and any generated reference docs. 
 
-Sometimes it is difficult for a real program to run to the error code path, and even more difficult to reproduce and debug if it really happens. Then it is necessary to mock the error code path. Tools like failpoint are available for that purpose.
+If a PR deletes or deprecates code, it should consider whether the documentation should also be deleted.
+
+If documentation is missing, the reviewer should ask for it.
+
+#### Error Handling
+
+Be careful with error or exception handling. This is one of the most common places for bugs.
+
+* Does the test cover the error code path?
+* Does a panic make the whole process exit for server services?
+* Does the code handle the resource releasing properly?
+* Especially, for code including concurrent goroutines, is there a goroutine leak or memory leak after the error?
+
+Sometimes it is difficult for a real program to run into the error code path, and even more difficult to reproduce and debug if it really happens. Then it is necessary to mock the error code path. Tools like [failpoint](https://github.com/pingcap/failpoint) are available for that purpose.
 
 ### Performance
 
 Does the PR impose any performance impact? Sometimes a minor change on the hot path that seems unrelated may still affect performance. Is the algorithm in the PR suitable for that case?
 
-## 3. How to write code review comments
+## How to write code review comments
 
 ### Be respectful to the reviewees
 
-Good reviewers are empathetic. Your code will always need to be reviewed. And you’ll always need to review your coworkers’ code. When you approach reviews as a learning process, everyone wins.
+Good reviewers are compassionate. Your code always need to be reviewed. And also you always need to review other contributors' code. Regard reviews as a learning process, and everyone wins.
 
 ### Ask questions rather than make statements
 
@@ -154,7 +211,7 @@ Most reviewers focus only on what’s wrong with the code, but they should offer
 
 For example, imagine you’re reviewing for an author who struggles to write documentation, and you come across a clear, concise function comment. Let them know they nailed it. They will improve faster if you tell them when they got it right instead of just waiting to ding them when they screw up.
 
-Summary
+#### Summary
 
 * Be kind to the coder, not to the code.
 * Ask questions rather than make statements.
@@ -163,7 +220,7 @@ Summary
 * It isn't necessarily wrong if the coder's solution is different from yours.
 * Refer to the code style document when necessary.
 
-## 4. Review with the @ti-chi-bot
+## Review with the @ti-chi-bot
 
 The TiDB community is using a service called [@ti-chi-bot](https://book.prow.tidb.io/#/en/) to help with the review of the pull requests.
 
