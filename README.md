@@ -1,6 +1,8 @@
 # TiDB Development Guide
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](./#contributors-) 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](./#contributors-) 
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
 
@@ -23,11 +25,30 @@ See [CONTRIBUTING.md](https://github.com/zz-jason/tidb-dev-guide/tree/ee76316d0e
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people \([emoji key](https://allcontributors.org/docs/en/emoji-key)\):
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
-| [![](https://avatars.githubusercontent.com/u/30543181?v=4?s=100) **Zhi Qi**](https://github.com/LittleFall) [🖋](./#content-LittleFall) | [![](https://avatars.githubusercontent.com/u/18818196?v=4?s=100) **tison**](https://tisonkun.github.io/Miracle/) [🖋](./#content-tisonkun) [👀](https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atisonkun) | [![](https://avatars.githubusercontent.com/u/5268763?v=4?s=100) **Jian Zhang**](http://zz-jason.github.io/) [👀](https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azz-jason) [🖋](./#content-zz-jason) | [![](https://avatars.githubusercontent.com/u/79440533?v=4?s=100) **Grace Cai**](https://github.com/qiancai) [👀](https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aqiancai) | [![](https://avatars.githubusercontent.com/u/29735669?v=4?s=100) **虎**](https://ichn.xyz) [🖋](./#content-ichn-hu) |
-| :--- | :--- | :--- | :--- | :--- |
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/LittleFall"><img src="https://avatars.githubusercontent.com/u/30543181?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zhi Qi</b></sub></a><br /><a href="#content-LittleFall" title="Content">🖋</a></td>
+    <td align="center"><a href="https://tisonkun.github.io/Miracle/"><img src="https://avatars.githubusercontent.com/u/18818196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tison</b></sub></a><br /><a href="#content-tisonkun" title="Content">🖋</a> <a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atisonkun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://zz-jason.github.io/"><img src="https://avatars.githubusercontent.com/u/5268763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jian Zhang</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azz-jason" title="Reviewed Pull Requests">👀</a> <a href="#content-zz-jason" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/qiancai"><img src="https://avatars.githubusercontent.com/u/79440533?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Grace Cai</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aqiancai" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://ichn.xyz"><img src="https://avatars.githubusercontent.com/u/29735669?v=4?s=100" width="100px;" alt=""/><br /><sub><b>虎</b></sub></a><br /><a href="#content-ichn-hu" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/bb7133"><img src="https://avatars.githubusercontent.com/u/1174042?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bb7133</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Abb7133" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/gregabramowitzweber"><img src="https://avatars.githubusercontent.com/u/1183?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Greg Weber</b></sub></a><br /><a href="#content-gregwebs" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/djshow832"><img src="https://avatars.githubusercontent.com/u/29590578?v=4?s=100" width="100px;" alt=""/><br /><sub><b>djshow832</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Adjshow832" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://www.zenlife.tk"><img src="https://avatars.githubusercontent.com/u/1420062?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tiancaiamao</b></sub></a><br /><a href="#content-tiancaiamao" title="Content">🖋</a></td>
+  </tr>
+</table>
 
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
