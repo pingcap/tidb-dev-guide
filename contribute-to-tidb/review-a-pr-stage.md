@@ -106,7 +106,7 @@ For some changes such as UI, it is hard to understand how the changes will impac
 
 ### Logic
 
-When concurrent programming is involved, it's particularly important to think about the logic in code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
+When concurrent programming is involved, it is particularly important to review the logic carefully, because the concurrent issues are very hard to detect by just running the code.
 
 ### Complexity
 
