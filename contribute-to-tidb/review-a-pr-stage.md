@@ -14,8 +14,8 @@ This guide is for contributors who want to contribute to the code review. Thank 
 
 Why is code review so important?
 
-* Eliminate bugs early
-* Make the project maintainable in the long run
+* A good review can eliminate bugs early.
+* A good review can make the project maintainable in the long run.
 
 Some high level guidelines about code review in the TiDB community:
 
