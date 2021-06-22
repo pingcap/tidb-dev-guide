@@ -179,15 +179,15 @@ Either way, encourage the author to file a bug and add a TODO for cleaning up ex
 
 ### Documentation
 
-If a PR changes how users build, test, interact with, or release code, the reviewer are supposed to check whether it also updates related documentation, such as READMEs, and any generated reference docs. 
+During the code review, if you notice that a PR changes how users build, test, interact with, or release code, you must check whether it also updates the related documentation such as READMEs and any generated reference docs. 
 
-If a PR deletes or deprecates code, it should consider whether the documentation should also be deleted.
+Similarly, if a PR deletes or deprecates code, you must check whether or not the corresponding documentation should also be deleted.
 
-If documentation is missing, the reviewer should ask for it.
+If any documentation updates are missing, you can request the PR author to add the updates.
 
 #### Error Handling
 
-Be careful with error or exception handling. This is one of the most common places for bugs.
+Because errors and exceptions handling are one of the most possible places for bugs, during the code review, you must be as prudent as possible and ask yourself the following questions: 
 
 * Does the test cover the error code path?
 * Does a panic make the whole process exit for server services?
@@ -202,36 +202,36 @@ Does the PR impose any performance impact? Sometimes a minor change on the hot p
 
 ## How to write code review comments
 
-### Be respectful to the reviewees
+### Be respectful to PR authors
 
-Good reviewers are compassionate. Your code always need to be reviewed. And also you always need to review other contributors' code. Regard reviews as a learning process, and everyone wins.
+Good reviewers are compassionate. While you are reviewing the code of a PR author, at the same time, your own code might be under the review of other reviewers too.  If you regard code review as a learning process, then everyone wins.
 
-### Ask questions rather than make statements
+### Ask questions instead of making statements
 
-Wording is very important. Try to be constructive in your feedback, rather than critical. You can do this by asking questions, rather than making statements. And remember to give praise alongside your constructive feedback.
+The wording of the review comments is very important. To provide review comments that are constructive rather than critical, you can try asking questions rather than making statements. Along with your constructive feedback, you are recommended to give your praise too.
 
 ### Offer sincere praise
 
-Most reviewers focus only on what’s wrong with the code, but they should offer encouragement and appreciation for good practices, as well. It’s sometimes even more valuable, in terms of mentoring, to tell a developer what they did right than to tell them what they did wrong.
+Good PR reviewers focus not only on what is wrong with the code but also on good practices in the code. As a PR reviewer, you are recommended to offer your encouragement and appreciation to PR authors for the good practices in the code. In terms of mentoring, telling PR authors what they did is right is even more valuable than telling them what they did is wrong.
 
-For example, imagine you’re reviewing for an author who struggles to write documentation, and you come across a clear, concise function comment. Let them know they nailed it. They will improve faster if you tell them when they got it right instead of just waiting to ding them when they screw up.
+For example, suppose that you are reviewing a PR created by an author who struggles to write documentation, and you come across a clear, concise function comment in the PR. Then, you are recommended to tell such PR authors that they nailed it. To help the PR authors improve faster, tell the authors when they get it right instead of just waiting to ding them when they screw up.
 
-#### Summary
+### Summary
 
-* Be kind to the coder, not to the code.
-* Ask questions rather than make statements.
-* Treat people who know less than you with respect, deference, and patience.
-* Remember to praise when the code quality exceeds your expectation.
-* It isn't necessarily wrong if the coder's solution is different from yours.
-* Refer to the code style document when necessary.
+* Be kind to PR authors, not to the code.
+* Ask questions instead of making statements.
+* Treat people who know code less than you with respect, deference, and patience.
+* Offer your praise when the code quality exceeds your expectation.
+* It is not necessarily wrong if the solution of a PR author is different from yours.
+* Refer to the code style document if necessary.
 
 ## Review with the @ti-chi-bot
 
-The TiDB community is using a service called [@ti-chi-bot](https://book.prow.tidb.io/#/en/) to help with the review of the pull requests.
+The TiDB community uses a service called [@ti-chi-bot](https://book.prow.tidb.io/#/en/) to help with the review of the pull requests.
 
-You can see the full list of commands accepted by the bot in [this page](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb).
+You can see the full list of commands accepted by the bot at [this page](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb).
 
-Here are the most frequent commands you are like gonna use during a review.
+Here are the most frequent commands you're gonna use during a review:
 
 * `/cc @reviewer` requests a review from the reviewer.
 * `/assign @committer` assigns a committer to help merge the pull request
