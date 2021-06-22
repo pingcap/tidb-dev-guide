@@ -109,8 +109,6 @@ For some changes such as UI, it is hard to understand how the changes will impac
 
 When concurrent programming is involved, it's particularly important to think about the logic in code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
 
-The human brain is just like a special machine, it is good at checking a small piece of logic before the states become too complex. Complexity is the biggest challenge of software.
-
 ### Complexity
 
 Is the PR more complex than it should be? To learn that, you can check the following items when reviewing the complexity of the PR:
