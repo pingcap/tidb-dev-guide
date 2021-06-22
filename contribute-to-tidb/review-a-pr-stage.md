@@ -59,7 +59,7 @@ For example, a bug fix should be in one PR and a refactoring in another. No matt
 
 Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.
 
-A common mistake is to focus too much on style. Style is important, that is why there are style guides. Just let the bot do most of the trivial work. The code reviewer is a human, who is supposed to focus on things beyond a bot can do. They must make sure that the logic is not broken by the changes, and the maintenance cost of the code base is not decreased.
+A common mistake is to focus too much on style. Style is important: that's why there are style guides. Just let the bot do most of the trivial work. Each PR reviewer is a human who is supposed to focus on things beyond what a bot can do. When you are reviewing a PR, make sure that the changes do not break the program logic or increase the code base maintenance cost.
 
 Sometimes, making choices can be tricky.
 
