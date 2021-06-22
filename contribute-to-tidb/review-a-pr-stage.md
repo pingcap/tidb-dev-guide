@@ -42,7 +42,7 @@ A review should be thorough enough. After the review, you should be able to expl
 
 ### PRs are suggested to be less than 500 lines
 
-The TiDB community encourages small changes in each PR and sets up five hundred lines as a guideline of PR  size.
+The TiDB community encourages small changes in each PR and sets up five hundred lines as a guideline of PR size.
 
 If a PR is too large, you can request the PR author to split the PR. If a PR is too large but hard to split, you can request the author to have a meeting in person to explain the changes, until you fully understand the changes.
 
@@ -204,7 +204,7 @@ Is the algorithm in the PR suitable for that case?
 
 ### Be respectful to PR authors
 
-Good reviewers are compassionate. While you are reviewing the code of a PR author, at the same time, your own code might be under the review of other reviewers too.  If you regard code review as a learning process, then everyone wins.
+Good reviewers are compassionate. While you are reviewing the code of a PR author, at the same time, your own code might be under the review of other reviewers too. If you regard code review as a learning process, then everyone wins.
 
 ### Ask questions instead of making statements
 
