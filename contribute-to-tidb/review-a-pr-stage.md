@@ -119,7 +119,7 @@ Is the PR more complex than it should be? To learn that, you can check the follo
 
 "Too complex" usually means "the code changes cannot be understood quickly by readers" or "PR authors are likely to introduce bugs when they try to call or modify the code".
 
-A particular type of complexity is over-engineering, where developers have made the code more generic than it needs to be, or added functionality that isn’t presently needed by the system. Reviewers should be especially vigilant about over-engineering. Encourage developers to solve problems must to be solved now, not problems that a developer speculates might need to be solved in the future. 
+A particular type of complexity is over-engineering, which means that PR authors have made the code more generic than it needs to be, or added functionality that is not presently needed by the system. Reviewers should be especially vigilant about over-engineering. The TiDB community encourages PR authors to solve the problems that must be solved now -- not the problems that might need to be solved in the future. 
 
 ### Tests
 
