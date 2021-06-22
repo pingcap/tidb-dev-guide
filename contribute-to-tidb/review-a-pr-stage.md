@@ -73,51 +73,53 @@ The answer is always “it depends”. Software design is more like a kind of ar
 * It can mitigate the pain of the user.
 * There is no bug introduced by the change itself.
 
-Then the code can be accepted.
+Then, we can accept the code.
 
-Of course, code review should have some minimal requirements.
+Besides, you should also check some minimal requirements of code reviews.
 
-For a bug fix PR, if it comes with no test case, the reviewer should ask the author to add tests.
+If a bug fix PR doesn't include a test case, the review should ask the author to add tests.
 
-For a performance improvement PR, if no benchmark result is provided, the reviewer should ask the author to attach a benchmark result.
+If a performance improvement PR doesn't include a benchmark result, the reviewer should ask the author to attach one.
 
 ## What to look for in a code review
 
 ### Design
 
-The most important thing to cover in a review is the overall design.
+The most important thing of a review is checking the overall design.
 
-Read the description of the PR, and if it's not easy to understand, ask the author to improve it. You may consider questions like:
+To learn the overall design of a PR, you can read the description of the PR. If the description is unclear or hard to understand, you can request the author to improve it. You may consider asking questions such as the following:
 
 * Does the change integrate well with the rest of our system?
-* Is it a good time now to add this functionality?
+* Is now a good time to add this functionality?
 
-[TiDB Internals forum](https://internals.tidb.io/) is a place for discussion. For pull requests that are created without prior consensus, try to seek consensus there.
+If you need a further discussion of the PR, you can go to [TiDB Internals forum](https://internals.tidb.io/). For pull requests that are created without prior consensus, try to seek consensus there too.
 
 ### Functionality
 
-* Does this PR do what the developer intend to do?
+* Does this PR do what the developer intends it to do?
 * Is what the developer intend to do good for the users with this implementation?
 
 Basically, PR authors are expected to test their PRs well-enough before code reviews. However, as a reviewer you should still think about edge cases, especially for problems about concurrency.
 
-You can always validate the PR if you want. It's hard to understand how some changes will impact a user when you're just reading the code, such as a UI change. You can ask the PR author to give you a demo of the functionality if it's too inconvenient to try it yourself.
+You can always validate the PR if you want. 
+
+For some changes such as UI, it is hard to understand how the changes will impact users when you are just reading the code. In this case, if it is too inconvenient to try it yourself, you can ask the PR author to give you a demo of the functionality.
 
 ### Logic
 
-In the case that concurrent programming involved, it's particularly important to think about the logic in code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
+When concurrent programming is involved, it's particularly important to think about the logic in code review. These sorts of issues are very hard to detect by just running the code and usually need somebody to think carefully.
 
 The human brain is just like a special machine, it is good at checking a small piece of logic before the states become too complex. Complexity is the biggest challenge of software.
 
 ### Complexity
 
-Is the PR more complex than it should be? Check the following items for review the complexity of a PR:
+Is the PR more complex than it should be? To learn that, you can check the following items when reviewing the complexity of the PR:
 
 * Are individual lines too complex?
 * Are functions too complex?
 * Are classes too complex?
 
-"Too complex" usually means "can't be understood quickly by readers". It may also mean "developers are likely to introduce bugs when they try to call or modify this code".
+"Too complex" usually means "the code changes cannot be understood quickly by readers" or "PR authors are likely to introduce bugs when they try to call or modify the code".
 
 A particular type of complexity is over-engineering, where developers have made the code more generic than it needs to be, or added functionality that isn’t presently needed by the system. Reviewers should be especially vigilant about over-engineering. Encourage developers to solve problems must to be solved now, not problems that a developer speculates might need to be solved in the future. 
 
@@ -125,11 +127,11 @@ A particular type of complexity is over-engineering, where developers have made 
 
 A PR should be test covered, whether the tests are unit tests, integration tests, or end-to-end tests.
 
-Ensure the tests in the PR are correct, sensible, and useful.
+To ensure the tests in the PR are correct, sensible, and useful, you can check the following:
 
-* Are they covering interesting cases?
-* Are they readable?
-* Does the PR lower overall test coverage? 
+* Whether the tests cover all interesting cases?
+* Are the test cases readable?
+* Does the PR lower the overall test coverage? 
 
 Simulate cases where the code may break.
 
@@ -140,7 +142,7 @@ Simulate cases where the code may break.
 
 Remember that tests are also code that have to be maintained, and thus do not accept unnecessary complexity in tests.
 
-Last but not least, keep an eye on how long a single unit takes to run. That is, whether or not the CI is slowed by the tests introduced.
+Last but not least, keep an eye on how long a single unit takes to run. That is, determine whether the test slow down the CI.
 
 ### Naming
 
@@ -151,9 +153,9 @@ Does the developer pick good names for everything? A good name is long enough to
 * Does the developer write clear comments in understandable English?
 * Are all of the comments actually necessary?
 
-Usually comments are useful when they explain why the code exists, while not explain what the code is doing. If the code isn't clear enough to explain itself, then the code should be made simpler.
+Usually, comments are useful when they explain why the code exists, while not explain what the code is doing. If the code isn't clear enough to explain itself, then the code should be simplified.
 
-There are some exceptions; for example, regular expressions and complex algorithms often benefit greatly from comments that explain what they’re doing. But mostly comments are for information that the code itself can hardly contain, like the reason behind a decision.
+There are some exceptions; for example, regular expressions and complex algorithms often benefit greatly from comments that explain what they’re doing. But comments are mostly for information, like the reason behind a decision.
 
 It can also be helpful to look at comments existing before this PR. Maybe there is a `TODO` can be removed now, a comment advising against this change being made, etc.
 
@@ -161,7 +163,7 @@ Note that comments are different from documentation of classes, modules, or func
 
 ### Style
 
-Make sure the PR follows our [code style and quality guide](code-style-and-quality-guide.md). For Go and Rust, there are built in tools with the compiler toolchain.
+Make sure the PR follows our [code style and quality guide](code-style-and-quality-guide.md). For Go and Rust, there are built-in tools with the compiler toolchain.
 
 If you want to improve style points outside the style guide, you can comment that you think it would improve the code readability but isn't mandatory. Don't block PRs from being submitted based only on personal style preferences.
 
