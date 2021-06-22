@@ -54,7 +54,7 @@ For example, a bug fix should be in one PR and a refactoring in another. No matt
 
 ### Principles of the code review
 
-* Technical facts and data overrules opinions and personal preferences
+* Technical facts and data overrule opinions and personal preferences.
 * Software design is about trade-off and there is no silver bullet
 
 Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.
