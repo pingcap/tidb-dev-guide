@@ -39,7 +39,7 @@ func main() {
 }
 ```
 
-## Consider using value receivers instead of pointers
+## When to use value or pointer receiver
 
 Because pointer receivers need to be used some of the time, Go programmers often use them all of the time.
 This is a typical outline of Go code:
