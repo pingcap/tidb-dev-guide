@@ -36,11 +36,11 @@ In the TiDB community, most repositories require two approvals before a PR can b
 
 Two approvals ensure that even the original PR author resigns, there is still someone who is familiar with the code and can keep the project moving. And if the author really resigns, the code reviewer becomes the first person who is responsible for the code.
 
-### Never give approval to to the code you don't understand
+### Never approve code you don't understand
 
 A review should be thorough enough that the reviewer could explain the change at a reasonable level of detail to another developer. This ensures that the details of the code base are known to more than a single person. Remember: you are responsible for the code you reviewed, it is all about your reputation.
 
-### No more than 300 lines for each PR
+### PRs must be 300 lines or less
 
 We encourage quick, small changes. 300 lines is basically normal people can comprehend within an hour. The reviewer has the right to ask the PR author to split the PR if it is too large. For the PR that is hard to split, the code reviewers can ask the author to have a meeting in person to explain the changes, until they fully understand the changes.
 
