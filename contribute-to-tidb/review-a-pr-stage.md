@@ -25,9 +25,7 @@ Nowadays software development is no longer a single person’s piece of art but 
 
 ### It's the PR author's responsibility to get the PR merged
 
-We had a fierce debate on how to speed up the review process long long ago. What the role the reviewer and PR owner should play and what is each of their responsibility to get the PR merged faster.
-
-After the meeting, most of the participants agree with that the PR owner is responsible for getting PR merged.
+Because PR authors are the ones who want to merge the PRs into the repository the most, after an offline discussion we agree on the following:
 
 If I am the PR author, I am the one who wants to merge the PR into the repository most. I'm willing to lead that change. So I'm supposed to do my best to have someone review the PR. The reviewers should review the PR in time and give feedback, but it is not their responsibility to push the PR to be merged.
 
