@@ -42,7 +42,9 @@ A review should be thorough enough. After the review, you should be able to expl
 
 ### PRs must be 300 lines or less
 
-We encourage quick, small changes. 300 lines is basically normal people can comprehend within an hour. The reviewer has the right to ask the PR author to split the PR if it is too large. For the PR that is hard to split, the code reviewers can ask the author to have a meeting in person to explain the changes, until they fully understand the changes.
+The TiDB community encourages quick and small changes in each PR. Three hundred lines is basically what normal people can comprehend in an hour.
+
+If a PR is too large, you can request the PR author to split the PR. If a PR is too large but hard to split, you can request the author to have a meeting in person to explain the changes, until you fully understand the changes.
 
 ### One PR just does one thing
 
