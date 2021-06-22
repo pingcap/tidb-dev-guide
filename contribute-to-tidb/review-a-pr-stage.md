@@ -30,7 +30,7 @@ Because PR authors are the ones who want to merge the PRs into the repository th
 * PR authors are responsible for getting PRs reviewed and merged.
 * PR reviewers are responsible for reviewing PRs and providing feedback in time but not responsible for pushing the PR to be merged.
 
-### 2 Approvals for a PR to be accepted
+### Two Approvals for a PR to be accepted
 
 For most of the repositories in the TiDB community, we require 2 approvals before the PR is accepted. A few repositories require different number of approvals, but 2 approvals is the default setting. 2 approvals ensures that even after the original PR author's resignation, there is someone familiar with the code and the project still keeps moving. And if the author really resigns, the code reviewer is the first person responsible for the code.
 
