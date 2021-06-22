@@ -46,7 +46,7 @@ The TiDB community encourages quick and small changes in each PR. Three hundred 
 
 If a PR is too large, you can request the PR author to split the PR. If a PR is too large but hard to split, you can request the author to have a meeting in person to explain the changes, until you fully understand the changes.
 
-### One PR just does one thing
+### One PR does one thing
 
 To make the PR easier to understand and get merged faster, this is also highly encouraged.
 
