@@ -12,7 +12,7 @@ This guide is for contributors who want to contribute to the code review. Thank 
 
 ## Things to know before the code review
 
-Why is code review important?
+Why is code review so important?
 
 * Eliminate bugs early
 * Make the project maintainable in the long run
