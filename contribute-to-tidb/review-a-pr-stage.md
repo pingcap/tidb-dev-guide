@@ -1,6 +1,8 @@
 # How to Review a Pull Request
 
-This guide is for all contributors that want to help with reviewing code contributions. Thank you for your effort - good reviews are one of the most important and crucial parts of an open source project. This guide should help the community to make reviews such that:
+This guide is for contributors who want to contribute to the code review. Thank you for your effort. A good review of code is crucial for an open source project.
+
+ This guide is intended to help both the contributors and reviewers to ensure the following:
 
 * Contributors have a good contribution experience.
 * Our reviews check all important aspects of a contribution.
