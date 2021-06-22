@@ -39,18 +39,26 @@ func main() {
 }
 ```
 
-## Consider using values instead of pointers
+## Consider using value receivers instead of pointers
 
-Many Go programmers over-use pointers as opposed to just using values directly. Go programs often return pointers to structs with a wrapper and then all functions use the struct as a pointer:
+Because pointer receivers need to be used some of the time, Go programmers often use them all of the time.
+This is a typical outline of Go code:
 
 ``` go
-type struct S {}; func NewStruct() *S
-
+type struct S {}
+func NewStruct() *S
 func (s *S) structMethod()
 ```
 
-Using pointers for the entire method set means we can no longer differentiate by the method signature when a function mutates the struct and when it simply reads data. This increases the chances of errors due to the struct ending up in an unintended state.
+Using pointers for the entire method set means we have to read the source code of every function to determine if it mutates the struct. Mutations are a source of error. This is particularly true in concurrent programs. We can contrast this with values: these are always concurrent safe.
 
-Consider whether you can use the struct directly without a pointer. The main reason not to do this is to be able to meet the requirements of an interface.
+For code clarity and bug reduction a best practice is to default to using values and value receivers.
+However, pointer receivers are often required to satisfy an interface or for performance reasons, and this need overrides any default practice.
 
-One might assume that pointers would always perform better. However, this is only the case for methods that are called frequently (generally in a for loop) or if the struct is very large. For infrequently accessed code and smaller structs, copying structs can actually perform significantly better because they avoid any GC overhead.
+However, performance can favor either approach. One might assume that pointers would always perform better because it avoids copying. However, the performance is roughly the same for small structs in micro benchmark. This is because the copying is cheap, inlining can often avoid copying anyways, and pointer indirection has its own small cost. In a larger program with a goal of predictable low latency the value approach can be more favorable because it avoids [heap allocation and any additional GC overhead](https://segment.com/blog/allocation-efficiency-in-high-performance-go-services/).
+
+As a rule of thumb is that when a struct has 10 or more words we should use pointer receivers. However, to actually know which is best for performance depends on how the struct is used in the program and must ultimately be determined by profiling. For example these are some factors that affect things:
+
+* method size: small inlineable methods favor value receivers.
+* Is the struct called repeatedly in a for loop? This favors pointer receivers.
+* What is the GC behavior of the rest of the program? GC pressure may favor value receivers.
