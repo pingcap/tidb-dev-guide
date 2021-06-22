@@ -55,7 +55,7 @@ For example, a bug fix should be in one PR and a refactoring in another. No matt
 ### Principles of the code review
 
 * Technical facts and data overrule opinions and personal preferences.
-* Software design is about trade-off and there is no silver bullet
+* Software design is about trade-offs, and there is no silver bullet.
 
 Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.
 
@@ -63,15 +63,15 @@ A common mistake is to focus too much on style. Style is important, that is why 
 
 Sometimes, making choices can be tricky.
 
-Said that there is a special optimization that can improve the overall performance by 30%. However, it introduces a totally different code path and every feature later on has to consider this code path specially, which means a huge maintenance burden. Shall we accept or reject it?
+For example, let's say there is a special optimization that can improve the overall performance by 30%. However, it introduces a totally different code path, and every subsequent feature must consider it. This creates a huge maintenance burden. Shall we accept or reject it?
 
-Said that there is a critical bug and a PR is read to fix it, but the change is risky to introduce other kind of bugs. Shall we accept or reject it?
+Or let's say there's a critical bug and a PR is read to fix it, but there's a risk the PR will introduce other bugs. Shall we accept or reject it?
 
-The answer is always “it depends”. Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. Trade-offs are always there and there is no perfect solution sometimes. Still, there is a general standard (from [@shenli](https://github.com/shenli), maybe we can call it "better than before?"):
+If a PR under your review is in these tricky situations, what is the right choice, accepting the PR or rejecting it? The answer is always "it depends." Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. There are always trade-offs, and often there's no perfect solution. Still, there is a general standard (from [@shenli](https://github.com/shenli)). Maybe we call it, "Better than before?":
 
-* It is making something better, although not a perfect solution.
-* It can mitigate the pain of the user.
-* There is no bug introduced by the change itself.
+* The change is making something better, although not a perfect solution.
+* The change can mitigate the pains of users.
+* The change does not introduce a bug.
 
 Then, we can accept the code.
 
@@ -81,7 +81,7 @@ If a bug fix PR doesn't include a test case, the review should ask the author to
 
 If a performance improvement PR doesn't include a benchmark result, the reviewer should ask the author to attach one.
 
-## What to look for in a code review
+## What to check in a code review
 
 ### Design
 
@@ -97,9 +97,9 @@ If you need a further discussion of the PR, you can go to [TiDB Internals forum]
 ### Functionality
 
 * Does this PR do what the developer intends it to do?
-* Is what the developer intend to do good for the users with this implementation?
+* How will implementing this PR help the user?
 
-Basically, PR authors are expected to test their PRs well-enough before code reviews. However, as a reviewer you should still think about edge cases, especially for problems about concurrency.
+Basically, PR authors are supposed to sufficiently test their PRs before code reviews. However, as a reviewer, you should still think about edge cases, especially for problems about concurrency.
 
 You can always validate the PR if you want. 
 
@@ -133,11 +133,10 @@ To ensure the tests in the PR are correct, sensible, and useful, you can check t
 * Are the test cases readable?
 * Does the PR lower the overall test coverage? 
 
-Simulate cases where the code may break.
+To ensure the tests in the PR are sufficient, you can simulate cases where the code may break and check the following:
 
-* Will the tests actually fail when the code is broken?
-* If the code changes beneath them, will they start producing false positives?
-* Does each test makes simple and useful assertions?
+* Will the tests fail when the code is broken?
+* Does each test make simple and useful assertions?
 * Are the tests separated appropriately between different test methods?
 
 Remember that tests are also code that have to be maintained, and thus do not accept unnecessary complexity in tests.
@@ -167,7 +166,7 @@ Make sure the PR follows our [code style and quality guide](code-style-and-quali
 
 If you want to improve style points outside the style guide, you can comment that you think it would improve the code readability but isn't mandatory. Don't block PRs from being submitted based only on personal style preferences.
 
-The PR author should not include major style changes combined with other changes. For example, if a PR wants to reformat the whole file should not make functional changes. This has been explained as "One PR just does one thing" in the previous section.
+The PR author should not combine nontrivial style changes with functional changes. This would violate the guideline covered earlier: one PR does one thing.
 
 ### Consistency
 
@@ -200,7 +199,9 @@ Sometimes it is difficult for a real program to run into the error code path, an
 
 ### Performance
 
-Does the PR impose any performance impact? Sometimes a minor change on the hot path that seems unrelated may still affect performance. Is the algorithm in the PR suitable for that case?
+Does the PR impact performance? Sometimes, a seemingly minor, unrelated change on the hot may still affect performance.
+
+Is the algorithm in the PR suitable for that case?
 
 ## How to write code review comments
 
