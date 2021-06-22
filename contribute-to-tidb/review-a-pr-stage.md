@@ -170,11 +170,11 @@ The PR author should not combine nontrivial style changes with functional change
 
 What if the existing code is inconsistent with the style guide? The style guide is the absolute authority: if something is required by the style guide, the PR should follow the guidelines.
 
-In some cases, the style guide makes recommendations rather than declaring requirements. In these cases, it’s a judgment call whether the new code should be consistent with the recommendations or the surrounding code. Bias towards following the style guide unless the local inconsistency would be too confusing
+In some cases, the style guide only makes recommendations but does not declare requirements. In these cases, it is a judgment call whether the new code should be consistent with the recommendations in the style guide or with the surrounding code. It is recommended that you follow the style guide unless the local inconsistency is too confusing.
 
-If no other rule applies, the author should maintain consistency with the existing code.
+If no other rule applies, the PR author should maintain consistency with the existing code.
 
-Either way, encourage the author to file a bug and add a TODO for cleaning up existing code.
+In either way, you can encourage the author to file a bug and add a TODO for cleaning up existing code.
 
 ### Documentation
 
@@ -188,12 +188,12 @@ If any documentation updates are missing, you can request the PR author to add t
 
 Because errors and exceptions handling are one of the most possible places for bugs, during the code review, you must be as prudent as possible and ask yourself the following questions: 
 
-* Does the test cover the error code path?
+* Does the test of the PR cover the error code path?
 * Does a panic make the whole process exit for server services?
-* Does the code handle the resource releasing properly?
-* Especially, for code including concurrent goroutines, is there a goroutine leak or memory leak after the error?
+* Does the code properly handle the resource releasing?
+* Especially for code including concurrent goroutines, is there a goroutine leak or memory leak after the error?
 
-Sometimes it is difficult for a real program to run into the error code path, and even more difficult to reproduce and debug if it really happens. Then it is necessary to mock the error code path. Tools like [failpoint](https://github.com/pingcap/failpoint) are available for that purpose.
+Sometimes, it is difficult for a real program to run into the error code path, and even more difficult to reproduce and debug if the error really happens. In this case, it is necessary to mock the error code path using tools such as [failpoint](https://github.com/pingcap/failpoint).
 
 ### Performance
 
