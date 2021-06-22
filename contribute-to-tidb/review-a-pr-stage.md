@@ -61,11 +61,10 @@ Everyone comes from different technical backgrounds with different knowledge. Th
 
 A common mistake is to focus too much on style. Style is important: that's why there are style guides. Just let the bot do most of the trivial work. Each PR reviewer is a human who is supposed to focus on things beyond what a bot can do. When you are reviewing a PR, make sure that the changes do not break the program logic or increase the code base maintenance cost.
 
-Sometimes, making choices can be tricky.
+Sometimes, making choices of accepting or rejecting a PR can be tricky as in the following situations: 
 
-For example, let's say there is a special optimization that can improve the overall performance by 30%. However, it introduces a totally different code path, and every subsequent feature must consider it. This creates a huge maintenance burden. Shall we accept or reject it?
-
-Or let's say there's a critical bug and a PR is read to fix it, but there's a risk the PR will introduce other bugs. Shall we accept or reject it?
+* Suppose that a PR contains special optimization that can improve the overall performance by 30%. However, the PR introduces a totally different code path, and every subsequent feature must consider it.
+* Suppose that a PR is to fix a critical bug, but the change in the PR is risky to introduce other bugs.
 
 If a PR under your review is in these tricky situations, what is the right choice, accepting the PR or rejecting it? The answer is always "it depends." Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. There are always trade-offs, and often there's no perfect solution. Still, there is a general standard (from [@shenli](https://github.com/shenli)). Maybe we call it, "Better than before?":
 
