@@ -96,7 +96,7 @@ If you need a further discussion of the PR, you can go to [TiDB Internals forum]
 
 ### Functionality
 
-* Does this PR do what the developer intends it to do?
+* Does this PR implement what the PR author intends to do?
 * How will implementing this PR help the user?
 
 Basically, PR authors are supposed to sufficiently test their PRs before code reviews. However, as a reviewer, you should still think about edge cases, especially for problems about concurrency.
