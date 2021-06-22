@@ -32,7 +32,9 @@ Because PR authors are the ones who want to merge the PRs into the repository th
 
 ### Two Approvals for a PR to be accepted
 
-For most of the repositories in the TiDB community, we require 2 approvals before the PR is accepted. A few repositories require different number of approvals, but 2 approvals is the default setting. 2 approvals ensures that even after the original PR author's resignation, there is someone familiar with the code and the project still keeps moving. And if the author really resigns, the code reviewer is the first person responsible for the code.
+In the TiDB community, most repositories require two approvals before a PR can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. 
+
+Two approvals ensure that even the original PR author resigns, there is still someone who is familiar with the code and can keep the project moving. And if the author really resigns, the code reviewer becomes the first person who is responsible for the code.
 
 ### Never give approval to to the code you don't understand
 
