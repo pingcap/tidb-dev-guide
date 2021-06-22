@@ -4,10 +4,10 @@ This guide is for contributors who want to contribute to the code review. Thank 
 
  This guide is intended to help both the contributors and reviewers to ensure the following:
 
-* Contributors have a good contribution experience.
-* Our reviews check all important aspects of a contribution.
-* We make sure to keep a high code quality in TiDB.
-* We avoid situations where contributors and reviewers spend a lot of time refining a contribution that gets rejected later.
+* The review keeps the high quality of TiDB code.
+* Reviewers cover all important aspects of a contribution
+* Contributors have a good contribution experience..
+* The review avoids situations in which contributors and reviewers spend a lot of time refining a contribution that gets rejected later.
 
 
 ## Things to know before the code review
