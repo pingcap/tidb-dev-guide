@@ -38,7 +38,7 @@ Two approvals ensure that even the original PR author resigns, there is still so
 
 ### Never approve code you don't understand
 
-A review should be thorough enough. After the review, you should be able to explain the change details at a reasonable level to other developers. This ensures that the details of the codebase are known to more than a single person. Remember that you are responsible for the code you reviewed because it is all about your reputation.
+A review should be thorough enough. After the review, you should be able to explain the change details at a reasonable level to other developers. This ensures that the details of the codebase are known to more than a single person. Remember: you are responsible for the code you review; it is all about your reputation.
 
 ### PRs must be 300 lines or less
 
