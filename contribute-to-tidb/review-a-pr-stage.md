@@ -40,9 +40,9 @@ Two approvals ensure that even the original PR author resigns, there is still so
 
 A review should be thorough enough. After the review, you should be able to explain the change details at a reasonable level to other developers. This ensures that the details of the codebase are known to more than a single person. Remember: you are responsible for the code you review; it is all about your reputation.
 
-### PRs must be 300 lines or less
+### PRs are suggested to be less than 500 lines
 
-The TiDB community encourages quick and small changes in each PR. Three hundred lines is basically what normal people can comprehend in an hour.
+The TiDB community encourages small changes in each PR and sets up five hundred lines as a guideline of PR  size.
 
 If a PR is too large, you can request the PR author to split the PR. If a PR is too large but hard to split, you can request the author to have a meeting in person to explain the changes, until you fully understand the changes.
 
