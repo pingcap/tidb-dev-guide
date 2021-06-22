@@ -50,7 +50,7 @@ If a PR is too large, you can request the PR author to split the PR. If a PR is 
 
 To make the PR easier to understand and get merged faster, it should focus on one thing.
 
-For example, a bugfix should be in a separated PR, a refactoring should be in a separate PR. No matter how small it is, like updating the package version, or even one line changes to fix a typo, the change does exactly one thing and gets it right.
+For example, a bug fix should be in one PR and a refactoring in another. No matter how small it is, like updating the package version, or even one line changes to fix a typo, the change does exactly one thing and gets it right.
 
 ### Principles of the code review
 
