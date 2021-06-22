@@ -48,7 +48,7 @@ If a PR is too large, you can request the PR author to split the PR. If a PR is 
 
 ### One PR does one thing
 
-To make the PR easier to understand and get merged faster, this is also highly encouraged.
+To make the PR easier to understand and get merged faster, it should focus on one thing.
 
 For example, a bugfix should be in a separated PR, a refactoring should be in a separate PR. No matter how small it is, like updating the package version, or even one line changes to fix a typo, the change does exactly one thing and gets it right.
 
