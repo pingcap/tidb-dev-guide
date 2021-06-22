@@ -27,7 +27,8 @@ Nowadays software development is no longer a single person’s piece of art but 
 
 Because PR authors are the ones who want to merge the PRs into the repository the most, after an offline discussion we agree on the following:
 
-If I am the PR author, I am the one who wants to merge the PR into the repository most. I'm willing to lead that change. So I'm supposed to do my best to have someone review the PR. The reviewers should review the PR in time and give feedback, but it is not their responsibility to push the PR to be merged.
+* PR authors are responsible for getting PRs reviewed and merged.
+* PR reviewers are responsible for reviewing PRs and providing feedback in time but not responsible for pushing the PR to be merged.
 
 ### 2 Approvals for a PR to be accepted
 
