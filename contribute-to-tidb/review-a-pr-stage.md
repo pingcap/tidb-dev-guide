@@ -21,7 +21,7 @@ To conduct a good review, it is always helpful to read the following high-level 
 
 ### Code review is more important than writing your own PR
 
-Modern software development is about cooperation, and nowadays software is no longer one single man’s piece of art. To speed up the development and make the processing scale, it is important to avoid blocking. If the members in an organization give higher priority for writing their own code, others waiting for code review get blocked, and there will be a lot of pending PRs for review. Eventually most of the developers get blocked, the whole team slows down.
+Nowadays software development is no longer a single person’s piece of art but the result of team cooperation. To speed up the development and make the processing scale, it is important to avoid blocking. If all developers in an organization prioritize writing code over reviewing code, more and more PRs waiting for code review get blocked, and the whole team slows down.
 
 ### It's the PR author's responsibility to get the PR merged
 
