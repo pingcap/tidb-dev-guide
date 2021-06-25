@@ -166,7 +166,7 @@ The review comments require you to change your submitted PR content. You can eit
 
 To accept suggestions, perform the following steps to modify your submitted PR content:
 
-1. Pull the latest content from the remote origin of your PR to your local by executing the following command in the terminal. This ensures that your local content is in up-to-date with the remote origin.
+1. Pull the latest content from the remote origin of your PR to your local by executing the following command in the terminal. This ensures that your local content is up-to-date with the remote origin.
 
     ```
     git fetch origin new-branch-name
