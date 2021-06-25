@@ -66,6 +66,7 @@ cat <<EOF > unit_test.xml
 EOF
 ```
 
+After executing script, you can check whether to have three config in the directory. 
 ```bash
 $ ls
 playground_attach_4001.xml
