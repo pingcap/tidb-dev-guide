@@ -190,7 +190,7 @@ To accept suggestions, perform the following steps to modify your submitted PR c
     git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
     ```
 
-5. After all comments are addressed, reply in the PR webpage: "All comments are addressed. PTAL."
+5. After all comments are addressed, reply on the PR page: "All comments are addressed. PTAL."
 
     "PTAL" is short for "Please take a look".
 
