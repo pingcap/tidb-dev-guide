@@ -64,7 +64,7 @@ Your contribution journey takes two stages:
 
 1. In [stage 1](#stage-1-create-and-submit-your-pr), create and submit your Pull Request to the [docs-cn](https://github.com/pingcap/docs-cn) or [docs](https://github.com/pingcap/docs) repository.
 
-2. In [stage 2](#get-2-stay-notified-and-address-review-comments), get notified of any review comments and address the comments until the PR gets approved and merged.
+2. In [stage 2](#stage-2-get-notified-and-address-review-comments), get notified of any review comments and address the comments until the PR gets approved and merged.
 
 ### Stage 1: Create and submit your PR
 
