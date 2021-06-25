@@ -14,12 +14,12 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-**Step 4**. Add these three config files to `<tidb-dir>/.idea/runConfigurations/` directory by executing following commands or adding them manually.
+**Step 4**. you need to replace ```{{PD_ADDRESS}}``` with your pd address (such as 127.0.0.1:2379) for following scipts. Executing it to adding these three config files to `<tidb-dir>/.idea/runConfigurations/` directory. 
 
 ```bash
-$ cd <tidb-dir>
-$ mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
-$ cat <<EOF > unistore_4000.xml
+cd <tidb-dir>
+mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
+cat <<EOF > unistore_4000.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
@@ -33,12 +33,12 @@ $ cat <<EOF > unistore_4000.xml
 </component>
 EOF
 
-$ cat <<EOF > playground_attach_4001.xml
+cat <<EOF > playground_attach_4001.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
     <working_directory value="$PROJECT_DIR$" />
-    <parameters value="--path=pd0:2379 --store=tikv --status=10081 -P 4001 " />
+    <parameters value="--path={{PD_ADDRESS}} --store=tikv --status=10081 -P 4001 " />
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$/tidb-server/main.go" />
     <package value="github.com/pingcap/tidb/tidb-server" />
@@ -48,7 +48,7 @@ $ cat <<EOF > playground_attach_4001.xml
 </component>
 EOF
 
-$ cat <<EOF > unit_test.xml
+cat <<EOF > unit_test.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
     <module name="tidb" />
@@ -64,13 +64,14 @@ $ cat <<EOF > unit_test.xml
   </configuration>
 </component>
 EOF
+```
 
+```bash
 $ ls
 playground_attach_4001.xml
 unistore_4000.xml
 unit_test.xml
 ```
-
 **Step 5**. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 
 ![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
