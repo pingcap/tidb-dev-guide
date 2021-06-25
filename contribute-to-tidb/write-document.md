@@ -198,7 +198,7 @@ To accept suggestions, perform the following steps to modify your submitted PR c
 
 If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the "Commit suggestion" button. Then the suggested change is automatically committed to your PR.
 
-If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps in the PR page:
+If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps on the PR page:
 
 1. Click the "Files changed" tab and see the file changes. You can see multiple review comments in suggestion mode.
 
