@@ -14,7 +14,7 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-**Step 4**. you need to replace ```{{PD_ADDRESS}}``` with your pd address (such as 127.0.0.1:2379) for following scipts. Switching directories to <tidb-dir> and Executing it to adding these three config files to `<tidb-dir>/.idea/runConfigurations/` directory. 
+**Step 4**. you need to replace ```{{PD_ADDRESS}}``` with your pd address (such as 127.0.0.1:2379) for following scipts. ```cd <tidb-dir>``` and Executing it to adding these three config files to `<tidb-dir>/.idea/runConfigurations/` directory. 
 
 ```bash
 mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
