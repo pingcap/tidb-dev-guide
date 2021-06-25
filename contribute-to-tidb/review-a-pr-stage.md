@@ -142,28 +142,28 @@ Last but not least, keep an eye on how long a single unit takes to run. That is,
 
 ### Naming
 
-Does the developer pick good names for everything? A good name is long enough to fully communicate what the item is or does, without being so long that it becomes hard to read.
+Does the PR author pick good names for everything? A good name should be clear enough to fully communicate what the item is or does.
 
 ### Comments
 
-* Does the developer write clear comments in understandable English?
+* Does the PR author write clear comments in understandable English?
 * Are all of the comments actually necessary?
 
-Usually, comments are useful when they explain why the code exists, while not explain what the code is doing. If the code isn't clear enough to explain itself, then the code should be simplified.
+Usually, comments are useful to explain why the code exists, while not useful to explain what the code is doing. If the code is not clear enough to explain itself, the PR author should simplify the code instead of adding unnecessary comments.
 
-There are some exceptions; for example, regular expressions and complex algorithms often benefit greatly from comments that explain what they’re doing. But comments are mostly for information, like the reason behind a decision.
+However, there are some exceptions. For example, the comments to explain what regular expressions or complex algorithms is doing are greatly helpful. But in other cases, comments are mostly for information, such as a reason behind a decision.
 
-It can also be helpful to look at comments existing before this PR. Maybe there is a `TODO` can be removed now, a comment advising against this change being made, etc.
+It can also be helpful to look at the existing comments before this PR. Maybe a `TODO` in the existing comments can be removed now, or there is a comment advising against the current changes, etc.
 
-Note that comments are different from documentation of classes, modules, or functions, which should instead express the purpose of a piece of code, how it should be used, and how it behaves when used.
+Note that comments are different from documentation of classes, modules, or functions, which covers the purpose of a piece of code, how the code should be used, and how the code behaves when being used.
 
 ### Style
 
 Make sure the PR follows our [code style and quality guide](code-style-and-quality-guide.md). For Go and Rust, there are built-in tools with the compiler toolchain.
 
-If you want to improve style points outside the style guide, you can comment that you think it would improve the code readability but isn't mandatory. Don't block PRs from being submitted based only on personal style preferences.
+If you want to improve styles not covered in the style guide, you can comment that you think it would improve the code readability but it is not mandatory. Do not block PRs from being merged based only on personal style preferences.
 
-The PR author should not combine nontrivial style changes with functional changes. This would violate the guideline covered earlier: one PR does one thing.
+The PR author should not combine nontrivial style changes and functional changes in one PR, because it violates the guideline covered earlier: one PR does one thing.
 
 ### Consistency
 
@@ -231,7 +231,7 @@ The TiDB community uses a service called [@ti-chi-bot](https://book.prow.tidb.io
 
 You can see the full list of commands accepted by the bot at [this page](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb).
 
-Here are the most frequent commands you're gonna use during a review:
+Here are the most frequently used commands you're going to use during a review:
 
 * `/cc @reviewer` requests a review from the reviewer.
 * `/assign @committer` assigns a committer to help merge the pull request
