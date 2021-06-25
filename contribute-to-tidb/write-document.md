@@ -60,7 +60,7 @@ Each docs version is updated very frequently and changes to one version often ap
 
 ## How to contribute
 
-Your contribution journey takes two stages:
+Your contribution journey is in two stages:
 
 1. In [stage 1](#stage-1-create-and-submit-your-pr), create and submit your Pull Request to the [docs-cn](https://github.com/pingcap/docs-cn) or [docs](https://github.com/pingcap/docs) repository.
 
@@ -76,7 +76,7 @@ Perform the following steps to create your Pull Request to the [docs](https://gi
 
 #### Step 0: Sign the CLA
 
-Your Pull Requests can only be merged after you sign the [Contributor License Agreement (docs)](https://cla-assistant.io/pingcap/docs). Please make sure you sign the CLA before continuing.
+Your PR can only be merged after you sign the [Contributor License Agreement (docs)](https://cla-assistant.io/pingcap/docs). Please make sure you sign the CLA before continuing.
 
 #### Step 1: Fork the repository
 
@@ -156,7 +156,7 @@ After your PR is created, the repository administrator will add labels to your P
 
 Once the review comments are submitted, you will receive a notification in your registered email box. Check your email box and get notified.
 
-Once you receive the email, click the PR link in the mail to open the PR webpage, and you will see the comments.
+Once you receive the email, click the PR link in the mail to open the PR page in your browser, and you will see the comments.
 
 #### Step 2: Address review comments
 
@@ -166,27 +166,37 @@ The review comments require you to change your submitted PR content. You can eit
 
 To accept suggestions, perform the following steps to modify your submitted PR content:
 
-1. Pull the latest content from the remote origin of your PR to your local by executing the following command in the terminal. This ensures that your local content is up-to-date with the remote origin.
+1. Pull the latest content from the remote origin of your PR to your local by executing the following commands in the terminal. This ensures that your local content is up-to-date with the remote origin.
 
     ```
-    git fetch origin new-branch-name
+    cd $working_dir/docs
+    git checkout new-branch-name
+    git fetch origin
     ```
 
 2. Edit the file or files to be modified in your local editor (like Visual Studio Code) according to the review comments.
 
-3. Push your changes to the remote origin:
+3. Commit your changes. This step is the same as [Step 5: Commit your changes](#step-5-commit-your-changes) in stage 1.
+
+    ```
+    git status # Checks the local status
+    git add <file> ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
+    git commit -m "commit-message: update the xx"
+    ```
+
+4. Push your changes to the remote origin:
 
     ```
     git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
     ```
 
-4. After all comments are addressed, reply in the PR webpage: "All comments are addressed. PTAL."
+5. After all comments are addressed, reply in the PR webpage: "All comments are addressed. PTAL."
 
     "PTAL" is short for "Please take a look".
 
 ##### Accept comments on the PR page
 
-If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with differences in a highlighted view), to accept the suggestion, you only need to click the "Commit suggestion" button. Then the suggested change is automatically committed to your PR.
+If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the "Commit suggestion" button. Then the suggested change is automatically committed to your PR.
 
 If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps in the PR page:
 
@@ -198,17 +208,17 @@ If multiple review comments are in the suggestion mode, it is recommended to acc
 
 > **Note:**
 >
-> After you have addressed review comments, reviewers might also submit new comments. You need to repeat this step and make sure all comments are addressed until the reviewers approve your PR and have it merged.
+> After you have addressed review comments, reviewers might also submit new comments. You need to repeat this step 2 and make sure all comments are addressed until the reviewers approve your PR and have it merged.
 
 #### Step 3: Handle cherry-picked PRs
 
-Once your PR gets approved, the repo administrator will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified in your PR by adding cherry-pick labels.
+Once your PR gets approved, the repo administrator will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.
 
 You need to perform the following steps on each one of the cherry-picked PRs:
 
-- Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository administrator will merge it in a while.
+- Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository administrator will merge it soon.
 
-- If most of your changes apply to multiple docs versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version specific changes. Then the repository administrator will commit to the PR according to your comment before you approve it.
+- If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository administrator will commit to the PR according to your comment before you approve it.
 
 - (Advanced) If any conflicts exist in the cherry-picked PR, resolve the conflicts. This is only for those who have the write permission in the repository.
 
