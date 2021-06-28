@@ -106,6 +106,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "hawkingrei",
+      "name": "Weizhen Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3427324?v=4",
+      "profile": "https://www.hawkingrei.com/blog/",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
