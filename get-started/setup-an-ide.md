@@ -14,7 +14,7 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-**Step 4**. `cd <tidb-dir>` and Executing it to adding these three config files to `./.idea/runConfigurations/` directory. 
+**Step 4**. `cd <tidb-dir>` and execute following commands to add these three config files to `./.idea/runConfigurations/` directory. 
 
 ```bash
 mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
