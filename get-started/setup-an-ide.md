@@ -14,7 +14,7 @@ You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB 
 
 ![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
 
-**Step 4**. you need to replace ```{{PD_ADDRESS}}``` with your pd address (such as 127.0.0.1:2379) for following scipts. ```cd <tidb-dir>``` and Executing it to adding these three config files to `./.idea/runConfigurations/` directory. 
+**Step 4**. ```cd <tidb-dir>``` and Executing it to adding these three config files to `./.idea/runConfigurations/` directory. 
 
 ```bash
 mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
@@ -37,7 +37,7 @@ cat <<EOF > playground_attach_4001.xml
   <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
     <working_directory value="$PROJECT_DIR$" />
-    <parameters value="--path={{PD_ADDRESS}} --store=tikv --status=10081 -P 4001 " />
+    <parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " />
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$/tidb-server/main.go" />
     <package value="github.com/pingcap/tidb/tidb-server" />
