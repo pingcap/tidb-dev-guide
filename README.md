@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -45,6 +45,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://www.zenlife.tk"><img src="https://avatars.githubusercontent.com/u/1420062?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tiancaiamao</b></sub></a><br /><a href="#content-tiancaiamao" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/tomdewan"><img src="https://avatars.githubusercontent.com/u/50153616?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tomdewan</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atomdewan" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/disksing"><img src="https://avatars.githubusercontent.com/u/12077877?v=4?s=100" width="100px;" alt=""/><br /><sub><b>disksing</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Adisksing" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.hawkingrei.com/blog/"><img src="https://avatars.githubusercontent.com/u/3427324?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Weizhen Wang</b></sub></a><br /><a href="#content-hawkingrei" title="Content">🖋</a></td>
   </tr>
 </table>
 
