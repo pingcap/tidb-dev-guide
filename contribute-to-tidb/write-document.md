@@ -4,7 +4,7 @@ Good documentation is crucial for any kind of software. This is especially true 
 
 ## Where you can contribute
 
-The TiDB community provides bilingual documentation. The English documentation is maintained in the [pingcap/docs](https://github.com/pingcap/docs) repository (docs repo) and the Chinese documentation is maintained in the [pingcap/docs-cn](https://github.com/pingcap/docs-cn) repository (docs-cn repo). You are welcome to contribute to either of the two.
+The TiDB community provides bilingual documentation. The English documentation is maintained in the [pingcap/docs](https://github.com/pingcap/docs) repository (docs repo) and the Chinese documentation is maintained in the [pingcap/docs-cn](https://github.com/pingcap/docs-cn) repository (docs-cn repo). You are welcome to contribute to either of the repositories.
 
 In a addition, you are also welcome to contribute to the [TiDB Operator documentation](https://github.com/pingcap/docs-tidb-operator) and the [TiDB Data Migration documentation](https://github.com/pingcap/docs-dm).
 
@@ -253,13 +253,13 @@ The following process describes how a docs-cn PR (Chinese content) is translated
 
     PRs with the `translation/no-need` label are not tracked.
 
-2. After this docs-cn PR is merged, the assignee starts the translation in the local.
+2. After this docs-cn PR is merged, the assignee starts the translation in the local editor.
 
-3. Once the assignee submits the translated content in a docs PR, he or she adds the `translation/from-docs-cn` label to the docs PR, removes the `translation/doing` label from and adds the `translation/done` label to the docs-cn PR.
+3. Once the assignee submits the translated content in a docs PR, he or she adds the `translation/from-docs-cn` label to the docs PR, removes the `translation/doing` label from the docs-cn PR, and adds the `translation/done` label to the docs-cn PR.
 
-4. The assignee provides the docs-cn PR link in the PR description part of the docs PR ("This PR is translated from"). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.
+4. The assignee provides the docs-cn PR link in the PR description section of the docs PR ("This PR is translated from"). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.
 
-5. After the docs PR is merged. The translation tracking process is finished.
+5. After the docs PR is merged. The translation tracking process is finished. The updates in Chinese documentation are synchronized to the English documentation.
 
 - The list of PR that can be translated in docs-cn: [Pull requests · pingcap/docs-cn](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amreged)
 - The list of PR that can be translated in docs: [Pull requests · pingcap/docs](https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+)
