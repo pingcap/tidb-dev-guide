@@ -260,7 +260,7 @@ The following process describes how a docs-cn PR (Chinese content) is translated
 
 5. After the docs PR is merged. The translation tracking process is finished. The updates in Chinese documentation are synchronized to the English documentation.
 
-If you want to apply for a translation, check the following lists of merged docs-cn/docs PRs with the `translation/doing` label, pick one PR, assign yourself with your GitHub ID, and start the process above.
+If you want to apply for a translation, check the following lists of merged docs-cn/docs PRs with the `translation/doing` label, pick one PR, assign yourself with your GitHub ID, and start the process from step 2 above.
 
 - The list of PR that can be translated in docs-cn: [Pull requests · pingcap/docs-cn](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amreged)
 - The list of PR that can be translated in docs: [Pull requests · pingcap/docs](https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+)
