@@ -115,6 +115,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "TomShawn",
+      "name": "TomShawn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41534398?v=4",
+      "profile": "https://github.com/TomShawn",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
