@@ -17,7 +17,7 @@ You can start from any one of the following items to help improve TiDB Docs at t
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
 - Add missing content (sentence, paragraph, or a new document)
-- Translate docs changes from English to Chinese, or from Chinese to English
+- Translate docs changes from English to Chinese, or from Chinese to English. See [How we implement bilingual documentation](#how-we-implement-bilingual-documentation)
 - Submit, reply to, and resolve [docs issues](https://github.com/pingcap/docs/issues) or [docs-cn issues](https://github.com/pingcap/docs-cn/issues)
 - (Advanced) Review Pull Requests created by others
 
