@@ -1,8 +1,8 @@
 # Summary
 
-* [TiDB Development Guide](../README.md)
+[TiDB Development Guide](README.md)
 
-## Get Started
+## [Get Started](get-started/introduction.md)
 
 * [Install Golang](get-started/install-golang.md)
 * [Get the code, build and run](get-started/build-tidb-from-source.md)
@@ -52,3 +52,7 @@
 * [Manage a project](project-management/manage-a-project.md)
 * [Communication and discussion](project-management/communication-and-discussion.md)
 * [Useful resources](project-management/useful-resources.md)
+
+-----------
+
+[Contribute](CONTRIBUTING.md)
