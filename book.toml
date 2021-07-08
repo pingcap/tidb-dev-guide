@@ -2,4 +2,4 @@
 title = "TiDB Development Guide"
 
 [output.html]
-git-repository-url = "https://github.com/rust-lang/book"
+git-repository-url = "https://github.com/pingcap/tidb-dev-guide"
