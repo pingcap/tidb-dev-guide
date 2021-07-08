@@ -1,6 +1,6 @@
-# Table of contents
+# Summary
 
-* [TiDB Development Guide](README.md)
+* [TiDB Development Guide](../README.md)
 
 ## Get Started
 
@@ -18,13 +18,13 @@
 
 * [Introduction](contribute-to-tidb/introduction.md)
 * [TiDB Community Guideline](contribute-to-tidb/community-guideline.md)
+* [Committer Guide](contribute-to-tidb/committer-guide.md)
 * [Report a Bug](contribute-to-tidb/report-a-bug.md)
 * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
 * [Contribute Code](contribute-to-tidb/contribute-code.md)
 * [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
 * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
 * [Write Document](contribute-to-tidb/write-document.md)
-* [Committer Guide](contribute-to-tidb/committer-guide.md)
 
 ## Understand TiDB
 
@@ -52,4 +52,3 @@
 * [Manage a project](project-management/manage-a-project.md)
 * [Communication and discussion](project-management/communication-and-discussion.md)
 * [Useful resources](project-management/useful-resources.md)
-

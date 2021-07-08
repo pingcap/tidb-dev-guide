@@ -21,7 +21,7 @@ At present, the guide is composed of the following parts:
 
 ## Contribute to this guide
 
-See [CONTRIBUTING.md](https://github.com/zz-jason/tidb-dev-guide/tree/ee76316d0ec21470d5900fe0c64ed3f5b8a87b0e/CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Contributors ✨
 

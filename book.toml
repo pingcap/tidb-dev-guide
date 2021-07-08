@@ -1,0 +1,6 @@
+[book]
+authors = ["tison"]
+language = "en"
+multilingual = false
+src = "src"
+title = "TiDB Development Guide"
