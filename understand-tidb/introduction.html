@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Understand TiDB - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.5.</strong> Commit code and submit a pull request</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.6.</strong> Debug and profile</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-a-bug.html"><strong aria-hidden="true">2.3.</strong> Report a Bug</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.4.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html" class="active"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/mysql-protocol-and-session-management.html"><strong aria-hidden="true">3.1.</strong> MySQL protocol &amp; session sanagement</a></li><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-sql.html"><strong aria-hidden="true">3.2.</strong> The lifecycle of a SQL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege-management.html"><strong aria-hidden="true">3.3.</strong> Privilege management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.4.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.5.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction-processing.html"><strong aria-hidden="true">3.6.</strong> Transaction processing</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-planner.html"><strong aria-hidden="true">3.7.</strong> Overview of planner</a></li><li class="chapter-item expanded "><a href="../understand-tidb/logical-optimization-and-rules.html"><strong aria-hidden="true">3.8.</strong> Logical optimization &amp; rules</a></li><li class="chapter-item expanded "><a href="../understand-tidb/physical-optimization.html"><strong aria-hidden="true">3.9.</strong> Physical optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.10.</strong> Table statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.11.</strong> Plan cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.12.</strong> SQL hints and plan management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-the-execution-engine.html"><strong aria-hidden="true">3.13.</strong> Overview of the execution engine</a></li><li class="chapter-item expanded "><a href="../understand-tidb/communicate-with-the-storage.html"><strong aria-hidden="true">3.14.</strong> Retrieving data from the storage layer</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.15.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/tidb-release-management.html"><strong aria-hidden="true">4.1.</strong> TiDB release management</a></li><li class="chapter-item expanded "><a href="../project-management/manage-a-project.html"><strong aria-hidden="true">4.2.</strong> Manage a project</a></li><li class="chapter-item expanded "><a href="../project-management/communication-and-discussion.html"><strong aria-hidden="true">4.3.</strong> Communication and discussion</a></li><li class="chapter-item expanded "><a href="../project-management/useful-resources.html"><strong aria-hidden="true">4.4.</strong> Useful resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-of-tidb-architecture"><a class="header" href="#introduction-of-tidb-architecture">Introduction of TiDB Architecture</a></h1>
+<p>Understanding TiDB talks about what is the architecture of TiDB, what modules it consists of, and what is the responsibility of each module.</p>
+<h2 id="tidb-architecture"><a class="header" href="#tidb-architecture">TiDB Architecture</a></h2>
+<p>When people refer to TiDB, they usually refer to the entire TiDB distributed database that includes three components: the TiDB stateless server, the Placement Driver (PD) server, and the storage server, TiKV or TiFlash. The TiDB server does not store data; it only computes and processes SQL queries. The PD server is the managing component of the entire cluster. The storage server is responsible for persistently storing data.</p>
+<p>Let's see an architecture graph from TiDB stateless server's perspective.</p>
+<p><img src="https://user-images.githubusercontent.com/18818196/121637571-28acae80-cabc-11eb-970e-14af8a7a6246.png" alt="tidb-architecture" /></p>
+<p>As you can see, TiDB is a SQL engine that supports the MySQL protocol with some kind of distributed KV storage engine that supports transactions as the underlying storage.</p>
+<p>Here come three significant questions.</p>
+<ol>
+<li>How to support MySQL protocol?</li>
+<li>How to communicate with storage engine, store and load data?</li>
+<li>How to implement SQL functions?</li>
+</ol>
+<p>This section will start with a few of brief descriptions of what modules TiDB has and what they do, and then put them together with these three questions.</p>
+<h2 id="code-structure"><a class="header" href="#code-structure">Code Structure</a></h2>
+<p>TiDB source code is fully hosted on Github, you can see all the information from the <a href="https://github.com/pingcap/tidb">repository homepage</a>. The whole repository is developed in Golang and divided into many Packages according to functional modules. Through dependency analysis tools, you can see the dependencies between packages inside the project.</p>
+<p>Most of the packages export services in the form of interfaces, and most of the functionality is concentrated in one package. But there are packages that provide basic functionality and are dependent on many packages, so these packages need special attention.</p>
+<p>The main file of TiDB is in <code>tidb-server/main.go</code>, which defines how the service is started. The Build method for the entire project can be found in the <code>Makefile</code>.</p>
+<p>In addition to the code, there are many test cases, which can be found in <code>xx_test.go</code>. There is also toolkit under the <code>cmd</code> directory for doing performance tests or constructing test data.</p>
+<h3 id="module-structure"><a class="header" href="#module-structure">Module Structure</a></h3>
+<p>TiDB has a number of modules. Table below is an overview that shows what each module does, and if you want to see the code for the relevant function, you can find the corresponding module directly.</p>
+<table><thead><tr><th align="left">Package</th><th align="left">Introduction</th></tr></thead><tbody>
+<tr><td align="left">ast</td><td align="left">The data structure definition of abstract syntax tree (AST). For example, <code>SelectStmt</code> defines the data structure of parsing a <code>Select</code> statement.</td></tr>
+<tr><td align="left">cmd</td><td align="left">The command line tools for testing, benchmark, etc.</td></tr>
+<tr><td align="left">config</td><td align="left">The configuration definition that used by TiDB</td></tr>
+<tr><td align="left">context</td><td align="left">The Context interfaces. It provides some basic functional abstractions. Many packages and functions are dependent on this interface. These functions are abstracted as interfaces to resolve the dependency relationship between packages.</td></tr>
+<tr><td align="left">ddl</td><td align="left">The execution logic of DDL</td></tr>
+<tr><td align="left">distsql</td><td align="left">The abstraction of the distributed computing interfaces to isolate the logic between the Executor and the TiKV client</td></tr>
+<tr><td align="left">domain</td><td align="left">The abstraction of a storage space in which databases and tables can be created. Like Namespace, databases with the same name can exist in different domains. In most cases, a single TiDB instance only creates one Domain instance with details about the information schema and statistics.</td></tr>
+<tr><td align="left">executor</td><td align="left">The operator related code that contains the execution logic of most statements</td></tr>
+<tr><td align="left">expression</td><td align="left">The expression-related code that contains various operators and built-in functions</td></tr>
+<tr><td align="left">infoschema</td><td align="left">The metadata management module for SQL statements; accessed when all the operations on the information schema are executed</td></tr>
+<tr><td align="left">kv</td><td align="left">The Key-Value engine interface and some public methods; the interfaces defined in this package need to be implemented by the storage engine which is going to adapt TiDB SQL layer</td></tr>
+<tr><td align="left">meta</td><td align="left">Manages the SQL metadata in the storage engine through the features of the structure package; infoschema and DDL use this module to access or modify the SQL metadata</td></tr>
+<tr><td align="left">meta/autoid</td><td align="left">A module to generate the globally unique monotonically incremental IDs for each table, as well as the Database ID and Table ID</td></tr>
+<tr><td align="left">metrics</td><td align="left">Store the metrics information of all modules</td></tr>
+<tr><td align="left">owner</td><td align="left">Some tasks in the TiDB cluster can be executed by only one instance, such as the asynchronous schema change. This owner module is used to coordinate and generate a task executor among multiple TiDB servers. Each task has its own executor.</td></tr>
+<tr><td align="left">perfschema</td><td align="left">Features about the Performance Schema, disabled by default</td></tr>
+<tr><td align="left">planner</td><td align="left">Queries optimization related code</td></tr>
+<tr><td align="left">privilege</td><td align="left">The management interface of user privileges</td></tr>
+<tr><td align="left">server</td><td align="left">Code of the MySQL protocol and Session management</td></tr>
+<tr><td align="left">sessionctx/binloginfo</td><td align="left">Output binlog information to the binlog module</td></tr>
+<tr><td align="left">sessionctx/stmtctx</td><td align="left">Various necessary information for the statement of a session during runtime</td></tr>
+<tr><td align="left">sessionctx/variable</td><td align="left">System variable related code</td></tr>
+<tr><td align="left">statistics</td><td align="left">The statistics module</td></tr>
+<tr><td align="left">store</td><td align="left">Storage engine related code, which is the interaction code between the storage engine and the SQL layer</td></tr>
+<tr><td align="left">structure</td><td align="left">The structured API defined on the Transactional Key-Value API, providing structures like List, Queue, and HashMap</td></tr>
+<tr><td align="left">table</td><td align="left">The abstraction of Table in SQL</td></tr>
+<tr><td align="left">tablecodec</td><td align="left">Encode and decode data from SQL to Key-Value. See the codec package for the specific encoding and decoding solution for each data type</td></tr>
+<tr><td align="left">tidb-server</td><td align="left">The main method of the TiDB service</td></tr>
+<tr><td align="left">types</td><td align="left">All the type related code, including the definition of and operation on types</td></tr>
+<tr><td align="left">util</td><td align="left">Some TiDB related tools. Many packages exist in this directory. Only some important packages are introduced in the following articles.</td></tr>
+</tbody></table>
+<p>At a glance, TiDB has 80 packages, which might let you feel overwhelmed, but not all of them are important, and some features only involve a small number of packages, so where to start to look at the source code depends on the purpose of looking at the source code.</p>
+<p>If you want to understand the implementation details of a specific feature, then you can refer to the module profiles above and just find the corresponding module.</p>
+<p>If you want to have a comprehensive understanding of the source code, then you can start from <code>tidb-server/main.go</code> and see how tidb-server starts and how it waits for and handles user requests. Then follow the code all the way through to see the exact execution of the SQL. There are also some important modules that need to be looked at to know how they are implemented. For the auxiliary modules, you can look at them selectively to get a general impression.</p>
+<h3 id="sql-layer-architecture"><a class="header" href="#sql-layer-architecture">SQL Layer Architecture</a></h3>
+<p><img src="https://user-images.githubusercontent.com/18818196/121646008-6e22a900-cac7-11eb-954a-fbca825855b0.png" alt="sql-layer-architecture" /></p>
+<p>This is a detailed SQL layer architecture graph. You can read it from left to right.</p>
+<h3 id="protocol-layer"><a class="header" href="#protocol-layer">Protocol Layer</a></h3>
+<p>The leftmost is the Protocol Layer of TiDB, this is the interface to interact with Client, currently TiDB only supports MySQL protocol, the related code is in the <code>server</code> package.</p>
+<p>The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to <a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html">MySQL Client/Server Protocol document</a>. If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.</p>
+<p>The logic for connection establishment is in the <code>Run()</code> method of <code>server.go</code>, mainly in the following two lines.</p>
+<pre><code class="language-go">conn, err := s.listener.Accept()
+clientConn := s.newConn(conn)
+go s.onConn(clientConn)
+</code></pre>
+<p>The entry method for a single session processing command is to call the <code>dispatch</code> method of the <code>clientConn</code> class, where the protocol is parsed and passed to a different handler.</p>
+<h3 id="sql-layer"><a class="header" href="#sql-layer">SQL Layer</a></h3>
+<p>Generally speaking, a SQL statement needs to go through a series of processes: </p>
+<ol>
+<li>syntax parsing</li>
+<li>validity verification</li>
+<li>making query plan </li>
+<li>optimizing query plan</li>
+<li>generating querier according to plan</li>
+<li>executing and returning results</li>
+</ol>
+<p>These processes locate at the following modules:</p>
+<table><thead><tr><th align="left">Package</th><th align="left">Usage</th></tr></thead><tbody>
+<tr><td align="left">pingcap/tidb/sever</td><td align="left">Interface between protocol layer and SQL layer</td></tr>
+<tr><td align="left">pingcap/tidb/pingcap/parser</td><td align="left">SQL parsing and syntax analyze</td></tr>
+<tr><td align="left">pingcap/tidb/planner</td><td align="left">Validation, query plan building, query plan optimizing</td></tr>
+<tr><td align="left">pingcap/tidb/executor</td><td align="left">Executor generation and execution</td></tr>
+<tr><td align="left">pingcap/tidb/distsql</td><td align="left">Send request to TiKV and aggregate return results from TiKV via TiKV Client</td></tr>
+<tr><td align="left">pingcap/tidb/store/tikv</td><td align="left">TiKV Client</td></tr>
+</tbody></table>
+<h3 id="kv-api-layer"><a class="header" href="#kv-api-layer">KV API Layer</a></h3>
+<p>TiDB relies on the underlying storage engine to store and load data. It does not rely on a specific storage engine (such as TiKV), but has some requirements for the storage engine, and any engine that meets these requirements can be used (TiKV is the most suitable one).</p>
+<p>The most basic requirement is &quot;Key-Value engine with transactions and Golang driver&quot;. The more advanced requirement is &quot;support for distributed computation interface&quot;, so that TiDB can push some computation requests down to the storage engine.</p>
+<p>These requirements can be found in the interfaces of the <code>kv</code> package, and the storage engine needs to provide a Golang driver that implements these interfaces, which TiDB then uses to manipulate the underlying data.</p>
+<p>As for the most basic requirement, these interfaces are related:</p>
+<ul>
+<li><code>Transaction</code>: Basic manipulation of transaction</li>
+<li><code>Receiver</code>: Interface for reading data</li>
+<li><code>Mutator</code>: Interface for mutating data</li>
+<li><code>Storage</code>: Basic functionality provided by the driver</li>
+<li><code>Snapshot</code>: Basic manipulation of data snapshot</li>
+<li><code>Iterator</code>: Result of <code>Seek</code>, used to iterate data</li>
+</ul>
+<p>With the above interfaces, you are able to do all the required operations on the data and complete all the SQL functions. However, for more efficient computing, we have also defined an advanced computing interface, which can focus on these three interfaces or struct:</p>
+<ul>
+<li><code>Client</code>: Send request to storage engine</li>
+<li><code>Request</code>: Payload of the request</li>
+<li><code>Response</code>: Abstraction of result</li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>This section talks about the source structure of tidb and the architecture of three significant components. More details will be described in the later sections.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../contribute-to-tidb/write-document.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../understand-tidb/mysql-protocol-and-session-management.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../contribute-to-tidb/write-document.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../understand-tidb/mysql-protocol-and-session-management.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Community Guideline - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.5.</strong> Commit code and submit a pull request</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.6.</strong> Debug and profile</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html" class="active"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-a-bug.html"><strong aria-hidden="true">2.3.</strong> Report a Bug</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.4.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/mysql-protocol-and-session-management.html"><strong aria-hidden="true">3.1.</strong> MySQL protocol &amp; session sanagement</a></li><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-sql.html"><strong aria-hidden="true">3.2.</strong> The lifecycle of a SQL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege-management.html"><strong aria-hidden="true">3.3.</strong> Privilege management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.4.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.5.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction-processing.html"><strong aria-hidden="true">3.6.</strong> Transaction processing</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-planner.html"><strong aria-hidden="true">3.7.</strong> Overview of planner</a></li><li class="chapter-item expanded "><a href="../understand-tidb/logical-optimization-and-rules.html"><strong aria-hidden="true">3.8.</strong> Logical optimization &amp; rules</a></li><li class="chapter-item expanded "><a href="../understand-tidb/physical-optimization.html"><strong aria-hidden="true">3.9.</strong> Physical optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.10.</strong> Table statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.11.</strong> Plan cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.12.</strong> SQL hints and plan management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-the-execution-engine.html"><strong aria-hidden="true">3.13.</strong> Overview of the execution engine</a></li><li class="chapter-item expanded "><a href="../understand-tidb/communicate-with-the-storage.html"><strong aria-hidden="true">3.14.</strong> Retrieving data from the storage layer</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.15.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/tidb-release-management.html"><strong aria-hidden="true">4.1.</strong> TiDB release management</a></li><li class="chapter-item expanded "><a href="../project-management/manage-a-project.html"><strong aria-hidden="true">4.2.</strong> Manage a project</a></li><li class="chapter-item expanded "><a href="../project-management/communication-and-discussion.html"><strong aria-hidden="true">4.3.</strong> Communication and discussion</a></li><li class="chapter-item expanded "><a href="../project-management/useful-resources.html"><strong aria-hidden="true">4.4.</strong> Useful resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="community-guideline"><a class="header" href="#community-guideline">Community Guideline</a></h1>
+<p>TiDB governs by meritocracy and adopts a model consists of reviewer, committer, and maintainer. We believe that it is important to create an inclusive community where everyone can use, contribute to, and influence the direction of the project. See <a href="https://github.com/pingcap/tidb/graphs/contributors">the contributors page</a> for the current list of contributors.</p>
+<h2 id="general-development-process"><a class="header" href="#general-development-process">General Development Process</a></h2>
+<p>Everyone in the community is welcomed to send patches, documents, and propose new directions to the project. The key guideline here is to enable everyone in the community to get involved and participate the decision and development. When major changes are proposed, a design document should be sent to allow discussion by the community. We encourage public discussion, archivable channels such as GitHub issues and the <a href="https://internals.tidb.io/">TiDB Internals forum</a>, so that everyone in the community can participate and review the process later.</p>
+<p>Code reviews are one of the key ways to ensure the quality of the code. High-quality code reviews prevent technical debt for the long term and are crucial to the success of the project.</p>
+<p>A pull request needs to be reviewed before it gets merged. A committer who has the expertise of the corresponding area would moderate the pull request and the merge the code when it is ready. The corresponding committer could request multiple reviewers who are familiar with the area of the code. We encourage contributors to request code reviews themselves and help review each other's code.</p>
+<p>Everyone is volunteering their time to the community, high-quality code review itself costs as much as the actual code contribution, you could get your code quickly reviewed if you do others the same favor.</p>
+<p>The community should strive to reach a consensus on technical decisions through discussion. We expect committers and maintainers to moderate technical discussions in a diplomatic way, and provide suggestions with clear technical reasoning when necessary.</p>
+<h2 id="reviewers"><a class="header" href="#reviewers">Reviewers</a></h2>
+<p>Reviewers are individuals who actively contributed to the project and are willing to participate in the code review of new contributions. We identify reviewers from active contributors. The committers should explicitly solicit reviews from reviewers. High-quality code reviews prevent technical debt for long-term and are crucial to the success of the project. A pull request to the project has to be reviewed by at least one reviewer in order to be merged.</p>
+<h2 id="committers"><a class="header" href="#committers">Committers</a></h2>
+<p>Committers are individuals who are granted the write access to the project. A committer is usually responsible for a certain area or several areas of the code where they oversee the code review process. The area of contribution can take all forms, including code contributions and code reviews, documents, education, and outreach. Committers are essential for a high quality and healthy project. The community actively look for new committers from contributors. Here is a list of useful traits that help the community to recognize potential committers:</p>
+<ul>
+<li>Sustained contribution to the project, demonstrated by discussion over design documents, code reviews and proposals of new features, and other development activities. Being familiar with, and being able to take ownership on one or several areas of the project.</li>
+<li>Quality of contributions: High-quality, readable code contributions indicated by pull requests that can be merged without a substantial code review. History of creating clean, maintainable code and including good test cases. Informative code reviews to help other contributors that adhere to a good standard.</li>
+<li>Community involvement: active participation in the <a href="https://internals.tidb.io/">TiDB Internals forum</a>, promote the projects via tutorials, talks and outreach. We encourage committers to collaborate broadly, e.g. do code reviews and discuss designs with community members that they do not interact physically.</li>
+</ul>
+<h2 id="maintainers"><a class="header" href="#maintainers">Maintainers</a></h2>
+<p>The maintainers consist group of active committers that moderate the discussion, manage the project release, and proposes new committers or maintainers. Potential candidates are usually proposed via an internal discussion among maintainers, followed by a consensus approval, i.e. a concrete number of approvals, and no vetoes. Any veto must be accompanied by reasoning. Maintainers should serve the community by upholding the community practices and guidelines TiDB a better community for everyone. Maintainers should strive to only nominate new candidates outside of their own organization.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../contribute-to-tidb/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../contribute-to-tidb/committer-guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../contribute-to-tidb/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../contribute-to-tidb/committer-guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

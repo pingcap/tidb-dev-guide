@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Commit code and submit a pull request - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html" class="active"><strong aria-hidden="true">1.5.</strong> Commit code and submit a pull request</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.6.</strong> Debug and profile</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-a-bug.html"><strong aria-hidden="true">2.3.</strong> Report a Bug</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.4.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/mysql-protocol-and-session-management.html"><strong aria-hidden="true">3.1.</strong> MySQL protocol &amp; session sanagement</a></li><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-sql.html"><strong aria-hidden="true">3.2.</strong> The lifecycle of a SQL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege-management.html"><strong aria-hidden="true">3.3.</strong> Privilege management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.4.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.5.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction-processing.html"><strong aria-hidden="true">3.6.</strong> Transaction processing</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-planner.html"><strong aria-hidden="true">3.7.</strong> Overview of planner</a></li><li class="chapter-item expanded "><a href="../understand-tidb/logical-optimization-and-rules.html"><strong aria-hidden="true">3.8.</strong> Logical optimization &amp; rules</a></li><li class="chapter-item expanded "><a href="../understand-tidb/physical-optimization.html"><strong aria-hidden="true">3.9.</strong> Physical optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.10.</strong> Table statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.11.</strong> Plan cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.12.</strong> SQL hints and plan management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-the-execution-engine.html"><strong aria-hidden="true">3.13.</strong> Overview of the execution engine</a></li><li class="chapter-item expanded "><a href="../understand-tidb/communicate-with-the-storage.html"><strong aria-hidden="true">3.14.</strong> Retrieving data from the storage layer</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.15.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/tidb-release-management.html"><strong aria-hidden="true">4.1.</strong> TiDB release management</a></li><li class="chapter-item expanded "><a href="../project-management/manage-a-project.html"><strong aria-hidden="true">4.2.</strong> Manage a project</a></li><li class="chapter-item expanded "><a href="../project-management/communication-and-discussion.html"><strong aria-hidden="true">4.3.</strong> Communication and discussion</a></li><li class="chapter-item expanded "><a href="../project-management/useful-resources.html"><strong aria-hidden="true">4.4.</strong> Useful resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="commit-code-and-submit-a-pull-request"><a class="header" href="#commit-code-and-submit-a-pull-request">Commit code and submit a pull request</a></h1>
+<p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
+<p>The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:</p>
+<ul>
+<li>Beginner and Getting started sections of [this tutorial] (<a href="https://www.atlassian.com/git/tutorials">https://www.atlassian.com/git/tutorials</a>) from Atlassian </li>
+<li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
+<li>More in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
+</ul>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<p>Before creating a pull request, you need to make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The instructions on this page use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
+<p>If you've cloned the upstream repo, you will be able to reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
+<pre><code class="language-bash">git remote add dev https://github.com/your_github_id/tidb.git
+</code></pre>
+<p>You can check the remote setting using the following command:</p>
+<pre><code class="language-bash">git remote -v
+# dev    https://github.com/username/tidb.git (fetch)
+# dev    https://github.com/username/tidb.git (push)
+# origin    https://github.com/pingcap/tidb.git (fetch)
+# origin    https://github.com/pingcap/tidb.git (push)
+</code></pre>
+<h2 id="standard-process"><a class="header" href="#standard-process">Standard Process</a></h2>
+<p>The following is a normal procedure that you're likely to use for the most common minor changes and PRs:</p>
+<ol>
+<li>
+<p>Ensure that you're making your changes on top of master and get the latest changes:</p>
+<pre><code class="language-bash">git checkout master
+git pull master
+</code></pre>
+</li>
+<li>
+<p>Create a new branch for your changes:</p>
+<pre><code class="language-bash">git checkout -b my-changes
+</code></pre>
+</li>
+<li>
+<p>Make some changes to the repo and test them.</p>
+</li>
+<li>
+<p>Commit your changes and push them to your <code>dev</code> remote repository:</p>
+<pre><code class="language-bash"># stage files you created/changed/deleted
+git add path/to/changed/file.go path/to/another/changed/file.go
+
+# commit changes staged, make sure the commit message is meaningful and readable
+git commit -s -m &quot;pkg, pkg2, pkg3: what's changed&quot;
+
+# optionally use `git status` to check if the change set is correct
+# git status
+
+# push the change to your `dev` remote repository
+git push --set-upstream dev my-changes
+</code></pre>
+</li>
+<li>
+<p>Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see <a href="https://guides.github.com/activities/forking/#making-a-pull-request">Making a Pull Request</a> in GitHub Guides.</p>
+</li>
+</ol>
+<p>When making a PR, take a look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format and checklists.</p>
+<p>After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
+<ol>
+<li>
+<p>Switch to the branch that is the head and get the latest changes:</p>
+<pre><code class="language-bash">git checkout my-changes
+git pull
+</code></pre>
+</li>
+<li>
+<p>Make, stage, and commit your additional changes just like before.</p>
+</li>
+<li>
+<p>Push those changes to your fork</p>
+<pre><code class="language-bash">git push
+</code></pre>
+</li>
+</ol>
+<p>If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides <a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes">documentation</a> for this case.</p>
+<h2 id="conflicts"><a class="header" href="#conflicts">Conflicts</a></h2>
+<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then are in conflict with the changes you've made.</p>
+<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: Checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
+<h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
+<p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflicted with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like</p>
+<pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
+</code></pre>
+<p>When you open these files, you'll see sections of the form</p>
+<pre><code class="language-text">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Original code
+=======
+Your code
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 8fbf656... Commit fixes 12345
+</code></pre>
+<p>This represents the lines in the file that Git could not figure out how to rebase. The section between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> has the code from master, while the other side has your version of the code. You'll need to decide how to deal with the conflict. You may want to keep your changes, keep the changes on master, or combine the two.</p>
+<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
+<p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
+<p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
+<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced Rebasing</a></h2>
+<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
+<p>Alternatively, you can sacrifice the commit history like this:</p>
+<pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
+git rebase -i $(git merge-base master HEAD)  # and squash all changes along the way
+git rebase master
+# fix all merge conflicts
+git rebase --continue
+</code></pre>
+<p>&quot;Squashing&quot; commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
+<p>You also may want to squash just the last few commits together, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> will allow you to edit the two commits only.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../get-started/write-and-run-unit-tests.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../get-started/debug-and-profile.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../get-started/write-and-run-unit-tests.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../get-started/debug-and-profile.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

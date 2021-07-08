@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Debug and profile - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.5.</strong> Commit code and submit a pull request</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html" class="active"><strong aria-hidden="true">1.6.</strong> Debug and profile</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-a-bug.html"><strong aria-hidden="true">2.3.</strong> Report a Bug</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.4.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/mysql-protocol-and-session-management.html"><strong aria-hidden="true">3.1.</strong> MySQL protocol &amp; session sanagement</a></li><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-sql.html"><strong aria-hidden="true">3.2.</strong> The lifecycle of a SQL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege-management.html"><strong aria-hidden="true">3.3.</strong> Privilege management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.4.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.5.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction-processing.html"><strong aria-hidden="true">3.6.</strong> Transaction processing</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-planner.html"><strong aria-hidden="true">3.7.</strong> Overview of planner</a></li><li class="chapter-item expanded "><a href="../understand-tidb/logical-optimization-and-rules.html"><strong aria-hidden="true">3.8.</strong> Logical optimization &amp; rules</a></li><li class="chapter-item expanded "><a href="../understand-tidb/physical-optimization.html"><strong aria-hidden="true">3.9.</strong> Physical optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.10.</strong> Table statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.11.</strong> Plan cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.12.</strong> SQL hints and plan management</a></li><li class="chapter-item expanded "><a href="../understand-tidb/overview-of-the-execution-engine.html"><strong aria-hidden="true">3.13.</strong> Overview of the execution engine</a></li><li class="chapter-item expanded "><a href="../understand-tidb/communicate-with-the-storage.html"><strong aria-hidden="true">3.14.</strong> Retrieving data from the storage layer</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.15.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/tidb-release-management.html"><strong aria-hidden="true">4.1.</strong> TiDB release management</a></li><li class="chapter-item expanded "><a href="../project-management/manage-a-project.html"><strong aria-hidden="true">4.2.</strong> Manage a project</a></li><li class="chapter-item expanded "><a href="../project-management/communication-and-discussion.html"><strong aria-hidden="true">4.3.</strong> Communication and discussion</a></li><li class="chapter-item expanded "><a href="../project-management/useful-resources.html"><strong aria-hidden="true">4.4.</strong> Useful resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="debug-and-profile"><a class="header" href="#debug-and-profile">Debug and profile</a></h1>
+<p>In this section, you will learn the following things:</p>
+<ul>
+<li>How to debug TiDB</li>
+<li>How to pause the execution at any line of code to inspect values and stacks</li>
+<li>how to profile TiDB to catch a performance bottleneck</li>
+</ul>
+<h2 id="use-delve-for-debugging"><a class="header" href="#use-delve-for-debugging">Use delve for debugging</a></h2>
+<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native that GDB.</p>
+<h3 id="install-delve"><a class="header" href="#install-delve">Install delve</a></h3>
+<p>To install delve, you can refer to the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, you will have an executable file named <code>dlv</code> in <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code> depending on how your environment variables are set, and you can then run the following command to verify the installation.</p>
+<pre><code>$ dlv version
+Delve Debugger
+Version: 1.5.0
+Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
+</code></pre>
+<h3 id="attach-delve-to-a-running-tidb-process"><a class="header" href="#attach-delve-to-a-running-tidb-process">Attach delve to a running TiDB process</a></h3>
+<p>As mentioned in <a href="build-tidb-from-source.html">Get the code, build and run</a>, once you get the TiDB server running, you can try attaching the delve debugger.</p>
+<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.</p>
+<pre><code>$ make server
+$ ./bin/tidb-server
+</code></pre>
+<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started.</p>
+<pre><code>$ pgrep tidb-server
+1394942
+</code></pre>
+<p>If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about.</p>
+<pre><code>$ ps 1394942
+    PID TTY      STAT   TIME COMMAND
+1394942 pts/11   SNl    0:02 ./bin/tidb-server
+</code></pre>
+<p>Once you get the PID, you can attach delve onto it by running the following command:</p>
+<pre><code>$ dlv attach 1394942
+</code></pre>
+<p>You might get error messages of the kernel security setting as follows:</p>
+<pre><code>$ dlv attach 1394942
+Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing &quot;0&quot; to /proc/sys/kernel/yama/ptrace_scope
+</code></pre>
+<p>To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.</p>
+<pre><code># echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
+</code></pre>
+<p>Then retry attaching delve onto the PID and it should work.</p>
+<p>Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type <code>help</code> into the dialogue and read help messages.</p>
+<h3 id="use-delve-for-debugging-1"><a class="header" href="#use-delve-for-debugging-1">Use delve for debugging</a></h3>
+<p>After attaching delve to the running TiDB server process, you can now set breakpoints, and the TiDB server will pause the execution at the breakpoints you specified.</p>
+<p>To create a breakpoint, you can write</p>
+<pre><code>break [name] &lt;linespec&gt;
+</code></pre>
+<p>where <code>[name]</code> is the name for the breakpoint, and <code>&lt;linespec&gt;</code> is the position of a line of code in the source code. Note the name is optional.</p>
+<p>For example, the following command will create a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code> (the line number can be subject to change due to the modification of the source code).</p>
+<pre><code>$ dlv debug tidb-server/main.go                                                                                                                                   148 ↵
+Type 'help' for list of commands.
+(dlv) break executor/join.go:653
+Breakpoint 1 (enabled) set at 0x36752d8 for github.com/pingcap/tidb/executor.(*HashJoinExec).Next() ./executor/join.go:653
+(dlv)
+</code></pre>
+<p>Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.</p>
+<p>Typically, you need to take the following steps when you are using a debugger:</p>
+<ol>
+<li>Locate the code and set a breakpoint.</li>
+<li>Prepare data so that the execution will get through the breakpoint, and pause at the specified breakpoint as expected.</li>
+<li>Inspect values, and follow the execution step by step.</li>
+</ol>
+<h3 id="using-delve-to-debug-test-case"><a class="header" href="#using-delve-to-debug-test-case">Using delve to debug test case</a></h3>
+<p>If a test case fails, you can also use delve to debug the test case. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test. </p>
+<pre><code>dlv test -- -check.f TestName
+</code></pre>
+<p>For example, if you failed on <code>TearDownTest</code> in <code>executor/executor_test.go</code>, you need to go to the <code>executor/</code> directory,  and then  run <code>dlv test -- -check.f TearDownTest</code> in your shell.</p>
+<h3 id="understand-how-tidb-works-through-debugging"><a class="header" href="#understand-how-tidb-works-through-debugging">Understand how TiDB works through debugging</a></h3>
+<p>Besides debugging a bug, it is also recommended to use the debugger to understand how TiDB works through tracking the execution step by step.</p>
+<p>Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.</p>
+<p>For example,</p>
+<ol>
+<li><code>[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)</code> is where each SQL statement is compiled and optimized.</li>
+<li><code>[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)</code> is where the SQL optimization starts.</li>
+<li><code>[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)</code> is where the SQL plan turns into executor, and where the SQL execution starts.</li>
+<li>Each <code>Open</code>, <code>Next</code>, and <code>Close</code> function of each executor marks the volcano-style execution logic.</li>
+</ol>
+<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.</p>
+<h2 id="using-pprof-for-profiling"><a class="header" href="#using-pprof-for-profiling">Using <code>pprof</code> for profiling</a></h2>
+<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, You can use a powerful profiling tool called <code>pprof</code> provided by Go.</p>
+<h3 id="gather-runtime-profiling-information-through-http-end-points"><a class="header" href="#gather-runtime-profiling-information-through-http-end-points">Gather runtime profiling information through HTTP end points</a></h3>
+<p>When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>, and you can get the profile result by running the following commands:</p>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/profile?seconds=45&quot; &gt; profile.profile
+$ go tool pprof -http 127.0.0.1:4001 profile.profile
+</code></pre>
+<p>The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at <code>127.0.0.1:4001</code>, which contains the <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnosis the performance bottleneck.</p>
+<p>Similarly, you can also gather other runtime information through this end point. For example:</p>
+<ul>
+<li>Goroutine:</li>
+</ul>
+<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/goroutine&quot; &gt; goroutine.profile
+</code></pre>
+<ul>
+<li>Trace:</li>
+</ul>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/trace?seconds=3&quot; &gt; trace.profile
+$ go tool trace -http 127.0.0.1:4001 trace.profile
+</code></pre>
+<ul>
+<li>Heap:</li>
+</ul>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/heap&quot; &gt; heap.profile
+$ go tool pprof -http 127.0.0.1:4001 heap.profile
+</code></pre>
+<p>To learn how the runtime information is analyzed, see Go's <a href="https://golang.org/doc/diagnostics">diagnostics document</a>.</p>
+<h3 id="profiling-during-benchmarking"><a class="header" href="#profiling-during-benchmarking">Profiling during benchmarking</a></h3>
+<p>When you are proposing a performance-related feature for TiDB, it is recommended to also include a benchmark result as proof of the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
+<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result.</p>
+<pre><code class="language-bash">$ cd executor
+$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
+</code></pre>
+<p>If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:</p>
+<pre><code class="language-bash">$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
+</code></pre>
+<p>to also generate the profiling information, and you can then analyze them as described in the above section.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../get-started/commit-code-and-submit-a-pull-request.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../contribute-to-tidb/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../get-started/commit-code-and-submit-a-pull-request.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../contribute-to-tidb/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

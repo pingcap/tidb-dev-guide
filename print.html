@@ -1,0 +1,1555 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>TiDB Development Guide</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.5.</strong> Commit code and submit a pull request</a></li><li class="chapter-item expanded "><a href="get-started/debug-and-profile.html"><strong aria-hidden="true">1.6.</strong> Debug and profile</a></li></ol></li><li class="chapter-item expanded "><a href="contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/report-a-bug.html"><strong aria-hidden="true">2.3.</strong> Report a Bug</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.4.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li></ol></li><li class="chapter-item expanded "><a href="understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="understand-tidb/mysql-protocol-and-session-management.html"><strong aria-hidden="true">3.1.</strong> MySQL protocol &amp; session sanagement</a></li><li class="chapter-item expanded "><a href="understand-tidb/the-lifecycle-of-a-sql.html"><strong aria-hidden="true">3.2.</strong> The lifecycle of a SQL</a></li><li class="chapter-item expanded "><a href="understand-tidb/privilege-management.html"><strong aria-hidden="true">3.3.</strong> Privilege management</a></li><li class="chapter-item expanded "><a href="understand-tidb/ddl.html"><strong aria-hidden="true">3.4.</strong> DDL</a></li><li class="chapter-item expanded "><a href="understand-tidb/dml.html"><strong aria-hidden="true">3.5.</strong> DML</a></li><li class="chapter-item expanded "><a href="understand-tidb/transaction-processing.html"><strong aria-hidden="true">3.6.</strong> Transaction processing</a></li><li class="chapter-item expanded "><a href="understand-tidb/overview-of-planner.html"><strong aria-hidden="true">3.7.</strong> Overview of planner</a></li><li class="chapter-item expanded "><a href="understand-tidb/logical-optimization-and-rules.html"><strong aria-hidden="true">3.8.</strong> Logical optimization &amp; rules</a></li><li class="chapter-item expanded "><a href="understand-tidb/physical-optimization.html"><strong aria-hidden="true">3.9.</strong> Physical optimization</a></li><li class="chapter-item expanded "><a href="understand-tidb/table-statistics.html"><strong aria-hidden="true">3.10.</strong> Table statistics</a></li><li class="chapter-item expanded "><a href="understand-tidb/plan-cache.html"><strong aria-hidden="true">3.11.</strong> Plan cache</a></li><li class="chapter-item expanded "><a href="understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.12.</strong> SQL hints and plan management</a></li><li class="chapter-item expanded "><a href="understand-tidb/overview-of-the-execution-engine.html"><strong aria-hidden="true">3.13.</strong> Overview of the execution engine</a></li><li class="chapter-item expanded "><a href="understand-tidb/communicate-with-the-storage.html"><strong aria-hidden="true">3.14.</strong> Retrieving data from the storage layer</a></li><li class="chapter-item expanded "><a href="understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.15.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="project-management/tidb-release-management.html"><strong aria-hidden="true">4.1.</strong> TiDB release management</a></li><li class="chapter-item expanded "><a href="project-management/manage-a-project.html"><strong aria-hidden="true">4.2.</strong> Manage a project</a></li><li class="chapter-item expanded "><a href="project-management/communication-and-discussion.html"><strong aria-hidden="true">4.3.</strong> Communication and discussion</a></li><li class="chapter-item expanded "><a href="project-management/useful-resources.html"><strong aria-hidden="true">4.4.</strong> Useful resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tidb-development-guide"><a class="header" href="#tidb-development-guide">TiDB Development Guide</a></h1>
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<p><a href="index.html#contributors-"><img src="https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square" alt="All Contributors" /></a></p>
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<h2 id="about-this-guide"><a class="header" href="#about-this-guide">About this guide</a></h2>
+<ul>
+<li><strong>The target audience</strong> of this guide is TiDB contributors, both new and experienced.</li>
+<li><strong>The objective</strong> of this guide is to help contributors become an expert of TiDB, who is familiar with its design and implementation and thus is able to use it fluently in the real world as well as develop TiDB itself deeply.</li>
+</ul>
+<h2 id="the-structure-of-this-guide"><a class="header" href="#the-structure-of-this-guide">The structure of this guide</a></h2>
+<p>At present, the guide is composed of the following parts:</p>
+<ol>
+<li><strong>Get started:</strong> Setting up the development environment, build and connect to the tidb-server, the subsections are based on an imagined newbie user journey.</li>
+<li><strong>Contribute to TiDB</strong> helps you quickly get involved in the TiDB community, which illustrates what contributions you can make and how to quickly make one.</li>
+<li><strong>Understand TiDB</strong>: helps you to be familiar with basic distributed database concepts, build a knowledge base in your mind, including but not limited to SQL language, key components, algorithms in a distributed database. The audiences who are already familiar with these concepts can skip this section.</li>
+<li><strong>Project Management</strong>: helps you to participate in team working, lead feature development, manage projects in the TiDB community.</li>
+</ol>
+<h2 id="contributors-"><a class="header" href="#contributors-">Contributors ✨</a></h2>
+<p>Thanks goes to these wonderful people (<a href="https://allcontributors.org/docs/en/emoji-key">emoji key</a>):</p>
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/LittleFall"><img src="https://avatars.githubusercontent.com/u/30543181?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zhi Qi</b></sub></a><br /><a href="index.html#content-LittleFall" title="Content">🖋</a></td>
+    <td align="center"><a href="https://tisonkun.github.io/Miracle/"><img src="https://avatars.githubusercontent.com/u/18818196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tison</b></sub></a><br /><a href="index.html#content-tisonkun" title="Content">🖋</a> <a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atisonkun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://zz-jason.github.io/"><img src="https://avatars.githubusercontent.com/u/5268763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jian Zhang</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azz-jason" title="Reviewed Pull Requests">👀</a> <a href="index.html#content-zz-jason" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/qiancai"><img src="https://avatars.githubusercontent.com/u/79440533?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Grace Cai</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aqiancai" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://ichn.xyz"><img src="https://avatars.githubusercontent.com/u/29735669?v=4?s=100" width="100px;" alt=""/><br /><sub><b>虎</b></sub></a><br /><a href="index.html#content-ichn-hu" title="Content">🖋</a> <a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aichn-hu" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/bb7133"><img src="https://avatars.githubusercontent.com/u/1174042?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bb7133</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Abb7133" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/gregabramowitzweber"><img src="https://avatars.githubusercontent.com/u/1183?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Greg Weber</b></sub></a><br /><a href="index.html#content-gregwebs" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/djshow832"><img src="https://avatars.githubusercontent.com/u/29590578?v=4?s=100" width="100px;" alt=""/><br /><sub><b>djshow832</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Adjshow832" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://www.zenlife.tk"><img src="https://avatars.githubusercontent.com/u/1420062?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tiancaiamao</b></sub></a><br /><a href="index.html#content-tiancaiamao" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/tomdewan"><img src="https://avatars.githubusercontent.com/u/50153616?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tomdewan</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Atomdewan" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/disksing"><img src="https://avatars.githubusercontent.com/u/12077877?v=4?s=100" width="100px;" alt=""/><br /><sub><b>disksing</b></sub></a><br /><a href="https://github.com/zz-jason/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Adisksing" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.hawkingrei.com/blog/"><img src="https://avatars.githubusercontent.com/u/3427324?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Weizhen Wang</b></sub></a><br /><a href="index.html#content-hawkingrei" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/TomShawn"><img src="https://avatars.githubusercontent.com/u/41534398?v=4?s=100" width="100px;" alt=""/><br /><sub><b>TomShawn</b></sub></a><br /><a href="index.html#content-TomShawn" title="Content">🖋</a></td>
+  </tr>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+<p>This project follows the <a href="https://github.com/all-contributors/all-contributors">all-contributors</a> specification. Contributions of any kind welcome!</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get-started"><a class="header" href="#get-started">Get Started</a></h1>
+<p>Let’s start your TiDB journey! There's a lot to learn, but every journey starts somewhere. In this chapter, we’ll discuss:</p>
+<ul>
+<li><a href="get-started/install-golang.html">Install Golang</a></li>
+<li><a href="get-started/build-tidb-from-source.html">Get the code, build and run</a></li>
+<li><a href="get-started/setup-an-ide.html">Setup an IDE</a></li>
+<li><a href="get-started/write-and-run-unit-tests.html">Write and run unit tests</a></li>
+<li><a href="get-started/commit-code-and-submit-a-pull-request.html">Commit code and submit a pull request</a></li>
+<li><a href="get-started/debug-and-profile.html">Debug and profile</a></li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="install-golang"><a class="header" href="#install-golang">Install Golang</a></h1>
+<p>To build TiDB from source code, you need to install Go in your development environment first. If Go is not installed yet, you can follow the instructions in this document for installation.</p>
+<h2 id="tldr"><a class="header" href="#tldr">TL;DR</a></h2>
+<ul>
+<li>Install Go 1.16 follow the <a href="https://golang.org/doc/install">install instruction</a></li>
+<li>Or manage Go toolchain using <a href="https://github.com/moovweb/gvm">gvm</a></li>
+</ul>
+<h2 id="install-go-116"><a class="header" href="#install-go-116">Install Go 1.16</a></h2>
+<p>Most TiDB developers are using Linux or MacOS. If you are using Windows 10, to have a better experience, it is recommended to <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install Windows Subsystem for Linux 2 (WSL2)</a> on Windows 10 first. TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. In that case, you can either figure out the solutions on your own or share the problems on our <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
+<p>Currently, TiDB uses Go 1.16 to compile the code. To install Go 1.16, go to <a href="https://golang.org/dl/">Go's download page</a>, choose version 1.16, and then follow the <a href="https://golang.org/doc/install">install instruction</a>.</p>
+<h2 id="manage-go-toolchain-using-gvm"><a class="header" href="#manage-go-toolchain-using-gvm">Manage Go toolchain using gvm</a></h2>
+<p>We might update the compiler version of TiDB in the near future. If you are using Linux or MacOS, to manage Go versions in an easy way, you are recommended to try <a href="https://github.com/moovweb/gvm">Go Version Manager (gvm)</a>.</p>
+<p>To install gvm, run the following command:</p>
+<pre><code class="language-bash">curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sh
+</code></pre>
+<p>Once you have gvm installed, you can have many different Go compilers with different versions managed by it. First of all, install Go 1.16 and set it as default</p>
+<pre><code class="language-bash">gvm install go1.16
+gvm use go1.16 --default
+</code></pre>
+<p>Now, you can type <code>go version</code> in the shell to verify the installation.</p>
+<pre><code class="language-text">$ go version
+go version go1.16 linux/amd64
+</code></pre>
+<p>In the next chapter, you will learn how to obtain the source code of TiDB and how to build it.</p>
+<p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get-the-code-build-and-run"><a class="header" href="#get-the-code-build-and-run">Get the code, build and run</a></h1>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li><code>git</code>: The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please <a href="https://git-scm.com/downloads">install <code>git</code></a>.</li>
+<li><code>go</code>: TiDB is a Go project thus its building requires a working <code>go</code> environment. See the previous <a href="https://github.com/zz-jason/tidb-dev-guide/tree/ac6b65f27b589a78fff1767e94703eb1ca25874e/get-started/get-started/install-golang.md">Install Golang</a> section to prepare the environment.</li>
+<li><code>mysql</code> client (optional): After building TiDB from source, you can use use the official <a href="https://dev.mysql.com/downloads/mysql/">MySQL client</a> to connect to TiDB. It is not required if you want to build TiDB only.</li>
+</ul>
+<h2 id="clone"><a class="header" href="#clone">Clone</a></h2>
+<p>Clone the source code to your development machine.</p>
+<pre><code class="language-bash">mkdir -p $GOPATH/src/github.com/pingcap
+cd $GOPATH/src/github.com/pingcap
+git clone https://github.com/pingcap/tidb.git
+</code></pre>
+<h2 id="build"><a class="header" href="#build">Build</a></h2>
+<p>Build TiDB from the source code.</p>
+<pre><code class="language-bash">cd $GOPATH/src/github.com/pingcap/tidb
+make
+</code></pre>
+<h2 id="run"><a class="header" href="#run">Run</a></h2>
+<p>Now you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance.</p>
+<pre><code class="language-bash">cd $GOPATH/src/github.com/pingcap/tidb/bin
+./tidb-server
+</code></pre>
+<p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
+<h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
+<p>You can use official MySQL client to connect to TiDB:</p>
+<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot;
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="setup-an-ide"><a class="header" href="#setup-an-ide">Setup an IDE</a></h1>
+<h2 id="vs-code"><a class="header" href="#vs-code">VS Code</a></h2>
+<h2 id="goland"><a class="header" href="#goland">GoLand</a></h2>
+<p>You can use <a href="https://www.jetbrains.com/go/">GoLand</a> to easily run or debug TiDB in many situations.</p>
+<p><strong>Step 1</strong>. Clone <a href="https://github.com/pingcap/tidb">TiDB repo</a> and setup <code>go</code> environment, see previous sections for more information.</p>
+<p><strong>Step 2</strong>. Download GoLand <a href="https://www.jetbrains.com/go/download/">here</a> and install it.</p>
+<p><strong>Step 3</strong>. Open the TiDB project in GoLand.</p>
+<p><img src="https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png" alt="tidb in goland" /></p>
+<p><strong>Step 4</strong>. <code>cd &lt;tidb-dir&gt;</code> and execute following commands to add these three config files to <code>./.idea/runConfigurations/</code> directory. </p>
+<pre><code class="language-bash">mkdir -p .idea/runConfigurations/ &amp;&amp; cd .idea/runConfigurations/
+cat &lt;&lt;EOF &gt; unistore_4000.xml
+&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
+  &lt;configuration default=&quot;false&quot; name=&quot;unistore 4000&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
+    &lt;module name=&quot;tidb&quot; /&gt;
+    &lt;working_directory value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;kind value=&quot;PACKAGE&quot; /&gt;
+    &lt;filePath value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;package value=&quot;github.com/pingcap/tidb/tidb-server&quot; /&gt;
+    &lt;directory value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;method v=&quot;2&quot; /&gt;
+  &lt;/configuration&gt;
+&lt;/component&gt;
+EOF
+
+cat &lt;&lt;EOF &gt; playground_attach_4001.xml
+&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
+  &lt;configuration default=&quot;false&quot; name=&quot;playground attach 4001&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
+    &lt;module name=&quot;tidb&quot; /&gt;
+    &lt;working_directory value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;parameters value=&quot;--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 &quot; /&gt;
+    &lt;kind value=&quot;PACKAGE&quot; /&gt;
+    &lt;filePath value=&quot;$PROJECT_DIR$/tidb-server/main.go&quot; /&gt;
+    &lt;package value=&quot;github.com/pingcap/tidb/tidb-server&quot; /&gt;
+    &lt;directory value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;method v=&quot;2&quot; /&gt;
+  &lt;/configuration&gt;
+&lt;/component&gt;
+EOF
+
+cat &lt;&lt;EOF &gt; unit_test.xml
+&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
+  &lt;configuration default=&quot;false&quot; name=&quot;unit test&quot; type=&quot;GoTestRunConfiguration&quot; factoryName=&quot;Go Test&quot;&gt;
+    &lt;module name=&quot;tidb&quot; /&gt;
+    &lt;working_directory value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;go_parameters value=&quot;-i&quot; /&gt;
+    &lt;framework value=&quot;gocheck&quot; /&gt;
+    &lt;kind value=&quot;DIRECTORY&quot; /&gt;
+    &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
+    &lt;directory value=&quot;$PROJECT_DIR$/planner/core&quot; /&gt;
+    &lt;filePath value=&quot;$PROJECT_DIR$&quot; /&gt;
+    &lt;pattern value=&quot;TestEnforceMPP&quot; /&gt;
+    &lt;method v=&quot;2&quot; /&gt;
+  &lt;/configuration&gt;
+&lt;/component&gt;
+EOF
+</code></pre>
+<p>After executing script, you can check whether to have three config in the directory. </p>
+<pre><code class="language-bash">$ ls
+playground_attach_4001.xml
+unistore_4000.xml
+unit_test.xml
+</code></pre>
+<p><strong>Step 5</strong>. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.</p>
+<p><img src="https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png" alt="configs" /></p>
+<blockquote>
+<p>GoLand uses <a href="https://github.com/go-delve/delve">delve</a> to debug go programs, usually GoLand has an usable delve without any additional configuration. But in some cases, you may need to download a delve by yourself.</p>
+</blockquote>
+<p>The first config is <code>unistore 4000</code>, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.</p>
+<p><img src="https://user-images.githubusercontent.com/30543181/118766909-a4498000-b8af-11eb-8e20-9e2aff1a0b44.png" alt="unistore config" /> <img src="https://user-images.githubusercontent.com/30543181/118769645-f9d35c00-b8b2-11eb-9048-1b696ead2815.png" alt="run in unistore" /></p>
+<p>The second config is <code>playground attach 4001</code>, which makes you can run/debug TiDB to attach a existed cluster, for example, <a href="https://docs.pingcap.com/tidb/stable/tiup-playground"><code>tiup playground</code></a>.</p>
+<p>After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.</p>
+<p><img src="https://user-images.githubusercontent.com/30543181/118767132-f38fb080-b8af-11eb-93cd-bdbe95ff2102.png" alt="playground attach config" /> <img src="https://user-images.githubusercontent.com/30543181/118771847-9860bc80-b8b5-11eb-856f-4b4f21d035de.png" alt="debug" /></p>
+<p>The third config is <code>unit test</code>, which makes you can run/debug TiDB's unit test. You may modify the <code>Directory</code> and <code>Pattern</code> to run other tests.</p>
+<p><img src="https://user-images.githubusercontent.com/30543181/118767852-dad3ca80-b8b0-11eb-86ae-306bd4a995bc.png" alt="unit test config" /> <img src="https://user-images.githubusercontent.com/30543181/118769164-7285e880-b8b2-11eb-923e-c3eaffcddfd6.png" alt="unit test" /></p>
+<p><strong>Step 6</strong>. Just click the run or debug button to enjoy your time of TiDB in GoLand!</p>
+<h2 id="vim"><a class="header" href="#vim">Vim</a></h2>
+<h2 id="emacs"><a class="header" href="#emacs">Emacs</a></h2>
+<p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="write-and-run-unit-tests"><a class="header" href="#write-and-run-unit-tests">Write and run unit tests</a></h1>
+<p>including but not limited to:</p>
+<ul>
+<li>tidb unit test framework</li>
+<li>how to write unit tests</li>
+<li>how to run all the tests</li>
+<li>how to run a single test</li>
+<li>how to find the failed test</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="commit-code-and-submit-a-pull-request"><a class="header" href="#commit-code-and-submit-a-pull-request">Commit code and submit a pull request</a></h1>
+<p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
+<p>The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:</p>
+<ul>
+<li>Beginner and Getting started sections of [this tutorial] (<a href="https://www.atlassian.com/git/tutorials">https://www.atlassian.com/git/tutorials</a>) from Atlassian </li>
+<li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
+<li>More in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
+</ul>
+<h2 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h2>
+<p>Before creating a pull request, you need to make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The instructions on this page use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
+<p>If you've cloned the upstream repo, you will be able to reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
+<pre><code class="language-bash">git remote add dev https://github.com/your_github_id/tidb.git
+</code></pre>
+<p>You can check the remote setting using the following command:</p>
+<pre><code class="language-bash">git remote -v
+# dev    https://github.com/username/tidb.git (fetch)
+# dev    https://github.com/username/tidb.git (push)
+# origin    https://github.com/pingcap/tidb.git (fetch)
+# origin    https://github.com/pingcap/tidb.git (push)
+</code></pre>
+<h2 id="standard-process"><a class="header" href="#standard-process">Standard Process</a></h2>
+<p>The following is a normal procedure that you're likely to use for the most common minor changes and PRs:</p>
+<ol>
+<li>
+<p>Ensure that you're making your changes on top of master and get the latest changes:</p>
+<pre><code class="language-bash">git checkout master
+git pull master
+</code></pre>
+</li>
+<li>
+<p>Create a new branch for your changes:</p>
+<pre><code class="language-bash">git checkout -b my-changes
+</code></pre>
+</li>
+<li>
+<p>Make some changes to the repo and test them.</p>
+</li>
+<li>
+<p>Commit your changes and push them to your <code>dev</code> remote repository:</p>
+<pre><code class="language-bash"># stage files you created/changed/deleted
+git add path/to/changed/file.go path/to/another/changed/file.go
+
+# commit changes staged, make sure the commit message is meaningful and readable
+git commit -s -m &quot;pkg, pkg2, pkg3: what's changed&quot;
+
+# optionally use `git status` to check if the change set is correct
+# git status
+
+# push the change to your `dev` remote repository
+git push --set-upstream dev my-changes
+</code></pre>
+</li>
+<li>
+<p>Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see <a href="https://guides.github.com/activities/forking/#making-a-pull-request">Making a Pull Request</a> in GitHub Guides.</p>
+</li>
+</ol>
+<p>When making a PR, take a look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format and checklists.</p>
+<p>After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
+<ol>
+<li>
+<p>Switch to the branch that is the head and get the latest changes:</p>
+<pre><code class="language-bash">git checkout my-changes
+git pull
+</code></pre>
+</li>
+<li>
+<p>Make, stage, and commit your additional changes just like before.</p>
+</li>
+<li>
+<p>Push those changes to your fork</p>
+<pre><code class="language-bash">git push
+</code></pre>
+</li>
+</ol>
+<p>If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides <a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes">documentation</a> for this case.</p>
+<h2 id="conflicts"><a class="header" href="#conflicts">Conflicts</a></h2>
+<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then are in conflict with the changes you've made.</p>
+<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: Checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
+<h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
+<p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflicted with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like</p>
+<pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
+</code></pre>
+<p>When you open these files, you'll see sections of the form</p>
+<pre><code class="language-text">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Original code
+=======
+Your code
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 8fbf656... Commit fixes 12345
+</code></pre>
+<p>This represents the lines in the file that Git could not figure out how to rebase. The section between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> has the code from master, while the other side has your version of the code. You'll need to decide how to deal with the conflict. You may want to keep your changes, keep the changes on master, or combine the two.</p>
+<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
+<p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
+<p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
+<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced Rebasing</a></h2>
+<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
+<p>Alternatively, you can sacrifice the commit history like this:</p>
+<pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
+git rebase -i $(git merge-base master HEAD)  # and squash all changes along the way
+git rebase master
+# fix all merge conflicts
+git rebase --continue
+</code></pre>
+<p>&quot;Squashing&quot; commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
+<p>You also may want to squash just the last few commits together, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> will allow you to edit the two commits only.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="debug-and-profile"><a class="header" href="#debug-and-profile">Debug and profile</a></h1>
+<p>In this section, you will learn the following things:</p>
+<ul>
+<li>How to debug TiDB</li>
+<li>How to pause the execution at any line of code to inspect values and stacks</li>
+<li>how to profile TiDB to catch a performance bottleneck</li>
+</ul>
+<h2 id="use-delve-for-debugging"><a class="header" href="#use-delve-for-debugging">Use delve for debugging</a></h2>
+<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native that GDB.</p>
+<h3 id="install-delve"><a class="header" href="#install-delve">Install delve</a></h3>
+<p>To install delve, you can refer to the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, you will have an executable file named <code>dlv</code> in <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code> depending on how your environment variables are set, and you can then run the following command to verify the installation.</p>
+<pre><code>$ dlv version
+Delve Debugger
+Version: 1.5.0
+Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
+</code></pre>
+<h3 id="attach-delve-to-a-running-tidb-process"><a class="header" href="#attach-delve-to-a-running-tidb-process">Attach delve to a running TiDB process</a></h3>
+<p>As mentioned in <a href="get-started/build-tidb-from-source.html">Get the code, build and run</a>, once you get the TiDB server running, you can try attaching the delve debugger.</p>
+<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.</p>
+<pre><code>$ make server
+$ ./bin/tidb-server
+</code></pre>
+<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started.</p>
+<pre><code>$ pgrep tidb-server
+1394942
+</code></pre>
+<p>If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about.</p>
+<pre><code>$ ps 1394942
+    PID TTY      STAT   TIME COMMAND
+1394942 pts/11   SNl    0:02 ./bin/tidb-server
+</code></pre>
+<p>Once you get the PID, you can attach delve onto it by running the following command:</p>
+<pre><code>$ dlv attach 1394942
+</code></pre>
+<p>You might get error messages of the kernel security setting as follows:</p>
+<pre><code>$ dlv attach 1394942
+Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing &quot;0&quot; to /proc/sys/kernel/yama/ptrace_scope
+</code></pre>
+<p>To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.</p>
+<pre><code># echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
+</code></pre>
+<p>Then retry attaching delve onto the PID and it should work.</p>
+<p>Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type <code>help</code> into the dialogue and read help messages.</p>
+<h3 id="use-delve-for-debugging-1"><a class="header" href="#use-delve-for-debugging-1">Use delve for debugging</a></h3>
+<p>After attaching delve to the running TiDB server process, you can now set breakpoints, and the TiDB server will pause the execution at the breakpoints you specified.</p>
+<p>To create a breakpoint, you can write</p>
+<pre><code>break [name] &lt;linespec&gt;
+</code></pre>
+<p>where <code>[name]</code> is the name for the breakpoint, and <code>&lt;linespec&gt;</code> is the position of a line of code in the source code. Note the name is optional.</p>
+<p>For example, the following command will create a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code> (the line number can be subject to change due to the modification of the source code).</p>
+<pre><code>$ dlv debug tidb-server/main.go                                                                                                                                   148 ↵
+Type 'help' for list of commands.
+(dlv) break executor/join.go:653
+Breakpoint 1 (enabled) set at 0x36752d8 for github.com/pingcap/tidb/executor.(*HashJoinExec).Next() ./executor/join.go:653
+(dlv)
+</code></pre>
+<p>Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.</p>
+<p>Typically, you need to take the following steps when you are using a debugger:</p>
+<ol>
+<li>Locate the code and set a breakpoint.</li>
+<li>Prepare data so that the execution will get through the breakpoint, and pause at the specified breakpoint as expected.</li>
+<li>Inspect values, and follow the execution step by step.</li>
+</ol>
+<h3 id="using-delve-to-debug-test-case"><a class="header" href="#using-delve-to-debug-test-case">Using delve to debug test case</a></h3>
+<p>If a test case fails, you can also use delve to debug the test case. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test. </p>
+<pre><code>dlv test -- -check.f TestName
+</code></pre>
+<p>For example, if you failed on <code>TearDownTest</code> in <code>executor/executor_test.go</code>, you need to go to the <code>executor/</code> directory,  and then  run <code>dlv test -- -check.f TearDownTest</code> in your shell.</p>
+<h3 id="understand-how-tidb-works-through-debugging"><a class="header" href="#understand-how-tidb-works-through-debugging">Understand how TiDB works through debugging</a></h3>
+<p>Besides debugging a bug, it is also recommended to use the debugger to understand how TiDB works through tracking the execution step by step.</p>
+<p>Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.</p>
+<p>For example,</p>
+<ol>
+<li><code>[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)</code> is where each SQL statement is compiled and optimized.</li>
+<li><code>[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)</code> is where the SQL optimization starts.</li>
+<li><code>[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)</code> is where the SQL plan turns into executor, and where the SQL execution starts.</li>
+<li>Each <code>Open</code>, <code>Next</code>, and <code>Close</code> function of each executor marks the volcano-style execution logic.</li>
+</ol>
+<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.</p>
+<h2 id="using-pprof-for-profiling"><a class="header" href="#using-pprof-for-profiling">Using <code>pprof</code> for profiling</a></h2>
+<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, You can use a powerful profiling tool called <code>pprof</code> provided by Go.</p>
+<h3 id="gather-runtime-profiling-information-through-http-end-points"><a class="header" href="#gather-runtime-profiling-information-through-http-end-points">Gather runtime profiling information through HTTP end points</a></h3>
+<p>When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>, and you can get the profile result by running the following commands:</p>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/profile?seconds=45&quot; &gt; profile.profile
+$ go tool pprof -http 127.0.0.1:4001 profile.profile
+</code></pre>
+<p>The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at <code>127.0.0.1:4001</code>, which contains the <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnosis the performance bottleneck.</p>
+<p>Similarly, you can also gather other runtime information through this end point. For example:</p>
+<ul>
+<li>Goroutine:</li>
+</ul>
+<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/goroutine&quot; &gt; goroutine.profile
+</code></pre>
+<ul>
+<li>Trace:</li>
+</ul>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/trace?seconds=3&quot; &gt; trace.profile
+$ go tool trace -http 127.0.0.1:4001 trace.profile
+</code></pre>
+<ul>
+<li>Heap:</li>
+</ul>
+<pre><code class="language-bash">$ curl -G &quot;127.0.0.1:10080/debug/pprof/heap&quot; &gt; heap.profile
+$ go tool pprof -http 127.0.0.1:4001 heap.profile
+</code></pre>
+<p>To learn how the runtime information is analyzed, see Go's <a href="https://golang.org/doc/diagnostics">diagnostics document</a>.</p>
+<h3 id="profiling-during-benchmarking"><a class="header" href="#profiling-during-benchmarking">Profiling during benchmarking</a></h3>
+<p>When you are proposing a performance-related feature for TiDB, it is recommended to also include a benchmark result as proof of the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
+<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result.</p>
+<pre><code class="language-bash">$ cd executor
+$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
+</code></pre>
+<p>If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:</p>
+<pre><code class="language-bash">$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
+</code></pre>
+<p>to also generate the profiling information, and you can then analyze them as described in the above section.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>TiDB is developed by an open and friendly community. Everybody is cordially welcome to join the community and contribute to TiDB. We value all forms of contributions, including, but not limited to:</p>
+<ul>
+<li>Code reviewing of the existing patches</li>
+<li>Documentation and usage examples</li>
+<li>Community participation in forums and issues</li>
+<li>Code readability and developer guide
+<ul>
+<li>We welcome contributions that add code comments and code refactor to improve readability</li>
+<li>We also welcome contributions to docs to explain the design choices of the internal</li>
+</ul>
+</li>
+<li>Test cases to make the codebase more robust</li>
+<li>Tutorials, blog posts, talks that promote the project</li>
+</ul>
+<p>Here are guidelines for contributing to various aspect of the project:</p>
+<ul>
+<li><a href="contribute-to-tidb/community-guideline.html">TiDB Community Guideline</a></li>
+<li><a href="contribute-to-tidb/report-a-bug.html">Report a Bug</a></li>
+<li><a href="contribute-to-tidb/make-a-proposal.html">Make a Proposal</a></li>
+<li><a href="contribute-to-tidb/contribute-code.html">Contribute Code</a></li>
+<li><a href="contribute-to-tidb/review-a-pr.html">Review a Pull Request</a></li>
+<li><a href="contribute-to-tidb/code-style-and-quality-guide.html">Code Style and Quality Guide</a></li>
+<li><a href="contribute-to-tidb/write-document.html">Write Document</a></li>
+<li><a href="contribute-to-tidb/committer-guide.html">Committer Guide</a></li>
+</ul>
+<p>Any other question? Reach out to the <a href="https://internals.tidb.io/">TiDB Internals forum</a> to get help!</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="community-guideline"><a class="header" href="#community-guideline">Community Guideline</a></h1>
+<p>TiDB governs by meritocracy and adopts a model consists of reviewer, committer, and maintainer. We believe that it is important to create an inclusive community where everyone can use, contribute to, and influence the direction of the project. See <a href="https://github.com/pingcap/tidb/graphs/contributors">the contributors page</a> for the current list of contributors.</p>
+<h2 id="general-development-process"><a class="header" href="#general-development-process">General Development Process</a></h2>
+<p>Everyone in the community is welcomed to send patches, documents, and propose new directions to the project. The key guideline here is to enable everyone in the community to get involved and participate the decision and development. When major changes are proposed, a design document should be sent to allow discussion by the community. We encourage public discussion, archivable channels such as GitHub issues and the <a href="https://internals.tidb.io/">TiDB Internals forum</a>, so that everyone in the community can participate and review the process later.</p>
+<p>Code reviews are one of the key ways to ensure the quality of the code. High-quality code reviews prevent technical debt for the long term and are crucial to the success of the project.</p>
+<p>A pull request needs to be reviewed before it gets merged. A committer who has the expertise of the corresponding area would moderate the pull request and the merge the code when it is ready. The corresponding committer could request multiple reviewers who are familiar with the area of the code. We encourage contributors to request code reviews themselves and help review each other's code.</p>
+<p>Everyone is volunteering their time to the community, high-quality code review itself costs as much as the actual code contribution, you could get your code quickly reviewed if you do others the same favor.</p>
+<p>The community should strive to reach a consensus on technical decisions through discussion. We expect committers and maintainers to moderate technical discussions in a diplomatic way, and provide suggestions with clear technical reasoning when necessary.</p>
+<h2 id="reviewers"><a class="header" href="#reviewers">Reviewers</a></h2>
+<p>Reviewers are individuals who actively contributed to the project and are willing to participate in the code review of new contributions. We identify reviewers from active contributors. The committers should explicitly solicit reviews from reviewers. High-quality code reviews prevent technical debt for long-term and are crucial to the success of the project. A pull request to the project has to be reviewed by at least one reviewer in order to be merged.</p>
+<h2 id="committers"><a class="header" href="#committers">Committers</a></h2>
+<p>Committers are individuals who are granted the write access to the project. A committer is usually responsible for a certain area or several areas of the code where they oversee the code review process. The area of contribution can take all forms, including code contributions and code reviews, documents, education, and outreach. Committers are essential for a high quality and healthy project. The community actively look for new committers from contributors. Here is a list of useful traits that help the community to recognize potential committers:</p>
+<ul>
+<li>Sustained contribution to the project, demonstrated by discussion over design documents, code reviews and proposals of new features, and other development activities. Being familiar with, and being able to take ownership on one or several areas of the project.</li>
+<li>Quality of contributions: High-quality, readable code contributions indicated by pull requests that can be merged without a substantial code review. History of creating clean, maintainable code and including good test cases. Informative code reviews to help other contributors that adhere to a good standard.</li>
+<li>Community involvement: active participation in the <a href="https://internals.tidb.io/">TiDB Internals forum</a>, promote the projects via tutorials, talks and outreach. We encourage committers to collaborate broadly, e.g. do code reviews and discuss designs with community members that they do not interact physically.</li>
+</ul>
+<h2 id="maintainers"><a class="header" href="#maintainers">Maintainers</a></h2>
+<p>The maintainers consist group of active committers that moderate the discussion, manage the project release, and proposes new committers or maintainers. Potential candidates are usually proposed via an internal discussion among maintainers, followed by a consensus approval, i.e. a concrete number of approvals, and no vetoes. Any veto must be accompanied by reasoning. Maintainers should serve the community by upholding the community practices and guidelines TiDB a better community for everyone. Maintainers should strive to only nominate new candidates outside of their own organization.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="committer-guide"><a class="header" href="#committer-guide">Committer Guide</a></h1>
+<p>This is an evolving document to provide some helpful tips for committers. Most of them are lessons learned during development. We welcome every committer to contribute to this document. See the <a href="contribute-to-tidb/community-guideline.html">TiDB Community Guideline</a> for an overview of the committership and the general development process.</p>
+<h2 id="community-first"><a class="header" href="#community-first">Community First</a></h2>
+<p>The collective effort of the community moves the project forward and makes the project awesome for everyone. When we make a decision, it is always helpful to keep the community in mind. Here are some example questions that we can ask:</p>
+<ul>
+<li>How can I encourage new contributors to get more involved in the project?</li>
+<li>Can I help to save my fellow committers' time?</li>
+<li>Have I enabled the rest of the community to participate the design proposals?</li>
+</ul>
+<h2 id="public-archive-principle"><a class="header" href="#public-archive-principle">Public Archive Principle</a></h2>
+<p>While private channels such as face to face discussion are useful for development, they also create barriers for the broader community's participation. An open way of development suggests all decisions to be made in public channels, which are archived and accessible to everyone. As a result, any contributor can keep up with the development by watching the archives and join the development anytime.</p>
+<p>While this principle applies to every contributor, it is especially important for committers. Here are some example applications of this principle:</p>
+<ul>
+<li>When getting a project-related question from a personal channel, encourage the person to open a public thread in the <a href="https://internals.tidb.io/">TiDB Internals forum</a>, so others in the community can benefit from the answer.</li>
+<li>After an in-person discussion, send a summary to public channels (as an RFC or a discuss topic).</li>
+</ul>
+<h2 id="shepherd-a-pull-request"><a class="header" href="#shepherd-a-pull-request">Shepherd a Pull Request</a></h2>
+<p>Here are some tips to shepherd a pull request. You can also take a look at <a href="contribute-to-tidb/review-a-pr.html">Review a Pull Request</a>.</p>
+<ul>
+<li>Assign the PR to yourself, so that other committers know that the PR has already been tended to.</li>
+<li>Make use of the status label to indicate the current status.</li>
+<li>Check if a design document needs to be present.</li>
+<li>If the contributor has not requested a reviewer, kindly ask the contributor to do so. If the PR comes from a new contributor, help the contributor to request reviewers and ask the contributor to do so next time.</li>
+<li>Moderate the reviews, ask reviewers to approve explicitly.</li>
+<li>Mark the PR as accepted and acknowledge the contributor/reviewers.</li>
+<li>Merge the PR :)</li>
+</ul>
+<h2 id="time-management"><a class="header" href="#time-management">Time Management</a></h2>
+<p>There are many things that a committer can do, such as moderating discussions, pull request reviews and code contributions.</p>
+<p>Working on an open source project can be rewarding, but also be a bit overwhelming sometimes. A little bit of time management might be helpful to alleviate the problem. For example, some committers have a &quot;community day&quot; in a week when they actively manage outstanding PRs, but watch the community less frequently in the rest of the time.</p>
+<p>Remember that your merit will never go away, so please take your time and pace when contributing to the project:)</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="report-a-bug"><a class="header" href="#report-a-bug">Report a Bug</a></h1>
+<p>While bugs are unfortunate, they're a reality in software. We can't fix what we don't know about, so please report liberally. If you're not sure if something is a bug or not, feel free to file a bug anyway.</p>
+<p>If you're using the nightly build, please check if the bug exists in the latest codebase before filing your bug. It might be fixed already.</p>
+<p>If you have the chance, before reporting a bug, please <a href="https://github.com/pingcap/tidb/issues?q=is%3Aissue">search existing issues</a>, as it's possible that someone else has already reported your error. This doesn't always work, and sometimes it's hard to know what to search for, so consider this extra credit. We won't mind if you accidentally file a duplicate report.</p>
+<p>Similarly, to help others who encountered the bug find your issue, consider filing an issue with a descriptive title, which contains information that might be unique to it. This can be the components related to or database feature used, the conditions that trigger the bug, or part of the error message if there is any. An example could be: <a href="https://github.com/pingcap/tidb/issues/24584"><code>ddl: admin cancel column-type-change will not release the background work goroutine</code></a>.</p>
+<p>Opening an issue is as easy as following <a href="https://github.com/pingcap/tidb/issues/new?assignees=&amp;labels=type%2Fbug&amp;template=bug-report.md">this link</a> and filling out the fields in the appropriate provided template. The fields mainly consist of</p>
+<ol>
+<li>Minimal reproduce step.</li>
+<li>What did you expect to see?</li>
+<li>What did you see instead?</li>
+<li>What is your TiDB version?</li>
+</ol>
+<p>For minimal reproduce step, it would be better to provide an executable SQL script, take <a href="https://github.com/pingcap/tidb/issues/25007">pingcap/tidb#25007</a> as an example:</p>
+<pre><code class="language-sql">set global tidb_enable_change_column_type = 1;
+
+drop table tbl_19;
+create table tbl_19 ( col_73 decimal(45,8) default 13.654 not null);
+insert  into tbl_19 set col_73 = 0.4352;
+
+alter table tbl_19 change column col_73 col_159 timestamp;
+select * from tbl_19;
+</code></pre>
+<p>After the bug reported is recognized with consensus, you can ask for assignment and start fixing the bug after assigned. See also <a href="contribute-to-tidb/contribute-code.html">Contribute Code</a></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="make-a-proposal"><a class="header" href="#make-a-proposal">Make a Proposal</a></h1>
+<p>This page defines the best practices procedure for making a proposal in TiDB projects. This text is based on the content of <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/README.md">TiDB Design Document</a>.</p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>Many changes, including bug fixes and documentation improvements can be implemented and reviewed via the normal GitHub pull request workflow.</p>
+<p>Some changes though are &quot;substantial&quot;, and we ask that these be put through a bit of a design process and produce a consensus among the TiDB community.</p>
+<p>The process described in this page is intended to provide a consistent and controlled path for new features to enter the TiDB projects, so that all stakeholders can be confident about the direction the projects is evolving in.</p>
+<h2 id="who-should-initiate-the-design-document"><a class="header" href="#who-should-initiate-the-design-document">Who should initiate the design document?</a></h2>
+<p>Everyone is encouraged to initiate a design document, but before doing it, please make sure you have an intention of getting the work done to implement it.</p>
+<h2 id="before-creating-a-design-document"><a class="header" href="#before-creating-a-design-document">Before creating a design document</a></h2>
+<p>A hastily-proposed design document can hurt its chances of acceptance. Low-quality proposals, proposals for previously-rejected features, or those that don't fit into the near-term roadmap, may be quickly rejected, which can be demotivating for the unprepared contributor. Laying some groundwork ahead of the design document can make the process smoother.</p>
+<p>Although there is no single way to prepare for submitting a design document, it is generally a good idea to pursue feedback from other project developers beforehand, to ascertain that the design document may be desirable; having a consistent impact on the project requires concerted effort toward consensus-building.</p>
+<p>The most common preparations for writing and submitting a draft of design document is on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
+<h2 id="what-is-the-process"><a class="header" href="#what-is-the-process">What is the process?</a></h2>
+<ol>
+<li>Create a pull request with a design document based on the <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/TEMPLATE.md">template</a> as <code>YYYY-MM-DD-my-feature.md</code>.</li>
+<li>Discussion takes place, and the text is revised in response.</li>
+<li>The design document is accepted or rejected when at least two committers reach consensus and no objection from the committer.</li>
+<li>If accepted, create a <a href="https://github.com/pingcap/tidb/issues/new?assignees=&amp;labels=type%2Fenhancement&amp;template=development-task.md">tracking issue</a> for the design document or convert one from a previous discuss issue. The tracking issue basically tracks subtasks and progress. And refer the tracking issue in the design document replacing placeholder in the template.</li>
+<li>Merge the pull request of design.</li>
+</ol>
+<p>Please refer to the tracking issue from subtasks to track the progress.</p>
+<p>An example that almost fits into this model is the proposal &quot;Support global index for partition table&quot;, without following the latest template.</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/issues/18032">tracking issue</a></li>
+<li><a href="https://github.com/pingcap/tidb/pull/18982">pull request of design document</a></li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="contribute-code"><a class="header" href="#contribute-code">Contribute Code</a></h1>
+<p>TiDB is maintained, improved, and extended by code contributions. We welcome contributions to TiDB, but due to the size of the project and to preserve the high quality of the code base, we follow a contribution process that is explained in this document.</p>
+<p><strong>Please feel free to ask questions at any time.</strong> Either create a topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> or comment on the GitHub issue you are working on.</p>
+<p>Please read this document carefully before starting to work on a code contribution. Follow the process and guidelines explained below. Contributing to TiDB does <em>not</em> start with opening a pull request. We expect contributors to reach out to us first to discuss the overall approach together. Without consensus with the TiDB committers, contributions might require substantial rework or will not be reviewed.</p>
+<h2 id="looking-for-what-to-contribute"><a class="header" href="#looking-for-what-to-contribute">Looking for what to contribute</a></h2>
+<p>If you have a good idea for the contribution, you can proceed to the code contribution process. If you are looking for what you could contribute, you can browse open <a href="https://github.com/pingcap/tidb/issues">GitHub issues</a> of TiDB, which are not assigned, and then follow the code contribution process. If you are very new to the TiDB project and want to learn about it and its contribution process, you can check the <a href="https://github.com/pingcap/tidb/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue">starter issues</a>, which are annotated with a good-first-issue label.</p>
+<h2 id="code-contribution-process"><a class="header" href="#code-contribution-process">Code Contribution Process</a></h2>
+<h3 id="tldr-1"><a class="header" href="#tldr-1">TL;DR</a></h3>
+<ol>
+<li>Discuss. Create a GitHub issue or create a topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> and reach consensus.</li>
+<li>Implement. Implement the change according to the approach agreed upon in the discussion.</li>
+<li>Review. Open a pull request and work with the reviewer.</li>
+<li>Merge. A committer of TiDB checks if the contribution fulfills the requirements and merges the code to the codebase.</li>
+</ol>
+<h3 id="1-create-github-issue-and-reach-consensus"><a class="header" href="#1-create-github-issue-and-reach-consensus">1. Create GitHub Issue and Reach Consensus</a></h3>
+<p>The first step for making a contribution to TiDB is to reach consensus with the community. This means agreeing on the scope and implementation approach of a change.</p>
+<p>In most cases, the discussion should happen on <a href="https://github.com/pingcap/tidb/issues">GitHub issues</a>.</p>
+<p>The following types of changes requires a dedicated topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>:</p>
+<ul>
+<li>big changes (major new feature; big refactors, involving multiple components)</li>
+<li>potentially controversial changes or issues</li>
+<li>changes with very unclear approaches or multiple equal approaches</li>
+</ul>
+<p>Do not open a GitHub issue for these types of changes before the discussion has come to a conclusion. GitHub issue based on a forum discussion need to link to that discussion and should summarize the outcome.</p>
+<p>Requirements for a GitHub issue to get consensus:</p>
+<ul>
+<li>Formal requirements
+<ul>
+<li>The <em>title</em> describes the problem concisely.</li>
+<li>The <em>description</em> gives all the details needed to understand the problem or feature request.</li>
+<li>The <em>component label</em> is set. Many committers and contributors only focus on certain subsystems of TiDB. Setting the appropriate component is important for getting their attention.</li>
+</ul>
+</li>
+<li>There is <strong>agreement</strong> that the issue solves a valid problem, and that it is a good fit for TiDB. The community considers the following aspects:
+<ul>
+<li>Does the contribution alter the behavior of features or components in a way that it may break previous users’ programs and setups? If yes, there needs to be a discussion and agreement that this change is desirable.</li>
+<li>Does the contribution conceptually fit well into TiDB? Is it too much of a special case such that it makes things more complicated for the common case, or bloats the abstractions / APIs?</li>
+<li>Does the feature fit well into TiDB's architecture? Will it scale and keep TiDB flexible for the future, or will the feature restrict TiDB in the future?</li>
+<li>Is the feature a significant new addition (rather than an improvement to an existing part)? If yes, will the community commit to maintaining this feature?</li>
+<li>Does this feature align well with currently ongoing efforts?</li>
+<li>Does the feature produce added value for TiDB users or developers? Or does it introduce the risk of regression without adding relevant user or developer benefit?</li>
+</ul>
+</li>
+<li>There is <strong>consensus</strong> on how to solve the problem. This includes considerations such as
+<ul>
+<li>API and data backwards compatibility and migration strategies</li>
+<li>Testing strategies</li>
+<li>Impact on TiDB's build time</li>
+<li>Dependencies and their licenses</li>
+</ul>
+</li>
+</ul>
+<p>If a change is identified as a large or controversial change in the discussion on GitHub issue, it might require a <a href="contribute-to-tidb/make-proposal.html">TiDB Design Document</a> or a discussion on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> to reach agreement and consensus.</p>
+<p>Contributors can expect to get a first reaction from a committer within a few days after opening the issue. If an issue doesn’t get any attention, we recommend reaching out to the <a href="https://internals.tidb.io/">TiDB Internals forum</a>. Note that the community sometimes does not have the capacity to accept all incoming contributions.</p>
+<p>Once all requirements for the issue are met, one could assign somebody to the issue to work on it.</p>
+<h3 id="2-implement-your-change"><a class="header" href="#2-implement-your-change">2. Implement your change</a></h3>
+<p>Once you've been assigned to a GitHub issue, you may start to implement the required changes.</p>
+<p>Here are some further points to keep in mind while implementing:</p>
+<ul>
+<li>Set up a TiDB development environment.</li>
+<li>Follow the <a href="contribute-to-tidb/code-style-and-quality-guide.html">Code Style and Quality Guide</a> of TiDB.</li>
+<li>Take any discussions and requirements from the GitHub issue or design document into account.</li>
+<li>Do not mix unrelated issues into one contribution.</li>
+</ul>
+<h3 id="3-open-a-pull-request"><a class="header" href="#3-open-a-pull-request">3. Open a Pull Request</a></h3>
+<p>Considerations before opening a pull request:</p>
+<ul>
+<li>Make sure that <code>make test</code> is passing on your changes to ensure that all checks pass, the code builds and that all tests pass.</li>
+<li>Make sure your commit history adheres to the requirements.</li>
+<li>Make sure your change is up to date with the base branch.</li>
+</ul>
+<p>Code changes in TiDB are reviewed and accepted through <a href="https://help.github.com/en/articles/creating-a-pull-request">GitHub pull requests</a>.</p>
+<p>GitHub will auto assign reviewers to the pull requests, but you can also request reviews by commenting <code>/cc @reviewer</code>.</p>
+<p>There is a separate guide on <a href="contribute-to-tidb/review-a-pr.html">how to review a pull request</a>, including our pull request review process. As a code author, you should prepare your pull request to meet all requirements.</p>
+<h3 id="4-merge-change"><a class="header" href="#4-merge-change">4. Merge change</a></h3>
+<p>The code will be merged by a committer of TiDB once the review is finished. The related GitHub issue will be closed afterwards.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="how-to-review-a-pull-request"><a class="header" href="#how-to-review-a-pull-request">How to Review a Pull Request</a></h1>
+<p>This guide is for contributors who want to contribute to the code review. Thank you for your effort. A good review of code is crucial for an open source project.</p>
+<p>This guide is intended to help both the contributors and reviewers to ensure the following:</p>
+<ul>
+<li>The review keeps the high quality of TiDB code.</li>
+<li>Reviewers cover all important aspects of a contribution</li>
+<li>Contributors have a good contribution experience..</li>
+<li>The review avoids situations in which contributors and reviewers spend a lot of time refining a contribution that gets rejected later.</li>
+</ul>
+<h2 id="things-to-know-before-the-code-review"><a class="header" href="#things-to-know-before-the-code-review">Things to know before the code review</a></h2>
+<p>Why is code review so important?</p>
+<ul>
+<li>A good review can eliminate bugs early.</li>
+<li>A good review can make the project maintainable in the long run.</li>
+</ul>
+<p>To conduct a good review, it is always helpful to read the following high-level guidelines about code review in the TiDB community:</p>
+<h3 id="code-review-is-more-important-than-writing-your-own-pr"><a class="header" href="#code-review-is-more-important-than-writing-your-own-pr">Code review is more important than writing your own PR</a></h3>
+<p>Nowadays software development is no longer a single person’s piece of art but the result of team cooperation. To speed up the development and make the processing scale, it is important to avoid blocking. If all developers in an organization prioritize writing code over reviewing code, more and more PRs waiting for code review get blocked, and the whole team slows down.</p>
+<h3 id="its-the-pr-authors-responsibility-to-get-the-pr-merged"><a class="header" href="#its-the-pr-authors-responsibility-to-get-the-pr-merged">It's the PR author's responsibility to get the PR merged</a></h3>
+<p>Because PR authors are the ones who want to merge the PRs into the repository the most, after an offline discussion we agree on the following:</p>
+<ul>
+<li>PR authors are responsible for getting PRs reviewed and merged.</li>
+<li>PR reviewers are responsible for reviewing PRs and providing feedback in time but not responsible for pushing the PR to be merged.</li>
+</ul>
+<h3 id="two-approvals-for-a-pr-to-be-accepted"><a class="header" href="#two-approvals-for-a-pr-to-be-accepted">Two Approvals for a PR to be accepted</a></h3>
+<p>In the TiDB community, most repositories require two approvals before a PR can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. </p>
+<p>Two approvals ensure that even the original PR author resigns, there is still someone who is familiar with the code and can keep the project moving. And if the author really resigns, the code reviewer becomes the first person who is responsible for the code.</p>
+<h3 id="never-approve-code-you-dont-understand"><a class="header" href="#never-approve-code-you-dont-understand">Never approve code you don't understand</a></h3>
+<p>A review should be thorough enough. After the review, you should be able to explain the change details at a reasonable level to other developers. This ensures that the details of the codebase are known to more than a single person. Remember: you are responsible for the code you review; it is all about your reputation.</p>
+<h3 id="prs-are-suggested-to-be-less-than-500-lines"><a class="header" href="#prs-are-suggested-to-be-less-than-500-lines">PRs are suggested to be less than 500 lines</a></h3>
+<p>The TiDB community encourages small changes in each PR and sets up five hundred lines as a guideline of PR size.</p>
+<p>If a PR is too large, you can request the PR author to split the PR. If a PR is too large but hard to split, you can request the author to have a meeting in person to explain the changes, until you fully understand the changes.</p>
+<h3 id="one-pr-does-one-thing"><a class="header" href="#one-pr-does-one-thing">One PR does one thing</a></h3>
+<p>To make a PR easier to understand and get merged faster, it should focus on one thing.</p>
+<p>For example, a bug fix should be in one PR and a refactoring in another. No matter how small it is, the change does exactly one thing and gets it right.</p>
+<h3 id="principles-of-the-code-review"><a class="header" href="#principles-of-the-code-review">Principles of the code review</a></h3>
+<ul>
+<li>Technical facts and data overrule opinions and personal preferences.</li>
+<li>Software design is about trade-offs, and there is no silver bullet.</li>
+</ul>
+<p>Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.</p>
+<p>A common mistake is to focus too much on style. Style is important: that's why there are style guides. Just let the bot do most of the trivial work. Each PR reviewer is a human who is supposed to focus on things beyond what a bot can do. When you are reviewing a PR, make sure that the changes do not break the program logic or increase the code base maintenance cost.</p>
+<p>Sometimes, making choices of accepting or rejecting a PR can be tricky as in the following situations: </p>
+<ul>
+<li>Suppose that a PR contains special optimization that can improve the overall performance by 30%. However, the PR introduces a totally different code path, and every subsequent feature must consider it.</li>
+<li>Suppose that a PR is to fix a critical bug, but the change in the PR is risky to introduce other bugs.</li>
+</ul>
+<p>If a PR under your review is in these tricky situations, what is the right choice, accepting the PR or rejecting it? The answer is always &quot;it depends.&quot; Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. There are always trade-offs, and often there's no perfect solution. Still, there is a general standard (from <a href="https://github.com/shenli">@shenli</a>). Maybe we call it, &quot;Better than before?&quot;:</p>
+<ul>
+<li>The change is making something better, although not a perfect solution.</li>
+<li>The change can mitigate the pains of users.</li>
+<li>The change does not introduce a bug.</li>
+</ul>
+<p>Then, we can accept the code.</p>
+<p>Besides, you should also check some minimal requirements of code reviews.</p>
+<p>If a bug fix PR doesn't include a test case, the review should ask the author to add tests.</p>
+<p>If a performance improvement PR doesn't include a benchmark result, the reviewer should ask the author to attach one.</p>
+<h2 id="what-to-check-in-a-code-review"><a class="header" href="#what-to-check-in-a-code-review">What to check in a code review</a></h2>
+<h3 id="design"><a class="header" href="#design">Design</a></h3>
+<p>The most important thing of a review is checking the overall design.</p>
+<p>To learn the overall design of a PR, you can read the description of the PR. If the description is unclear or hard to understand, you can request the author to improve it. You may consider asking questions such as the following:</p>
+<ul>
+<li>Does the change integrate well with the rest of our system?</li>
+<li>Is now a good time to add this functionality?</li>
+</ul>
+<p>If you need a further discussion of the PR, you can go to <a href="https://internals.tidb.io/">TiDB Internals forum</a>. For pull requests that are created without prior consensus, try to seek consensus there too.</p>
+<h3 id="functionality"><a class="header" href="#functionality">Functionality</a></h3>
+<ul>
+<li>Does this PR implement what the PR author intends to do?</li>
+<li>How will implementing this PR help the user?</li>
+</ul>
+<p>Basically, PR authors are supposed to sufficiently test their PRs before code reviews. However, as a reviewer, you should still think about edge cases, especially for problems about concurrency.</p>
+<p>You can always validate the PR if you want. </p>
+<p>For some changes such as UI, it is hard to understand how the changes will impact users when you are just reading the code. In this case, if it is too inconvenient to try it yourself, you can ask the PR author to give you a demo of the functionality.</p>
+<h3 id="logic"><a class="header" href="#logic">Logic</a></h3>
+<p>When concurrent programming is involved, it is particularly important to review the logic carefully, because the concurrent issues are very hard to detect by just running the code.</p>
+<h3 id="complexity"><a class="header" href="#complexity">Complexity</a></h3>
+<p>Is the PR more complex than it should be? To learn that, you can check the following items when reviewing the complexity of the PR:</p>
+<ul>
+<li>Are individual lines too complex?</li>
+<li>Are functions too complex?</li>
+<li>Are classes too complex?</li>
+</ul>
+<p>&quot;Too complex&quot; usually means &quot;the code changes cannot be understood quickly by readers&quot; or &quot;PR authors are likely to introduce bugs when they try to call or modify the code&quot;.</p>
+<p>A particular type of complexity is over-engineering, which means that PR authors have made the code more generic than it needs to be, or added functionality that is not presently needed by the system. Reviewers should be especially vigilant about over-engineering. The TiDB community encourages PR authors to solve the problems that must be solved now -- not the problems that might need to be solved in the future. </p>
+<h3 id="tests"><a class="header" href="#tests">Tests</a></h3>
+<p>A PR should be test covered, whether the tests are unit tests, integration tests, or end-to-end tests.</p>
+<p>To ensure the tests in the PR are correct, sensible, and useful, you can check the following:</p>
+<ul>
+<li>Whether the tests cover all interesting cases?</li>
+<li>Are the test cases readable?</li>
+<li>Does the PR lower the overall test coverage? </li>
+</ul>
+<p>To ensure the tests in the PR are sufficient, you can simulate cases where the code may break and check the following:</p>
+<ul>
+<li>Will the tests fail when the code is broken?</li>
+<li>Does each test make simple and useful assertions?</li>
+<li>Are the tests separated appropriately between different test methods?</li>
+</ul>
+<p>Remember that tests are also code that have to be maintained, and thus do not accept unnecessary complexity in tests.</p>
+<p>Last but not least, keep an eye on how long a single unit takes to run. That is, determine whether the test slow down the CI.</p>
+<h3 id="naming"><a class="header" href="#naming">Naming</a></h3>
+<p>Does the PR author pick good names for everything? A good name should be clear enough to fully communicate what the item is or does.</p>
+<h3 id="comments"><a class="header" href="#comments">Comments</a></h3>
+<ul>
+<li>Does the PR author write clear comments in understandable English?</li>
+<li>Are all of the comments actually necessary?</li>
+</ul>
+<p>Usually, comments are useful to explain why the code exists, while not useful to explain what the code is doing. If the code is not clear enough to explain itself, the PR author should simplify the code instead of adding unnecessary comments.</p>
+<p>However, there are some exceptions. For example, the comments to explain what regular expressions or complex algorithms is doing are greatly helpful. But in other cases, comments are mostly for information, such as a reason behind a decision.</p>
+<p>It can also be helpful to look at the existing comments before this PR. Maybe a <code>TODO</code> in the existing comments can be removed now, or there is a comment advising against the current changes, etc.</p>
+<p>Note that comments are different from documentation of classes, modules, or functions, which covers the purpose of a piece of code, how the code should be used, and how the code behaves when being used.</p>
+<h3 id="style"><a class="header" href="#style">Style</a></h3>
+<p>Make sure the PR follows our <a href="contribute-to-tidb/code-style-and-quality-guide.html">code style and quality guide</a>. For Go and Rust, there are built-in tools with the compiler toolchain.</p>
+<p>If you want to improve styles not covered in the style guide, you can comment that you think it would improve the code readability but it is not mandatory. Do not block PRs from being merged based only on personal style preferences.</p>
+<p>The PR author should not combine nontrivial style changes and functional changes in one PR, because it violates the guideline covered earlier: one PR does one thing.</p>
+<h3 id="consistency"><a class="header" href="#consistency">Consistency</a></h3>
+<p>What if the existing code is inconsistent with the style guide? The style guide is the absolute authority: if something is required by the style guide, the PR should follow the guidelines.</p>
+<p>In some cases, the style guide only makes recommendations but does not declare requirements. In these cases, it is a judgment call whether the new code should be consistent with the recommendations in the style guide or with the surrounding code. It is recommended that you follow the style guide unless the local inconsistency is too confusing.</p>
+<p>If no other rule applies, the PR author should maintain consistency with the existing code.</p>
+<p>In either way, you can encourage the author to file a bug and add a TODO for cleaning up existing code.</p>
+<h3 id="documentation"><a class="header" href="#documentation">Documentation</a></h3>
+<p>During the code review, if you notice that a PR changes how users build, test, interact with, or release code, you must check whether it also updates the related documentation such as READMEs and any generated reference docs. </p>
+<p>Similarly, if a PR deletes or deprecates code, you must check whether or not the corresponding documentation should also be deleted.</p>
+<p>If any documentation updates are missing, you can request the PR author to add the updates.</p>
+<h4 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h4>
+<p>Because errors and exceptions handling are one of the most possible places for bugs, during the code review, you must be as prudent as possible and ask yourself the following questions: </p>
+<ul>
+<li>Does the test of the PR cover the error code path?</li>
+<li>Does a panic make the whole process exit for server services?</li>
+<li>Does the code properly handle the resource releasing?</li>
+<li>Especially for code including concurrent goroutines, is there a goroutine leak or memory leak after the error?</li>
+</ul>
+<p>Sometimes, it is difficult for a real program to run into the error code path, and even more difficult to reproduce and debug if the error really happens. In this case, it is necessary to mock the error code path using tools such as <a href="https://github.com/pingcap/failpoint">failpoint</a>.</p>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<p>Does the PR impact performance? Sometimes, a seemingly minor, unrelated change on the hot may still affect performance.</p>
+<p>Is the algorithm in the PR suitable for that case?</p>
+<h2 id="how-to-write-code-review-comments"><a class="header" href="#how-to-write-code-review-comments">How to write code review comments</a></h2>
+<h3 id="be-respectful-to-pr-authors"><a class="header" href="#be-respectful-to-pr-authors">Be respectful to PR authors</a></h3>
+<p>Good reviewers are compassionate. While you are reviewing the code of a PR author, at the same time, your own code might be under the review of other reviewers too. If you regard code review as a learning process, then everyone wins.</p>
+<h3 id="ask-questions-instead-of-making-statements"><a class="header" href="#ask-questions-instead-of-making-statements">Ask questions instead of making statements</a></h3>
+<p>The wording of the review comments is very important. To provide review comments that are constructive rather than critical, you can try asking questions rather than making statements. Along with your constructive feedback, you are recommended to give your praise too.</p>
+<h3 id="offer-sincere-praise"><a class="header" href="#offer-sincere-praise">Offer sincere praise</a></h3>
+<p>Good PR reviewers focus not only on what is wrong with the code but also on good practices in the code. As a PR reviewer, you are recommended to offer your encouragement and appreciation to PR authors for the good practices in the code. In terms of mentoring, telling PR authors what they did is right is even more valuable than telling them what they did is wrong.</p>
+<p>For example, suppose that you are reviewing a PR created by an author who struggles to write documentation, and you come across a clear, concise function comment in the PR. Then, you are recommended to tell such PR authors that they nailed it. To help the PR authors improve faster, tell the authors when they get it right instead of just waiting to ding them when they screw up.</p>
+<h3 id="summary"><a class="header" href="#summary">Summary</a></h3>
+<ul>
+<li>Be kind to PR authors, not to the code.</li>
+<li>Ask questions instead of making statements.</li>
+<li>Treat people who know code less than you with respect, deference, and patience.</li>
+<li>Offer your praise when the code quality exceeds your expectation.</li>
+<li>It is not necessarily wrong if the solution of a PR author is different from yours.</li>
+<li>Refer to the code style document if necessary.</li>
+</ul>
+<h2 id="review-with-the-ti-chi-bot"><a class="header" href="#review-with-the-ti-chi-bot">Review with the @ti-chi-bot</a></h2>
+<p>The TiDB community uses a service called <a href="https://book.prow.tidb.io/#/en/">@ti-chi-bot</a> to help with the review of the pull requests.</p>
+<p>You can see the full list of commands accepted by the bot at <a href="https://prow.tidb.io/command-help?repo=pingcap%2Ftidb">this page</a>.</p>
+<p>Here are the most frequently used commands you're going to use during a review:</p>
+<ul>
+<li><code>/cc @reviewer</code> requests a review from the reviewer.</li>
+<li><code>/assign @committer</code> assigns a committer to help merge the pull request</li>
+<li>GitHub reviewing <code>Approve</code> or <code>Request Changes</code> from reviewers or committers creates a LGTM or veto to the pull request.</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="tidb-code-style-and-quality-guide"><a class="header" href="#tidb-code-style-and-quality-guide">TiDB Code Style and Quality Guide</a></h1>
+<p>This is an attempt to capture the code and quality standard that we want to maintain.</p>
+<h2 id="the-newtype-pattern-improves-code-quality"><a class="header" href="#the-newtype-pattern-improves-code-quality">The newtype pattern improves code quality</a></h2>
+<p>We can create a new type using the <code>type</code> keyword.</p>
+<p>The newtype pattern is perhaps most often used in Golang to get around type restrictions rather than to try to create new ones. It is used to create different interface implementations for a type or to extend a builtin type or a type from an existing package with new methods.</p>
+<p>However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage. </p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;strings&quot;
+)
+
+type Email string
+
+func newEmail(email string) (Email, error) {
+    if !strings.Contains(email, &quot;@&quot;) {
+        return Email(&quot;&quot;), fmt.Errorf(&quot;Expected @ in the email&quot;)
+    }
+    return Email(email), nil
+}
+
+func (email Email) Domain() string {
+    return strings.Split(string(email), &quot;@&quot;)[1]
+}
+
+func main() {
+    ping, err := newEmail(&quot;go@pingcap.com&quot;)
+    if err != nil { panic(err) }
+    fmt.Println(ping.Domain())
+}
+</code></pre>
+<h2 id="when-to-use-value-or-pointer-receiver"><a class="header" href="#when-to-use-value-or-pointer-receiver">When to use value or pointer receiver</a></h2>
+<p>Because pointer receivers need to be used some of the time, Go programmers often use them all of the time.
+This is a typical outline of Go code:</p>
+<pre><code class="language-go">type struct S {}
+func NewStruct() *S
+func (s *S) structMethod()
+</code></pre>
+<p>Using pointers for the entire method set means we have to read the source code of every function to determine if it mutates the struct. Mutations are a source of error. This is particularly true in concurrent programs. We can contrast this with values: these are always concurrent safe.</p>
+<p>For code clarity and bug reduction a best practice is to default to using values and value receivers.
+However, pointer receivers are often required to satisfy an interface or for performance reasons, and this need overrides any default practice.</p>
+<p>However, performance can favor either approach. One might assume that pointers would always perform better because it avoids copying. However, the performance is roughly the same for small structs in micro benchmark. This is because the copying is cheap, inlining can often avoid copying anyways, and pointer indirection has its own small cost. In a larger program with a goal of predictable low latency the value approach can be more favorable because it avoids <a href="https://segment.com/blog/allocation-efficiency-in-high-performance-go-services/">heap allocation and any additional GC overhead</a>.</p>
+<p>As a rule of thumb is that when a struct has 10 or more words we should use pointer receivers. However, to actually know which is best for performance depends on how the struct is used in the program and must ultimately be determined by profiling. For example these are some factors that affect things:</p>
+<ul>
+<li>method size: small inlineable methods favor value receivers.</li>
+<li>Is the struct called repeatedly in a for loop? This favors pointer receivers.</li>
+<li>What is the GC behavior of the rest of the program? GC pressure may favor value receivers.</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="write-document"><a class="header" href="#write-document">Write Document</a></h1>
+<p>Good documentation is crucial for any kind of software. This is especially true for sophisticated software systems such as distributed database like TiDB. The TiDB community aims to provide concise, precise, and complete documentation and welcomes any contribution to improve TiDB's documentation.</p>
+<h2 id="where-you-can-contribute"><a class="header" href="#where-you-can-contribute">Where you can contribute</a></h2>
+<p>The TiDB community provides bilingual documentation. The English documentation is maintained in the <a href="https://github.com/pingcap/docs">pingcap/docs</a> repository (docs repo) and the Chinese documentation is maintained in the <a href="https://github.com/pingcap/docs-cn">pingcap/docs-cn</a> repository (docs-cn repo). You are welcome to contribute to either of the repositories.</p>
+<p>In a addition, you are also welcome to contribute to the <a href="https://github.com/pingcap/docs-tidb-operator">TiDB Operator documentation</a> and the <a href="https://github.com/pingcap/docs-dm">TiDB Data Migration documentation</a>.</p>
+<p>This guide walks you through what and how you can contribute to the TiDB bilingual documentation in docs-cn and docs repos.</p>
+<h2 id="what-you-can-contribute"><a class="header" href="#what-you-can-contribute">What you can contribute</a></h2>
+<p>You can start from any one of the following items to help improve TiDB Docs at the PingCAP website (<a href="https://docs.pingcap.com/tidb/stable">en</a> and <a href="https://docs.pingcap.com/zh/tidb/stable">zh</a>):</p>
+<ul>
+<li>Fix typos or format (punctuation, space, indentation, code block, etc.)</li>
+<li>Fix or update inappropriate or outdated descriptions</li>
+<li>Add missing content (sentence, paragraph, or a new document)</li>
+<li>Translate docs changes from English to Chinese, or from Chinese to English. See <a href="contribute-to-tidb/write-document.html#how-we-implement-bilingual-documentation">How we implement bilingual documentation</a></li>
+<li>Submit, reply to, and resolve <a href="https://github.com/pingcap/docs/issues">docs issues</a> or <a href="https://github.com/pingcap/docs-cn/issues">docs-cn issues</a></li>
+<li>(Advanced) Review Pull Requests created by others</li>
+</ul>
+<h2 id="before-you-contribute"><a class="header" href="#before-you-contribute">Before you contribute</a></h2>
+<p>Before you contribute, let's take a quick look at some general information about TiDB documentation maintenance. This can help you to become a contributor soon.</p>
+<h3 id="get-familiar-with-style"><a class="header" href="#get-familiar-with-style">Get familiar with style</a></h3>
+<ul>
+<li>
+<p><a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message">Commit Message Style</a></p>
+</li>
+<li>
+<p><a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style">Pull Request Title Style</a></p>
+</li>
+<li>
+<p><a href="contribute-to-tidb//resources/markdownlint-rules.html">Markdown Rules</a></p>
+</li>
+<li>
+<p><a href="https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md">Code Comment Style</a></p>
+</li>
+<li>
+<p>Diagram Style: <a href="https://github.com/pingcap/community/blob/master/contributors/figma-quick-start-guide.md">Figma Quick Start Guide</a></p>
+<p>To keep a consistent style for diagrams, we recommend using <a href="https://www.figma.com/">Figma</a> to draw or design diagrams. If you need to draw a diagram, refer to the guide and use shapes or colors provided in the template.</p>
+</li>
+</ul>
+<h3 id="learn-about-docs-versions"><a class="header" href="#learn-about-docs-versions">Learn about docs versions</a></h3>
+<p>Currently, we maintain seven versions of TiDB documentation, each with a separate branch:</p>
+<table><thead><tr><th align="left">Docs branch name</th><th align="left">Version description</th></tr></thead><tbody>
+<tr><td align="left"><code>master</code> branch</td><td align="left">the latest development version</td></tr>
+<tr><td align="left"><code>release-5.1</code> branch</td><td align="left">the 5.1 version</td></tr>
+<tr><td align="left"><code>release-5.0</code> branch</td><td align="left">the 5.0 stable version</td></tr>
+<tr><td align="left"><code>release-4.0</code> branch</td><td align="left">the 4.0 stable version</td></tr>
+<tr><td align="left"><code>release-3.1</code> branch</td><td align="left">the 3.1 stable version</td></tr>
+<tr><td align="left"><code>release-3.0</code> branch</td><td align="left">the 3.0 stable version</td></tr>
+<tr><td align="left"><code>release-2.1</code> branch</td><td align="left">the 2.1 stable version</td></tr>
+</tbody></table>
+<p>Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.</p>
+<h3 id="use-cherry-pick-labels"><a class="header" href="#use-cherry-pick-labels">Use cherry-pick labels</a></h3>
+<ul>
+<li>
+<p>If your changes apply to only one doc version, just submit a PR to the corresponding version branch.</p>
+</li>
+<li>
+<p>If your changes apply to multiple doc versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.</p>
+<ul>
+<li><code>needs-cherry-pick-release-5.1</code> label: ti-chi-bot will submit a PR to the <code>release-5.1</code> branch.</li>
+<li><code>needs-cherry-pick-release-5.0</code> label: ti-chi-bot will submit a PR to the <code>release-5.0</code> branch.</li>
+<li><code>needs-cherry-pick-release-4.0</code> label: ti-chi-bot will submit a PR to the <code>release-4.0</code> branch.</li>
+<li><code>needs-cherry-pick-release-3.1</code> label: ti-chi-bot will submit a PR to the <code>release-3.1</code> branch.</li>
+<li><code>needs-cherry-pick-release-3.0</code> label: ti-chi-bot will submit a PR to the <code>release-3.0</code> branch.</li>
+<li><code>needs-cherry-pick-release-2.1</code> label: ti-chi-bot will submit a PR to the <code>release-2.1</code> branch.</li>
+<li><code>needs-cherry-pick-master</code> label: ti-chi-bot will submit a PR to the <code>master</code> branch.</li>
+</ul>
+</li>
+<li>
+<p>If most of your changes apply to multiple doc versions but some differences exist among versions, you still can use cherry-pick labels to let ti-chi-bot create PRs to other versions. In this situation, you also need to add the <code>requires-version-specific-change</code> label as a reminder to the PR reviewer. After the PR to another version is successfully submitted by ti-chi-bot, you can make changes to that PR.</p>
+</li>
+</ul>
+<h2 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to contribute</a></h2>
+<p>Your contribution journey is in two stages:</p>
+<ol>
+<li>
+<p>In <a href="contribute-to-tidb/write-document.html#stage-1-create-and-submit-your-pr">stage 1</a>, create and submit your Pull Request to the <a href="https://github.com/pingcap/docs-cn">docs-cn</a> or <a href="https://github.com/pingcap/docs">docs</a> repository.</p>
+</li>
+<li>
+<p>In <a href="contribute-to-tidb/write-document.html#stage-2-get-notified-and-address-review-comments">stage 2</a>, get notified of any review comments and address the comments until the PR gets approved and merged.</p>
+</li>
+</ol>
+<h3 id="stage-1-create-and-submit-your-pr"><a class="header" href="#stage-1-create-and-submit-your-pr">Stage 1: Create and submit your PR</a></h3>
+<p>Perform the following steps to create your Pull Request to the <a href="https://github.com/pingcap/docs">docs</a> repository. If don't like to use commands, you can also use <a href="https://desktop.github.com/">GitHub Desktop</a>, which is easier to get started.</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>This section takes creating a PR to the <code>master</code> branch in the docs repository as an example. Steps of creating PRs to other branches or to the docs-cn repository are similar.</p>
+</blockquote>
+<h4 id="step-0-sign-the-cla"><a class="header" href="#step-0-sign-the-cla">Step 0: Sign the CLA</a></h4>
+<p>Your PR can only be merged after you sign the <a href="https://cla-assistant.io/pingcap/docs">Contributor License Agreement (docs)</a>. Please make sure you sign the CLA before continuing.</p>
+<h4 id="step-1-fork-the-repository"><a class="header" href="#step-1-fork-the-repository">Step 1: Fork the repository</a></h4>
+<ol>
+<li>Visit the project: <a href="https://github.com/pingcap/docs">https://github.com/pingcap/docs</a></li>
+<li>Click the <strong>Fork</strong> button on the top right and wait it to finish.</li>
+</ol>
+<h4 id="step-2-clone-the-forked-repository-to-local-storage"><a class="header" href="#step-2-clone-the-forked-repository-to-local-storage">Step 2: Clone the forked repository to local storage</a></h4>
+<pre><code>cd $working_dir # Comes to the directory that you want put the fork in, for example, &quot;cd ~/Documents/GitHub&quot;
+git clone git@github.com:$user/docs.git # Replace &quot;$user&quot; with your GitHub ID
+
+cd $working_dir/docs
+git remote add upstream git@github.com:pingcap/docs.git # Adds the upstream repo
+git remote -v # Confirms that your remote makes sense
+</code></pre>
+<h4 id="step-3-create-a-new-branch"><a class="header" href="#step-3-create-a-new-branch">Step 3: Create a new branch</a></h4>
+<ol>
+<li>
+<p>Get your local master up-to-date with upstream/master.</p>
+<pre><code>cd $working_dir/docs
+git fetch upstream
+git checkout master
+git rebase upstream/master
+</code></pre>
+</li>
+<li>
+<p>Create a new branch based on the master branch.</p>
+<pre><code>git checkout -b new-branch-name
+</code></pre>
+</li>
+</ol>
+<h4 id="step-4-do-something"><a class="header" href="#step-4-do-something">Step 4: Do something</a></h4>
+<p>Edit some file(s) on the <code>new-branch-name</code> branch and save your changes. You can use editors like Visual Studio Code to open and edit <code>.md</code> files.</p>
+<h4 id="step-5-commit-your-changes"><a class="header" href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h4>
+<pre><code>git status # Checks the local status
+git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
+git commit -m &quot;commit-message: update the xx&quot;
+</code></pre>
+<p>See <a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message">Commit Message Style</a>.</p>
+<h4 id="step-6-keep-your-branch-in-sync-with-upstreammaster"><a class="header" href="#step-6-keep-your-branch-in-sync-with-upstreammaster">Step 6: Keep your branch in sync with upstream/master</a></h4>
+<pre><code># While on your new branch
+git fetch upstream
+git rebase upstream/master
+</code></pre>
+<h4 id="step-7-push-your-changes-to-the-remote"><a class="header" href="#step-7-push-your-changes-to-the-remote">Step 7: Push your changes to the remote</a></h4>
+<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+</code></pre>
+<h4 id="step-8-create-a-pull-request"><a class="header" href="#step-8-create-a-pull-request">Step 8: Create a pull request</a></h4>
+<ol>
+<li>Visit your fork at <a href="https://github.com/$user/docs">https://github.com/$user/docs</a> (replace <code>$user</code> with your GitHub ID)</li>
+<li>Click the <code>Compare &amp; pull request</code> button next to your <code>new-branch-name</code> branch to create your PR. See <a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style">Pull Request Title Style</a>.</li>
+</ol>
+<p>Now, your PR is successfully submitted.</p>
+<h3 id="stage-2-get-notified-and-address-review-comments"><a class="header" href="#stage-2-get-notified-and-address-review-comments">Stage 2: Get notified and address review comments</a></h3>
+<p>After your PR is submitted, addressing review comments is just as important as creating the PR. Please perform the following steps to complete your contribution journey.</p>
+<h4 id="step-1-get-notified-of-review-comments"><a class="header" href="#step-1-get-notified-of-review-comments">Step 1: Get notified of review comments</a></h4>
+<p>After your PR is created, the repository administrator will add labels to your PR for PR management. Review comments will also be submitted to your PR, which requires you to modify the PR content.</p>
+<p>Once the review comments are submitted, you will receive a notification in your registered email box. Check your email box and get notified.</p>
+<p>Once you receive the email, click the PR link in the mail to open the PR page in your browser, and you will see the comments.</p>
+<h4 id="step-2-address-review-comments"><a class="header" href="#step-2-address-review-comments">Step 2: Address review comments</a></h4>
+<p>The review comments require you to change your submitted PR content. You can either accept a suggestion and make the change, or decline the suggestion and submit your reply right under the comment stating your reason.</p>
+<h5 id="accept-comments-in-your-local-editor"><a class="header" href="#accept-comments-in-your-local-editor">Accept comments in your local editor</a></h5>
+<p>To accept suggestions, perform the following steps to modify your submitted PR content:</p>
+<ol>
+<li>
+<p>Pull the latest content from the remote origin of your PR to your local by executing the following commands in the terminal. This ensures that your local content is up-to-date with the remote origin.</p>
+<pre><code>cd $working_dir/docs
+git checkout new-branch-name
+git fetch origin
+</code></pre>
+</li>
+<li>
+<p>Edit the file or files to be modified in your local editor (like Visual Studio Code) according to the review comments.</p>
+</li>
+<li>
+<p>Commit your changes. This step is the same as <a href="contribute-to-tidb/write-document.html#step-5-commit-your-changes">Step 5: Commit your changes</a> in stage 1.</p>
+<pre><code>git status # Checks the local status
+git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
+git commit -m &quot;commit-message: update the xx&quot;
+</code></pre>
+</li>
+<li>
+<p>Push your changes to the remote origin:</p>
+<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+</code></pre>
+</li>
+<li>
+<p>After all comments are addressed, reply on the PR page: &quot;All comments are addressed. PTAL.&quot;</p>
+<p>&quot;PTAL&quot; is short for &quot;Please take a look&quot;.</p>
+</li>
+</ol>
+<h5 id="accept-comments-on-the-pr-page"><a class="header" href="#accept-comments-on-the-pr-page">Accept comments on the PR page</a></h5>
+<p>If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the &quot;Commit suggestion&quot; button. Then the suggested change is automatically committed to your PR.</p>
+<p>If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps on the PR page:</p>
+<ol>
+<li>
+<p>Click the &quot;Files changed&quot; tab and see the file changes. You can see multiple review comments in suggestion mode.</p>
+</li>
+<li>
+<p>Choose the suggestions you want to commit by clicking the &quot;Add suggestion to batch&quot; button on each suggestion.</p>
+</li>
+<li>
+<p>After all suggestions to be committed are chosen, click the &quot;Commit suggestions&quot; button on the upper right corner of the PR page. Then, you have successfully committed all suggested changes.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>After you have addressed review comments, reviewers might also submit new comments. You need to repeat this step 2 and make sure all comments are addressed until the reviewers approve your PR and have it merged.</p>
+</blockquote>
+<h4 id="step-3-handle-cherry-picked-prs"><a class="header" href="#step-3-handle-cherry-picked-prs">Step 3: Handle cherry-picked PRs</a></h4>
+<p>Once your PR gets approved, the repo administrator will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.</p>
+<p>You need to perform the following steps on each one of the cherry-picked PRs:</p>
+<ul>
+<li>
+<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment &quot;LGTM&quot;, which means &quot;Looks good to me&quot;. The repository administrator will merge it soon.</p>
+</li>
+<li>
+<p>If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository administrator will commit to the PR according to your comment before you approve it.</p>
+</li>
+<li>
+<p>(Advanced) If any conflicts exist in the cherry-picked PR, resolve the conflicts. This is only for those who have the write permission in the repository.</p>
+</li>
+</ul>
+<p>After the steps above are completed, the administrator will merge the cherry-picked PRs. At this point, your contribution journey is completed! 🎉</p>
+<h2 id="how-we-implement-bilingual-documentation"><a class="header" href="#how-we-implement-bilingual-documentation">How we implement bilingual documentation</a></h2>
+<p>TiDB documentation is usually written in one language and then translated to another. We use GitHub labels in docs-cn and docs repos (as well as in docs-tidb-operator and docs-dm repos) to track the entire translation or alignment process.</p>
+<p>The following labels are used:</p>
+<ul>
+<li><code>translation/doing</code>: This PR needs translation, or the translation is on the way.</li>
+<li><code>translation/done</code>: This PR has been translated in another PR.</li>
+<li><code>translation/from-docs</code>: This PR is translated from a docs PR.</li>
+<li><code>translation/from-docs-cn</code>: This PR is translated from a docs-cn PR.</li>
+<li><code>translation/no-need</code>: This PR does not need translation.</li>
+</ul>
+<p>The following process describes how a docs-cn PR (Chinese content) is translated and aligned to the docs repo (English content). The translation from docs to docs-cn is similar.</p>
+<ol>
+<li>
+<p>Once a PR is created in docs-cn that updates the Chinese documentation, the repo administrator will soon add a <code>translation/doing</code> or <code>translation/no-need</code> label and an assignee (translator) to the PR. The tracking process begins.</p>
+<p>The assignee regularly checks his or her PR list for translation. To check out his or her translation list, use the GitHub search syntax <code>is:pr assignee:@GitHub_ID is:merged label:translation/doing</code> in the GitHub search box on the <a href="https://github.com/pulls">GitHub Pull Requests page</a>.</p>
+<p>PRs with the <code>translation/no-need</code> label are not tracked.</p>
+</li>
+<li>
+<p>After this docs-cn PR is merged, the assignee starts the translation in the local editor.</p>
+</li>
+<li>
+<p>Once the assignee submits the translated content in a docs PR, he or she adds the <code>translation/from-docs-cn</code> label to the docs PR, removes the <code>translation/doing</code> label from the docs-cn PR, and adds the <code>translation/done</code> label to the docs-cn PR.</p>
+</li>
+<li>
+<p>The assignee provides the docs-cn PR link in the PR description section of the docs PR (&quot;This PR is translated from&quot;). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.</p>
+</li>
+<li>
+<p>After the docs PR is merged. The translation tracking process is finished. The updates in Chinese documentation are synchronized to the English documentation.</p>
+</li>
+</ol>
+<p>If you want to apply for a translation, check the following lists of merged docs-cn/docs PRs with the <code>translation/doing</code> label, pick one PR, assign yourself with your GitHub ID, and start the process from step 2 above.</p>
+<ul>
+<li>The list of PR that can be translated in docs-cn: <a href="https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amreged">Pull requests · pingcap/docs-cn</a></li>
+<li>The list of PR that can be translated in docs: <a href="https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+">Pull requests · pingcap/docs</a></li>
+</ul>
+<h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
+<p>Join the Slack channel: <a href="https://slack.tidb.io/invite?team=tidb-community&amp;channel=sig-docs&amp;ref=pingcap-docs">#sig-docs</a></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="introduction-of-tidb-architecture"><a class="header" href="#introduction-of-tidb-architecture">Introduction of TiDB Architecture</a></h1>
+<p>Understanding TiDB talks about what is the architecture of TiDB, what modules it consists of, and what is the responsibility of each module.</p>
+<h2 id="tidb-architecture"><a class="header" href="#tidb-architecture">TiDB Architecture</a></h2>
+<p>When people refer to TiDB, they usually refer to the entire TiDB distributed database that includes three components: the TiDB stateless server, the Placement Driver (PD) server, and the storage server, TiKV or TiFlash. The TiDB server does not store data; it only computes and processes SQL queries. The PD server is the managing component of the entire cluster. The storage server is responsible for persistently storing data.</p>
+<p>Let's see an architecture graph from TiDB stateless server's perspective.</p>
+<p><img src="https://user-images.githubusercontent.com/18818196/121637571-28acae80-cabc-11eb-970e-14af8a7a6246.png" alt="tidb-architecture" /></p>
+<p>As you can see, TiDB is a SQL engine that supports the MySQL protocol with some kind of distributed KV storage engine that supports transactions as the underlying storage.</p>
+<p>Here come three significant questions.</p>
+<ol>
+<li>How to support MySQL protocol?</li>
+<li>How to communicate with storage engine, store and load data?</li>
+<li>How to implement SQL functions?</li>
+</ol>
+<p>This section will start with a few of brief descriptions of what modules TiDB has and what they do, and then put them together with these three questions.</p>
+<h2 id="code-structure"><a class="header" href="#code-structure">Code Structure</a></h2>
+<p>TiDB source code is fully hosted on Github, you can see all the information from the <a href="https://github.com/pingcap/tidb">repository homepage</a>. The whole repository is developed in Golang and divided into many Packages according to functional modules. Through dependency analysis tools, you can see the dependencies between packages inside the project.</p>
+<p>Most of the packages export services in the form of interfaces, and most of the functionality is concentrated in one package. But there are packages that provide basic functionality and are dependent on many packages, so these packages need special attention.</p>
+<p>The main file of TiDB is in <code>tidb-server/main.go</code>, which defines how the service is started. The Build method for the entire project can be found in the <code>Makefile</code>.</p>
+<p>In addition to the code, there are many test cases, which can be found in <code>xx_test.go</code>. There is also toolkit under the <code>cmd</code> directory for doing performance tests or constructing test data.</p>
+<h3 id="module-structure"><a class="header" href="#module-structure">Module Structure</a></h3>
+<p>TiDB has a number of modules. Table below is an overview that shows what each module does, and if you want to see the code for the relevant function, you can find the corresponding module directly.</p>
+<table><thead><tr><th align="left">Package</th><th align="left">Introduction</th></tr></thead><tbody>
+<tr><td align="left">ast</td><td align="left">The data structure definition of abstract syntax tree (AST). For example, <code>SelectStmt</code> defines the data structure of parsing a <code>Select</code> statement.</td></tr>
+<tr><td align="left">cmd</td><td align="left">The command line tools for testing, benchmark, etc.</td></tr>
+<tr><td align="left">config</td><td align="left">The configuration definition that used by TiDB</td></tr>
+<tr><td align="left">context</td><td align="left">The Context interfaces. It provides some basic functional abstractions. Many packages and functions are dependent on this interface. These functions are abstracted as interfaces to resolve the dependency relationship between packages.</td></tr>
+<tr><td align="left">ddl</td><td align="left">The execution logic of DDL</td></tr>
+<tr><td align="left">distsql</td><td align="left">The abstraction of the distributed computing interfaces to isolate the logic between the Executor and the TiKV client</td></tr>
+<tr><td align="left">domain</td><td align="left">The abstraction of a storage space in which databases and tables can be created. Like Namespace, databases with the same name can exist in different domains. In most cases, a single TiDB instance only creates one Domain instance with details about the information schema and statistics.</td></tr>
+<tr><td align="left">executor</td><td align="left">The operator related code that contains the execution logic of most statements</td></tr>
+<tr><td align="left">expression</td><td align="left">The expression-related code that contains various operators and built-in functions</td></tr>
+<tr><td align="left">infoschema</td><td align="left">The metadata management module for SQL statements; accessed when all the operations on the information schema are executed</td></tr>
+<tr><td align="left">kv</td><td align="left">The Key-Value engine interface and some public methods; the interfaces defined in this package need to be implemented by the storage engine which is going to adapt TiDB SQL layer</td></tr>
+<tr><td align="left">meta</td><td align="left">Manages the SQL metadata in the storage engine through the features of the structure package; infoschema and DDL use this module to access or modify the SQL metadata</td></tr>
+<tr><td align="left">meta/autoid</td><td align="left">A module to generate the globally unique monotonically incremental IDs for each table, as well as the Database ID and Table ID</td></tr>
+<tr><td align="left">metrics</td><td align="left">Store the metrics information of all modules</td></tr>
+<tr><td align="left">owner</td><td align="left">Some tasks in the TiDB cluster can be executed by only one instance, such as the asynchronous schema change. This owner module is used to coordinate and generate a task executor among multiple TiDB servers. Each task has its own executor.</td></tr>
+<tr><td align="left">perfschema</td><td align="left">Features about the Performance Schema, disabled by default</td></tr>
+<tr><td align="left">planner</td><td align="left">Queries optimization related code</td></tr>
+<tr><td align="left">privilege</td><td align="left">The management interface of user privileges</td></tr>
+<tr><td align="left">server</td><td align="left">Code of the MySQL protocol and Session management</td></tr>
+<tr><td align="left">sessionctx/binloginfo</td><td align="left">Output binlog information to the binlog module</td></tr>
+<tr><td align="left">sessionctx/stmtctx</td><td align="left">Various necessary information for the statement of a session during runtime</td></tr>
+<tr><td align="left">sessionctx/variable</td><td align="left">System variable related code</td></tr>
+<tr><td align="left">statistics</td><td align="left">The statistics module</td></tr>
+<tr><td align="left">store</td><td align="left">Storage engine related code, which is the interaction code between the storage engine and the SQL layer</td></tr>
+<tr><td align="left">structure</td><td align="left">The structured API defined on the Transactional Key-Value API, providing structures like List, Queue, and HashMap</td></tr>
+<tr><td align="left">table</td><td align="left">The abstraction of Table in SQL</td></tr>
+<tr><td align="left">tablecodec</td><td align="left">Encode and decode data from SQL to Key-Value. See the codec package for the specific encoding and decoding solution for each data type</td></tr>
+<tr><td align="left">tidb-server</td><td align="left">The main method of the TiDB service</td></tr>
+<tr><td align="left">types</td><td align="left">All the type related code, including the definition of and operation on types</td></tr>
+<tr><td align="left">util</td><td align="left">Some TiDB related tools. Many packages exist in this directory. Only some important packages are introduced in the following articles.</td></tr>
+</tbody></table>
+<p>At a glance, TiDB has 80 packages, which might let you feel overwhelmed, but not all of them are important, and some features only involve a small number of packages, so where to start to look at the source code depends on the purpose of looking at the source code.</p>
+<p>If you want to understand the implementation details of a specific feature, then you can refer to the module profiles above and just find the corresponding module.</p>
+<p>If you want to have a comprehensive understanding of the source code, then you can start from <code>tidb-server/main.go</code> and see how tidb-server starts and how it waits for and handles user requests. Then follow the code all the way through to see the exact execution of the SQL. There are also some important modules that need to be looked at to know how they are implemented. For the auxiliary modules, you can look at them selectively to get a general impression.</p>
+<h3 id="sql-layer-architecture"><a class="header" href="#sql-layer-architecture">SQL Layer Architecture</a></h3>
+<p><img src="https://user-images.githubusercontent.com/18818196/121646008-6e22a900-cac7-11eb-954a-fbca825855b0.png" alt="sql-layer-architecture" /></p>
+<p>This is a detailed SQL layer architecture graph. You can read it from left to right.</p>
+<h3 id="protocol-layer"><a class="header" href="#protocol-layer">Protocol Layer</a></h3>
+<p>The leftmost is the Protocol Layer of TiDB, this is the interface to interact with Client, currently TiDB only supports MySQL protocol, the related code is in the <code>server</code> package.</p>
+<p>The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to <a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html">MySQL Client/Server Protocol document</a>. If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.</p>
+<p>The logic for connection establishment is in the <code>Run()</code> method of <code>server.go</code>, mainly in the following two lines.</p>
+<pre><code class="language-go">conn, err := s.listener.Accept()
+clientConn := s.newConn(conn)
+go s.onConn(clientConn)
+</code></pre>
+<p>The entry method for a single session processing command is to call the <code>dispatch</code> method of the <code>clientConn</code> class, where the protocol is parsed and passed to a different handler.</p>
+<h3 id="sql-layer"><a class="header" href="#sql-layer">SQL Layer</a></h3>
+<p>Generally speaking, a SQL statement needs to go through a series of processes: </p>
+<ol>
+<li>syntax parsing</li>
+<li>validity verification</li>
+<li>making query plan </li>
+<li>optimizing query plan</li>
+<li>generating querier according to plan</li>
+<li>executing and returning results</li>
+</ol>
+<p>These processes locate at the following modules:</p>
+<table><thead><tr><th align="left">Package</th><th align="left">Usage</th></tr></thead><tbody>
+<tr><td align="left">pingcap/tidb/sever</td><td align="left">Interface between protocol layer and SQL layer</td></tr>
+<tr><td align="left">pingcap/tidb/pingcap/parser</td><td align="left">SQL parsing and syntax analyze</td></tr>
+<tr><td align="left">pingcap/tidb/planner</td><td align="left">Validation, query plan building, query plan optimizing</td></tr>
+<tr><td align="left">pingcap/tidb/executor</td><td align="left">Executor generation and execution</td></tr>
+<tr><td align="left">pingcap/tidb/distsql</td><td align="left">Send request to TiKV and aggregate return results from TiKV via TiKV Client</td></tr>
+<tr><td align="left">pingcap/tidb/store/tikv</td><td align="left">TiKV Client</td></tr>
+</tbody></table>
+<h3 id="kv-api-layer"><a class="header" href="#kv-api-layer">KV API Layer</a></h3>
+<p>TiDB relies on the underlying storage engine to store and load data. It does not rely on a specific storage engine (such as TiKV), but has some requirements for the storage engine, and any engine that meets these requirements can be used (TiKV is the most suitable one).</p>
+<p>The most basic requirement is &quot;Key-Value engine with transactions and Golang driver&quot;. The more advanced requirement is &quot;support for distributed computation interface&quot;, so that TiDB can push some computation requests down to the storage engine.</p>
+<p>These requirements can be found in the interfaces of the <code>kv</code> package, and the storage engine needs to provide a Golang driver that implements these interfaces, which TiDB then uses to manipulate the underlying data.</p>
+<p>As for the most basic requirement, these interfaces are related:</p>
+<ul>
+<li><code>Transaction</code>: Basic manipulation of transaction</li>
+<li><code>Receiver</code>: Interface for reading data</li>
+<li><code>Mutator</code>: Interface for mutating data</li>
+<li><code>Storage</code>: Basic functionality provided by the driver</li>
+<li><code>Snapshot</code>: Basic manipulation of data snapshot</li>
+<li><code>Iterator</code>: Result of <code>Seek</code>, used to iterate data</li>
+</ul>
+<p>With the above interfaces, you are able to do all the required operations on the data and complete all the SQL functions. However, for more efficient computing, we have also defined an advanced computing interface, which can focus on these three interfaces or struct:</p>
+<ul>
+<li><code>Client</code>: Send request to storage engine</li>
+<li><code>Request</code>: Payload of the request</li>
+<li><code>Response</code>: Abstraction of result</li>
+</ul>
+<h2 id="summary-1"><a class="header" href="#summary-1">Summary</a></h2>
+<p>This section talks about the source structure of tidb and the architecture of three significant components. More details will be described in the later sections.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="mysql-protocol--session-sanagement"><a class="header" href="#mysql-protocol--session-sanagement">MySQL protocol &amp; session sanagement</a></h1>
+<p>Agenda:</p>
+<ul>
+<li>how the mysql client connects to the tidb-server</li>
+<li>how to manage the client sessions</li>
+<li>how to store session states (session variable, user variable)</li>
+<li>...</li>
+</ul>
+<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="the-lifecycle-of-a-sql"><a class="header" href="#the-lifecycle-of-a-sql">The lifecycle of a SQL</a></h1>
+<p>Agenda:</p>
+<ul>
+<li>the key components that a SQL needs to pass-through
+<ul>
+<li>where the sql is received in a session</li>
+<li>where the sql is parsed into an AST</li>
+<li>where the AST is converted into an execution plan</li>
+<li>where the execution plan is executed</li>
+<li>where the request is sent to TiKV coprocessor</li>
+<li>where the execution result is returned to the client</li>
+</ul>
+</li>
+<li>an example of DDL</li>
+<li>an example of DML</li>
+<li>an example of DQL</li>
+</ul>
+<pre><code class="language-sql">-- DDL
+create table t(a bigint, b bigint);
+
+-- DML
+insert into t values (1, 1);
+
+-- DQL
+select * from t where a = 1;
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="privilege-management"><a class="header" href="#privilege-management">Privilege management</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="ddl"><a class="header" href="#ddl">DDL</a></h1>
+<p>Agenda:</p>
+<ul>
+<li>A lifecycle of DDL statements</li>
+<li>The online schema change algorithm implementation in TiDB</li>
+<li>How to handle different DDL tasks
+<ul>
+<li>create/drop table/column</li>
+<li>add/drop index</li>
+<li>alter table</li>
+<li>alter column type</li>
+</ul>
+</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="dml"><a class="header" href="#dml">DML</a></h1>
+<p>How to handle different DML queries:</p>
+<ul>
+<li>insert into values</li>
+<li>update table</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="transaction-processing"><a class="header" href="#transaction-processing">Transaction processing</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="overview-of-planner"><a class="header" href="#overview-of-planner">Overview of planner</a></h1>
+<p>Agenda</p>
+<ul>
+<li>planner concepts
+<ul>
+<li>expression rewriter</li>
+<li>searching framework</li>
+<li>cost model</li>
+<li>statistics</li>
+<li>query feedback</li>
+</ul>
+</li>
+<li>TiDB planner code structure</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="logical-optimization--rules"><a class="header" href="#logical-optimization--rules">Logical optimization &amp; rules</a></h1>
+<ul>
+<li>expression rewriter</li>
+<li>logical optimization framework</li>
+<li>optimization rules (can be expanded to several pages if it's too complicated)</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="physical-optimization"><a class="header" href="#physical-optimization">Physical optimization</a></h1>
+<ul>
+<li>the dynamic programming searching framework</li>
+<li>the physical properties</li>
+<li>the cost model</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="table-statistics"><a class="header" href="#table-statistics">Table statistics</a></h1>
+<ul>
+<li>what statistics we are using, why</li>
+<li>how the statics are collected</li>
+<li>how the statics are used</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="plan-cache"><a class="header" href="#plan-cache">Plan cache</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="sql-hints-and-plan-management"><a class="header" href="#sql-hints-and-plan-management">SQL hints and plan management</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="overview-of-the-execution-engine"><a class="header" href="#overview-of-the-execution-engine">Overview of the execution engine</a></h1>
+<ul>
+<li>how the execution plan is converted to executor tree</li>
+<li>how the executor tree is driven to be executed</li>
+<li>introduction of the typical executors</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="retrieving-data-from-the-storage-layer"><a class="header" href="#retrieving-data-from-the-storage-layer">Retrieving data from the storage layer</a></h1>
+<ul>
+<li>DistSQL</li>
+<li>coprocessor part of the tikv-client</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="mvcc-garbage-collection"><a class="header" href="#mvcc-garbage-collection">MVCC garbage collection</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="tidb-release-management"><a class="header" href="#tidb-release-management">TiDB release management</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="manage-a-project"><a class="header" href="#manage-a-project">Manage a project</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="communication-and-discussion"><a class="header" href="#communication-and-discussion">Communication and discussion</a></h1>
+<p>Target audience:</p>
+<p>What you will learn:</p>
+<p>Small quiz:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="useful-resources"><a class="header" href="#useful-resources">Useful resources</a></h1>
+<p>TiDB Source Code Reading Blogs: <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
