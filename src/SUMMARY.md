@@ -42,7 +42,3 @@
     * [Manage a project](project-management/manage-a-project.md)
     * [Communication and discussion](project-management/communication-and-discussion.md)
     * [Useful resources](project-management/useful-resources.md)
-
------------
-
-[Contribute](CONTRIBUTING.md)

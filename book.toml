@@ -1,6 +1,5 @@
 [book]
-authors = ["tison"]
-language = "en"
-multilingual = false
-src = "."
 title = "TiDB Development Guide"
+
+[output.html]
+git-repository-url = "https://github.com/rust-lang/book"
