@@ -1,6 +1,6 @@
 {
   "files": [
-    "README.md"
+    "src/README.md"
   ],
   "imageSize": 100,
   "commit": false,
@@ -126,9 +126,8 @@
       ]
     }
   ],
-  "contributorsPerLine": 7,
+  "contributorsPerLine": 5,
   "projectName": "tidb-dev-guide",
-  "projectOwner": "zz-jason",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true
