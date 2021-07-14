@@ -1,23 +1,31 @@
 # Setup an IDE
 
-## VS Code
-
 ## GoLand
 
 You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB in many situations.
 
-**Step 1**. Clone [TiDB repo](https://github.com/pingcap/tidb) and setup `go` environment, see previous sections for more information.
+### Prerequisites
 
-**Step 2**. Download GoLand [here](https://www.jetbrains.com/go/download/) and install it.
+* `go`: TiDB is a Go project thus its building requires a working `go` environment. See the previous [Install Golang](install-golang.md) section to prepare the environment.
+* TiDB source code: See the previous [Get the code, build and run](build-tidb-from-source.md) section to get the source code.
 
-**Step 3**. Open the TiDB project in GoLand.
+### Download GoLand
 
-![tidb in goland](https://user-images.githubusercontent.com/30543181/118812264-7fb9cc00-b8e0-11eb-8825-223afa93b2f0.png)
+Download GoLand from [here](https://www.jetbrains.com/go/download) and install it.
 
-**Step 4**. `cd <tidb-dir>` and execute following commands to add these three config files to `./.idea/runConfigurations/` directory. 
+### Open TiDB source code in GoLand
+
+Follow the [instruction](https://www.jetbrains.com/help/go/quick-start-guide-goland.html#open-project) and open TiDB source code in GoLand.
+
+![Open TiDB source code in GoLand](../img/open-tidb-in-goland.png)
+
+### Populate Run Configurations
+
+Execute the following commands under the root dir of TiDB source code to add config files.
 
 ```bash
 mkdir -p .idea/runConfigurations/ && cd .idea/runConfigurations/
+
 cat <<EOF > unistore_4000.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
@@ -65,38 +73,37 @@ cat <<EOF > unit_test.xml
 EOF
 ```
 
-After executing script, you can check whether to have three config in the directory. 
+You can check there are three config files.
 
 ```bash
-$ ls
-playground_attach_4001.xml
-unistore_4000.xml
-unit_test.xml
+ls
+# OUTPUT:
+# playground_attach_4001.xml
+# unistore_4000.xml
+# unit_test.xml
 ```
-**Step 5**. Now you can see the run/debug configs in the right upper corner, but if there aren't, you can still add them manually in the dialog.
 
-![configs](https://user-images.githubusercontent.com/30543181/118766709-63ea0200-b8af-11eb-9176-bc3fb6f566d4.png)
+### Run or Debug
 
-> GoLand uses [delve](https://github.com/go-delve/delve) to debug go programs, usually GoLand has an usable delve without any additional configuration. But in some cases, you may need to download a delve by yourself.
+Now you can see the run/debug configs right upper the window.
 
-The first config is `unistore 4000`, which makes you can run/debug TiDB independently without TiKV/PD/TiFlash.
+![Run Configs](../img/run-configs.png)
 
-![unistore config](https://user-images.githubusercontent.com/30543181/118766909-a4498000-b8af-11eb-8e20-9e2aff1a0b44.png) ![run in unistore](https://user-images.githubusercontent.com/30543181/118769645-f9d35c00-b8b2-11eb-9048-1b696ead2815.png)
+The first config is `unistore 4000`, which enables you run/debug TiDB independently without TiKV, PD, and TiFlash.
 
-The second config is `playground attach 4001`, which makes you can run/debug TiDB to attach a existed cluster, for example, [`tiup playground`](https://docs.pingcap.com/tidb/stable/tiup-playground).
+![unistore config](../img/unistore-config.png)
+![unistore output](../img/unistore-output.png)
+
+The second config is `playground attach 4001`, which enables you can run/debug TiDB by attaching to an existing cluster; for example, a cluster deployed with [`tiup playground`](https://docs.pingcap.com/tidb/stable/tiup-playground).
 
 After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.
 
-![playground attach config](https://user-images.githubusercontent.com/30543181/118767132-f38fb080-b8af-11eb-93cd-bdbe95ff2102.png) ![debug](https://user-images.githubusercontent.com/30543181/118771847-9860bc80-b8b5-11eb-856f-4b4f21d035de.png)
+![playground attach config](../img/playground-attach-config.png)
+![playground attach debug](../img/playground-attach-debug.png)
 
-The third config is `unit test`, which makes you can run/debug TiDB's unit test. You may modify the `Directory` and `Pattern` to run other tests.
+The third config is `unit test`, which enables you can run/debug unit tests. You may modify the `Directory` and `Pattern` to run other tests.
 
-![unit test config](https://user-images.githubusercontent.com/30543181/118767852-dad3ca80-b8b0-11eb-86ae-306bd4a995bc.png) ![unit test](https://user-images.githubusercontent.com/30543181/118769164-7285e880-b8b2-11eb-923e-c3eaffcddfd6.png)
-
-**Step 6**. Just click the run or debug button to enjoy your time of TiDB in GoLand!
-
-## Vim
-
-## Emacs
+![unit test config](../img/unit-test-config.png)
+![unit test output](../img/unit-test-output.png)
 
 If you encounter any problems during your journey, do not hesitate to reach out on the [TiDB Internals forum](https://internals.tidb.io/).

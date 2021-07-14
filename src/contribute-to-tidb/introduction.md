@@ -1,4 +1,4 @@
-# Introduction
+# Contribute to TiDB
 
 TiDB is developed by an open and friendly community. Everybody is cordially welcome to join the community and contribute to TiDB. We value all forms of contributions, including, but not limited to:
 
@@ -13,13 +13,14 @@ TiDB is developed by an open and friendly community. Everybody is cordially welc
 
 Here are guidelines for contributing to various aspect of the project:
 
-* [TiDB Community Guideline](community-guideline.md)
-* [Report a Bug](report-a-bug.md)
-* [Make a Proposal](make-a-proposal.md)
+* [Community Guideline](community-guideline.md)
+* [Committer Guide](committer-guide.md)
+* [Commit code and submit a pull request](commit-code-and-submit-a-pull-request.md)
 * [Contribute Code](contribute-code.md)
 * [Review a Pull Request](review-a-pr.md)
+* [Make a Proposal](make-a-proposal.md)
 * [Code Style and Quality Guide](code-style-and-quality-guide.md)
+* [Report a Bug](report-a-bug.md)
 * [Write Document](write-document.md)
-* [Committer Guide](committer-guide.md)
 
 Any other question? Reach out to the [TiDB Internals forum](https://internals.tidb.io/) to get help!

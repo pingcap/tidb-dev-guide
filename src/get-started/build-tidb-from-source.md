@@ -3,8 +3,17 @@
 ## Prerequisites
 
 * `git`: The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please [install `git`](https://git-scm.com/downloads).
-* `go`: TiDB is a Go project thus its building requires a working `go` environment. See the previous [Install Golang](https://github.com/zz-jason/tidb-dev-guide/tree/ac6b65f27b589a78fff1767e94703eb1ca25874e/get-started/get-started/install-golang.md) section to prepare the environment.
-* `mysql` client \(optional\): After building TiDB from source, you can use use the official [MySQL client](https://dev.mysql.com/downloads/mysql/) to connect to TiDB. It is not required if you want to build TiDB only.
+* `go`: TiDB is a Go project thus its building requires a working `go` environment. See the previous [Install Golang](install-golang.md) section to prepare the environment.
+* `mysql` client (optional): After building TiDB from source, you can use use the official [MySQL client](https://dev.mysql.com/downloads/mysql/) to connect to TiDB. It is not required if you want to build TiDB only.
+* `WSL2` (Win10 only): TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to [install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) first. 
+
+## Setup GOPATH
+
+If `echo $GOPATH` gives empty result, you should set up `GOPATH` firstly.
+
+```bash
+export GOPATH=$(go env GOPATH)
+```
 
 ## Clone
 
@@ -44,3 +53,4 @@ You can use official MySQL client to connect to TiDB:
 mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> "
 ```
 
+If you encounter any problems during your journey, do not hesitate to reach out on the [TiDB Internals forum](https://internals.tidb.io/).
