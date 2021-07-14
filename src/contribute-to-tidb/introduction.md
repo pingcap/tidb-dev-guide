@@ -15,12 +15,11 @@ Here are guidelines for contributing to various aspect of the project:
 
 * [Community Guideline](community-guideline.md)
 * [Committer Guide](committer-guide.md)
-* [Commit code and submit a pull request](commit-code-and-submit-a-pull-request.md)
+* [Report a Bug](report-a-bug.md)
 * [Contribute Code](contribute-code.md)
 * [Review a Pull Request](review-a-pr.md)
 * [Make a Proposal](make-a-proposal.md)
 * [Code Style and Quality Guide](code-style-and-quality-guide.md)
-* [Report a Bug](report-a-bug.md)
 * [Write Document](write-document.md)
 
 Any other question? Reach out to the [TiDB Internals forum](https://internals.tidb.io/) to get help!
