@@ -73,7 +73,7 @@ cat <<EOF > unit_test.xml
 EOF
 ```
 
-You can check there are three config files.
+Now please confirm there are three config files.
 
 ```bash
 ls
