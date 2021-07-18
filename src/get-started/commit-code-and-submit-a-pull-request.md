@@ -4,7 +4,7 @@ The TiDB project uses [Git](https://git-scm.com/) to manage its source code. To 
 
 The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:
 
-* Beginner and Getting started sections of [this tutorial](https://www.atlassian.com/git/tutorials) from Atlassian 
+* Beginner and Getting started sections of [this tutorial](https://www.atlassian.com/git/tutorials) from Atlassian
 * [Documentation](https://docs.github.com/en/github/getting-started-with-github/set-up-git) and [guides](https://guides.github.com/introduction/git-handbook/) for beginners from Github
 * More in-depth [book](https://git-scm.com/book/en/v2/) from Git
 
@@ -135,4 +135,3 @@ git rebase --continue
 "Squashing" commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.
 
 You also may want to squash just the last few commits together, possibly because they only represent "fixups" and not real changes. For example, `git rebase --interactive HEAD~2` will allow you to edit the two commits only.
-
