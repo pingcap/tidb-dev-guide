@@ -32,7 +32,6 @@ make server
 ./bin/tidb-server
 ```
 
-
 You can then start a new shell and use `ps` or `pgrep` to find the PID of the tidb server process you just started.
 
 ```bash

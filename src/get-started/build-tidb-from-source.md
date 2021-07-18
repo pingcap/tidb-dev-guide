@@ -5,7 +5,10 @@
 * `git`: The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please [install `git`](https://git-scm.com/downloads).
 * `go`: TiDB is a Go project thus its building requires a working `go` environment. See the previous [Install Golang](install-golang.md) section to prepare the environment.
 * `mysql` client (optional): After building TiDB from source, you can use use the official [MySQL client](https://dev.mysql.com/downloads/mysql/) to connect to TiDB. It is not required if you want to build TiDB only.
-* `WSL2` (Win10 only): TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to [install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) first. 
+
+> **Note:**
+>
+> TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to [install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) first.
 
 ## Setup GOPATH
 
