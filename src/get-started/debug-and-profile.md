@@ -1,9 +1,10 @@
 # Debug and profile
 
 In this section, you will learn the following things:
-- How to debug TiDB
-- How to pause the execution at any line of code to inspect values and stacks
-- how to profile TiDB to catch a performance bottleneck
+
+* How to debug TiDB
+* How to pause the execution at any line of code to inspect values and stacks
+* How to profile TiDB to catch a performance bottleneck
 
 ## Use delve for debugging
 
@@ -22,48 +23,48 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 
 ### Attach delve to a running TiDB process
 
-As mentioned in [Get the code, build and run](build-tidb-from-source.md), once you get the TiDB server running, you can try attaching the delve debugger.
+Once you get the TiDB server running, you can try attaching the delve debugger.
 
 For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.
 
+```bash
+make server
+./bin/tidb-server
 ```
-$ make server
-$ ./bin/tidb-server
-```
-
 
 You can then start a new shell and use `ps` or `pgrep` to find the PID of the tidb server process you just started.
 
-```
-$ pgrep tidb-server
-1394942
+```bash
+pgrep tidb-server
+# OUTPUT:
+# 1394942
 ```
 
 If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as `ps $PID`, where `$PID` is the PID you are trying to know more about.
 
-```
-$ ps 1394942
-    PID TTY      STAT   TIME COMMAND
-1394942 pts/11   SNl    0:02 ./bin/tidb-server
+```bash
+ps 1394942
+# OUTPUT:
+#     PID TTY      STAT   TIME COMMAND
+# 1394942 pts/11   SNl    0:02 ./bin/tidb-server
 ```
 
 Once you get the PID, you can attach delve onto it by running the following command:
 
-```
-$ dlv attach 1394942
+```bash
+dlv attach 1394942
 ```
 
 You might get error messages of the kernel security setting as follows:
 
 ```
-$ dlv attach 1394942
 Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing "0" to /proc/sys/kernel/yama/ptrace_scope
 ```
 
 To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.
 
-```
-# echo 0 > /proc/sys/kernel/yama/ptrace_scope
+```bash
+echo 0 > /proc/sys/kernel/yama/ptrace_scope
 ```
 
 Then retry attaching delve onto the PID and it should work.
@@ -84,12 +85,13 @@ where `[name]` is the name for the breakpoint, and `<linespec>` is the position 
 
 For example, the following command will create a breakpoint at the `Next` function of `HashJoinExec` (the line number can be subject to change due to the modification of the source code).
 
-```
-$ dlv debug tidb-server/main.go                                                                                                                                   148 ↵
-Type 'help' for list of commands.
-(dlv) break executor/join.go:653
-Breakpoint 1 (enabled) set at 0x36752d8 for github.com/pingcap/tidb/executor.(*HashJoinExec).Next() ./executor/join.go:653
-(dlv)
+```bash
+dlv debug tidb-server/main.go
+# OUTPUT:
+# Type 'help' for list of commands.
+# (dlv) break executor/join.go:653
+# Breakpoint 1 (enabled) set at 0x36752d8 for github.com/pingcap/tidb/executor.(*HashJoinExec).Next() ./executor/join.go:653
+# (dlv)
 ```
 
 Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.
@@ -118,9 +120,9 @@ Some TiDB functions are critical for you to understand the internals of TiDB. To
 
 For example,
 
-1. `[executor/compiler.go:Compile](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48)` is where each SQL statement is compiled and optimized.
-2. `[planner/planner.go:Optimize](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80)` is where the SQL optimization starts.
-3. `[executor/adapter.go:ExecStmt.Exec](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312)` is where the SQL plan turns into executor, and where the SQL execution starts.
+1. [`executor/compiler.go:Compile`](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48) is where each SQL statement is compiled and optimized.
+2. [`planner/planner.go:Optimize`](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80) is where the SQL optimization starts.
+3. [`executor/adapter.go:ExecStmt.Exec`](https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312) is where the SQL plan turns into executor, and where the SQL execution starts.
 4. Each `Open`, `Next`, and `Close` function of each executor marks the volcano-style execution logic.
 
 When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.
@@ -134,32 +136,32 @@ For any database system, performance is always important. If you want to know wh
 When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at `http://127.0.0.1:10080/debug/pprof/profile`, and you can get the profile result by running the following commands:
 
 ```bash
-$ curl -G "127.0.0.1:10080/debug/pprof/profile?seconds=45" > profile.profile
-$ go tool pprof -http 127.0.0.1:4001 profile.profile
+curl -G "127.0.0.1:10080/debug/pprof/profile?seconds=45" > profile.profile
+go tool pprof -http 127.0.0.1:4001 profile.profile
 ```
 
 The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at `127.0.0.1:4001`, which contains the [flame graph](http://www.brendangregg.com/flamegraphs.html) of the execution and more views that can help you diagnosis the performance bottleneck.
 
 Similarly, you can also gather other runtime information through this end point. For example:
 
-- Goroutine:
+* Goroutine:
 
 ```bash
 curl -G "127.0.0.1:10080/debug/pprof/goroutine" > goroutine.profile
 ```
 
-- Trace:
+* Trace:
 
 ```bash
-$ curl -G "127.0.0.1:10080/debug/pprof/trace?seconds=3" > trace.profile
-$ go tool trace -http 127.0.0.1:4001 trace.profile
+curl -G "127.0.0.1:10080/debug/pprof/trace?seconds=3" > trace.profile
+go tool trace -http 127.0.0.1:4001 trace.profile
 ```
 
-- Heap:
+* Heap:
 
 ```bash
-$ curl -G "127.0.0.1:10080/debug/pprof/heap" > heap.profile
-$ go tool pprof -http 127.0.0.1:4001 heap.profile
+curl -G "127.0.0.1:10080/debug/pprof/heap" > heap.profile
+go tool pprof -http 127.0.0.1:4001 heap.profile
 ```
 
 To learn how the runtime information is analyzed, see Go's [diagnostics document](https://golang.org/doc/diagnostics).
@@ -171,15 +173,15 @@ When you are proposing a performance-related feature for TiDB, it is recommended
 For example, if you want to benchmark the window functions, because `BenchmarkWindow` are already in the benchmark tests, you can run the following commands to get the benchmark result.
 
 ```bash
-$ cd executor
-$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
+cd executor
+go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 ```
 
 
 If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:
 
 ```bash
-$ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
+go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
 ```
 
-to also generate the profiling information, and you can then analyze them as described in the above section.
+To also generate the profiling information, and you can then analyze them as described in the above section.

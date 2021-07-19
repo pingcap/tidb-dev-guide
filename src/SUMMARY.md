@@ -7,16 +7,16 @@
     * [Get the code, build and run](get-started/build-tidb-from-source.md)
     * [Setup an IDE](get-started/setup-an-ide.md)
     * [Write and run unit tests](get-started/write-and-run-unit-tests.md)
-    * [Commit code and submit a pull request](get-started/commit-code-and-submit-a-pull-request.md)
     * [Debug and profile](get-started/debug-and-profile.md)
+    * [Commit code and submit a pull request](get-started/commit-code-and-submit-a-pull-request.md)
 
 * [Contribute to TiDB](contribute-to-tidb/introduction.md)
     * [Community Guideline](contribute-to-tidb/community-guideline.md)
     * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Report a Bug](contribute-to-tidb/report-a-bug.md)
-    * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Contribute Code](contribute-to-tidb/contribute-code.md)
     * [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
+    * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
     * [Write Document](contribute-to-tidb/write-document.md)
 
