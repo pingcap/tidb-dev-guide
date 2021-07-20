@@ -1,8 +1,5 @@
 # Project Management
 
-Target audience:
+Here are practices for managing TiDB such a complicated project:
 
-What you will learn:
-
-Small quiz:
-
+* [Release Tran Model](release-train-model.md)
