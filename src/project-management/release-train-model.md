@@ -46,7 +46,7 @@ Ideally, we would have started stabilization once we create the new release bran
 
 ## What happens if features don't complete?
 
-Features tend to be of different complexity. Some of them can be implemented within a single release while some span multiple releases. With release train model, we would need to ensure that ongoing features do not affect the stability of the release. There are couple of options -
+Different features have different complexities. Some features can be implemented within a single release while some features span multiple releases. With the release train model, to ensure that ongoing features do not affect the stability of the release, we have two approaches as follows:
 
 1. Ensure that each feature is split into testable units and only testable units get merged. This means that a good set of unit tests and system tests are written for sub-tasks before they are merged. This approach ensures that the master branch is in a relatively stable state and can be released at any time.
 
