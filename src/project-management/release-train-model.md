@@ -1,22 +1,23 @@
 # Release Train Model
 
-## What is release train model?
+## What is the release train model?
 
-Before v5.0, TiDB releases a major version every year or every half year.
+Before introducing the concept of the release train model, let us take a review of the delivery mode of TiDB in the past.
 
-However, the longer a development cycle is, the more features it is responsible to deliver, which is hard to coordinate when doing regression and acceptance tests and releasing, and thus delay happens.
+In releases earlier than v5.0, the release frequency of TiDB major versions was a year or half a year, which is quite a long development cycle. The long development cycle has both benefits and drawbacks as follows:
 
-Also, new feature requests occur during the development cycle, and due to the long development cycle, new feature requests are added as development backlog after the development cycle started. In this case, development tasks can hardly converge until it is closed to release date.
+- Benefits: the longer a development cycle is, the more features one release can deliver.
+- Drawbacks: the longer a development cycle is, the more difficulties we have to coordinate regression and acceptance tests, and the more possibly a delay happens. Also, if new feature requests are received during the long development cycle, these new features are added to the development backlog after the start of the development cycle. In this case, development tasks are hardly converged before the release date.
 
-Starting from v5.0, TiDB adopts the release train model. Release train model is a product development model for requirements gathering, analysis, decision making, release, and issue feedback.
+Starting from v5.0, TiDB adopts the release train model, which is a product development model for requirements gathering, analysis, decision making, release, and issue feedback.
 
-Just like a train delivering goods, decisions need to be made about the priority of the goods, destination, arrival time, which train to load on, which carriage, etc., before the train departs.
+Just like a train delivering goods, decisions need to be made about the priorities of the goods, destination, arrival time, which train to load on, which carriage, etc., before the train departs.
 
-The benefits of moving to the release train model are:
+The benefits of moving to the release train model are as follows:
 
-1. A quicker feedback cycle and users can benefit from features shipped quicker.
-2. Predictability for contributors and users:
-    1. Developers and reviewers can decide in advance what release they are aiming for with specific features.
+1. A shorter feedback cycle: users can benefit from features shipped faster.
+2. Easier predictability for contributors and users:
+    1. Developers and reviewers can decide in advance the target release to deliver specific features.
     2. If a feature misses a release train we have a good idea of when it will show up.
     3. Users know when to expect their features
 3. Transparency. There will be a published cut-off date (AKA code freeze) for the release and people will know about it in advance. Hopefully this will remove the contention around which features make it.
