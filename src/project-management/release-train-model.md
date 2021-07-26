@@ -44,7 +44,7 @@ For the release train model, we strictly ensure that a release happens on the pl
 
 Ideally, we would have started stabilization once we create the new release branch. After the code-freeze date, only pull requests of blocker bugs can be merged to the new release branch. In a rare scenario, it is possible that few features pass the code freeze bar but still fail to be completed on time. Such features will also be dropped from the release train in the end to meet the release deadline.
 
-## What happens if features don't complete?
+## What happens if features are not completed?
 
 Different features have different complexities. Some features can be implemented within a single release while some features span multiple releases. With the release train model, to ensure that ongoing features do not affect the stability of the release, we have two approaches as follows:
 
