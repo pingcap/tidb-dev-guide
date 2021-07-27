@@ -38,7 +38,7 @@
     * [MVCC garbage collection](understand-tidb/mvcc-garbage-collection.md)
 
 * [Project Management](project-management/introduction.md)
-    * [TiDB release management](project-management/tidb-release-management.md)
+    * [Releases Train Model](project-management/release-train-model.md)
     * [Manage a project](project-management/manage-a-project.md)
     * [Communication and discussion](project-management/communication-and-discussion.md)
     * [Useful resources](project-management/useful-resources.md)
