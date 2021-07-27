@@ -26,6 +26,8 @@
     * [Privilege management](understand-tidb/privilege-management.md)
     * [DDL](understand-tidb/ddl.md)
     * [DML](understand-tidb/dml.md)
+    * [Metadata persistence](understanding-tidb/metadata-persistence.md)
+    * [Plugin](understanding-tidb/plugin.md)
     * [Transaction processing](understand-tidb/transaction-processing.md)
     * [Overview of planner](understand-tidb/overview-of-planner.md)
     * [Logical optimization & rules](understand-tidb/logical-optimization-and-rules.md)
