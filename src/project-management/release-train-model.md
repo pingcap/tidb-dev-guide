@@ -20,7 +20,7 @@ The benefits of moving to the release train model are as follows:
     1. Developers and reviewers can decide in advance the target release to deliver specific features.
     2. If a feature misses a release train, we have a good idea of when the feature will show up later.
     3. Users know when to expect their features.
-3. Transparency. There will be a published cut-off date (AKA code freeze) for the release and people will know about it in advance. Hopefully this will remove the contention around which features make it.
+3. Transparency. There will be a published cut-off date (AKA code freeze) for the release and people will know about the date in advance. Hopefully this will remove the contention around which features will be included in the release.
 4. Quality. we've seen issues pop up in release candidates due to last-minute features that didn't have proper time to bake in. More time between code freeze and release will let us test more, document more and resolve more issues.
 5. Project visibility and activity. Having frequent releases improves our visibility and gives the community more opportunities to talk about TiDB.
 
