@@ -281,8 +281,17 @@ make
 <p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
 <h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
 <p>You can use official MySQL client to connect to TiDB:</p>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot;
+<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot; --comments
 </code></pre>
+<p>Where:</p>
+<ul>
+<li><code>-h 127.0.0.1</code> sets the Host to local host loopback interface</li>
+<li><code>-P 4000</code> uses port 4000</li>
+<li><code>-u root</code> connect as root user (<code>-p</code> not given, the development build has no password for root)</li>
+<li><code>-D test</code> use Schema/Database test</li>
+<li><code>--prompt &quot;tidb&gt; &quot;</code> sets the prompt to distinguish it from a connection to MySQL</li>
+<li><code>--comments</code> preserves comments like <code>/*T![clustered_index NONCLUSTERED */</code> instead of stripping them when sending the query to the server.</li>
+</ul>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="setup-an-ide"><a class="header" href="#setup-an-ide">Setup an IDE</a></h1>
 <h2 id="goland"><a class="header" href="#goland">GoLand</a></h2>
