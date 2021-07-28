@@ -53,7 +53,14 @@ This starts the TiDB server listening on port 4000 with embedded `unistore`.
 You can use official MySQL client to connect to TiDB:
 
 ```bash
-mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> "
+mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> " --comments
 ```
+Where:
+- `-h 127.0.0.1` sets the Host to local host loopback interface
+- `-P 4000` uses port 4000
+- `-u root` connect as root user (`-p` not given, the development build has no password for root)
+- `-D test` use Schema/Database test
+- `--prompt "tidb> "` sets the prompt to distinguish it from a connection to MySQL
+- `--comments` preserves comments like `/*T![clustered_index NONCLUSTERED */` instead of stripping them when sending the query to the server.
 
 If you encounter any problems during your journey, do not hesitate to reach out on the [TiDB Internals forum](https://internals.tidb.io/).
