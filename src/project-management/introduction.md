@@ -1,5 +1,5 @@
 # Project Management
 
-Here are practices for managing TiDB such a complicated project:
+Practices for managing TiDB project:
 
-* [Release Tran Model](release-train-model.md)
+* [Release Train Model](release-train-model.md)
