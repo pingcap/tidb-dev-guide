@@ -30,11 +30,11 @@ cat <<EOF > unistore_4000.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
-    <working_directory value="$PROJECT_DIR$" />
+    <working_directory value="\$PROJECT_DIR\$" />
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$" />
+    <filePath value="\$PROJECT_DIR\$" />
     <package value="github.com/pingcap/tidb/tidb-server" />
-    <directory value="$PROJECT_DIR$" />
+    <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
 </component>
@@ -44,12 +44,12 @@ cat <<EOF > playground_attach_4001.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
-    <working_directory value="$PROJECT_DIR$" />
+    <working_directory value="\$PROJECT_DIR\$" />
     <parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " />
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/tidb-server/main.go" />
+    <filePath value="\$PROJECT_DIR\$/tidb-server/main.go" />
     <package value="github.com/pingcap/tidb/tidb-server" />
-    <directory value="$PROJECT_DIR$" />
+    <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
 </component>
@@ -59,13 +59,13 @@ cat <<EOF > unit_test.xml
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
     <module name="tidb" />
-    <working_directory value="$PROJECT_DIR$" />
+    <working_directory value="\$PROJECT_DIR\$" />
     <go_parameters value="-i" />
     <framework value="gocheck" />
     <kind value="DIRECTORY" />
     <package value="github.com/pingcap/tidb" />
-    <directory value="$PROJECT_DIR$/planner/core" />
-    <filePath value="$PROJECT_DIR$" />
+    <directory value="\$PROJECT_DIR\$/planner/core" />
+    <filePath value="\$PROJECT_DIR\$" />
     <pattern value="TestEnforceMPP" />
     <method v="2" />
   </configuration>
