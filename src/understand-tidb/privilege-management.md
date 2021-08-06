@@ -28,7 +28,8 @@ The first option is recommended, as it is much less verbose. However, `visitInfo
 ### Manually checking with the privilege manager
 
 For (2) above, manual checks should follow the following pattern:
-```
+
+```go
 checker := privilege.GetPrivilegeManager(e.ctx)
 if checker != nil && !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, "", mysql.AllPrivMask) {
     /* do something */
