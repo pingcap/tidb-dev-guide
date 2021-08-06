@@ -19,11 +19,11 @@ Should you need to add privilege checks there are two options:
 
 1. During plan building you can attach `visitInfo` to the plan (examples: [`SET CONFIG`](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/planner/core/planbuilder.go#L745), [`SHOW BACKUPS`](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/planner/core/planbuilder.go#L2378-L2380))
 
-2. In the executor function which handles the statement (examples: [`DROP USER`](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/executor/simple.go#L1150-L1170)).
+2. In the executor function which handles the statement (examples: [`SHOW PROCESSLIST`](https://github.com/pingcap/tidb/blob/1a54708a7f8f86515236626c78e97a33d8adf583/executor/show.go#L368-L380)).
 
-The first option is recommended, as it is much less verbose. However, `visitInfo` can only attach additional privilege checks with an `AND` semantic. In the `DROP USER` example linked above, the MySQL compatible behavior is that either the `DELETE` privilege on the `mysql.user` table *or* the `CREATE USER` privilege is required (with some additional exceptions on if the user is a "SYSTEM_USER").
+The first option is recommended, as it is much less verbose. However, `visitInfo` does not handle cases where the statement can behave differently depending on the permissions of the user executing it. All users can execute the `SHOW PROCESSLIST` statement, but to see the sessions of other users requires the `PROCESS` privilege.
 
-There are also similar complex examples in `information_schema` tables and commands such as `SHOW PROCESSLIST` where the result of the statement depends on the permissions of the user executing it.
+`visitInfo` also does not support the case that a statement requires either `XYZ` **or** `ZYX` as a permission. An example of this, is that dropping a user in MySQL requires either the `CREATE USER` privilege, or the `DELETE` privilege on the `mysql.user` table. Permissions can only be attached in `visitInfo` with an **AND** semantic.
 
 ### Manually checking with the privilege manager
 
@@ -56,3 +56,9 @@ Typically requiring the `SUPER` privilege is an anti-pattern since almost all dy
 TiDB features an extension to MySQL called [Security Enhanced Mode](https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md) (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of `SUPER` and instead require specific "restricted" dynamic privileges instead. The design is inspired by features such as "Security Enhanced Linux" (SeLinux) and AppArmor.
 
 SEM plugs directly into the privilege manager, but the hard coded list of restricted objects lives in [`./util/sem/*`](https://github.com/pingcap/tidb/blob/master/util/sem/sem.go). It is expected that over time SEM will protect against additional operations which are considered to be high risk or too broad.
+
+### Recommended Reading
+
+* [Technical Design: Security Enhanced Mode](https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md)
+* [Technical Design: Dynamic Privileges](https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md)
+* [MySQL Worklog: Pluggable Dynamic Privileges](https://dev.mysql.com/worklog/task/?id=8131)
