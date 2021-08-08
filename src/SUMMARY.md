@@ -22,7 +22,7 @@
 
 * [Understand TiDB](understand-tidb/introduction.md)
     * [MySQL protocol & session sanagement](understand-tidb/mysql-protocol-and-session-management.md)
-    * [The lifecycle of a SQL](understand-tidb/the-lifecycle-of-a-sql.md)
+    * [The lifecycle of a statement](understand-tidb/the-lifecycle-of-a-statement.md)
     * [Privilege management](understand-tidb/privilege-management.md)
     * [DDL](understand-tidb/ddl.md)
     * [DML](understand-tidb/dml.md)
