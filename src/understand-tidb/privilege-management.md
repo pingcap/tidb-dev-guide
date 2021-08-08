@@ -1,15 +1,18 @@
 # Privilege management
 
 At its core, TiDB's approach to user privileges is similar to that of MySQL:
-- The privileges are stored in tables such as `mysql.user` and `mysql.db`.
-- The privilege tables are then loaded into an [in-memory cache](https://github.com/pingcap/tidb/blob/master/privilege/privileges/cache.go). The cache is then used by the privilege manager to determine the privileges of a user.
-- The cache is automatically updated when using privilege control statements such as `GRANT` and `REVOKE`. The statement `FLUSH PRIVILEGES` can also be used to manually reload the cache for when manual changes are made to the privilege tables.
+
+* The privileges are stored in tables such as `mysql.user` and `mysql.db`.
+* The privilege tables are then loaded into an [in-memory cache](https://github.com/pingcap/tidb/blob/master/privilege/privileges/cache.go). The cache is then used by the privilege manager to determine the privileges of a user.
+* The cache is automatically updated when using privilege control statements such as `GRANT` and `REVOKE`. The statement `FLUSH PRIVILEGES` can also be used to manually reload the cache for when manual changes are made to the privilege tables.
 
 ## Behavior differences from MySQL
 
 Implicit updates to the privilege cache (i.e. when `GRANT` or `REVOKE` statements are executed) run immediately on the instance of TiDB that is executing the statement. A [notification is also sent to all TiDB instances](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/domain/domain.go#L1355-L1373) to rebuild their cache. This notification is sent asynchronously, so it is possible that when a load balancer is used, the cache will be out of date when attempting to reconnect to a TiDB instance immediately.
 
 Because the asynchronous notifications do not guarantee delivery, TiDB will also [automatically rebuild the privilege cache](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/domain/domain.go#L852-L908) every 5-10 minutes in a loop. This behavior is not strictly MySQL compatible, because in MySQL the privilege cache will only ever be rebuilt from a `FLUSH PRIVILEGES` statement, a restart, or a privilege control statement.
+
+Client certificate options are stored in the `mysql.global_priv` table instead of the `mysql.user` table. This behavior is not intentional, and may be changed in the future.
 
 ## Adding privilege checks to a statement
 
@@ -23,7 +26,7 @@ Should you need to add privilege checks there are two options:
 
 The first option is recommended, as it is much less verbose. However, `visitInfo` does not handle cases where the statement can behave differently depending on the permissions of the user executing it. All users can execute the `SHOW PROCESSLIST` statement, but to see the sessions of other users requires the `PROCESS` privilege.
 
-`visitInfo` also does not support the case that a statement requires either `XYZ` **or** `ZYX` as a permission. An example of this, is that dropping a user in MySQL requires either the `CREATE USER` privilege, or the `DELETE` privilege on the `mysql.user` table. Permissions can only be attached in `visitInfo` with an **AND** semantic.
+`visitInfo` also only supports **AND** semantics. For complex scenarios (such as `DROP USER` requiring either `CREATE USER` **OR** `DELETE` privileges on the `mysql.user` table), option 2 is required.
 
 ### Manually checking with the privilege manager
 
@@ -45,12 +48,13 @@ The check for `checker != nil` is important because for internal SQL statements 
 ### Static and dynamic privileges
 
 Privileges fall into two categories:
+
 * Static privileges: These are the "traditional" privileges such as `INSERT`, `UPDATE`, `SELECT`, `DELETE`, `SUPER`, `PROCESS` which have existed in MySQL for a long time. They can *usually* be assigned to a user on either a global or database/table level.
 * Dynamic privileges: These are new privileges such as `BACKUP_ADMIN`, `RESTORE_ADMIN`, `CONNECTION_ADMIN`. They can only be assigned on a global level, and each have their own "grantable" attribute.
 
 Dynamic privileges were introduced in MySQL 8.0 (and [TiDB 5.1](https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md)) to solve a specific issue, which is that the `SUPER` privilege is too coarse. There are many scenarios where a user needs to be assigned the `SUPER` privilege to perform a specific action, but too many other privileges are granted at the same time.
 
-Typically requiring the `SUPER` privilege is an anti-pattern since almost all dynamic privileges are [also satisfied](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/privilege/privileges/cache.go#L1009) by the `SUPER` privilege.
+Any statements added to TiDB **should no longer require** the `SUPER` privilege directly. Instead, a dynamic privilege should be added [which will be satified](https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/privilege/privileges/cache.go#L1009) by the `SUPER` privilege.
 
 ### Security Enhanced Mode
 
