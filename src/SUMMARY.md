@@ -21,7 +21,7 @@
     * [Write Document](contribute-to-tidb/write-document.md)
 
 * [Understand TiDB](understand-tidb/introduction.md)
-    * [MySQL protocol & session sanagement](understand-tidb/mysql-protocol-and-session-management.md)
+    * [MySQL protocol & session management](understand-tidb/mysql-protocol-and-session-management.md)
     * [The lifecycle of a SQL](understand-tidb/the-lifecycle-of-a-sql.md)
     * [Privilege management](understand-tidb/privilege-management.md)
     * [DDL](understand-tidb/ddl.md)
