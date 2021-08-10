@@ -38,11 +38,9 @@ The optimized plan is executed through [runStmt](https://github.com/pingcap/tidb
 
 If the statement returns a record set, it is handled in [writeChunks](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1993) which loops over the record set's `Next()` 
 
-## Recommended reading:
+Notice that things like error handling, tracing etc. are not explained in this page.
 
-* [New planner design](https://github.com/pingcap/tidb/blob/master/docs/design/2018-08-29-new-planner.md)
-
-
+## TODO list (to be removed when completed)
 Agenda:
 
 * the key components that a statement needs to pass-through
@@ -67,4 +65,3 @@ insert into t values (1, 1);
 select * from t where a = 1;
 ```
 
-Notice that things like error handling, tracing etc. are not explained in this page.
