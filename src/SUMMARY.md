@@ -22,6 +22,9 @@
 
 * [Understand TiDB](understand-tidb/introduction.md)
     * [The Lifecycle of a Statement](understand-tidb/the-lifecycle-of-a-statement.md)
+        * [DDL](understand-tidb/ddl.md)
+        * [DML](understand-tidb/dml.md)
+        * [DQL](understand-tidb/dql.md)
     * [Parser](understand-tidb/parser.md)
     * [Planner](understand-tidb/planner.md)
         * [Table Statistics](understand-tidb/table-statistics.md)
