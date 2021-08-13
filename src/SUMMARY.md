@@ -35,7 +35,7 @@
     * [Execution](understand-tidb/execution.md)
         * [Execution Framework](understand-tidb/execution-framework.md)
         * [Implementation of Vectorized Execution](understand-tidb/implementation-of-vectorized-execution.md)
-        * [Memory Management Mechanism](understadn-tidb/memory-management-mechanism.md)
+        * [Memory Management Mechanism](understand-tidb/memory-management-mechanism.md)
         * [Implementation of Typical Operators](understand-tidb/implementation-of-typical-operators.md)
     * [Transaction](understand-tidb/transaction.md)
         * [Optimistic Transaction](understand-tidb/optimistic-transaction.md)
