@@ -181,11 +181,11 @@ The most common cause of failed tests is assertion failed. Its failure report lo
 ```
 === RUN   TestTopology
     info_test.go:72: 
-        	Error Trace:	info_test.go:72
-        	Error:      	Not equal: 
-        	            	expected: 1282967700000
-        	            	actual  : 1628585893
-        	Test:       	TestTopology
+            Error Trace:    info_test.go:72
+            Error:          Not equal: 
+                            expected: 1282967700000
+                            actual  : 1628585893
+            Test:           TestTopology
 --- FAIL: TestTopology (0.76s)
 ```
 
@@ -213,9 +213,9 @@ goleak: Errors on successful test run: found unexpected goroutines:
 [Goroutine 104 in state chan receive, with go.etcd.io/etcd/pkg/logutil.(*MergeLogger).outputLoop on top of the stack:
 goroutine 104 [chan receive]:
 go.etcd.io/etcd/pkg/logutil.(*MergeLogger).outputLoop(0xc000197398)
-	/go/pkg/mod/go.etcd.io/etcd@v0.5.0-alpha.5.0.20200824191128-ae9734ed278b/pkg/logutil/merge_logger.go:173 +0x3ac
+    /go/pkg/mod/go.etcd.io/etcd@v0.5.0-alpha.5.0.20200824191128-ae9734ed278b/pkg/logutil/merge_logger.go:173 +0x3ac
 created by go.etcd.io/etcd/pkg/logutil.NewMergeLogger
-	/go/pkg/mod/go.etcd.io/etcd@v0.5.0-alpha.5.0.20200824191128-ae9734ed278b/pkg/logutil/merge_logger.go:91 +0x85
+    /go/pkg/mod/go.etcd.io/etcd@v0.5.0-alpha.5.0.20200824191128-ae9734ed278b/pkg/logutil/merge_logger.go:91 +0x85
 
 ```
 
@@ -229,5 +229,5 @@ If a test case violates this requirement, its failure report looks like:
 
 ```
 [2021-08-09T03:33:57.661Z] The following test cases take too long to finish:
-[2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS	7.388s
+[2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS  7.388s
 ```
