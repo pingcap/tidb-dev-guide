@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -45,6 +45,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.hawkingrei.com/blog/"><img src="https://avatars.githubusercontent.com/u/3427324?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Weizhen Wang</b></sub></a><br /><a href="#content-hawkingrei" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/TomShawn"><img src="https://avatars.githubusercontent.com/u/41534398?v=4?s=100" width="100px;" alt=""/><br /><sub><b>TomShawn</b></sub></a><br /><a href="#content-TomShawn" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/mjonss"><img src="https://avatars.githubusercontent.com/u/5520054?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mattias Jonsson</b></sub></a><br /><a href="#content-mjonss" title="Content">🖋</a></td>
+    <td align="center"><a href="http://www.tocker.ca/"><img src="https://avatars.githubusercontent.com/u/57982?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Morgan Tocker</b></sub></a><br /><a href="#content-morgo" title="Content">🖋</a></td>
   </tr>
 </table>
 
