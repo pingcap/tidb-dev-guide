@@ -126,17 +126,25 @@ To run a single test, you can manually repeat what `make gotest` does and narrow
 
 ```
 make failpoint-enable
-cd <package-directory>
-go test # with any options to locate a test
-cd <root>
+cd domain
+go test -v -run TestSchemaValidator # or with any other test flags
+cd ..
 make failpoint-disable
 ```
+
+see more test flags by `go help testflag`.
 
 If you develop with GoLand, you can also run a test from the IDE following the [documentation](https://www.jetbrains.com/help/go/performing-tests.html), with manually enable and disable failpoints.
 
 ![GoLand Run Tests](../img/goland-run-tests.png)
 
 As shown above, you can run tests of the whole package, of a test, or of a subtest, by click the corresponding gutter icon.
+
+If you develop with VS Code, you can also run a test from the editor follow the [documentation](https://code.visualstudio.com/docs/languages/go#_test), with manually enable and disable failpoints.
+
+![VS Code Run Tests](../img/vscode-run-tests.png)
+
+As shown above, you can run tests of the whole package, of a test, or of a file.
 
 ### Running tests for pull request
 
