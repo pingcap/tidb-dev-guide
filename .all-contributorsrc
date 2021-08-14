@@ -144,6 +144,24 @@
       ]
     },
     {
+      "login": "dveeden",
+      "name": "Daniël van Eeden",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1272980?v=4",
+      "profile": "http://databaseblog.myname.nl",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "xxchan",
+      "name": "xxchan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37948597?v=4",
+      "profile": "https://xxchan.github.io",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
       "login": "HuGanghui",
       "name": "iamhlbx",
       "avatar_url": "https://avatars.githubusercontent.com/u/50866227?v=4",
@@ -160,3 +178,4 @@
   "skipCi": true,
   "projectOwner": "pingcap"
 }
+
