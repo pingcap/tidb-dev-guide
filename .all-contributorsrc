@@ -142,6 +142,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "dveeden",
+      "name": "Daniël van Eeden",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1272980?v=4",
+      "profile": "http://databaseblog.myname.nl",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
