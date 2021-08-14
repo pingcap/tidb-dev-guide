@@ -1,4 +1,4 @@
-# The lifecycle of a statement
+# The Lifecycle of a Statement
 
 ## MySQL protocol package with command and statement string
 
