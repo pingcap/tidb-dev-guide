@@ -142,6 +142,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "HuGanghui",
+      "name": "iamhlbx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50866227?v=4",
+      "profile": "https://www.iamhlbx.xyz",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
