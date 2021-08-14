@@ -144,6 +144,15 @@
       ]
     },
     {
+      "login": "dveeden",
+      "name": "Daniël van Eeden",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1272980?v=4",
+      "profile": "http://databaseblog.myname.nl",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
       "login": "xxchan",
       "name": "xxchan",
       "avatar_url": "https://avatars.githubusercontent.com/u/37948597?v=4",
@@ -151,7 +160,7 @@
       "contributions": [
         "review"
       ]
-    }
+    },
   ],
   "contributorsPerLine": 5,
   "projectName": "tidb-dev-guide",
