@@ -170,6 +170,58 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="privilege"><a class="header" href="#privilege">Privilege</a></h1>
+<p>At its core, TiDB's approach to user privileges is similar to that of MySQL:</p>
+<ul>
+<li>The privileges are stored in tables such as <code>mysql.user</code> and <code>mysql.db</code>.</li>
+<li>The privilege tables are then loaded into an <a href="https://github.com/pingcap/tidb/blob/master/privilege/privileges/cache.go">in-memory cache</a>. The cache is then used by the privilege manager to determine the privileges of a user.</li>
+<li>The cache is automatically updated when using privilege control statements such as <code>GRANT</code> and <code>REVOKE</code>. The statement <code>FLUSH PRIVILEGES</code> can also be used to manually reload the cache for when manual changes are made to the privilege tables.</li>
+</ul>
+<h2 id="behavior-differences-from-mysql"><a class="header" href="#behavior-differences-from-mysql">Behavior differences from MySQL</a></h2>
+<p>Implicit updates to the privilege cache (i.e. when <code>GRANT</code> or <code>REVOKE</code> statements are executed) run immediately on the instance of TiDB that is executing the statement. A <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/domain/domain.go#L1355-L1373">notification is also sent to all TiDB instances</a> to rebuild their cache. This notification is sent asynchronously, so it is possible that when a load balancer is used, the cache will be out of date when attempting to reconnect to a TiDB instance immediately.</p>
+<p>Because the asynchronous notifications do not guarantee delivery, TiDB will also <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/domain/domain.go#L852-L908">automatically rebuild the privilege cache</a> every 5-10 minutes in a loop. This behavior is not strictly MySQL compatible, because in MySQL the privilege cache will only ever be rebuilt from a <code>FLUSH PRIVILEGES</code> statement, a restart, or a privilege control statement.</p>
+<p>Client certificate options are stored in the <code>mysql.global_priv</code> table instead of the <code>mysql.user</code> table. This behavior is not intentional, and may be changed in the future.</p>
+<h2 id="adding-privilege-checks-to-a-statement"><a class="header" href="#adding-privilege-checks-to-a-statement">Adding privilege checks to a statement</a></h2>
+<p>Some privilege checks are automatically assigned during plan building, for example ensuring that you have permissions to the tables that will be accessed. These checks are skipped for <code>information_schema</code> tables, and should you add an additional statement (such as <code>SHOW xyz</code>), you will also need to ensure that privilege checks are added.</p>
+<p>Should you need to add privilege checks there are two options:</p>
+<ol>
+<li>
+<p>During plan building you can attach <code>visitInfo</code> to the plan (examples: <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/planner/core/planbuilder.go#L745"><code>SET CONFIG</code></a>, <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/planner/core/planbuilder.go#L2378-L2380"><code>SHOW BACKUPS</code></a>)</p>
+</li>
+<li>
+<p>In the executor function which handles the statement (examples: <a href="https://github.com/pingcap/tidb/blob/1a54708a7f8f86515236626c78e97a33d8adf583/executor/show.go#L368-L380"><code>SHOW PROCESSLIST</code></a>).</p>
+</li>
+</ol>
+<p>The first option is recommended, as it is much less verbose. However, <code>visitInfo</code> does not handle cases where the statement can behave differently depending on the permissions of the user executing it. All users can execute the <code>SHOW PROCESSLIST</code> statement, but to see the sessions of other users requires the <code>PROCESS</code> privilege.</p>
+<p><code>visitInfo</code> also only supports <strong>AND</strong> semantics. For complex scenarios (such as <code>DROP USER</code> requiring either <code>CREATE USER</code> <strong>OR</strong> <code>DELETE</code> privileges on the <code>mysql.user</code> table), option 2 is required.</p>
+<h3 id="manually-checking-with-the-privilege-manager"><a class="header" href="#manually-checking-with-the-privilege-manager">Manually checking with the privilege manager</a></h3>
+<p>For (2) above, manual checks should follow the following pattern:</p>
+<pre><code class="language-go">checker := privilege.GetPrivilegeManager(e.ctx)
+if checker != nil &amp;&amp; !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, &quot;&quot;, mysql.AllPrivMask) {
+    /* do something */
+}
+..
+if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().ActiveRoles, &quot;RESTRICTED_TABLES_ADMIN&quot;, false) {
+    /* do something */
+}
+</code></pre>
+<p>The check for <code>checker != nil</code> is important because for internal SQL statements the privilege manager is not present. These statements are expected to fall through and satisfy the privilege check.</p>
+<h3 id="static-and-dynamic-privileges"><a class="header" href="#static-and-dynamic-privileges">Static and dynamic privileges</a></h3>
+<p>Privileges fall into two categories:</p>
+<ul>
+<li>Static privileges: These are the &quot;traditional&quot; privileges such as <code>INSERT</code>, <code>UPDATE</code>, <code>SELECT</code>, <code>DELETE</code>, <code>SUPER</code>, <code>PROCESS</code> which have existed in MySQL for a long time. They can <em>usually</em> be assigned to a user on either a global or database/table level.</li>
+<li>Dynamic privileges: These are new privileges such as <code>BACKUP_ADMIN</code>, <code>RESTORE_ADMIN</code>, <code>CONNECTION_ADMIN</code>. They can only be assigned on a global level, and each have their own &quot;grantable&quot; attribute.</li>
+</ul>
+<p>Dynamic privileges were introduced in MySQL 8.0 (and <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md">TiDB 5.1</a>) to solve a specific issue, which is that the <code>SUPER</code> privilege is too coarse. There are many scenarios where a user needs to be assigned the <code>SUPER</code> privilege to perform a specific action, but too many other privileges are granted at the same time.</p>
+<p>Any statements added to TiDB <strong>should no longer require</strong> the <code>SUPER</code> privilege directly. Instead, a dynamic privilege should be added <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/privilege/privileges/cache.go#L1009">which will be satified</a> by the <code>SUPER</code> privilege.</p>
+<h3 id="security-enhanced-mode"><a class="header" href="#security-enhanced-mode">Security Enhanced Mode</a></h3>
+<p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific &quot;restricted&quot; dynamic privileges instead. The design is inspired by features such as &quot;Security Enhanced Linux&quot; (SeLinux) and AppArmor.</p>
+<p>SEM plugs directly into the privilege manager, but the hard coded list of restricted objects lives in <a href="https://github.com/pingcap/tidb/blob/master/util/sem/sem.go"><code>./util/sem/*</code></a>. It is expected that over time SEM will protect against additional operations which are considered to be high risk or too broad.</p>
+<h3 id="recommended-reading"><a class="header" href="#recommended-reading">Recommended Reading</a></h3>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Technical Design: Security Enhanced Mode</a></li>
+<li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md">Technical Design: Dynamic Privileges</a></li>
+<li><a href="https://dev.mysql.com/worklog/task/?id=8131">MySQL Worklog: Pluggable Dynamic Privileges</a></li>
+</ul>
 
                     </main>
 
