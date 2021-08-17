@@ -169,6 +169,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "sunxiaoguang",
+      "name": "Xiaoguang Sun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3982329?v=4",
+      "profile": "https://github.com/sunxiaoguang",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
@@ -178,4 +187,3 @@
   "skipCi": true,
   "projectOwner": "pingcap"
 }
-
