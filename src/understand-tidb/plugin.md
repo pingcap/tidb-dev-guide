@@ -52,7 +52,7 @@ To prevent a connection from being created, an error should be returned for the 
 
 The `OnGeneralEvent` is currently called when a statement has finished executing, and thus the API does not currently allow plugins to prevent a statement from being executed.
 
-General events are useful for audting operations performed by users. Because [`sctx SessionVars`](https://github.com/pingcap/tidb/blob/b2a1d21284b75e3137f499d8954071a7b32f7b3b/sessionctx/variable/session.go#L432-L436) is available in the `OnGeneralEvent` function, it is possible to obtain a lot of additional information about the statement being executed. For example:
+General events are useful for auditing operations performed by users. Because [`sctx SessionVars`](https://github.com/pingcap/tidb/blob/b2a1d21284b75e3137f499d8954071a7b32f7b3b/sessionctx/variable/session.go#L432-L436) is available in the `OnGeneralEvent` function, it is possible to obtain a lot of additional information about the statement being executed. For example:
 
 * `sctx.User` contains the `*auth.UserIdentity` of the user who is executing this session, and `sctx.ActiveRoles` contains the list of active roles associated with the session.
 * `sctx.DBName` contains the name of the database the user is executing in.
