@@ -180,32 +180,25 @@
 <p><strong>Note:</strong></p>
 <p>TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install WSL2</a> first.</p>
 </blockquote>
-<h2 id="setup-gopath"><a class="header" href="#setup-gopath">Setup GOPATH</a></h2>
-<p>If <code>echo $GOPATH</code> gives empty result, you should set up <code>GOPATH</code> firstly.</p>
-<pre><code class="language-bash">export GOPATH=$(go env GOPATH)
-</code></pre>
 <h2 id="clone"><a class="header" href="#clone">Clone</a></h2>
 <p>Clone the source code to your development machine.</p>
-<pre><code class="language-bash">mkdir -p $GOPATH/src/github.com/pingcap
-cd $GOPATH/src/github.com/pingcap
-git clone https://github.com/pingcap/tidb.git
+<pre><code class="language-bash">git clone https://github.com/pingcap/tidb.git
 </code></pre>
 <h2 id="build"><a class="header" href="#build">Build</a></h2>
 <p>Build TiDB from the source code.</p>
-<pre><code class="language-bash">cd $GOPATH/src/github.com/pingcap/tidb
+<pre><code class="language-bash">cd tidb
 make
 </code></pre>
 <h2 id="run"><a class="header" href="#run">Run</a></h2>
 <p>Now you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance.</p>
-<pre><code class="language-bash">cd $GOPATH/src/github.com/pingcap/tidb/bin
-./tidb-server
+<pre><code class="language-bash">./bin/tidb-server
 </code></pre>
 <p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
 <h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
 <p>You can use official MySQL client to connect to TiDB:</p>
 <pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot; --comments
 </code></pre>
-<p>Where:</p>
+<p>where</p>
 <ul>
 <li><code>-h 127.0.0.1</code> sets the Host to local host loopback interface</li>
 <li><code>-P 4000</code> uses port 4000</li>
