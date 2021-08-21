@@ -8,7 +8,7 @@ Please read this document carefully before starting to work on a code contributi
 
 ## Looking for what to contribute
 
-If you have a good idea for the contribution, you can proceed to the code contribution process. If you are looking for what you could contribute, you can browse open [GitHub issues](https://github.com/pingcap/tidb/issues) of TiDB, which are not assigned, and then follow the code contribution process. If you are very new to the TiDB project and want to learn about it and its contribution process, you can check the [starter issues](https://github.com/pingcap/tidb/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue), which are annotated with a good-first-issue label.
+If you have a good idea for the contribution, you can proceed to the code contribution process. If you are looking for what you could contribute, you can browse open [GitHub issues](https://github.com/pingcap/tidb/issues) of TiDB, which are not assigned, and then follow the code contribution process. If you are very new to the TiDB project and want to learn about it and its contribution process, you can check the [starter issues](https://github.com/pingcap/tidb/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22), which are annotated with a "good first issue" label.
 
 ## Code Contribution Process
 
