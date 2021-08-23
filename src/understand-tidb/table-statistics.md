@@ -6,7 +6,7 @@ In this article, we would first introduce the data structure that database could
 
 ## Statistics introduction
 
-There're many data structures to show the distribution of the data. Here we introduce three kind of them: histogram, count-min sketch and top-n value(most frequnt values).
+There're many data structures to show the distribution of the data. Here we introduce three kinds of them: histogram, count-min sketch and top-n value(most frequnt values).
 
 ### Histogram
 
@@ -78,7 +78,7 @@ We use a simple greedy algorithm do the grouping. We always choose the index/col
 
 ## Summary
 
-The collection and maintenance of statistics is the core function of the database. And for the cost-based query optimizer, the accuracy of statistics directly affects the query performance. In the distributed database, collecting statistics is not much different from standalone, but maintaining statistics has more challenges, such as how to maintain accurate and timely statistics in the case of multi-node updates.
+The collection and maintenance of statistics is one of the core functions of the database. And for the cost-based query optimizer, the accuracy of statistics directly affects the query performance. In the distributed database, collecting statistics is not much different from standalone, but maintaining statistics has more challenges, such as how to maintain accurate and timely statistics in the case of multi-node updates.
 
 For dynamic updating of histograms, the industry generally has two approaches.
 
