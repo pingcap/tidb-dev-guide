@@ -1,5 +1,7 @@
 # Setup an IDE
 
+Using an IDE is recommended as it makes it a lot easier to for example see the fields of a struct. However it is not required to use a specic IDE or editor.
+
 ## GoLand
 
 You can use [GoLand](https://www.jetbrains.com/go/) to easily run or debug TiDB in many situations.
@@ -107,3 +109,30 @@ The third config is `unit test`, which enables you can run/debug unit tests. You
 ![unit test output](../img/unit-test-output.png)
 
 If you encounter any problems during your journey, do not hesitate to reach out on the [TiDB Internals forum](https://internals.tidb.io/).
+
+## Visual Studio Code
+
+VS Code is a generic IDE that has good extensions for working with Go and TiDB.
+
+![VS Code with TiDE](../img/vscode_tide.png)
+
+### Prerequisites
+
+* `go`: TiDB is a Go project thus its building requires a working `go` environment. See the previous [Install Golang](install-golang.md) section to prepare the environment.
+* TiDB source code: See the previous [Get the code, build and run](build-tidb-from-source.md) section to get the source code.
+
+### Download VS Code
+
+Download GoLand from [here](https://code.visualstudio.com/Download) and install it.
+
+Now install these extensions:
+
+* [Go](https://marketplace.visualstudio.com/items?itemName=golang.Go)
+* [TiDE](https://marketplace.visualstudio.com/items?itemName=dragonly.ticode)
+* [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=github.vscode-pull-request-github)
+
+### Work with TiDB code in VS Code
+
+Open the folder containing TiDB code via `File→Open Folder`. See the [VS Code docs](https://code.visualstudio.com/docs) for how to edit and commit code.
+
+There is [detailed guide](https://github.com/tidb-incubator/tide/blob/HEAD/doc/guide.md) explaining how to use the TiDE extension.
