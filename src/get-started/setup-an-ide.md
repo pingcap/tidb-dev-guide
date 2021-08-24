@@ -123,7 +123,7 @@ VS Code is a generic IDE that has good extensions for working with Go and TiDB.
 
 ### Download VS Code
 
-Download GoLand from [here](https://code.visualstudio.com/Download) and install it.
+Download VS Code from [here](https://code.visualstudio.com/Download) and install it.
 
 Now install these extensions:
 
