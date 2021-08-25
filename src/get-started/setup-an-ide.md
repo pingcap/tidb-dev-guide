@@ -1,6 +1,6 @@
 # Setup an IDE
 
-Using an IDE is recommended as it makes it a lot easier to for example see the fields of a struct. However it is not required to use a specic IDE or editor.
+Using an IDE is recommended as it makes it a lot easier to work with the TiDB code, for example to see the fields of a struct. However it is not required to use a specific IDE or editor. You can use the IDE or editor of your choice.
 
 ## GoLand
 
