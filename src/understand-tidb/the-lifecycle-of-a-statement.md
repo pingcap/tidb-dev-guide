@@ -1,4 +1,4 @@
-# The Lifecycle of a Statement
+# The Life cycle of a Statement
 
 ## MySQL protocol package with command and statement string
 
@@ -27,7 +27,7 @@ TiDB keep the state between statements like sql_mode, transaction state etc. in 
 
 The MySQL protocol is synchronous, and the typical execution flow revolves around a client sending a single query, and receiving an optional result set ending with an OK package containing the success flag and optional warnings/errors and possible metadata such as affected rows.
 
-As shown here; it is possible that a client might send multiple queries in one mysql.ComQuery call, in which case the cc.ctx.Parse will return multiple results. However; this is not a common occurence. By default, multiple statements in one mysql.ComQuery call is disabled for security reasons, like making sql injections like `SELECT user FROM users WHERE id = ''/* sql injection */; INSERT INTO users VALUES (null, 'EvilUser'); -- '`. Clients must explicitly enable the ClientMultiStatements protocol feature.
+As shown here; it is possible that a client might send multiple queries in one mysql.ComQuery call, in which case the cc.ctx.Parse will return multiple results. However; this is not a common occurrence. By default, multiple statements in one mysql.ComQuery call is disabled for security reasons, like making sql injections like `SELECT user FROM users WHERE id = ''/* sql injection */; INSERT INTO users VALUES (null, 'EvilUser'); -- '`. Clients must explicitly enable the ClientMultiStatements protocol feature.
 
 ## High level code for handling a query
 
@@ -161,7 +161,7 @@ Where TableReader_7 is the task which will run in TiDB, getting already filtered
 
 ## Executing the optimized plan
 
-The optimized plan is executed through [runStmt](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/session/session.go#L1750), which builds an [executor](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/executor/adapter.go#L319) from the plan and will return a record set or directly execute the statements in case no records will be returned, like `INSERT`/`UPDATE`/`DELETE` statements. Before returning the record set, the executor starts the execution by calling the Volcano inspired `Open()` API and the `Next()` api to retrieve the first chunk of data or execute the statement fully if no records are to be returned.
+The optimized plan is executed through [runStmt](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/session/session.go#L1750), which builds an [executor](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/executor/adapter.go#L319) from the plan and will return a record set or directly execute the statements in case no records will be returned, like `INSERT`/`UPDATE`/`DELETE` statements. Before returning the record set, the executor starts the execution by calling the Volcano inspired `Open()` API and the `Next()` API to retrieve the first chunk of data or execute the statement fully if no records are to be returned.
 
 The executors are often including coprocessors as seen above, where tasks can be seen as stream processors and can be parallelized and delegated to storage nodes (TiKV/TiFlash).
 
