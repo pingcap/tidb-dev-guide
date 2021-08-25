@@ -170,6 +170,8 @@ The optimized plan is executed through [runStmt](https://github.com/pingcap/tidb
 
 The executors are often including coprocessors as seen above, where tasks can be seen as stream processors and can be parallelized and delegated to storage nodes (TiKV/TiFlash).
 
+For Data Manipulation Language statements, the changes are buffered in a transaction buffer on the TiDB node, which is different in how MySQL/InnoDB handles it (where the changes are done directly in the btrees and undone in case of rollback. More information in the [DML section](dml.md)
+
 ### Requests sent to TiKV/TiFlash coprocessors
 
 During the execution different task are executed as coprocessors and delegated/pushed down to the storage nodes (TiKV/TiFlash) for both scaling and more optimized use of the cluster.
