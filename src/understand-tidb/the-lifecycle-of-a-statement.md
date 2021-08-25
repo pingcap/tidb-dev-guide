@@ -24,6 +24,10 @@ Where [mysql.ComQuery](https://github.com/pingcap/parser/blob/d4a88481405f8c59d4
 
 TiDB keep the state between statements like sql_mode, transaction state etc. in the clientConn's [sessionctx.Context](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/sessionctx/context.go#L43) struct.
 
+The MySQL protocol is synchronous, and the typical execution flow revolves around a client sending a single query, and receiving an optional result set ending with an OK package containing the success flag and optional warnings/errors and possible metadata such as affected rows.
+
+As shown here; it is possible that a client might send multiple queries in one mysql.ComQuery call, in which case the cc.ctx.Parse will return multiple results. However; this is not a common occurence. By default, multiple statements in one mysql.ComQuery call is disabled for security reasons, like making sql injectios like `SELECT user FROM users WHERE id = ''/* sql injection */; INSERT INTO users VALUES (null, 'EvilUser'); -- '`. Clients must explicitly enable the ClientMultiStatements protocol feature.
+
 ## High level code for handling a query
 
 Real types and function names, but only high level for less distraction by too much details
