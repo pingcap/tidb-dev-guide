@@ -1,19 +1,19 @@
 # Planner
 
-Planner package contains most of the codes related to SQL optimization. The input of the planner is an AST of the query returned from the parser, and the output of the planner is a plan tree that would be used for further execution.
+The `planner` package contains most of the codes related to SQL optimization. The input of the planner is an AST of the query returned from the parser, and the output of the planner is a plan tree that would be used for further execution.
 
 ## Package Structure
 
 | Package                                                                                              | Description                                                                                                  |
 | :--------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------|
-| [tidb/planner/cascades](https://github.com/pingcap/tidb/tree/master/planner/cascades)                | The next generation Cascades model planner, which is under development and not enabled by default            |
+| [tidb/planner/cascades](https://github.com/pingcap/tidb/tree/master/planner/cascades)                | The next generation Cascades model planner, which is under development and disabled by default            |
 | [tidb/planner/core](https://github.com/pingcap/tidb/tree/master/planner/core)                        | The currently used System R model planner                                                                    |
-| [tidb/planner/implementation](https://github.com/pingcap/tidb/tree/master/planner/implementation)    | Different physical implementations for the operators in Cascades planner                                     |
+| [tidb/planner/implementation](https://github.com/pingcap/tidb/tree/master/planner/implementation)    | Physical implementations for the operators in Cascades planner                                     |
 | [tidb/planner/memo](https://github.com/pingcap/tidb/tree/master/planner/memo)                        | Intermediate results for the searching procedure of Cascades planner                                         |
 | [tidb/planner/property](https://github.com/pingcap/tidb/tree/master/planner/property)                | Properties about the output of operators, including schema, stats, order property, partition property, etc   |
 | [tidb/planner/util](https://github.com/pingcap/tidb/tree/master/planner/util)                        | Common utility functions / structures shared by the two planners                                             |
 
-We can see that, TiDB has two planners, one is of System R model, which is defaultly used, and the other is of Cascades model, which is still under development. The unified entry function of planner module is `Optimize()`, before diving into either of the two planners, it would firstly check if there is any intervention for the planner from the "SQL Plan Management" module, if yes, the AST of the query would be modified before going through the optimization procedures. "SQL Plan Management" module is beyond the scope of this article, and it would be introduced in [sql-plan-management](https://github.com/pingcap/tidb-dev-guide/tree/master/src/understand-tidb/sql-plan-management.md).
+We can see that, TiDB has two planners, one is of System R model, which is defaultly used, and the other is of Cascades model, which is still under development. The unified entry function of planner module is `Optimize()`, before diving into either of the two planners, it would firstly check if there is any intervention for the planner from the "SQL Plan Management" module, if yes, the AST of the query would be modified before going through the optimization procedures. "SQL Plan Management" module is beyond the scope of this article, and it would be introduced in the [SQL Plan Management](sql-plan-management.md) section.
 
 This article would only focus on introducing the System R planner, i.e, the `core` package, readers who are interested in the Cascacdes planner can refer to this [design](https://github.com/pingcap/tidb/tree/master/docs/design/2018-08-29-new-planner.md) doc.
 
@@ -24,7 +24,7 @@ Ignore the trivial steps, the query optimization procedures can be briefly divid
 1. build an initial logical plan
 2. logically optimize the initial logical plan
 3. physically optimize the logical plan
-4. clean and tidy up the physical plan
+4. tidy up the physical plan
 
 ### Plan Building
 
