@@ -20,6 +20,7 @@ The [dispatch](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc92615
 	// ...
 	}
 ```
+
 Where [mysql.ComQuery](https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/mysql/const.go#L102) is routed to [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633), which handles all different non-prepared statements (some commands like change database/schema or ping are handled directly in the dispatch function).
 
 TiDB keep the state between statements like sql_mode, transaction state etc. in the clientConn's [sessionctx.Context](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/sessionctx/context.go#L43) struct.
@@ -39,7 +40,6 @@ Further explanations below.
 func (cc *clientConn) handleQuery(ctx context.Context, sql string) (error) {
 	stmts, err := cc.ctx.Parse(ctx, sql)
 	// ...
-
 	for i, stmt := range stmts {
 		retryable, err = cc.handleStmt(ctx, stmt, ...)
 		// ...
@@ -67,7 +67,6 @@ func (s *session) ExecuteStmt(ctx context.Context, stmtNode ast.StmtNode) (sqlex
 	compiler := executor.Compiler{Ctx: s}
 	stmt, err := compiler.Compile(ctx, stmtNode)
 	// ...
-
 	resultSet, err := runStmt(ctx, s, stmt)
 	// ...
 	return resultSet, err
@@ -76,15 +75,12 @@ func (s *session) ExecuteStmt(ctx context.Context, stmtNode ast.StmtNode) (sqlex
 // Compile compiles an ast.StmtNode to a physical plan.
 func (c *Compiler) Compile(ctx context.Context, stmtNode ast.StmtNode) (*ExecStmt, error) {
 	// ...
-
 	// PrepareTxnCtx starts a goroutine to begin a transaction if needed, and creates a new transaction context.
 	s.PrepareTxnCtx(ctx)
-
 
 	// Preprocess resolves table names of the node, and checks some statements validation.
 	err := plannercore.Preprocess(c.Ctx, stmtNode, plannercore.WithPreprocessorReturn(ret), plannercore.WithExecuteInfoSchemaUpdate(pe))
 	// ...
-
 	// Optimize does optimization and creates a Plan.
 	// The node must be prepared first.
 	finalPlan, names, err := planner.Optimize(ctx, c.Ctx, stmtNode, ret.InfoSchema)
@@ -120,13 +116,12 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 }
 ```
 
-
 ## Statement string to Abstract Syntax Tree
 
 In [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633) the statement string is [parsed](https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/yy_parser.go#L137) by [the parser, which is in its own repository](https://github.com/pingcap/parser), that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the [parser section](parser.md)
 
 Example of Abstract Syntax tree, the fragment of a `WHERE` clause `` `id` > 1 AND `value` = 'Second' `` looks like:
-```go
+```golang
 ast.BinaryOperationExpr{
   Op: opcode.LogicAnd,
   L:  ast.BinaryOperationExpr{
@@ -180,7 +175,7 @@ This way there is less data sent between TiDB nodes and TiKV/TiFlash nodes (only
 
 Common coprocessors are: TableScan (simplest form no real optimisation), IndexScan (Range reads from index), Selection (Filter on condition, `WHERE` clause etc.), LIMIT (no more than N records), TopN (Order + Limit), Aggregation (`GROUP BY`)
 
-```go
+```golang
 // HandleStreamRequest handles the coprocessor stream request.
 func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *coprocessor.Request, stream tikvpb.Tikv_CoprocessorStreamServer) error {
   e, err := h.buildDAGExecutor(req)
