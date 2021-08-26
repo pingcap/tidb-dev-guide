@@ -179,6 +179,15 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "eurekaka",
+      "name": "Kenan Yao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6261973?v=4",
+      "profile": "https://github.com/eurekaka",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 5,
