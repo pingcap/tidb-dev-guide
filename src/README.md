@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -52,6 +52,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://xxchan.github.io"><img src="https://avatars.githubusercontent.com/u/37948597?v=4?s=100" width="100px;" alt=""/><br /><sub><b>xxchan</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Axxchan" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://www.iamhlbx.xyz"><img src="https://avatars.githubusercontent.com/u/50866227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>iamhlbx</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3AHuGanghui" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/sunxiaoguang"><img src="https://avatars.githubusercontent.com/u/3982329?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Xiaoguang Sun</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Asunxiaoguang" title="Reviewed Pull Requests">👀</a> <a href="#content-sunxiaoguang" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/eurekaka"><img src="https://avatars.githubusercontent.com/u/6261973?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kenan Yao</b></sub></a><br /><a href="#content-eurekaka" title="Content">🖋</a></td>
   </tr>
 </table>
 
