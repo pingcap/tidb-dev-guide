@@ -170,6 +170,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="parser"><a class="header" href="#parser">Parser</a></h1>
+<p>The code for the parser lives in the <a href="https://github.com/pingcap/parser/">pingcap/parser</a> repo.</p>
+<p>The main file is <code>parser.y</code> which is used by <a href="https://pkg.go.dev/golang.org/x/tools/cmd/goyacc">goyacc</a> to generate <code>parser.go</code>.</p>
+<p>After making changes in the parser use <code>make</code> to update the parser and follow <a href="https://github.com/pingcap/parser/blob/master/docs/update-parser-for-tidb.md">this procedure</a> to have TiDB use your copy of the parser. This can be a local copy or a copy on GitHub. This allows you to make changes to both the parser and TiDB and test them together.</p>
 
                     </main>
 

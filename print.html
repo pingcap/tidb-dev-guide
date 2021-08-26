@@ -1531,6 +1531,9 @@ go s.onConn(clientConn)
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="dml"><a class="header" href="#dml">DML</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="dql"><a class="header" href="#dql">DQL</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="parser"><a class="header" href="#parser">Parser</a></h1>
+<p>The code for the parser lives in the <a href="https://github.com/pingcap/parser/">pingcap/parser</a> repo.</p>
+<p>The main file is <code>parser.y</code> which is used by <a href="https://pkg.go.dev/golang.org/x/tools/cmd/goyacc">goyacc</a> to generate <code>parser.go</code>.</p>
+<p>After making changes in the parser use <code>make</code> to update the parser and follow <a href="https://github.com/pingcap/parser/blob/master/docs/update-parser-for-tidb.md">this procedure</a> to have TiDB use your copy of the parser. This can be a local copy or a copy on GitHub. This allows you to make changes to both the parser and TiDB and test them together.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="planner"><a class="header" href="#planner">Planner</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="table-statistics"><a class="header" href="#table-statistics">Table Statistics</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="rule-based-optimization"><a class="header" href="#rule-based-optimization">Rule-based Optimization</a></h1>
