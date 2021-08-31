@@ -140,7 +140,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/57982?v=4",
       "profile": "http://www.tocker.ca/",
       "contributions": [
-        "content"
+        "content",
+        "review"
       ]
     },
     {
@@ -149,7 +150,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/1272980?v=4",
       "profile": "http://databaseblog.myname.nl",
       "contributions": [
-        "review"
+        "review",
+        "content"
       ]
     },
     {
@@ -176,7 +178,17 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/3982329?v=4",
       "profile": "https://github.com/sunxiaoguang",
       "contributions": [
-        "review"
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "eurekaka",
+      "name": "Kenan Yao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6261973?v=4",
+      "profile": "https://github.com/eurekaka",
+      "contributions": [
+        "content"
       ]
     }
   ],
