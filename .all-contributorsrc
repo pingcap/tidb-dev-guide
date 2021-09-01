@@ -190,6 +190,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "lysu",
+      "name": "lysu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/528332?v=4",
+      "profile": "https://about.me/li.su",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
