@@ -1835,6 +1835,68 @@ if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().Ac
 <li><a href="https://dev.mysql.com/worklog/task/?id=8131">MySQL Worklog: Pluggable Dynamic Privileges</a></li>
 </ul>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="plugin"><a class="header" href="#plugin">Plugin</a></h1>
+<p>The plugin API allows TiDB to be extended with new features such as audit logging or IP allow/deny listing.</p>
+<p>Sample code is provided for a basic audit logging plugin at <a href="https://github.com/pingcap/tidb/tree/master/plugin/conn_ip_example"><code>plugin/conn_ip_example/</code></a>. For an example on compiling TiDB and this plugin:</p>
+<pre><code class="language-bash">plugin=&quot;conn_ip_example&quot;
+cd cmd/pluginpkg
+go install
+cd ../../plugin/$plugin
+pluginpkg -pkg-dir . -out-dir .
+cd ../..
+ 
+./bin/tidb-server -plugin-dir plugin/$plugin -plugin-load $plugin-1
+</code></pre>
+<p>An explanation of what this does:</p>
+<ul>
+<li><code>cd cmd/pluginpkg</code> and <code>go install</code> compiles the command line utility called <code>pluginpkg</code>, which is used to build the plugin.</li>
+<li><code>pluginpkg -pkg-dir . -out-dir .</code> reads the plugin code + <code>manifest.toml</code> file and generates a shared object file for the plugin (<code>conn_ip_example-1.so</code>).</li>
+<li>When the tidb-server starts, it can load plugins in a specified directory (<code>plugin-dir</code>).</li>
+</ul>
+<p>You can confirm which plugins are installed with the <code>SHOW PLUGINS</code> statement:</p>
+<pre><code class="language-sql">mysql&gt; show plugins;
++-----------------+--------------+-------+--------------------------------------------------------------------------------------+---------+---------+
+| Name            | Status       | Type  | Library                                                                              | License | Version |
++-----------------+--------------+-------+--------------------------------------------------------------------------------------+---------+---------+
+| conn_ip_example | Ready-enable | Audit | /home/morgo/go/src/github.com/morgo/tidb/plugin/conn_ip_example/conn_ip_example-1.so |         | 1       |
++-----------------+--------------+-------+--------------------------------------------------------------------------------------+---------+---------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2 id="customizing-the-example-plugin"><a class="header" href="#customizing-the-example-plugin">Customizing the example plugin</a></h2>
+<p>The manifest file describes the capabilities of the plugin, and which features it implements. For a basic version:</p>
+<pre><code class="language-toml">name = &quot;conn_ip_example&quot;
+kind = &quot;Audit&quot;
+description = &quot;just a test&quot;
+version = &quot;1&quot;
+license = &quot;&quot; # Suggested: APLv2 or GPLv3. See https://choosealicense.com/ for details
+validate = &quot;Validate&quot;
+onInit = &quot;OnInit&quot;
+onShutdown = &quot;OnShutdown&quot;
+export = [
+    {extPoint=&quot;OnGeneralEvent&quot;, impl=&quot;OnGeneralEvent&quot;},
+    {extPoint=&quot;OnConnectionEvent&quot;, impl=&quot;OnConnectionEvent&quot;}
+]
+</code></pre>
+<p>In addition to this basic example, plugins can also implement an <a href="https://github.com/pingcap/tidb/blob/d58d39e9476f2503a1e8790f78a0d25272d0aabe/plugin/spi.go#L51"><code>OnFlush</code></a> function. This is called when the statement <code>FLUSH TIDB PLUGINS pluginName</code> is executed. TiDB does not require plugins to implement a <code>OnFlush</code> function, but when specified it will call this method on all TiDB nodes in the cluster.</p>
+<h3 id="onconnectionevent"><a class="header" href="#onconnectionevent">OnConnectionEvent</a></h3>
+<p>The <code>OnConnectionEvent</code> is called when a new connection is initially created (<code>event plugin.ConnectionEvent == plugin.PreAuth</code>) and again when the connection is successfully established (<code>event plugin.ConnectionEvent == plugin.Connected</code>).</p>
+<p>To prevent a connection from being created, an error should be returned for the event <code>plugin.PreAuth</code>.</p>
+<h3 id="ongeneralevent"><a class="header" href="#ongeneralevent">OnGeneralEvent</a></h3>
+<p>The <code>OnGeneralEvent</code> is called:</p>
+<ul>
+<li>Before a statement starts execution (<code>event plugin.GeneralEvent == plugin.Starting</code>)</li>
+<li>Ater a statement has completed execution (<code>event plugin.GeneralEvent == plugin.Completed</code>)</li>
+</ul>
+<p>General events are useful for auditing operations performed by users. Because <a href="https://github.com/pingcap/tidb/blob/b2a1d21284b75e3137f499d8954071a7b32f7b3b/sessionctx/variable/session.go#L432-L436"><code>sctx SessionVars</code></a> is available in the <code>OnGeneralEvent</code> function, it is possible to obtain a lot of additional information about the statement being executed. For example:</p>
+<ul>
+<li><code>sctx.User</code> contains the <code>*auth.UserIdentity</code> of the user who is executing this session, and <code>sctx.ActiveRoles</code> contains the list of active roles associated with the session.</li>
+<li><code>sctx.DBName</code> contains the name of the database the user is executing in.</li>
+<li><code>sctx.StmtCtx</code> contains the context of the statement that was executed. For example <code>sctx.StmtCtx.SQLDigest()</code> can be called to get a digest of the executed statement, and <code>sctx.StmtCtx.Tables</code> contains a slice of tables that are accessed by the statement.</li>
+</ul>
+<p>The current implementation of <code>OnGeneralEvent</code> does not permit errors to be returned. It is possible that this may change in a future version, since this will allow pre-execution checks to be performed on statements.</p>
+<h2 id="additional-reading"><a class="header" href="#additional-reading">Additional Reading</a></h2>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2018-12-10-plugin-framework.md">Plugin Framework RFC Proposal</a></li>
+</ul>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="project-management"><a class="header" href="#project-management">Project Management</a></h1>
 <p>Practices for managing the TiDB project:</p>
 <ul>
