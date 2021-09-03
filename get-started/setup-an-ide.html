@@ -170,21 +170,21 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="setup-an-ide"><a class="header" href="#setup-an-ide">Setup an IDE</a></h1>
-<p>Using an IDE is recommended as it makes it a lot easier to work with the TiDB code, for example to see the fields of a struct. However it is not required to use a specific IDE or editor. You can use the IDE or editor of your choice.</p>
+<p>Using an IDE is recommended as it makes it a lot easier to work with the TiDB code, for example to see the fields of a <code>struct</code>. However it is not required to use a specific IDE or editor. You can use the IDE or editor of your choice.</p>
 <h2 id="goland"><a class="header" href="#goland">GoLand</a></h2>
 <p>You can use <a href="https://www.jetbrains.com/go/">GoLand</a> to easily run or debug TiDB in many situations.</p>
 <h3 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h3>
 <ul>
-<li><code>go</code>: TiDB is a Go project thus its building requires a working <code>go</code> environment. See the previous <a href="install-golang.html">Install Golang</a> section to prepare the environment.</li>
+<li><code>go</code>: TiDB is a Go project. Therefore, you need a working Go environment to build it. See the previous <a href="install-golang.html">Install Golang</a> section to prepare the environment.</li>
 <li>TiDB source code: See the previous <a href="build-tidb-from-source.html">Get the code, build and run</a> section to get the source code.</li>
 </ul>
 <h3 id="download-goland"><a class="header" href="#download-goland">Download GoLand</a></h3>
 <p>Download GoLand from <a href="https://www.jetbrains.com/go/download">here</a> and install it.</p>
-<h3 id="open-tidb-source-code-in-goland"><a class="header" href="#open-tidb-source-code-in-goland">Open TiDB source code in GoLand</a></h3>
-<p>Follow the <a href="https://www.jetbrains.com/help/go/quick-start-guide-goland.html#open-project">instruction</a> and open TiDB source code in GoLand.</p>
+<h3 id="open-the-tidb-source-code-in-goland"><a class="header" href="#open-the-tidb-source-code-in-goland">Open the TiDB source code in GoLand</a></h3>
+<p>Follow the <a href="https://www.jetbrains.com/help/go/quick-start-guide-goland.html#open-project">instructions</a> and open the  TiDB source code in GoLand.</p>
 <p><img src="../img/open-tidb-in-goland.png" alt="Open TiDB source code in GoLand" /></p>
-<h3 id="populate-run-configurations"><a class="header" href="#populate-run-configurations">Populate Run Configurations</a></h3>
-<p>Execute the following commands under the root dir of TiDB source code to add config files.</p>
+<h3 id="populate-run-configurations"><a class="header" href="#populate-run-configurations">Populate run configurations</a></h3>
+<p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
 <pre><code class="language-bash">mkdir -p .idea/runConfigurations/ &amp;&amp; cd .idea/runConfigurations/
 
 cat &lt;&lt;EOF &gt; unistore_4000.xml
@@ -233,24 +233,24 @@ cat &lt;&lt;EOF &gt; unit_test.xml
 &lt;/component&gt;
 EOF
 </code></pre>
-<p>Now please confirm there are three config files.</p>
+<p>Now, confirm there are three config files:</p>
 <pre><code class="language-bash">ls
 # OUTPUT:
 # playground_attach_4001.xml
 # unistore_4000.xml
 # unit_test.xml
 </code></pre>
-<h3 id="run-or-debug"><a class="header" href="#run-or-debug">Run or Debug</a></h3>
+<h3 id="run-or-debug"><a class="header" href="#run-or-debug">Run or debug</a></h3>
 <p>Now you can see the run/debug configs right upper the window.</p>
 <p><img src="../img/run-configs.png" alt="Run Configs" /></p>
-<p>The first config is <code>unistore 4000</code>, which enables you run/debug TiDB independently without TiKV, PD, and TiFlash.</p>
-<p><img src="../img/unistore-config.png" alt="unistore config" />
-<img src="../img/unistore-output.png" alt="unistore output" /></p>
-<p>The second config is <code>playground attach 4001</code>, which enables you can run/debug TiDB by attaching to an existing cluster; for example, a cluster deployed with <a href="https://docs.pingcap.com/tidb/stable/tiup-playground"><code>tiup playground</code></a>.</p>
-<p>After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.</p>
+<p>The first config is <code>unistore 4000</code>, which enables you to run/debug TiDB independently without TiKV, PD, and TiFlash.</p>
+<p><img src="../img/unistore-config.png" alt="unistore config" /></p>
+<p><img src="../img/unistore-output.png" alt="unistore output" /></p>
+<p>The second config is <code>playground attach 4001</code>, which enables you to run/debug TiDB by attaching to an existing cluster; for example, a cluster deployed with <a href="https://docs.pingcap.com/tidb/stable/tiup-playground"><code>tiup playground</code></a>.</p>
+<p>After the server process starts, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.</p>
 <p><img src="../img/playground-attach-config.png" alt="playground attach config" />
 <img src="../img/playground-attach-debug.png" alt="playground attach debug" /></p>
-<p>The third config is <code>unit test</code>, which enables you can run/debug unit tests. You may modify the <code>Directory</code> and <code>Pattern</code> to run other tests.</p>
+<p>The third config is <code>unit test</code>, which enables you to run/debug unit tests. You may modify the <code>Directory</code> and <code>Pattern</code> to run other tests.</p>
 <p><img src="../img/unit-test-config.png" alt="unit test config" />
 <img src="../img/unit-test-output.png" alt="unit test output" /></p>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>

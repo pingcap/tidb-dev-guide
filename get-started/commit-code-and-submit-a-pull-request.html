@@ -169,17 +169,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="commit-code-and-submit-a-pull-request"><a class="header" href="#commit-code-and-submit-a-pull-request">Commit code and submit a pull request</a></h1>
+                        <h1 id="commit-the-code-and-submit-a-pull-request"><a class="header" href="#commit-the-code-and-submit-a-pull-request">Commit the code and submit a pull request</a></h1>
 <p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
-<p>The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:</p>
+<p>This section addresses some of the most common questions and problems that new contributors might face. This section also covers some Git basics; however if you find that the content is a little difficult to understand, we recommend that you first read the following introductions to Git:</p>
 <ul>
-<li>Beginner and Getting started sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
+<li>The &quot;Beginner&quot; and &quot;Getting Started&quot; sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
 <li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
-<li>More in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
+<li>A more in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
 </ul>
 <h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
-<p>Before creating a pull request, you need to make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The instructions on this page use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
-<p>If you've cloned the upstream repo, you will be able to reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
+<p>Before you create a pull request, make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The following instructions use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
+<p>If you've cloned the upstream repo, you can reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
 <pre><code class="language-bash">git remote add dev https://github.com/your_github_id/tidb.git
 </code></pre>
 <p>You can check the remote setting using the following command:</p>
@@ -225,8 +225,8 @@ git push --set-upstream dev my-changes
 <p>Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see <a href="https://guides.github.com/activities/forking/#making-a-pull-request">Making a Pull Request</a> in GitHub Guides.</p>
 </li>
 </ol>
-<p>When making a PR, take a look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format and checklists.</p>
-<p>After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
+<p>When making a PR, look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format, and checklists.</p>
+<p>After you create a PR, if your reviewer requests code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
 <ol>
 <li>
 <p>Switch to the branch that is the head and get the latest changes:</p>
@@ -238,18 +238,18 @@ git pull
 <p>Make, stage, and commit your additional changes just like before.</p>
 </li>
 <li>
-<p>Push those changes to your fork</p>
+<p>Push those changes to your fork:</p>
 <pre><code class="language-bash">git push
 </code></pre>
 </li>
 </ol>
 <p>If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides <a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes">documentation</a> for this case.</p>
 <h2 id="conflicts"><a class="header" href="#conflicts">Conflicts</a></h2>
-<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then are in conflict with the changes you've made.</p>
-<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: Checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
+<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then conflict with the changes you've made.</p>
+<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
 <h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
 <p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
-<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflicted with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
 <pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
 </code></pre>
 <p>When you open these files, you'll see sections of the form</p>
@@ -260,10 +260,10 @@ Your code
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; 8fbf656... Commit fixes 12345
 </code></pre>
 <p>This represents the lines in the file that Git could not figure out how to rebase. The section between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> has the code from master, while the other side has your version of the code. You'll need to decide how to deal with the conflict. You may want to keep your changes, keep the changes on master, or combine the two.</p>
-<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
+<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
 <p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
 <p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
-<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced Rebasing</a></h2>
+<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced rebasing</a></h2>
 <p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
 <p>Alternatively, you can sacrifice the commit history like this:</p>
 <pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
@@ -272,8 +272,8 @@ git rebase master
 # fix all merge conflicts
 git rebase --continue
 </code></pre>
-<p>&quot;Squashing&quot; commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
-<p>You also may want to squash just the last few commits together, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> will allow you to edit the two commits only.</p>
+<p>Squashing commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
+<p>You also may want to squash together just the last few commits, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
 
                     </main>
 

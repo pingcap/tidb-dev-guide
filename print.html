@@ -260,61 +260,61 @@ gvm use go1.16 --default
 </code></pre>
 <p>In the next chapter, you will learn how to obtain the TiDB source code and how to build it.</p>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get-the-code-build-and-run"><a class="header" href="#get-the-code-build-and-run">Get the code, build and run</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get-the-code-build-and-run"><a class="header" href="#get-the-code-build-and-run">Get the code, build, and run</a></h1>
 <h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <ul>
-<li><code>git</code>: The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please <a href="https://git-scm.com/downloads">install <code>git</code></a>.</li>
-<li><code>go</code>: TiDB is a Go project thus its building requires a working <code>go</code> environment. See the previous <a href="get-started/install-golang.html">Install Golang</a> section to prepare the environment.</li>
+<li><code>git</code>: The TiDB source code is hosted on GitHub as a git repository. To work with the git repository, please <a href="https://git-scm.com/downloads">install <code>git</code></a>.</li>
+<li><code>go</code>: TiDB is a Go project. Therefore, you need a working Go environment to build it. See the previous <a href="get-started/install-golang.html">Install Golang</a> section to prepare the environment.</li>
 <li><code>mysql</code> client (optional): After building TiDB from source, you can use the official <a href="https://dev.mysql.com/downloads/mysql/">MySQL client</a> to connect to TiDB. It is not required if you want to build TiDB only.</li>
 </ul>
 <blockquote>
 <p><strong>Note:</strong></p>
-<p>TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install WSL2</a> first.</p>
+<p>TiDB should compile and run on Windows 10. However, it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, we recommend you <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install WSL2</a> first.</p>
 </blockquote>
 <h2 id="clone"><a class="header" href="#clone">Clone</a></h2>
-<p>Clone the source code to your development machine.</p>
+<p>Clone the source code to your development machine:</p>
 <pre><code class="language-bash">git clone https://github.com/pingcap/tidb.git
 </code></pre>
 <h2 id="build"><a class="header" href="#build">Build</a></h2>
-<p>Build TiDB from the source code.</p>
+<p>Build TiDB from the source code:</p>
 <pre><code class="language-bash">cd tidb
 make
 </code></pre>
 <h2 id="run"><a class="header" href="#run">Run</a></h2>
-<p>Now you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance.</p>
+<p>Now that you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance:</p>
 <pre><code class="language-bash">./bin/tidb-server
 </code></pre>
 <p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
 <h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
-<p>You can use official MySQL client to connect to TiDB:</p>
+<p>You can use the official MySQL client to connect to TiDB:</p>
 <pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot; --comments
 </code></pre>
 <p>where</p>
 <ul>
 <li><code>-h 127.0.0.1</code> sets the Host to local host loopback interface</li>
 <li><code>-P 4000</code> uses port 4000</li>
-<li><code>-u root</code> connect as root user (<code>-p</code> not given, the development build has no password for root)</li>
-<li><code>-D test</code> use Schema/Database test</li>
+<li><code>-u root</code> connects as root user (<code>-p</code> not given; the development build has no password for root.)</li>
+<li><code>-D test</code> uses the Schema/Database test</li>
 <li><code>--prompt &quot;tidb&gt; &quot;</code> sets the prompt to distinguish it from a connection to MySQL</li>
 <li><code>--comments</code> preserves comments like <code>/*T![clustered_index NONCLUSTERED */</code> instead of stripping them when sending the query to the server.</li>
 </ul>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="setup-an-ide"><a class="header" href="#setup-an-ide">Setup an IDE</a></h1>
-<p>Using an IDE is recommended as it makes it a lot easier to work with the TiDB code, for example to see the fields of a struct. However it is not required to use a specific IDE or editor. You can use the IDE or editor of your choice.</p>
+<p>Using an IDE is recommended as it makes it a lot easier to work with the TiDB code, for example to see the fields of a <code>struct</code>. However it is not required to use a specific IDE or editor. You can use the IDE or editor of your choice.</p>
 <h2 id="goland"><a class="header" href="#goland">GoLand</a></h2>
 <p>You can use <a href="https://www.jetbrains.com/go/">GoLand</a> to easily run or debug TiDB in many situations.</p>
 <h3 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h3>
 <ul>
-<li><code>go</code>: TiDB is a Go project thus its building requires a working <code>go</code> environment. See the previous <a href="get-started/install-golang.html">Install Golang</a> section to prepare the environment.</li>
+<li><code>go</code>: TiDB is a Go project. Therefore, you need a working Go environment to build it. See the previous <a href="get-started/install-golang.html">Install Golang</a> section to prepare the environment.</li>
 <li>TiDB source code: See the previous <a href="get-started/build-tidb-from-source.html">Get the code, build and run</a> section to get the source code.</li>
 </ul>
 <h3 id="download-goland"><a class="header" href="#download-goland">Download GoLand</a></h3>
 <p>Download GoLand from <a href="https://www.jetbrains.com/go/download">here</a> and install it.</p>
-<h3 id="open-tidb-source-code-in-goland"><a class="header" href="#open-tidb-source-code-in-goland">Open TiDB source code in GoLand</a></h3>
-<p>Follow the <a href="https://www.jetbrains.com/help/go/quick-start-guide-goland.html#open-project">instruction</a> and open TiDB source code in GoLand.</p>
+<h3 id="open-the-tidb-source-code-in-goland"><a class="header" href="#open-the-tidb-source-code-in-goland">Open the TiDB source code in GoLand</a></h3>
+<p>Follow the <a href="https://www.jetbrains.com/help/go/quick-start-guide-goland.html#open-project">instructions</a> and open the  TiDB source code in GoLand.</p>
 <p><img src="get-started/../img/open-tidb-in-goland.png" alt="Open TiDB source code in GoLand" /></p>
-<h3 id="populate-run-configurations"><a class="header" href="#populate-run-configurations">Populate Run Configurations</a></h3>
-<p>Execute the following commands under the root dir of TiDB source code to add config files.</p>
+<h3 id="populate-run-configurations"><a class="header" href="#populate-run-configurations">Populate run configurations</a></h3>
+<p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
 <pre><code class="language-bash">mkdir -p .idea/runConfigurations/ &amp;&amp; cd .idea/runConfigurations/
 
 cat &lt;&lt;EOF &gt; unistore_4000.xml
@@ -363,24 +363,24 @@ cat &lt;&lt;EOF &gt; unit_test.xml
 &lt;/component&gt;
 EOF
 </code></pre>
-<p>Now please confirm there are three config files.</p>
+<p>Now, confirm there are three config files:</p>
 <pre><code class="language-bash">ls
 # OUTPUT:
 # playground_attach_4001.xml
 # unistore_4000.xml
 # unit_test.xml
 </code></pre>
-<h3 id="run-or-debug"><a class="header" href="#run-or-debug">Run or Debug</a></h3>
+<h3 id="run-or-debug"><a class="header" href="#run-or-debug">Run or debug</a></h3>
 <p>Now you can see the run/debug configs right upper the window.</p>
 <p><img src="get-started/../img/run-configs.png" alt="Run Configs" /></p>
-<p>The first config is <code>unistore 4000</code>, which enables you run/debug TiDB independently without TiKV, PD, and TiFlash.</p>
-<p><img src="get-started/../img/unistore-config.png" alt="unistore config" />
-<img src="get-started/../img/unistore-output.png" alt="unistore output" /></p>
-<p>The second config is <code>playground attach 4001</code>, which enables you can run/debug TiDB by attaching to an existing cluster; for example, a cluster deployed with <a href="https://docs.pingcap.com/tidb/stable/tiup-playground"><code>tiup playground</code></a>.</p>
-<p>After it started, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.</p>
+<p>The first config is <code>unistore 4000</code>, which enables you to run/debug TiDB independently without TiKV, PD, and TiFlash.</p>
+<p><img src="get-started/../img/unistore-config.png" alt="unistore config" /></p>
+<p><img src="get-started/../img/unistore-output.png" alt="unistore output" /></p>
+<p>The second config is <code>playground attach 4001</code>, which enables you to run/debug TiDB by attaching to an existing cluster; for example, a cluster deployed with <a href="https://docs.pingcap.com/tidb/stable/tiup-playground"><code>tiup playground</code></a>.</p>
+<p>After the server process starts, you can connect to the origin TiDB by port 4000, or connect to your TiDB by port 4001 at the same time.</p>
 <p><img src="get-started/../img/playground-attach-config.png" alt="playground attach config" />
 <img src="get-started/../img/playground-attach-debug.png" alt="playground attach debug" /></p>
-<p>The third config is <code>unit test</code>, which enables you can run/debug unit tests. You may modify the <code>Directory</code> and <code>Pattern</code> to run other tests.</p>
+<p>The third config is <code>unit test</code>, which enables you to run/debug unit tests. You may modify the <code>Directory</code> and <code>Pattern</code> to run other tests.</p>
 <p><img src="get-started/../img/unit-test-config.png" alt="unit test config" />
 <img src="get-started/../img/unit-test-output.png" alt="unit test output" /></p>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
@@ -407,22 +407,22 @@ EOF
 <p>The TiDB project runs unit tests using <a href="https://github.com/stretchr/testify">testify</a>.</p>
 <p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a>, but since that framework is poorly maintained, we are migrating to testify.</p>
 <p>You can check the background and progress on the migration <a href="https://github.com/pingcap/tidb/issues/26022">tracking issue</a>.</p>
-<h2 id="how-to-write-unit-tests"><a class="header" href="#how-to-write-unit-tests">How to write unit tests?</a></h2>
-<p>We uses testify for writing unit tests. Basically, it is out-of-the-box <a href="https://pkg.go.dev/testing">testing</a> with testify assertions.</p>
+<h2 id="how-to-write-unit-tests"><a class="header" href="#how-to-write-unit-tests">How to write unit tests</a></h2>
+<p>We use testify to write unit tests. Basically, it is out-of-the-box <a href="https://pkg.go.dev/testing">testing</a> with testify assertions.</p>
 <h3 id="testmain"><a class="header" href="#testmain">TestMain</a></h3>
-<p>When running tests, Golang compiles each package along with any files with names with suffix <code>_test.go</code>. Thus, a test binary contains tests in a package.</p>
+<p>When you run tests, Golang compiles each package along with any files with names with suffix <code>_test.go</code>. Thus, a test binary contains tests in a package.</p>
 <p>Golang testing provides a mechanism to support doing extra setup or teardown before or after testing by writing a package level unique function:</p>
 <pre><code class="language-go">func TestMain(m *testing.M)
 </code></pre>
-<p>We leverage the function to detect Goroutine leak by <a href="https://github.com/uber-go/goleak">goleak</a> after all tests finished.</p>
-<p>Before writing any unit tests in a package, create a file named <code>main_test.go</code> and setup the scaffolding:</p>
+<p>After all tests finish, we leverage the function to detect Goroutine leaks by <a href="https://github.com/uber-go/goleak">goleak</a>.</p>
+<p>Before you write any unit tests in a package, create a file named <code>main_test.go</code> and setup the scaffolding:</p>
 <pre><code class="language-go">func TestMain(m *testing.M) {
     goleak.VerifyTestMain(m)
 }
 </code></pre>
 <p>You can also put global variables or helper functions of the test binary in this file.</p>
 <h3 id="assertion"><a class="header" href="#assertion">Assertion</a></h3>
-<p>Let's write a basic test for utility function <code>StrLenOfUint64Fast</code>.</p>
+<p>Let's write a basic test for the utility function <code>StrLenOfUint64Fast</code>:</p>
 <pre><code class="language-go">func TestStrLenOfUint64Fast(t *testing.T) {
     for i := 0; i &lt; 1000000; i++ {
         num := rand.Uint64()
@@ -435,9 +435,9 @@ EOF
 <p>Golang testing detects test functions from <code>*_test.go</code> files of the form:</p>
 <pre><code class="language-go">func TestXxx(*testing.T)
 </code></pre>
-<p>where <code>Xxx</code> does not start with a lowercase letter. The function name serves to identify the test routine.</p>
-<p>We follow this pattern but using testify assertions instead of out-of-the-box methods, like <code>Error</code> or <code>Fail</code>, since they are too low level to use.</p>
-<p>Almost we use <code>require.Xxx</code> for assertions, which imported from <code>github.com/stretchr/testify/require</code>. It fails immediately if the assertions fails and we tend to fail tests fast.</p>
+<p>where <code>Xxx</code> does not start with a lowercase letter. The function name identifies the test routine.</p>
+<p>We follow this pattern but use testify assertions instead of out-of-the-box methods, like <code>Error</code> or <code>Fail</code>, since they are too low level to use.</p>
+<p>We mostly use <code>require.Xxx</code> for assertions, which is imported from <code>github.com/stretchr/testify/require</code>. If the assertions fail, the test fails immediately, and we tend to fail tests fast.</p>
 <p>Below are the most frequently used assertions:</p>
 <pre><code class="language-go">func Equal(t TestingT, expected interface{}, actual interface{}, msgAndArgs ...interface{})
 func EqualValues(t TestingT, expected interface{}, actual interface{}, msgAndArgs ...interface{})
@@ -452,8 +452,8 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
 <p>Golang testing provides a method of <code>testing.T</code> to run tests in parallel:</p>
 <pre><code class="language-go">t.Parallel()
 </code></pre>
-<p>We leverage this function to run tests as parallel as possible, so that we make full use of the resource accessible.</p>
-<p>When some tests should be run in serial, take use of Golang testing <a href="https://pkg.go.dev/testing#hdr-Subtests_and_Sub_benchmarks">subtests</a> and parallel the parent test only. In this way, tests in the same subtests set run in serial.</p>
+<p>We leverage this function to run tests as parallel as possible, so that we make full use of the available resource.</p>
+<p>When some tests should be run in serial, use Golang testing <a href="https://pkg.go.dev/testing#hdr-Subtests_and_Sub_benchmarks">subtests</a> and parallel the parent test only. In this way, tests in the same subtests set run in serial.</p>
 <pre><code class="language-go">func TestParent(t *testing.T) {
     t.Parallel()
     // &lt;setup code&gt;
@@ -463,58 +463,58 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
     // &lt;tear-down code&gt;
 }
 </code></pre>
-<p>Generally, if a test modifies global configs or failpoints, it should be considered run in serial.</p>
-<h3 id="testkit"><a class="header" href="#testkit">TestKit</a></h3>
-<p>Most of our tests are much more complex than what are described above. For example, to set up a test, we may create a mock storage, a mock session, or even a local database instance.</p>
-<p>These functions are known as testkits. Some are used in one package so we implement them in place, others are quite common so we move it to the <code>testkit</code> directory.</p>
-<p>When you write complex unit tests, you may take a look at what testkits we have now and try to leverage them. If there is none and the case you meet is considered common, add one.</p>
-<h2 id="how-to-run-unit-tests"><a class="header" href="#how-to-run-unit-tests">How to run unit tests?</a></h2>
+<p>Generally, if a test modifies global configs or fail points, it should be run in serial.</p>
+<h3 id="test-kits"><a class="header" href="#test-kits">Test kits</a></h3>
+<p>Most of our tests are much more complex than what we describe above. For example, to set up a test, we may create a mock storage, a mock session, or even a local database instance.</p>
+<p>These functions are known as test kits. Some are used in one package so we implement them in place; others are quite common so we move it to the <code>testkit</code> directory.</p>
+<p>When you write complex unit tests, you may take a look at what test kits we have now and try to leverage them. If we don’t have a test kit for your issue and your issue is considered common, add one.</p>
+<h2 id="how-to-run-unit-tests"><a class="header" href="#how-to-run-unit-tests">How to run unit tests</a></h2>
 <h3 id="running-all-tests"><a class="header" href="#running-all-tests">Running all tests</a></h3>
-<p>You can always run all tests by executing the <code>gotest</code> target in Makefile.</p>
+<p>You can always run all tests by executing the <code>gotest</code> target in Makefile:</p>
 <pre><code>make gotest
 </code></pre>
-<p>which is almost equivalent to <code>go test ./...</code> but enable and disable fail points before and after running tests.</p>
-<p><a href="https://github.com/pingcap/failpoint">pingcap/failpoint</a> is an implementation of <a href="https://www.freebsd.org/cgi/man.cgi?query=fail">failpoints</a> for Golang. Fail point is used to add code points where errors may be injected in a user controlled fashion. It is a code snippet that is only executed when the corresponding fail point is active.</p>
+<p>This is almost equivalent to <code>go test ./...</code> but it enables and disables fail points before and after running tests.</p>
+<p><a href="https://github.com/pingcap/failpoint">pingcap/failpoint</a> is an implementation of <a href="https://www.freebsd.org/cgi/man.cgi?query=fail">failpoints</a> for Golang. A fail point is used to add code points where you can inject errors. Fail point is a code snippet that is only executed when the corresponding fail point is active.</p>
 <h3 id="running-a-single-test"><a class="header" href="#running-a-single-test">Running a single test</a></h3>
-<p>To run a single test, you can manually repeat what <code>make gotest</code> does and narrow the scope in one test or one package.</p>
+<p>To run a single test, you can manually repeat what <code>make gotest</code> does and narrow the scope in one test or one package:</p>
 <pre><code>make failpoint-enable
 cd domain
 go test -v -run TestSchemaValidator # or with any other test flags
 cd ..
 make failpoint-disable
 </code></pre>
-<p>see more test flags by <code>go help testflag</code>.</p>
-<p>If you develop with GoLand, you can also run a test from the IDE following the <a href="https://www.jetbrains.com/help/go/performing-tests.html">documentation</a>, with manually enable and disable failpoints.</p>
+<p>To display information on all the test flags, enter <code>go help testflag</code>.</p>
+<p>If you develop with GoLand, you can also run a test from the IDE with manually enabled and disabled fail points. See the <a href="https://www.jetbrains.com/help/go/performing-tests.html">documentation</a> for details.</p>
 <p><img src="get-started/../img/goland-run-tests.png" alt="GoLand Run Tests" /></p>
 <p>As shown above, you can run tests of the whole package, of a test, or of a subtest, by click the corresponding gutter icon.</p>
-<p>If you develop with VS Code, you can also run a test from the editor follow the <a href="https://code.visualstudio.com/docs/languages/go#_test">documentation</a>, with manually enable and disable failpoints.</p>
+<p>If you develop with VS Code, you can also run a test from the editor with manually enabled and disabled fail points. See the <a href="https://code.visualstudio.com/docs/languages/go#_test">documentation</a> for details.</p>
 <p><img src="get-started/../img/vscode-run-tests.png" alt="VS Code Run Tests" /></p>
 <p>As shown above, you can run tests of the whole package, of a test, or of a file.</p>
-<h3 id="running-tests-for-pull-request"><a class="header" href="#running-tests-for-pull-request">Running tests for pull request</a></h3>
-<p>Before merging a pull request, it requires to pass all tests.</p>
-<p>Generally continuous integration will run tests for you, but if you want to run tests with conditions or rerun tests on failure, you should know how to achieve that.</p>
+<h3 id="running-tests-for-a-pull-request"><a class="header" href="#running-tests-for-a-pull-request">Running tests for a pull request</a></h3>
+<p>Before you merge a pull request, it must pass all tests.</p>
+<p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that.</p>
 <h4 id="rebuild"><a class="header" href="#rebuild"><code>/rebuild</code></a></h4>
 <p>Build the binary based on the PR for testing. It also reruns all the CI test cases.</p>
 <h4 id="run-all-tests"><a class="header" href="#run-all-tests"><code>/run-all-tests</code></a></h4>
 <p>Rerun all the CI test cases. This command accepts the following parameters:</p>
 <ul>
-<li><code>tidb=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb to use</li>
-<li><code>tikv=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tikv to use</li>
-<li><code>pd=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which pd to use</li>
-<li><code>tidb-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-test to use</li>
-<li><code>tidb-private-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-private-test to use</li>
+<li><code>tidb=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb to use.</li>
+<li><code>tikv=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tikv to use.</li>
+<li><code>pd=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which pd to use.</li>
+<li><code>tidb-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-test to use.</li>
+<li><code>tidb-private-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-private-test to use.</li>
 </ul>
-<p>for examples,</p>
+<p>For example:</p>
 <pre><code>/run-all-tests tidb-test=pr/666
 /run-all-tests tidb-test=release-2.1
 /run-all-tests tikv=pr/999
 </code></pre>
 <h4 id="run-test"><a class="header" href="#run-test"><code>/run-{{test}}</code></a></h4>
 <p>Run a single CI test. This command accepts the same parameters as <code>/run-all-tests</code>.</p>
-<h2 id="how-to-find-the-failed-tests"><a class="header" href="#how-to-find-the-failed-tests">How to find the failed tests?</a></h2>
-<p>There are several common cause of failed tests.</p>
+<h2 id="how-to-find-failed-tests"><a class="header" href="#how-to-find-failed-tests">How to find failed tests</a></h2>
+<p>There are several common causes of failed tests.</p>
 <h3 id="assertion-failed"><a class="header" href="#assertion-failed">Assertion failed</a></h3>
-<p>The most common cause of failed tests is assertion failed. Its failure report looks like:</p>
+<p>The most common cause of failed tests is that assertion failed. Its failure report looks like:</p>
 <pre><code>=== RUN   TestTopology
     info_test.go:72: 
             Error Trace:    info_test.go:72
@@ -524,9 +524,9 @@ make failpoint-disable
             Test:           TestTopology
 --- FAIL: TestTopology (0.76s)
 </code></pre>
-<p>You may <code>grep &quot;FAIL:&quot;</code> the output to find this kind of failure.</p>
+<p>To find this type of failure, enter <code>grep -i &quot;FAIL&quot;</code> to search the report output.</p>
 <h3 id="data-race"><a class="header" href="#data-race">Data race</a></h3>
-<p>Golang testing supports detecting data race by running tests with <code>-race</code> flag. Its failure report looks like:</p>
+<p>Golang testing supports detecting data race by running tests with the <code>-race</code> flag. Its failure report looks like:</p>
 <pre><code>[2021-06-21T15:36:38.766Z] ==================
 [2021-06-21T15:36:38.766Z] WARNING: DATA RACE
 [2021-06-21T15:36:38.766Z] Read at 0x00c0055ce380 by goroutine 108:
@@ -545,64 +545,65 @@ created by go.etcd.io/etcd/pkg/logutil.NewMergeLogger
     /go/pkg/mod/go.etcd.io/etcd@v0.5.0-alpha.5.0.20200824191128-ae9734ed278b/pkg/logutil/merge_logger.go:91 +0x85
 
 </code></pre>
-<p>You can determine source of package leaks follow the <a href="https://github.com/uber-go/goleak/#determine-source-of-package-leaks">documentation</a></p>
+<p>To  determine the source of package leaks, see the <a href="https://github.com/uber-go/goleak/#determine-source-of-package-leaks">documentation</a></p>
 <h3 id="timeout"><a class="header" href="#timeout">Timeout</a></h3>
 <p>After @tiancaiamao introduced the timeout checker for continuous integration, every test case should run in at most five seconds.</p>
-<p>If a test case violates this requirement, its failure report looks like:</p>
+<p>If a test case takes longer, its failure report looks like:</p>
 <pre><code>[2021-08-09T03:33:57.661Z] The following test cases take too long to finish:
 [2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS  7.388s
+[2021-08-09T03:33:57.661Z] --- PASS: TestCluster (5.20s)
 </code></pre>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="debug-and-profile"><a class="header" href="#debug-and-profile">Debug and profile</a></h1>
-<p>In this section, you will learn the following things:</p>
+<p>In this section, you will learn:</p>
 <ul>
 <li>How to debug TiDB</li>
 <li>How to pause the execution at any line of code to inspect values and stacks</li>
 <li>How to profile TiDB to catch a performance bottleneck</li>
 </ul>
 <h2 id="use-delve-for-debugging"><a class="header" href="#use-delve-for-debugging">Use delve for debugging</a></h2>
-<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native that GDB.</p>
+<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides a command-line debugging experience similar to the GNU Project debugger (GDB), but it is much more Go native than GDB itself.</p>
 <h3 id="install-delve"><a class="header" href="#install-delve">Install delve</a></h3>
-<p>To install delve, you can refer to the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, you will have an executable file named <code>dlv</code> in <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code> depending on how your environment variables are set, and you can then run the following command to verify the installation.</p>
+<p>To install delve, see the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, depending on how you set your environment variables, you will have an executable file named <code>dlv</code> in either <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code>. You can then run the following command to verify the installation:</p>
 <pre><code>$ dlv version
 Delve Debugger
 Version: 1.5.0
 Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 </code></pre>
 <h3 id="attach-delve-to-a-running-tidb-process"><a class="header" href="#attach-delve-to-a-running-tidb-process">Attach delve to a running TiDB process</a></h3>
-<p>Once you get the TiDB server running, you can try attaching the delve debugger.</p>
-<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.</p>
+<p>Once you get the TiDB server running, you can attach the delve debugger.</p>
+<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code:</p>
 <pre><code class="language-bash">make server
 ./bin/tidb-server
 </code></pre>
-<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started.</p>
+<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started:</p>
 <pre><code class="language-bash">pgrep tidb-server
 # OUTPUT:
 # 1394942
 </code></pre>
-<p>If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about.</p>
+<p>If the output lists multiple PIDs, it indicates that you might have multiple TiDB servers running at the same time. To determine the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about:</p>
 <pre><code class="language-bash">ps 1394942
 # OUTPUT:
 #     PID TTY      STAT   TIME COMMAND
 # 1394942 pts/11   SNl    0:02 ./bin/tidb-server
 </code></pre>
-<p>Once you get the PID, you can attach delve onto it by running the following command:</p>
+<p>Once you get the PID, you can attach delve to it by running the following command:</p>
 <pre><code class="language-bash">dlv attach 1394942
 </code></pre>
 <p>You might get error messages of the kernel security setting as follows:</p>
 <pre><code>Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing &quot;0&quot; to /proc/sys/kernel/yama/ptrace_scope
 </code></pre>
-<p>To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.</p>
+<p>To resolve the error, follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting:</p>
 <pre><code class="language-bash">echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
 </code></pre>
-<p>Then retry attaching delve onto the PID and it should work.</p>
-<p>Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type <code>help</code> into the dialogue and read help messages.</p>
+<p>Then retry attaching delve onto the PID, and it should work.</p>
+<p>If you've worked with GDB, the delve debugging interface will look familiar to you. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more about delve, you can type help into the dialogue and read the <code>help</code> messages.</p>
 <h3 id="use-delve-for-debugging-1"><a class="header" href="#use-delve-for-debugging-1">Use delve for debugging</a></h3>
-<p>After attaching delve to the running TiDB server process, you can now set breakpoints, and the TiDB server will pause the execution at the breakpoints you specified.</p>
-<p>To create a breakpoint, you can write</p>
+<p>After attaching delve to the running TiDB server process, you can now set breakpoints. TiDB server will pause execution at the breakpoints you specify.</p>
+<p>To create a breakpoint, you can write:</p>
 <pre><code>break [name] &lt;linespec&gt;
 </code></pre>
 <p>where <code>[name]</code> is the name for the breakpoint, and <code>&lt;linespec&gt;</code> is the position of a line of code in the source code. Note the name is optional.</p>
-<p>For example, the following command will create a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code> (the line number can be subject to change due to the modification of the source code).</p>
+<p>For example, the following command creates a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code>. (The line number can be subject to change due to the modification of the source code).</p>
 <pre><code class="language-bash">dlv debug tidb-server/main.go
 # OUTPUT:
 # Type 'help' for list of commands.
@@ -611,37 +612,36 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 # (dlv)
 </code></pre>
 <p>Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.</p>
-<p>Typically, you need to take the following steps when you are using a debugger:</p>
+<p>Typically, when you use a debugger, you need to take the following steps:</p>
 <ol>
 <li>Locate the code and set a breakpoint.</li>
 <li>Prepare data so that the execution will get through the breakpoint, and pause at the specified breakpoint as expected.</li>
-<li>Inspect values, and follow the execution step by step.</li>
+<li>Inspect values and follow the execution step by step.</li>
 </ol>
-<h3 id="using-delve-to-debug-test-case"><a class="header" href="#using-delve-to-debug-test-case">Using delve to debug test case</a></h3>
-<p>If a test case fails, you can also use delve to debug the test case. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test. </p>
-<pre><code>dlv test -- -check.f TestName
+<h3 id="using-delve-to-debug-a-test-case"><a class="header" href="#using-delve-to-debug-a-test-case">Using delve to debug a test case</a></h3>
+<p>If a test case fails, you can also use delve to debug it. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test:</p>
+<pre><code>dlv test -- -run TestName
 </code></pre>
-<p>For example, if you failed on <code>TearDownTest</code> in <code>executor/executor_test.go</code>, you need to go to the <code>executor/</code> directory,  and then  run <code>dlv test -- -check.f TearDownTest</code> in your shell.</p>
 <h3 id="understand-how-tidb-works-through-debugging"><a class="header" href="#understand-how-tidb-works-through-debugging">Understand how TiDB works through debugging</a></h3>
-<p>Besides debugging a bug, it is also recommended to use the debugger to understand how TiDB works through tracking the execution step by step.</p>
-<p>Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.</p>
-<p>For example,</p>
+<p>Besides debugging problems, you can also use the debugger to understand how TiDB works through tracking the execution step by step.</p>
+<p>To understand TiDB internals, it's critical that you understand certain functions. To better understand how TiDB works, you can pause the execution of these TiDB functions, and then run TiDB step by step.</p>
+<p>For example:</p>
 <ol>
 <li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48"><code>executor/compiler.go:Compile</code></a> is where each SQL statement is compiled and optimized.</li>
 <li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80"><code>planner/planner.go:Optimize</code></a> is where the SQL optimization starts.</li>
-<li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312"><code>executor/adapter.go:ExecStmt.Exec</code></a> is where the SQL plan turns into executor, and where the SQL execution starts.</li>
-<li>Each <code>Open</code>, <code>Next</code>, and <code>Close</code> function of each executor marks the volcano-style execution logic.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312"><code>executor/adapter.go:ExecStmt.Exec</code></a> is where the SQL plan turns into executor and where the SQL execution starts.</li>
+<li>Each executor's <code>Open</code>, <code>Next</code>, and <code>Close</code> function marks the volcano-style execution logic.</li>
 </ol>
-<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.</p>
+<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you are confused or uncertain about the code.</p>
 <h2 id="using-pprof-for-profiling"><a class="header" href="#using-pprof-for-profiling">Using <code>pprof</code> for profiling</a></h2>
-<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, You can use a powerful profiling tool called <code>pprof</code> provided by Go.</p>
+<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, you can use a powerful Go profiling tool called <code>pprof</code>.</p>
 <h3 id="gather-runtime-profiling-information-through-http-end-points"><a class="header" href="#gather-runtime-profiling-information-through-http-end-points">Gather runtime profiling information through HTTP end points</a></h3>
-<p>When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>, and you can get the profile result by running the following commands:</p>
+<p>Usually, when TiDB server is running, it exposes a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>. You can get the profile result by running the following commands:</p>
 <pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/profile?seconds=45&quot; &gt; profile.profile
 go tool pprof -http 127.0.0.1:4001 profile.profile
 </code></pre>
-<p>The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at <code>127.0.0.1:4001</code>, which contains the <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnosis the performance bottleneck.</p>
-<p>Similarly, you can also gather other runtime information through this end point. For example:</p>
+<p>The commands capture the profiling information for 45 seconds, and then provide a web view of the profiling result at <code>127.0.0.1:4001</code>. This view contains a <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnose the performance bottleneck.</p>
+<p>You can also gather other runtime information through this end point. For example:</p>
 <ul>
 <li>Goroutine:</li>
 </ul>
@@ -661,26 +661,26 @@ go tool pprof -http 127.0.0.1:4001 heap.profile
 </code></pre>
 <p>To learn how the runtime information is analyzed, see Go's <a href="https://golang.org/doc/diagnostics">diagnostics document</a>.</p>
 <h3 id="profiling-during-benchmarking"><a class="header" href="#profiling-during-benchmarking">Profiling during benchmarking</a></h3>
-<p>When you are proposing a performance-related feature for TiDB, it is recommended to also include a benchmark result as proof of the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
-<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result.</p>
+<p>When you are proposing a performance-related feature for TiDB, we recommend that you also include a benchmark result as proof of the performance gain or to show that your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
+<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result:</p>
 <pre><code class="language-bash">cd executor
 go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 </code></pre>
-<p>If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:</p>
+<p>If you find any performance regression, and you want to know the cause of it, you could use a command like the following:</p>
 <pre><code class="language-bash">go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
 </code></pre>
-<p>To also generate the profiling information, and you can then analyze them as described in the above section.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="commit-code-and-submit-a-pull-request"><a class="header" href="#commit-code-and-submit-a-pull-request">Commit code and submit a pull request</a></h1>
+<p>Then, you can use the steps described above to generate and analyze the profiling information.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="commit-the-code-and-submit-a-pull-request"><a class="header" href="#commit-the-code-and-submit-a-pull-request">Commit the code and submit a pull request</a></h1>
 <p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
-<p>The goal of this page is to cover some of the most common questions and problems that new contributors might face. Although this page covers some Git basics too, if you find that the content on this page is a little difficult to understand, it is recommended that you read some introductions to Git first as follows:</p>
+<p>This section addresses some of the most common questions and problems that new contributors might face. This section also covers some Git basics; however if you find that the content is a little difficult to understand, we recommend that you first read the following introductions to Git:</p>
 <ul>
-<li>Beginner and Getting started sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
+<li>The &quot;Beginner&quot; and &quot;Getting Started&quot; sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
 <li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
-<li>More in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
+<li>A more in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
 </ul>
 <h2 id="prerequisites-3"><a class="header" href="#prerequisites-3">Prerequisites</a></h2>
-<p>Before creating a pull request, you need to make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The instructions on this page use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
-<p>If you've cloned the upstream repo, you will be able to reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
+<p>Before you create a pull request, make sure that you've installed Git, forked <a href="https://github.com/pingcap/tidb">pingcap/tidb</a>, and cloned the upstream repo to your PC. The following instructions use the command line interface to interact with Git; there are also several GUIs and IDE integrations that can interact with Git too.</p>
+<p>If you've cloned the upstream repo, you can reference it using <code>origin</code> in your local repo. Next, you need to set up a remote for the repo your forked using the following command:</p>
 <pre><code class="language-bash">git remote add dev https://github.com/your_github_id/tidb.git
 </code></pre>
 <p>You can check the remote setting using the following command:</p>
@@ -726,8 +726,8 @@ git push --set-upstream dev my-changes
 <p>Make a PR from your fork to the master branch of pingcap/tidb. For more information on how to make a PR, see <a href="https://guides.github.com/activities/forking/#making-a-pull-request">Making a Pull Request</a> in GitHub Guides.</p>
 </li>
 </ol>
-<p>When making a PR, take a look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format and checklists.</p>
-<p>After creating a PR, if your reviewer requests for code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
+<p>When making a PR, look at the <a href="https://raw.githubusercontent.com/pingcap/tidb/master/.github/pull_request_template.md">PR template</a> and follow the commit message format, PR title format, and checklists.</p>
+<p>After you create a PR, if your reviewer requests code changes, the procedure for making those changes is similar to that of making a PR, with some steps skipped:</p>
 <ol>
 <li>
 <p>Switch to the branch that is the head and get the latest changes:</p>
@@ -739,18 +739,18 @@ git pull
 <p>Make, stage, and commit your additional changes just like before.</p>
 </li>
 <li>
-<p>Push those changes to your fork</p>
+<p>Push those changes to your fork:</p>
 <pre><code class="language-bash">git push
 </code></pre>
 </li>
 </ol>
 <p>If your reviewer requests for changes with GitHub suggestion, you can commit the suggestion from the webpage. GitHub provides <a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request#applying-suggested-changes">documentation</a> for this case.</p>
 <h2 id="conflicts"><a class="header" href="#conflicts">Conflicts</a></h2>
-<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then are in conflict with the changes you've made.</p>
-<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: Checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
+<p>When you edit your code locally, you are making changes to the version of pingcap/tidb that existed when you created your feature branch. As such, when you submit your PR it is possible that some of the changes that have been made to pingcap/tidb since then conflict with the changes you've made.</p>
+<p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
 <h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
 <p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
-<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflicted with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
 <pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
 </code></pre>
 <p>When you open these files, you'll see sections of the form</p>
@@ -761,10 +761,10 @@ Your code
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; 8fbf656... Commit fixes 12345
 </code></pre>
 <p>This represents the lines in the file that Git could not figure out how to rebase. The section between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> has the code from master, while the other side has your version of the code. You'll need to decide how to deal with the conflict. You may want to keep your changes, keep the changes on master, or combine the two.</p>
-<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
+<p>Generally, resolving the conflict consists of two steps: First, fix the particular conflict. Edit the file to make the changes you want and remove the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines in the process. Second, check the surrounding code. If there was a conflict, it's likely there are some logical errors lying around too!</p>
 <p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
 <p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
-<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced Rebasing</a></h2>
+<h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced rebasing</a></h2>
 <p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
 <p>Alternatively, you can sacrifice the commit history like this:</p>
 <pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
@@ -773,8 +773,8 @@ git rebase master
 # fix all merge conflicts
 git rebase --continue
 </code></pre>
-<p>&quot;Squashing&quot; commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
-<p>You also may want to squash just the last few commits together, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> will allow you to edit the two commits only.</p>
+<p>Squashing commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
+<p>You also may want to squash together just the last few commits, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="contribute-to-tidb"><a class="header" href="#contribute-to-tidb">Contribute to TiDB</a></h1>
 <p>TiDB is developed by an open and friendly community. Everybody is cordially welcome to join the community and contribute to TiDB. We value all forms of contributions, including, but not limited to:</p>
 <ul>

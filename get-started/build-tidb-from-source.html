@@ -169,41 +169,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="get-the-code-build-and-run"><a class="header" href="#get-the-code-build-and-run">Get the code, build and run</a></h1>
+                        <h1 id="get-the-code-build-and-run"><a class="header" href="#get-the-code-build-and-run">Get the code, build, and run</a></h1>
 <h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <ul>
-<li><code>git</code>: The source code of TiDB is hosted on GitHub as a git repository. To work with git repository, please <a href="https://git-scm.com/downloads">install <code>git</code></a>.</li>
-<li><code>go</code>: TiDB is a Go project thus its building requires a working <code>go</code> environment. See the previous <a href="install-golang.html">Install Golang</a> section to prepare the environment.</li>
+<li><code>git</code>: The TiDB source code is hosted on GitHub as a git repository. To work with the git repository, please <a href="https://git-scm.com/downloads">install <code>git</code></a>.</li>
+<li><code>go</code>: TiDB is a Go project. Therefore, you need a working Go environment to build it. See the previous <a href="install-golang.html">Install Golang</a> section to prepare the environment.</li>
 <li><code>mysql</code> client (optional): After building TiDB from source, you can use the official <a href="https://dev.mysql.com/downloads/mysql/">MySQL client</a> to connect to TiDB. It is not required if you want to build TiDB only.</li>
 </ul>
 <blockquote>
 <p><strong>Note:</strong></p>
-<p>TiDB should compile and run on Windows 10, but it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, it is recommended to <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install WSL2</a> first.</p>
+<p>TiDB should compile and run on Windows 10. However, it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, we recommend you <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">install WSL2</a> first.</p>
 </blockquote>
 <h2 id="clone"><a class="header" href="#clone">Clone</a></h2>
-<p>Clone the source code to your development machine.</p>
+<p>Clone the source code to your development machine:</p>
 <pre><code class="language-bash">git clone https://github.com/pingcap/tidb.git
 </code></pre>
 <h2 id="build"><a class="header" href="#build">Build</a></h2>
-<p>Build TiDB from the source code.</p>
+<p>Build TiDB from the source code:</p>
 <pre><code class="language-bash">cd tidb
 make
 </code></pre>
 <h2 id="run"><a class="header" href="#run">Run</a></h2>
-<p>Now you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance.</p>
+<p>Now that you have the <code>tidb-server</code> binary under the <code>bin</code> directory, execute it for a TiDB server instance:</p>
 <pre><code class="language-bash">./bin/tidb-server
 </code></pre>
 <p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
 <h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
-<p>You can use official MySQL client to connect to TiDB:</p>
+<p>You can use the official MySQL client to connect to TiDB:</p>
 <pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot; --comments
 </code></pre>
 <p>where</p>
 <ul>
 <li><code>-h 127.0.0.1</code> sets the Host to local host loopback interface</li>
 <li><code>-P 4000</code> uses port 4000</li>
-<li><code>-u root</code> connect as root user (<code>-p</code> not given, the development build has no password for root)</li>
-<li><code>-D test</code> use Schema/Database test</li>
+<li><code>-u root</code> connects as root user (<code>-p</code> not given; the development build has no password for root.)</li>
+<li><code>-D test</code> uses the Schema/Database test</li>
 <li><code>--prompt &quot;tidb&gt; &quot;</code> sets the prompt to distinguish it from a connection to MySQL</li>
 <li><code>--comments</code> preserves comments like <code>/*T![clustered_index NONCLUSTERED */</code> instead of stripping them when sending the query to the server.</li>
 </ul>

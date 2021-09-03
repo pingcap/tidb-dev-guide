@@ -170,56 +170,56 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="debug-and-profile"><a class="header" href="#debug-and-profile">Debug and profile</a></h1>
-<p>In this section, you will learn the following things:</p>
+<p>In this section, you will learn:</p>
 <ul>
 <li>How to debug TiDB</li>
 <li>How to pause the execution at any line of code to inspect values and stacks</li>
 <li>How to profile TiDB to catch a performance bottleneck</li>
 </ul>
 <h2 id="use-delve-for-debugging"><a class="header" href="#use-delve-for-debugging">Use delve for debugging</a></h2>
-<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides GDB-like command-line debugging experience and is much more Go native that GDB.</p>
+<p><a href="https://github.com/go-delve/delve">Delve</a> is a debugger for the Go programming language. It provides a command-line debugging experience similar to the GNU Project debugger (GDB), but it is much more Go native than GDB itself.</p>
 <h3 id="install-delve"><a class="header" href="#install-delve">Install delve</a></h3>
-<p>To install delve, you can refer to the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, you will have an executable file named <code>dlv</code> in <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code> depending on how your environment variables are set, and you can then run the following command to verify the installation.</p>
+<p>To install delve, see the <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation">installation guide</a>. After the installation, depending on how you set your environment variables, you will have an executable file named <code>dlv</code> in either <code>$GOPATH/bin</code> or <code>$HOME/go/bin</code>. You can then run the following command to verify the installation:</p>
 <pre><code>$ dlv version
 Delve Debugger
 Version: 1.5.0
 Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 </code></pre>
 <h3 id="attach-delve-to-a-running-tidb-process"><a class="header" href="#attach-delve-to-a-running-tidb-process">Attach delve to a running TiDB process</a></h3>
-<p>Once you get the TiDB server running, you can try attaching the delve debugger.</p>
-<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code.</p>
+<p>Once you get the TiDB server running, you can attach the delve debugger.</p>
+<p>For example, you can build and run a standalone TiDB server by running the following commands in the root directory of the source code:</p>
 <pre><code class="language-bash">make server
 ./bin/tidb-server
 </code></pre>
-<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started.</p>
+<p>You can then start a new shell and use <code>ps</code> or <code>pgrep</code> to find the PID of the tidb server process you just started:</p>
 <pre><code class="language-bash">pgrep tidb-server
 # OUTPUT:
 # 1394942
 </code></pre>
-<p>If multiple PIDs are listed in the output, it indicates that you might have multiple TiDB servers running at the same time. To figure out the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about.</p>
+<p>If the output lists multiple PIDs, it indicates that you might have multiple TiDB servers running at the same time. To determine the PID of the tidb server you are planning to debug, you can use commands such as <code>ps $PID</code>, where <code>$PID</code> is the PID you are trying to know more about:</p>
 <pre><code class="language-bash">ps 1394942
 # OUTPUT:
 #     PID TTY      STAT   TIME COMMAND
 # 1394942 pts/11   SNl    0:02 ./bin/tidb-server
 </code></pre>
-<p>Once you get the PID, you can attach delve onto it by running the following command:</p>
+<p>Once you get the PID, you can attach delve to it by running the following command:</p>
 <pre><code class="language-bash">dlv attach 1394942
 </code></pre>
 <p>You might get error messages of the kernel security setting as follows:</p>
 <pre><code>Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing &quot;0&quot; to /proc/sys/kernel/yama/ptrace_scope
 </code></pre>
-<p>To resolve the error, you need to follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting.</p>
+<p>To resolve the error, follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting:</p>
 <pre><code class="language-bash">echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
 </code></pre>
-<p>Then retry attaching delve onto the PID and it should work.</p>
-<p>Once entering the debugging interface, you will find it familiar if you’ve worked with GDB. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more information about delve, you can type <code>help</code> into the dialogue and read help messages.</p>
+<p>Then retry attaching delve onto the PID, and it should work.</p>
+<p>If you've worked with GDB, the delve debugging interface will look familiar to you. It is an interactive dialogue that allows you to interact with the execution of the tidb server attached on. To learn more about delve, you can type help into the dialogue and read the <code>help</code> messages.</p>
 <h3 id="use-delve-for-debugging-1"><a class="header" href="#use-delve-for-debugging-1">Use delve for debugging</a></h3>
-<p>After attaching delve to the running TiDB server process, you can now set breakpoints, and the TiDB server will pause the execution at the breakpoints you specified.</p>
-<p>To create a breakpoint, you can write</p>
+<p>After attaching delve to the running TiDB server process, you can now set breakpoints. TiDB server will pause execution at the breakpoints you specify.</p>
+<p>To create a breakpoint, you can write:</p>
 <pre><code>break [name] &lt;linespec&gt;
 </code></pre>
 <p>where <code>[name]</code> is the name for the breakpoint, and <code>&lt;linespec&gt;</code> is the position of a line of code in the source code. Note the name is optional.</p>
-<p>For example, the following command will create a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code> (the line number can be subject to change due to the modification of the source code).</p>
+<p>For example, the following command creates a breakpoint at the <code>Next</code> function of <code>HashJoinExec</code>. (The line number can be subject to change due to the modification of the source code).</p>
 <pre><code class="language-bash">dlv debug tidb-server/main.go
 # OUTPUT:
 # Type 'help' for list of commands.
@@ -228,37 +228,36 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 # (dlv)
 </code></pre>
 <p>Once the execution is paused, the context of the execution is fully preserved. You are free to inspect the values of different variables, print the calling stack, and even jump between different goroutines. Once you finish the inspection, you can resume the execution by stepping into the next line of code or continue the execution until the next breakpoint is encountered.</p>
-<p>Typically, you need to take the following steps when you are using a debugger:</p>
+<p>Typically, when you use a debugger, you need to take the following steps:</p>
 <ol>
 <li>Locate the code and set a breakpoint.</li>
 <li>Prepare data so that the execution will get through the breakpoint, and pause at the specified breakpoint as expected.</li>
-<li>Inspect values, and follow the execution step by step.</li>
+<li>Inspect values and follow the execution step by step.</li>
 </ol>
-<h3 id="using-delve-to-debug-test-case"><a class="header" href="#using-delve-to-debug-test-case">Using delve to debug test case</a></h3>
-<p>If a test case fails, you can also use delve to debug the test case. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test. </p>
-<pre><code>dlv test -- -check.f TestName
+<h3 id="using-delve-to-debug-a-test-case"><a class="header" href="#using-delve-to-debug-a-test-case">Using delve to debug a test case</a></h3>
+<p>If a test case fails, you can also use delve to debug it. Get the name of the test case, go to the corresponding package directory, and then run the following command to start a debugging session that will stop at the entry of the test:</p>
+<pre><code>dlv test -- -run TestName
 </code></pre>
-<p>For example, if you failed on <code>TearDownTest</code> in <code>executor/executor_test.go</code>, you need to go to the <code>executor/</code> directory,  and then  run <code>dlv test -- -check.f TearDownTest</code> in your shell.</p>
 <h3 id="understand-how-tidb-works-through-debugging"><a class="header" href="#understand-how-tidb-works-through-debugging">Understand how TiDB works through debugging</a></h3>
-<p>Besides debugging a bug, it is also recommended to use the debugger to understand how TiDB works through tracking the execution step by step.</p>
-<p>Some TiDB functions are critical for you to understand the internals of TiDB. To better understand how TiDB works, you can try pausing the execution for these TiDB functions, and then run TiDB step by step.</p>
-<p>For example,</p>
+<p>Besides debugging problems, you can also use the debugger to understand how TiDB works through tracking the execution step by step.</p>
+<p>To understand TiDB internals, it's critical that you understand certain functions. To better understand how TiDB works, you can pause the execution of these TiDB functions, and then run TiDB step by step.</p>
+<p>For example:</p>
 <ol>
 <li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/compiler.go#L48"><code>executor/compiler.go:Compile</code></a> is where each SQL statement is compiled and optimized.</li>
 <li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/planner/optimize.go#L80"><code>planner/planner.go:Optimize</code></a> is where the SQL optimization starts.</li>
-<li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312"><code>executor/adapter.go:ExecStmt.Exec</code></a> is where the SQL plan turns into executor, and where the SQL execution starts.</li>
-<li>Each <code>Open</code>, <code>Next</code>, and <code>Close</code> function of each executor marks the volcano-style execution logic.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/5c95062cc34d6d37e2e921f9bddba6205b43ee3a/executor/adapter.go#L312"><code>executor/adapter.go:ExecStmt.Exec</code></a> is where the SQL plan turns into executor and where the SQL execution starts.</li>
+<li>Each executor's <code>Open</code>, <code>Next</code>, and <code>Close</code> function marks the volcano-style execution logic.</li>
 </ol>
-<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you feel confused or uncertain about the code.</p>
+<p>When you are reading the TiDB source code, you are strongly encouraged to set a breakpoint and use the debugger to trace the execution whenever you are confused or uncertain about the code.</p>
 <h2 id="using-pprof-for-profiling"><a class="header" href="#using-pprof-for-profiling">Using <code>pprof</code> for profiling</a></h2>
-<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, You can use a powerful profiling tool called <code>pprof</code> provided by Go.</p>
+<p>For any database system, performance is always important. If you want to know where the performance bottleneck is, you can use a powerful Go profiling tool called <code>pprof</code>.</p>
 <h3 id="gather-runtime-profiling-information-through-http-end-points"><a class="header" href="#gather-runtime-profiling-information-through-http-end-points">Gather runtime profiling information through HTTP end points</a></h3>
-<p>When you have a TiDB server running, normally, it will expose a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>, and you can get the profile result by running the following commands:</p>
+<p>Usually, when TiDB server is running, it exposes a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>. You can get the profile result by running the following commands:</p>
 <pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/profile?seconds=45&quot; &gt; profile.profile
 go tool pprof -http 127.0.0.1:4001 profile.profile
 </code></pre>
-<p>The commands will capture the profiling information for 45 seconds, and then provide a web view for the profiling result at <code>127.0.0.1:4001</code>, which contains the <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnosis the performance bottleneck.</p>
-<p>Similarly, you can also gather other runtime information through this end point. For example:</p>
+<p>The commands capture the profiling information for 45 seconds, and then provide a web view of the profiling result at <code>127.0.0.1:4001</code>. This view contains a <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnose the performance bottleneck.</p>
+<p>You can also gather other runtime information through this end point. For example:</p>
 <ul>
 <li>Goroutine:</li>
 </ul>
@@ -278,15 +277,15 @@ go tool pprof -http 127.0.0.1:4001 heap.profile
 </code></pre>
 <p>To learn how the runtime information is analyzed, see Go's <a href="https://golang.org/doc/diagnostics">diagnostics document</a>.</p>
 <h3 id="profiling-during-benchmarking"><a class="header" href="#profiling-during-benchmarking">Profiling during benchmarking</a></h3>
-<p>When you are proposing a performance-related feature for TiDB, it is recommended to also include a benchmark result as proof of the performance gain or your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
-<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result.</p>
+<p>When you are proposing a performance-related feature for TiDB, we recommend that you also include a benchmark result as proof of the performance gain or to show that your code won't introduce any performance regression. In this case, you need to write your own benchmark test like in <code>executor/benchmark.go</code>.</p>
+<p>For example, if you want to benchmark the window functions, because <code>BenchmarkWindow</code> are already in the benchmark tests, you can run the following commands to get the benchmark result:</p>
 <pre><code class="language-bash">cd executor
 go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 </code></pre>
-<p>If you find any performance regression, and you want to know how the regression is caused, you could use a command similarly as follows:</p>
+<p>If you find any performance regression, and you want to know the cause of it, you could use a command like the following:</p>
 <pre><code class="language-bash">go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem -memprofile memprofile.out -cpuprofile profile.out
 </code></pre>
-<p>To also generate the profiling information, and you can then analyze them as described in the above section.</p>
+<p>Then, you can use the steps described above to generate and analyze the profiling information.</p>
 
                     </main>
 
