@@ -6,13 +6,13 @@ You may find tests using [pingcap/check](http://github.com/pingcap/check) which 
 
 You can check the background and progress on the migration [tracking issue](https://github.com/pingcap/tidb/issues/26022).
 
-## How to write unit tests?
+## How to write unit tests
 
-We uses testify for writing unit tests. Basically, it is out-of-the-box [testing](https://pkg.go.dev/testing) with testify assertions.
+We use testify to write unit tests. Basically, it is out-of-the-box [testing](https://pkg.go.dev/testing) with testify assertions.
 
 ### TestMain
 
-When running tests, Golang compiles each package along with any files with names with suffix `_test.go`. Thus, a test binary contains tests in a package.
+When you run tests, Golang compiles each package along with any files with names with suffix `_test.go`. Thus, a test binary contains tests in a package.
 
 Golang testing provides a mechanism to support doing extra setup or teardown before or after testing by writing a package level unique function:
 
@@ -20,9 +20,9 @@ Golang testing provides a mechanism to support doing extra setup or teardown bef
 func TestMain(m *testing.M)
 ```
 
-We leverage the function to detect Goroutine leak by [goleak](https://github.com/uber-go/goleak) after all tests finished.
+After all tests finish, we leverage the function to detect Goroutine leaks by [goleak](https://github.com/uber-go/goleak).
 
-Before writing any unit tests in a package, create a file named `main_test.go` and setup the scaffolding:
+Before you write any unit tests in a package, create a file named `main_test.go` and setup the scaffolding:
 
 ```go
 func TestMain(m *testing.M) {
@@ -34,7 +34,7 @@ You can also put global variables or helper functions of the test binary in this
 
 ### Assertion
 
-Let's write a basic test for utility function `StrLenOfUint64Fast`.
+Let's write a basic test for the utility function `StrLenOfUint64Fast`:
 
 ```go
 func TestStrLenOfUint64Fast(t *testing.T) {
@@ -53,11 +53,11 @@ Golang testing detects test functions from `*_test.go` files of the form:
 func TestXxx(*testing.T)
 ```
 
-where `Xxx` does not start with a lowercase letter. The function name serves to identify the test routine.
+where `Xxx` does not start with a lowercase letter. The function name identifies the test routine.
 
-We follow this pattern but using testify assertions instead of out-of-the-box methods, like `Error` or `Fail`, since they are too low level to use.
+We follow this pattern but use testify assertions instead of out-of-the-box methods, like `Error` or `Fail`, since they are too low level to use.
 
-Almost we use `require.Xxx` for assertions, which imported from `github.com/stretchr/testify/require`. It fails immediately if the assertions fails and we tend to fail tests fast.
+We mostly use `require.Xxx` for assertions, which is imported from `github.com/stretchr/testify/require`. If the assertions fail, the test fails immediately, and we tend to fail tests fast.
 
 Below are the most frequently used assertions:
 
@@ -81,9 +81,9 @@ Golang testing provides a method of `testing.T` to run tests in parallel:
 t.Parallel()
 ```
 
-We leverage this function to run tests as parallel as possible, so that we make full use of the resource accessible.
+We leverage this function to run tests as parallel as possible, so that we make full use of the available resource.
 
-When some tests should be run in serial, take use of Golang testing [subtests](https://pkg.go.dev/testing#hdr-Subtests_and_Sub_benchmarks) and parallel the parent test only. In this way, tests in the same subtests set run in serial.
+When some tests should be run in serial, use Golang testing [subtests](https://pkg.go.dev/testing#hdr-Subtests_and_Sub_benchmarks) and parallel the parent test only. In this way, tests in the same subtests set run in serial.
 
 ```go
 func TestParent(t *testing.T) {
@@ -96,33 +96,33 @@ func TestParent(t *testing.T) {
 }
 ```
 
-Generally, if a test modifies global configs or failpoints, it should be considered run in serial.
+Generally, if a test modifies global configs or fail points, it should be run in serial.
 
-### TestKit
+### Test kits
 
-Most of our tests are much more complex than what are described above. For example, to set up a test, we may create a mock storage, a mock session, or even a local database instance.
+Most of our tests are much more complex than what we describe above. For example, to set up a test, we may create a mock storage, a mock session, or even a local database instance.
 
-These functions are known as testkits. Some are used in one package so we implement them in place, others are quite common so we move it to the `testkit` directory.
+These functions are known as test kits. Some are used in one package so we implement them in place; others are quite common so we move it to the `testkit` directory.
 
-When you write complex unit tests, you may take a look at what testkits we have now and try to leverage them. If there is none and the case you meet is considered common, add one.
+When you write complex unit tests, you may take a look at what test kits we have now and try to leverage them. If we don’t have a test kit for your issue and your issue is considered common, add one.
 
-## How to run unit tests?
+## How to run unit tests
 
 ### Running all tests
 
-You can always run all tests by executing the `gotest` target in Makefile.
+You can always run all tests by executing the `gotest` target in Makefile:
 
 ```
 make gotest
 ```
 
-which is almost equivalent to `go test ./...` but enable and disable fail points before and after running tests.
+This is almost equivalent to `go test ./...` but it enables and disables fail points before and after running tests.
 
-[pingcap/failpoint](https://github.com/pingcap/failpoint) is an implementation of [failpoints](https://www.freebsd.org/cgi/man.cgi?query=fail) for Golang. Fail point is used to add code points where errors may be injected in a user controlled fashion. It is a code snippet that is only executed when the corresponding fail point is active.
+[pingcap/failpoint](https://github.com/pingcap/failpoint) is an implementation of [failpoints](https://www.freebsd.org/cgi/man.cgi?query=fail) for Golang. A fail point is used to add code points where you can inject errors. Fail point is a code snippet that is only executed when the corresponding fail point is active.
 
 ### Running a single test
 
-To run a single test, you can manually repeat what `make gotest` does and narrow the scope in one test or one package.
+To run a single test, you can manually repeat what `make gotest` does and narrow the scope in one test or one package:
 
 ```
 make failpoint-enable
@@ -132,25 +132,25 @@ cd ..
 make failpoint-disable
 ```
 
-see more test flags by `go help testflag`.
+To display information on all the test flags, enter `go help testflag`.
 
-If you develop with GoLand, you can also run a test from the IDE following the [documentation](https://www.jetbrains.com/help/go/performing-tests.html), with manually enable and disable failpoints.
+If you develop with GoLand, you can also run a test from the IDE with manually enabled and disabled fail points. See the [documentation](https://www.jetbrains.com/help/go/performing-tests.html) for details.
 
 ![GoLand Run Tests](../img/goland-run-tests.png)
 
 As shown above, you can run tests of the whole package, of a test, or of a subtest, by click the corresponding gutter icon.
 
-If you develop with VS Code, you can also run a test from the editor follow the [documentation](https://code.visualstudio.com/docs/languages/go#_test), with manually enable and disable failpoints.
+If you develop with VS Code, you can also run a test from the editor with manually enabled and disabled fail points. See the [documentation](https://code.visualstudio.com/docs/languages/go#_test) for details.
 
 ![VS Code Run Tests](../img/vscode-run-tests.png)
 
 As shown above, you can run tests of the whole package, of a test, or of a file.
 
-### Running tests for pull request
+### Running tests for a pull request
 
-Before merging a pull request, it requires to pass all tests.
+Before you merge a pull request, it must pass all tests.
 
-Generally continuous integration will run tests for you, but if you want to run tests with conditions or rerun tests on failure, you should know how to achieve that.
+Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that.
 
 #### `/rebuild`
 
@@ -160,13 +160,13 @@ Build the binary based on the PR for testing. It also reruns all the CI test cas
 
 Rerun all the CI test cases. This command accepts the following parameters:
 
-* `tidb=<branch>|<pr/$num>` specifies which tidb to use
-* `tikv=<branch>|<pr/$num>` specifies which tikv to use
-* `pd=<branch>|<pr/$num>` specifies which pd to use
-* `tidb-test=<branch>|<pr/$num>` specifies which tidb-test to use
-* `tidb-private-test=<branch>|<pr/$num>` specifies which tidb-private-test to use
+* `tidb=<branch>|<pr/$num>` specifies which tidb to use.
+* `tikv=<branch>|<pr/$num>` specifies which tikv to use.
+* `pd=<branch>|<pr/$num>` specifies which pd to use.
+* `tidb-test=<branch>|<pr/$num>` specifies which tidb-test to use.
+* `tidb-private-test=<branch>|<pr/$num>` specifies which tidb-private-test to use.
 
-for examples,
+For example:
 
 ```
 /run-all-tests tidb-test=pr/666
@@ -178,13 +178,13 @@ for examples,
 
 Run a single CI test. This command accepts the same parameters as `/run-all-tests`.
 
-## How to find the failed tests?
+## How to find failed tests
 
-There are several common cause of failed tests.
+There are several common causes of failed tests.
 
 ### Assertion failed
 
-The most common cause of failed tests is assertion failed. Its failure report looks like:
+The most common cause of failed tests is that assertion failed. Its failure report looks like:
 
 ```
 === RUN   TestTopology
@@ -197,11 +197,11 @@ The most common cause of failed tests is assertion failed. Its failure report lo
 --- FAIL: TestTopology (0.76s)
 ```
 
-You may `grep "FAIL:"` the output to find this kind of failure.
+To find this type of failure, enter `grep -i "FAIL"` to search the report output.
 
 ### Data race
 
-Golang testing supports detecting data race by running tests with `-race` flag. Its failure report looks like:
+Golang testing supports detecting data race by running tests with the `-race` flag. Its failure report looks like:
 
 ```
 [2021-06-21T15:36:38.766Z] ==================
@@ -227,15 +227,16 @@ created by go.etcd.io/etcd/pkg/logutil.NewMergeLogger
 
 ```
 
-You can determine source of package leaks follow the [documentation](https://github.com/uber-go/goleak/#determine-source-of-package-leaks)
+To  determine the source of package leaks, see the [documentation](https://github.com/uber-go/goleak/#determine-source-of-package-leaks)
 
 ### Timeout
 
 After @tiancaiamao introduced the timeout checker for continuous integration, every test case should run in at most five seconds.
 
-If a test case violates this requirement, its failure report looks like:
+If a test case takes longer, its failure report looks like:
 
 ```
 [2021-08-09T03:33:57.661Z] The following test cases take too long to finish:
 [2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS  7.388s
+[2021-08-09T03:33:57.661Z] --- PASS: TestCluster (5.20s)
 ```
