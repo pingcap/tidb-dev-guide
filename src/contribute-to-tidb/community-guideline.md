@@ -1,31 +1,24 @@
 # Community Guideline
 
-TiDB governs by meritocracy and adopts a model consists of reviewer, committer, and maintainer. We believe that it is important to create an inclusive community where everyone can use, contribute to, and influence the direction of the project. See [the contributors page](https://github.com/pingcap/tidb/graphs/contributors) for the current list of contributors.
+TiDB community aims to provide harassment-free, welcome and friendly experience for everyone. The first and most important thing for any participant in the community is be friendly and repectful to others. Improper behaviour will be warned and punished.
 
-## General Development Process
+We appreciate any contribution in any form to TiDB community. Thanks so much for your interest and enthusiasm on TiDB!
 
-Everyone in the community is welcomed to send patches, documents, and propose new directions to the project. The key guideline here is to enable everyone in the community to get involved and participate the decision and development. When major changes are proposed, a design document should be sent to allow discussion by the community. We encourage public discussion, archivable channels such as GitHub issues and the [TiDB Internals forum](https://internals.tidb.io/), so that everyone in the community can participate and review the process later.
+## Code of Conduct
 
-Code reviews are one of the key ways to ensure the quality of the code. High-quality code reviews prevent technical debt for the long term and are crucial to the success of the project.
+TiDB community refuses any kind of harmful behaviour to the community or community members. Everyone should read the [CoC](https://github.com/pingcap/community/blob/master/CODE_OF_CONDUCT.md?from=from_parent_mindnote) and ensure proper behaviour while participating in the community.
 
-A pull request needs to be reviewed before it gets merged. A committer who has the expertise of the corresponding area would moderate the pull request and the merge the code when it is ready. The corresponding committer could request multiple reviewers who are familiar with the area of the code. We encourage contributors to request code reviews themselves and help review each other's code.
+## Governance
 
-Everyone is volunteering their time to the community, high-quality code review itself costs as much as the actual code contribution, you could get your code quickly reviewed if you do others the same favor.
+TiDB development governs by two kind of groups:
 
-The community should strive to reach a consensus on technical decisions through discussion. We expect committers and maintainers to moderate technical discussions in a diplomatic way, and provide suggestions with clear technical reasoning when necessary.
+* [TOC](https://github.com/pingcap/community/tree/master/toc): TOC serves as the main bridge and channel for coordinating and information sharing across companies and organizations. It is the coordination center for solving problems in terms of resource mobilization, technical research and development direction in the current community and cooperative projects.
+* [teams](https://github.com/pingcap/community/tree/master/teams): Teams are persistent open groups that focus on a part of the TiDB projects. A team has its reviewer, committer and maintainer, and owns one or more repositories. Team level decision making comes from its maintainers.
 
-## Reviewers
+A typical promoted path for a TiDB developer is from user to reviewer, then committer and maintainer, finally maybe a TOC member.  But gaining more roles doesn't mean you have any priviledge over other community members or even any right to control them. Everyone in TiDB community are equal and share the responsibility to collaborate constructively with other contributors, building a friendly community. The roles are a natural reward for your substantial contribution in TiDB development and provide you more rights in the development workflow to enhance your efficiency. Meanwhile, they request some additional responsibilities from you:
 
-Reviewers are individuals who actively contributed to the project and are willing to participate in the code review of new contributions. We identify reviewers from active contributors. The committers should explicitly solicit reviews from reviewers. High-quality code reviews prevent technical debt for long-term and are crucial to the success of the project. A pull request to the project has to be reviewed by at least one reviewer in order to be merged.
+* Since now you are a member of TiDB reviewer/committer/maintainer team, thus represent the project and your fellow team members whenever you discuss TiDB with anyone. So please be a good person to defend the reputation of the team.
+* Committer/maintainer have the right to merge pull requests, so bear the additional responsibility of handling the consequences of accepting a change into the code base or documentation. That includes reverting or fixing it if it causes problems as well as helping out the release manager in resolving any problems found during the pre-release testing cycle. While all contributors are free to help out with this part of the process, and it is most welcome when they do, the actual responsibility rests with the committers/maintainers that merged the change.
+* Review/committer/maintainer also bear the primary responsibility for guiding contributors the right working procedure, like deciding when changes proposed on the issue tracker should be escalated to [internal.tidb.io](https://internals.tidb.io) for wider discussion, as well as suggesting the use of the [TiDB Design Documents](https://github.com/pingcap/tidb/tree/master/docs/design) process to manage the design and justification of complex changes, or changes with a potentially significant impact on end users.
 
-## Committers
-
-Committers are individuals who are granted the write access to the project. A committer is usually responsible for a certain area or several areas of the code where they oversee the code review process. The area of contribution can take all forms, including code contributions and code reviews, documents, education, and outreach. Committers are essential for a high quality and healthy project. The community actively look for new committers from contributors. Here is a list of useful traits that help the community to recognize potential committers:
-
-* Sustained contribution to the project, demonstrated by discussion over design documents, code reviews and proposals of new features, and other development activities. Being familiar with, and being able to take ownership on one or several areas of the project.
-* Quality of contributions: High-quality, readable code contributions indicated by pull requests that can be merged without a substantial code review. History of creating clean, maintainable code and including good test cases. Informative code reviews to help other contributors that adhere to a good standard.
-* Community involvement: active participation in the [TiDB Internals forum](https://internals.tidb.io/), promote the projects via tutorials, talks and outreach. We encourage committers to collaborate broadly, e.g. do code reviews and discuss designs with community members that they do not interact physically.
-
-## Maintainers
-
-The maintainers consist group of active committers that moderate the discussion, manage the project release, and proposes new committers or maintainers. Potential candidates are usually proposed via an internal discussion among maintainers, followed by a consensus approval, i.e. a concrete number of approvals, and no vetoes. Any veto must be accompanied by reasoning. Maintainers should serve the community by upholding the community practices and guidelines TiDB a better community for everyone. Maintainers should strive to only nominate new candidates outside of their own organization.
+There should be no blockers to contribute with no roles. It's totally fine for you to reject the promotion offer if you don't want to take the additional responsibilities or for any other reason. Besides, except for code or documentation contribution, any kind of contribution for the community is highly appreciated. Let's grow TiDB ecosystem through our contributions of this community.
