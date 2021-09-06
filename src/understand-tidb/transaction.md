@@ -14,7 +14,8 @@ of the transaction. When the `commit` statement is received from the client, the
 # The Interface
 
 In `tidb`, the [Transaction](https://github.com/pingcap/tidb/blob/master/kv/kv.go#L181) interface defines the commonly used transaction operations.
-```
+
+```go
 type Transaction interface {
   ...
 	// Commit commits the transaction operations to KV store.
