@@ -15,7 +15,7 @@ Here are guidelines for contributing to various aspect of the project:
 
 * [Community Guideline](community-guideline.md)
 * [Committer Guide](committer-guide.md)
-* [Report a Bug](report-a-bug.md)
+* [Report an Issue](report-an-issue.md)
 * [Contribute Code](contribute-code.md)
 * [Review a Pull Request](review-a-pr.md)
 * [Make a Proposal](make-a-proposal.md)

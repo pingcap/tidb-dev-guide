@@ -13,7 +13,7 @@
 * [Contribute to TiDB](contribute-to-tidb/introduction.md)
     * [Community Guideline](contribute-to-tidb/community-guideline.md)
     * [Committer Guide](contribute-to-tidb/committer-guide.md)
-    * [Report a Bug](contribute-to-tidb/report-a-bug.md)
+    * [Report an Issue](contribute-to-tidb/report-an-issue.md)
     * [Contribute Code](contribute-to-tidb/contribute-code.md)
     * [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
     * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
