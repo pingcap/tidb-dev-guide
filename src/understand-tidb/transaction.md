@@ -60,7 +60,8 @@ These are common interfaces the transaction will provide, for example `Commit` w
 Usually the first thing that will be done executing a statment is to `activiate` the related transaction. By default `TiDB` proviedes the snapshot isolation level so in each new transction, a new global strong snapshot will be fetched first before executing statements. In `tidb` the snapshot is repsented by a global tso which is fetched from the `pd` server, and it acts as the unique idetifier for this transaction. After this operation a transaction is regarded as `activated`.
 
 For the read SQL statements, the [snapshot](https://github.com/pingcap/tidb/blob/master/store/driver/txn/snapshot.go) will be used to provide a global strong consistent snapshot, all the reads will check data visibility using this snapshot. Most executors will set the timestamp doing the build, and the transaction could be activiated by the building process. Some commonly used [snapshot](https://github.com/pingcap/tidb/blob/master/store/driver/txn/snapshot.go#L40) API:
-```
+
+```go
 // BatchGet gets all the keys' value from kv-server and returns a map contains key/value pairs.
 // The map will not contain nonexistent keys.
 func (s *tikvSnapshot) BatchGet(ctx context.Context, keys []kv.Key) (map[string][]byte, error) {
@@ -76,7 +77,8 @@ func (s *tikvSnapshot) Get(ctx context.Context, k kv.Key) ([]byte, error) {
 ```
 
 For the write SQL statements, they will write data into the transaction memory buffer temporarily until the `commit` operations is triggered. There are 3 main interfaces which will write query data into the memory buffer, they are the [tables](https://github.com/pingcap/tidb/blob/master/table/table.go#L166) API:
-```
+
+```go
 // Table is used to retrieve and modify rows in table.
 type Table interface {
 	...
