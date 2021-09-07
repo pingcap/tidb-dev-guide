@@ -8,7 +8,7 @@
 
 > **Note:**
 >
-> TiDB should compile and run on Windows 10. However, it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, we recommend you [install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) first.
+> TiDB could compile and run on Windows 10. However, it is not expected to be deployed on Windows, where you might encounter many compatibility problems. To have a better experience, we recommend you [install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) first.
 
 ## Clone
 
