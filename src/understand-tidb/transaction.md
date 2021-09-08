@@ -44,7 +44,7 @@ type Transaction interface {
 }
 ```
 
-These are common interfaces the transaction will provide, for example `Commit` will be used to commit the current ongoing transaction. The transaction is considered ongoing before the `commit` operations is triggered. The two phase commit processing will be used to commit a transaction and it will finally become committed or aborted. 
+These are common interfaces the transaction will provide. For example, `Commit` will be used to commit the current ongoing transaction. The transaction is considered ongoing before the `Commit` operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted. 
 
 [LazyTxn](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/session/txn.go#L50) is a wrapper of the transaction implementations, when the SQL statements are executed using a stand-alone session context, `LazyTxn` will be used to do things like：
 - Return the memory buffer for write.
