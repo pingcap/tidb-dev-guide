@@ -8,7 +8,7 @@ In `TiDB` the transaction write flow is like this:
 
 ![transaction-architecture](../img/transaction-architecture.png)
 
-After the transaction is started in a session, all the reads and writes will use a snapshot to fetch data, and the write content will be buffered in the memory buffer
+After the transaction is started in a session, all the reads and writes will use a snapshot to fetch data, and the written content will be buffered in the memory
 of the transaction. When the `commit` statement is received from the client, the `percolator` protocol will be used to commit these changes to the storage system.
 
 # The Interface
