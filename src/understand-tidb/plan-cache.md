@@ -42,7 +42,7 @@ This section explain how TiDB handle parameters and propagate them into the exec
 
 As shown above, when handling a `Prepare` statement with param-placeholders, all these placeholders are parsed into particular AST nodes `ParamMarkerExpr`.
 
-And then when handling an `Execute` statement with parm-values, first all param-values are parsed and stored into current session's param-value cache. When optimizing the AST, all `ParamMakerExpr` are converted into some particular `Constant` which contain references to the session's param-value cache.
+And then when handling an `Execute` statement with parm-values, first all param-values are parsed and stored into current session's param-value cache. Then optimize the AST and convert all `ParamMakerExpr` to particular `Constant` which contain references to their corresponding param-values in the session's cache.
 
 When processing the plan and evaluating the `Constant`, the `Constant` just returns the corresponding param-value stored in current session.
 
