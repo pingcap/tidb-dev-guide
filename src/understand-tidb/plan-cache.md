@@ -3,6 +3,7 @@
 TiDB supports execution plan caching for `Prepare` and `Execute` queries. By using cached plan, TiDB can skip the optimization phase and then gain some performance benefits.
 
 The flow of handling `Prepare` and `Execution` is shown below:
+
 ![plan-cache-overview](../img/plan-cache-overview.png)
 
 There still are some limitations about TiDB plan cache, and please see [the TiDB Plan Cache Doc](https://docs.pingcap.com/tidb/stable/sql-prepare-plan-cache) for more details.
