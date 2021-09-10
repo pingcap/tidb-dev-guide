@@ -111,4 +111,4 @@ If all the prewrite requests are processed successfully, the commit request for 
 
 # Summary
 
-This section talks about the brief steps of tranaction processing in the `TiDB` part, and related interfaces and implementations. 
+This section talks about the brief steps of transaction processing in the `TiDB` part, and the related interfaces and implementations.
