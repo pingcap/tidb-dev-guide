@@ -94,7 +94,7 @@ type Table interface {
 }
 ```
 
-Every statement will use a `staging buffer` during its execution, if it's successful the staging content will be merged into the transaction memory buffer. For example `AddRecord` will try to write an row into the current statement staging buffer, and the `RemoveRecord` will try to remove an row in the staging statement buffer. The transaction memory buffer will not be affected if the statement has failed.
+Every statement will use a `staging buffer` during its execution, if it's successful the staging content will be merged into the transaction memory buffer. For example, `AddRecord` will try to write a row into the current statement staging buffer, and the `RemoveRecord` will try to remove a row from the staging statement buffer. The existing transaction memory buffer will not be affected if the statement has failed.
 
 The memory buffer implementation is wrapped in [memBuffer](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/unionstore_driver.go#L27). The internal implementation is `MemDB` [object](https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/internal/unionstore/memdb.go).
 
