@@ -76,7 +76,7 @@ func (s *tikvSnapshot) Get(ctx context.Context, k kv.Key) ([]byte, error) {
 }
 ```
 
-For the write SQL statements, they will write data into the transaction memory buffer temporarily until the `commit` operations is triggered. There are 3 main interfaces which will write query data into the memory buffer, they are the [tables](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/table/table.go#L166) API:
+For the write SQL statements, they will write data into the transaction memory buffer temporarily until the `commit` operation is triggered. There are 3 main interfaces which will write query data into the memory buffer, here are the [tables](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/table/table.go#L166) API:
 
 ```go
 // Table is used to retrieve and modify rows in table.
