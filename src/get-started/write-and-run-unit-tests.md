@@ -98,7 +98,7 @@ func TestParent(t *testing.T) {
 
 Generally, if a test modifies global configs or fail points, it should be run in serial.
 
-When use parallel with range,  you need be careful . 
+When use parallel with range,  you need be careful. 
 
 In Go, the loop iterator variable is a single variable that takes different values in each loop iteration, so there is a very good chance that when you run this code you will see the last element printed for every iteration. You may use below paradigm to work around.
 
