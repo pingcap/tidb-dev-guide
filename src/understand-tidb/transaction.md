@@ -1,6 +1,6 @@
 # Transaction
 
-The transaction engine in TiDB is responsible to provide `ACID` guarantee for all the read and write requests. It consists of the client/coordinator part in `tidb` repository and the server/participant part in `tikv` repository. This document is mainly about the `tidb` part.
+The transaction engine in TiDB is responsible to provide `ACID` guarantee for all the read and write requests. It consists of the client/coordinator part in `TiDB` repository and the server/participant part in `TiKV` repository. This document is mainly about the `TiDB` part.
 
 # The Architecture
 
@@ -57,7 +57,7 @@ These are common interfaces the transaction will provide. For example, `Commit` 
 
 # The Statement Execution
 
-Usually the first thing that will be done executing a statment is to `activiate` the related transaction. By default `TiDB` proviedes the snapshot isolation level so in each new transction, a new global strong snapshot will be fetched first before executing statements. In `tidb` the snapshot is repsented by a global tso which is fetched from the `pd` server, and it acts as the unique idetifier for this transaction. After this operation a transaction is regarded as `activated`.
+Usually the first thing that will be done executing a statment is to `activiate` the related transaction. By default `TiDB` proviedes the snapshot isolation level so in each new transction, a new global strong snapshot will be fetched first before executing statements. In `TiDB` the snapshot is repsented by a global tso which is fetched from the `pd` server, and it acts as the unique idetifier for this transaction. After this operation a transaction is regarded as `activated`.
 
 For the read SQL statements, the [snapshot](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go) will be used to provide a global strong consistent snapshot, all the reads will check data visibility using this snapshot. Most executors will set the timestamp doing the build, and the transaction could be activiated by the building process. Some commonly used [snapshot](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go#L40) API:
 
@@ -111,4 +111,4 @@ If all the prewrite requests are processed successfully, the commit request for 
 
 # Summary
 
-This section talks about the brief steps of tranaction processing in the `tidb` part, and related interfaces and implementations. 
+This section talks about the brief steps of tranaction processing in the `TiDB` part, and related interfaces and implementations. 
