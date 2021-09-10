@@ -107,7 +107,7 @@ After the statement execution phase, the `commit` statement will trigger the com
 
 All the changes in the transaction memory buffer will be converted into [mutations](https://github.com/pingcap/kvproto/blob/dc1709169bb155de3bea6b28c871215387942994/proto/kvrpcpb.proto#L882) which will be used by the two-phase committer. These mutations will be grouped by their region locations, and prewrite requests will be sent to their region leaders.
 
-If all the prewrite requests are processed successfully, the commit request for the primary key will be sent to `tikv` first. If the primary key commit is successful, the transaction is consisdered commmitted and will response the client ok results.
+If all the prewrite requests are processed successfully, the commit request for the primary key will be sent to `TiKV` first. If the primary key commit is successful, the transaction is considered committed and will respond to the client with successful results.
 
 # Summary
 
