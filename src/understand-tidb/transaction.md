@@ -57,7 +57,7 @@ These are common interfaces the transaction will provide. For example, `Commit` 
 
 # The Statement Execution
 
-Usually the first thing that will be done executing a statment is to `activiate` the related transaction. By default `TiDB` proviedes the snapshot isolation level so in each new transction, a new global strong snapshot will be fetched first before executing statements. In `TiDB` the snapshot is repsented by a global tso which is fetched from the `pd` server, and it acts as the unique idetifier for this transaction. After this operation a transaction is regarded as `activated`.
+Usually, the first thing that will be done executing a statement is to `activate` the related transaction. By default `TiDB` provides the snapshot isolation level, so in each new transaction, a new global strong snapshot will be fetched first before executing statements. In `TiDB` the snapshot is represented by a global TSO which is fetched from the `PD` server, and it acts as the unique identifier for this transaction. After this operation, a transaction is regarded as `activated`.
 
 For the read SQL statements, the [snapshot](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go) will be used to provide a global strong consistent snapshot, all the reads will check data visibility using this snapshot. Most executors will set the timestamp doing the build, and the transaction could be activiated by the building process. Some commonly used [snapshot](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go#L40) API:
 
