@@ -13,7 +13,7 @@ of the transaction. When the `commit` statement is received from the client, the
 
 # The Interface
 
-In `tidb`, the [Transaction](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/kv/kv.go#L181) interface defines the commonly used transaction operations.
+In `TiDB`, the [`Transaction`](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/kv/kv.go#L181) interface defines the commonly used transaction operations.
 
 ```go
 type Transaction interface {
