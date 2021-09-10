@@ -1,6 +1,6 @@
 # Transaction
 
-The transaction engine in TiDB is responsible to provide `ACID` guarantee for all the read and write requests. It consists of the client/coordinator part in `TiDB` repository and the server/participant part in `TiKV` repository. This document is mainly about the `TiDB` part.
+The transaction engine in TiDB is responsible to provide `ACID` guarantees for all the read and write requests. It consists of the client/coordinator part in the `TiDB` repository and the server/participant part in the `TiKV` repository. This document is mainly about the `TiDB` part.
 
 # The Architecture
 
