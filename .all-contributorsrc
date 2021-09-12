@@ -208,6 +208,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "ekexium",
+      "name": "Ziqian Qin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31720476?v=4",
+      "profile": "https://github.com/ekexium",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
