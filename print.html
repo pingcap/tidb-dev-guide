@@ -1777,6 +1777,94 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="memory-management-mechanism"><a class="header" href="#memory-management-mechanism">Memory Management Mechanism</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="implementation-of-typical-operators"><a class="header" href="#implementation-of-typical-operators">Implementation of Typical Operators</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="transaction"><a class="header" href="#transaction">Transaction</a></h1>
+<p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository. </p>
+<p>This document is mainly about the TiDB part.</p>
+<h2 id="the-architecture"><a class="header" href="#the-architecture">The Architecture</a></h2>
+<p>In TiDB the transaction write flow is like this:</p>
+<p><img src="understand-tidb/../img/transaction-architecture.png" alt="transaction-architecture" /></p>
+<p>After the transaction starts in a session, all the reads and writes will use a snapshot to fetch data, and the written content will be buffered in the memory of the transaction. When the <code>commit</code> statement is received from the client, the Percolator protocol will be used to commit these changes to the storage system.</p>
+<h2 id="the-interface"><a class="header" href="#the-interface">The Interface</a></h2>
+<p>In TiDB, the <a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/kv/kv.go#L181-L234"><code>Transaction</code></a> interface defines the commonly used transaction operations.</p>
+<pre><code class="language-go">type Transaction interface {
+	// Commit commits the transaction operations to KV store.
+	Commit(context.Context) error
+	// Rollback undoes the transaction operations to KV store.
+	Rollback() error
+	// LockKeys tries to lock the entries with the keys in KV store.
+	// Will block until all keys are locked successfully or an error occurs.
+	LockKeys(ctx context.Context, lockCtx *LockCtx, keys ...Key) error
+	// SetOption sets an option with a value, when val is nil, uses the default
+	// value of this option.
+	SetOption(opt int, val interface{})
+	// GetOption returns the option
+	GetOption(opt int) interface{}
+	...
+	// StartTS returns the transaction start timestamp.
+	StartTS() uint64
+	// Valid returns if the transaction is valid.
+	// A transaction become invalid after commit or rollback.
+	Valid() bool
+	// GetMemBuffer return the MemBuffer binding to this transaction.
+	GetMemBuffer() MemBuffer
+	// GetSnapshot returns the Snapshot binding to this transaction.
+	GetSnapshot() Snapshot
+}
+</code></pre>
+<p>These are common interfaces the transaction will provide.</p>
+<p>For example, <code>Commit</code> will be used to commit the current ongoing transaction. The transaction is considered ongoing before the <code>Commit</code> operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted. </p>
+<p><a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/session/txn.go#L50-L71"><code>LazyTxn</code></a> is a wrapper of the transaction implementations, when the SQL statements are executed using a standalone session context, <code>LazyTxn</code> will be used to do things like：</p>
+<ul>
+<li>Return the memory buffer for write.</li>
+<li>Set specific operations or flags for the current transaction.</li>
+<li>Return the snapshot of this transaction.</li>
+<li>Commit the current transaction.</li>
+<li>Lock specific keys.</li>
+</ul>
+<h2 id="the-statement-execution"><a class="header" href="#the-statement-execution">The Statement Execution</a></h2>
+<p>Usually, the first thing that will be done executing a statement is to <code>activate</code> the related transaction</p>
+<p>By default, TiDB provides the snapshot isolation level. Thus, in each new transaction, a new global strong snapshot will be fetched first, before executing statements.</p>
+<p>In TiDB, the snapshot is represented by a global TSO which is fetched from the PD server, and it acts as the unique identifier for this transaction. After this operation, a transaction is regarded as <code>activated</code>.</p>
+<p>For the read SQL statements, the <a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go">snapshot</a> will be used to provide a global strong consistent snapshot, all the reads will check data visibility using this snapshot. Most executors will set the timestamp doing the build, and the transaction could be activated by the building process. Some commonly used <a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/snapshot.go#L40">snapshot</a> APIs are as below:</p>
+<pre><code class="language-go">// BatchGet gets all the keys' value from kv-server and returns a map contains key/value pairs.
+// The map will not contain nonexistent keys.
+func (s *tikvSnapshot) BatchGet(ctx context.Context, keys []kv.Key) (map[string][]byte, error) {
+	data, err := s.KVSnapshot.BatchGet(ctx, toTiKVKeys(keys))
+	return data, extractKeyErr(err)
+}
+
+// Get gets the value for key k from snapshot.
+func (s *tikvSnapshot) Get(ctx context.Context, k kv.Key) ([]byte, error) {
+	data, err := s.KVSnapshot.Get(ctx, k)
+	return data, extractKeyErr(err)
+}
+</code></pre>
+<p>For the write SQL statements, they will write data into the transaction memory buffer temporarily until the <code>commit</code> operation is triggered. There are 3 main interfaces which will write query data into the memory buffer. Here is the <a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/table/table.go#L166">table</a> API:</p>
+<pre><code class="language-go">// Table is used to retrieve and modify rows in table.
+type Table interface {
+	// AddRecord inserts a row which should contain only public columns
+	AddRecord(ctx sessionctx.Context, r []types.Datum, opts ...AddRecordOption) (recordID kv.Handle, err error)
+
+	// UpdateRecord updates a row which should contain only writable columns.
+	UpdateRecord(ctx context.Context, sctx sessionctx.Context, h kv.Handle, currData, newData []types.Datum, touched []bool) error
+
+	// RemoveRecord removes a row in the table.
+	RemoveRecord(ctx sessionctx.Context, h kv.Handle, r []types.Datum) error
+}
+</code></pre>
+<p>Every statement will use a <code>staging</code> buffer during its execution. If it's successful, the staging content will be merged into the transaction memory buffer.</p>
+<p>For example, <code>AddRecord</code> will try to write a row into the current statement staging buffer, and the <code>RemoveRecord</code> will try to remove a row from the staging statement buffer. The existing transaction memory buffer will not be affected if the statement has failed.</p>
+<p>The memory buffer implementation is wrapped in <a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/store/driver/txn/unionstore_driver.go#L27-L29">memBuffer</a>. The internal implementation is <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/internal/unionstore/memdb.go"><code>MemDB</code> struct</a>.</p>
+<p>The memory buffer is an ordered map and it provides the <code>staging</code> and <code>discard</code> utilities. For example, the memory content generated by a statement will be discarded if its execution has failed.</p>
+<h2 id="the-two-phase-commit"><a class="header" href="#the-two-phase-commit">The Two-phase Commit</a></h2>
+<p>After the statement execution phase, the <code>commit</code> statement will trigger the commit execution for the current transaction. In TiDB, the Percolator protocol is used as the distributed transaction protocol, it's a two-phase protocol.</p>
+<p>In the first stage, the transaction coordinator (TiDB server) will try to prewrite all the related keys. If all of them are successful, the transaction coordinator will then commit the primary key. After that the transaction is considered committed successfully, and a success message will be responded to the client. All the other keys will be committed asynchronously.</p>
+<p>All the changes in the transaction memory buffer will be converted into <a href="https://github.com/pingcap/kvproto/blob/dc1709169bb155de3bea6b28c871215387942994/proto/kvrpcpb.proto#L882">mutations</a> which will be used by the two-phase committer. These mutations will be grouped by their region locations, and prewrite requests will be sent to their region leaders.</p>
+<p>If all the prewrite requests are processed successfully, the commit request for the primary key will be sent to TiKV first. If the primary key commit is successful, the transaction is considered committed and will respond to the client with successful results.</p>
+<h2 id="recommended-reading"><a class="header" href="#recommended-reading">Recommended Reading</a></h2>
+<ul>
+<li><a href="https://tikv.org/deep-dive/distributed-transaction/percolator/">Percolator</a></li>
+<li><a href="https://research.google/pubs/pub36726/">Large-scale Incremental Processing Using Distributed Transactions and Notifications</a></li>
+</ul>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="optimistic-transaction"><a class="header" href="#optimistic-transaction">Optimistic Transaction</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="lock-resolver"><a class="header" href="#lock-resolver">Lock Resolver</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="pessimistic-transaction"><a class="header" href="#pessimistic-transaction">Pessimistic Transaction</a></h1>
@@ -1831,7 +1919,7 @@ if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().Ac
 <h3 id="security-enhanced-mode"><a class="header" href="#security-enhanced-mode">Security Enhanced Mode</a></h3>
 <p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific &quot;restricted&quot; dynamic privileges instead. The design is inspired by features such as &quot;Security Enhanced Linux&quot; (SeLinux) and AppArmor.</p>
 <p>SEM plugs directly into the privilege manager, but the hard coded list of restricted objects lives in <a href="https://github.com/pingcap/tidb/blob/master/util/sem/sem.go"><code>./util/sem/*</code></a>. It is expected that over time SEM will protect against additional operations which are considered to be high risk or too broad.</p>
-<h3 id="recommended-reading"><a class="header" href="#recommended-reading">Recommended Reading</a></h3>
+<h3 id="recommended-reading-1"><a class="header" href="#recommended-reading-1">Recommended Reading</a></h3>
 <ul>
 <li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Technical Design: Security Enhanced Mode</a></li>
 <li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md">Technical Design: Dynamic Privileges</a></li>
