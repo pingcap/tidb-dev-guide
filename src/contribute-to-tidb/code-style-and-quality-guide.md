@@ -114,7 +114,7 @@ This is the same reason which result wrong test when use `t.Parallel()` with ran
 
 ### a clone of iteration target value
 
-Since the loop iterator variable is `a clone of iteration target value`, it may result in logic error if you not pay attention. It can also lead to performance issue compared with `none-index range` loop or `for` loop.
+Since the loop iterator variable is `a clone of iteration target value`, it may result in logic error if you do not pay attention. It can also lead to performance issue compared with `none-index range` loop or `for` loop.
 
 ```go
 type Item struct {
@@ -149,3 +149,5 @@ func BenchmarkRangeStruct(b *testing.B) {
 BenchmarkRangeIndexStruct-12             4875518               246.0 ns/op
 BenchmarkRangeStruct-12                    16171             77523 ns/op
 ```
+
+you can see range `with index` is much slower than range `without index`, since range `with index` use cloned value so have big performance decrease when cloned value use lots of memory.
