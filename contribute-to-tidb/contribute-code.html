@@ -170,81 +170,43 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="contribute-code"><a class="header" href="#contribute-code">Contribute Code</a></h1>
-<p>TiDB is maintained, improved, and extended by code contributions. We welcome contributions to TiDB, but due to the size of the project and to preserve the high quality of the code base, we follow a contribution process that is explained in this document.</p>
-<p><strong>Please feel free to ask questions at any time.</strong> Either create a topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> or comment on the GitHub issue you are working on.</p>
-<p>Please read this document carefully before starting to work on a code contribution. Follow the process and guidelines explained below. Contributing to TiDB does <em>not</em> start with opening a pull request. We expect contributors to reach out to us first to discuss the overall approach together. Without consensus with the TiDB committers, contributions might require substantial rework or will not be reviewed.</p>
-<h2 id="looking-for-what-to-contribute"><a class="header" href="#looking-for-what-to-contribute">Looking for what to contribute</a></h2>
-<p>If you have a good idea for the contribution, you can proceed to the code contribution process. If you are looking for what you could contribute, you can browse open <a href="https://github.com/pingcap/tidb/issues">GitHub issues</a> of TiDB, which are not assigned, and then follow the code contribution process. If you are very new to the TiDB project and want to learn about it and its contribution process, you can check the <a href="https://github.com/pingcap/tidb/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22">starter issues</a>, which are annotated with a &quot;good first issue&quot; label.</p>
-<h2 id="code-contribution-process"><a class="header" href="#code-contribution-process">Code Contribution Process</a></h2>
-<h3 id="tldr"><a class="header" href="#tldr">TL;DR</a></h3>
+<p>TiDB is maintained, improved, and extended by code contributions. We welcome code contributions to TiDB. TiDB uses a workflow based on <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull requests</a>.</p>
+<h2 id="before-contributing"><a class="header" href="#before-contributing">Before contributing</a></h2>
+<p>Contributing to TiDB does <em>not</em> start with opening a pull request. We expect contributors to reach out to us first to discuss the overall approach together. Without consensus with the TiDB committers, contributions might require substantial rework or will not be reviewed. So please <a href="report-an-issue.html">create a GitHub issue</a>, discuss under an existing issue, or create a topic on the <a href="https://internals.tidb.io">internal.tidb.io</a> and reach consensus.</p>
+<p>For newcomers, you can check the <a href="https://github.com/pingcap/tidb/contribute">starter issues</a>, which are annotated with a &quot;good first issue&quot; label. These are issues suitable for new contributors to work with and won't take long to fix. But because the label is typically added at triage time it can turn out to be inaccurate, so do feel free to leave a comment if you think the classification no longer applies.</p>
+<p>To get your change merged you need to sign the <a href="https://cla-assistant.io/pingcap/tidb">CLA</a> to grant PingCAP ownership of your code.</p>
+<h2 id="contributing-process"><a class="header" href="#contributing-process">Contributing process</a></h2>
+<p>After a consensus is reached in issues, it's time to start the code contributing process:</p>
 <ol>
-<li>Discuss. Create a GitHub issue or create a topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> and reach consensus.</li>
-<li>Implement. Implement the change according to the approach agreed upon in the discussion.</li>
-<li>Review. Open a pull request and work with the reviewer.</li>
-<li>Merge. A committer of TiDB checks if the contribution fulfills the requirements and merges the code to the codebase.</li>
+<li>Assign the issue to yourself via <a href="https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#assign">/assign</a>. This lets other contributors know you are working on the issue so they won't make duplicate efforts.</li>
+<li>Follow the <a href="https://guides.github.com/introduction/flow/">GitHub workflow</a>, commit code changes in your own git repository branch and open a pull request for code review.</li>
+<li>Make sure the continuous integration checks on your pull request are green (i.e. successful).</li>
+<li>Review and address <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/commenting-on-a-pull-request">comments on your pull request</a>. If your pull request becomes outdated with the target branch, you need to <a href="https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request#perform-a-rebase">rebase your pull request</a> to keep it up to date. Since TiDB uses <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github#squashing-your-merge-commits">squash and merge</a>, simply merging master to catch up the change is also acceptable.</li>
+<li>When your pull request gets enough approvals (the default number is 2) and all other requirements are met, it will be merged.</li>
+<li>Handle regressions introduced by your change. Although committers bear the main responsibility to fix regressions, it's quite nice for you to handle it (reverting the change or sending fixes).</li>
 </ol>
-<h3 id="1-create-github-issue-and-reach-consensus"><a class="header" href="#1-create-github-issue-and-reach-consensus">1. Create GitHub Issue and Reach Consensus</a></h3>
-<p>The first step for making a contribution to TiDB is to reach consensus with the community. This means agreeing on the scope and implementation approach of a change.</p>
-<p>In most cases, the discussion should happen on <a href="https://github.com/pingcap/tidb/issues">GitHub issues</a>.</p>
-<p>The following types of changes requires a dedicated topic on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>:</p>
+<p>Clear and kind communication is key to this process.</p>
+<h2 id="writing-tests"><a class="header" href="#writing-tests">Writing tests</a></h2>
+<p>One important thing when you make code contributions to TiDB is tests. Tests should be always considered as a part of your change. Any code changes that cause semantic changes or new function additions to TiDB should have corresponding test cases. And of course you can not break any existing test cases if they are still valid. It's recommended to <a href="../get-started/write-and-run-unit-tests.html">run tests</a> on your local environment first to find obvious problems and fix them before opening the pull request.</p>
+<p>It's also highly appreciated if your pull request only contains test cases to increase test coverage of TiDB. Supplement test cases for existing modules is a good and easy way to become acquainted with existing code.</p>
+<h2 id="making-good-pull-requests"><a class="header" href="#making-good-pull-requests">Making good pull requests</a></h2>
+<p>When creating a pull request for submission, there are several things that you should consider to help ensure that your pull request is accepted:</p>
 <ul>
-<li>big changes (major new feature; big refactors, involving multiple components)</li>
-<li>potentially controversial changes or issues</li>
-<li>changes with very unclear approaches or multiple equal approaches</li>
+<li>Does the contribution alter the behavior of features or components in a way that it may break previous users' programs and setups? If yes, there needs to be a discussion and agreement that this change is desirable.</li>
+<li>Does the contribution conceptually fit well into TiDB? Is it too much of a special case such that it makes things more complicated for the common case, or bloats the abstractions/APIs?</li>
+<li>Does the contribution make a big impact on TiDB's build time?</li>
+<li>Does your contribution affect any documentation? If yes, you should add/change proper documentation. </li>
+<li>If there are any new dependencies, are they under active maintenances? What are their licenses?</li>
 </ul>
-<p>Do not open a GitHub issue for these types of changes before the discussion has come to a conclusion. GitHub issue based on a forum discussion need to link to that discussion and should summarize the outcome.</p>
-<p>Requirements for a GitHub issue to get consensus:</p>
+<h2 id="making-good-commits"><a class="header" href="#making-good-commits">Making good commits</a></h2>
+<p>Each feature or bugfix should be addressed by a single pull request, and for each pull request there may be several commits. In particular:</p>
 <ul>
-<li>Formal requirements
-<ul>
-<li>The <em>title</em> describes the problem concisely.</li>
-<li>The <em>description</em> gives all the details needed to understand the problem or feature request.</li>
-<li>The <em>component label</em> is set. Many committers and contributors only focus on certain subsystems of TiDB. Setting the appropriate component is important for getting their attention.</li>
+<li>Do <em>not</em> fix more than one issues in the same commit (except, of course, if one code change fixes all of them).</li>
+<li>Do <em>not</em> do cosmetic changes to unrelated code in the same commit as some feature/bugfix.</li>
 </ul>
-</li>
-<li>There is <strong>agreement</strong> that the issue solves a valid problem, and that it is a good fit for TiDB. The community considers the following aspects:
-<ul>
-<li>Does the contribution alter the behavior of features or components in a way that it may break previous users’ programs and setups? If yes, there needs to be a discussion and agreement that this change is desirable.</li>
-<li>Does the contribution conceptually fit well into TiDB? Is it too much of a special case such that it makes things more complicated for the common case, or bloats the abstractions / APIs?</li>
-<li>Does the feature fit well into TiDB's architecture? Will it scale and keep TiDB flexible for the future, or will the feature restrict TiDB in the future?</li>
-<li>Is the feature a significant new addition (rather than an improvement to an existing part)? If yes, will the community commit to maintaining this feature?</li>
-<li>Does this feature align well with currently ongoing efforts?</li>
-<li>Does the feature produce added value for TiDB users or developers? Or does it introduce the risk of regression without adding relevant user or developer benefit?</li>
-</ul>
-</li>
-<li>There is <strong>consensus</strong> on how to solve the problem. This includes considerations such as
-<ul>
-<li>API and data backwards compatibility and migration strategies</li>
-<li>Testing strategies</li>
-<li>Impact on TiDB's build time</li>
-<li>Dependencies and their licenses</li>
-</ul>
-</li>
-</ul>
-<p>If a change is identified as a large or controversial change in the discussion on GitHub issue, it might require a <a href="make-proposal.html">TiDB Design Document</a> or a discussion on the <a href="https://internals.tidb.io/">TiDB Internals forum</a> to reach agreement and consensus.</p>
-<p>Contributors can expect to get a first reaction from a committer within a few days after opening the issue. If an issue doesn’t get any attention, we recommend reaching out to the <a href="https://internals.tidb.io/">TiDB Internals forum</a>. Note that the community sometimes does not have the capacity to accept all incoming contributions.</p>
-<p>Once all requirements for the issue are met, one could assign somebody to the issue to work on it.</p>
-<h3 id="2-implement-your-change"><a class="header" href="#2-implement-your-change">2. Implement your change</a></h3>
-<p>Once you've been assigned to a GitHub issue, you may start to implement the required changes.</p>
-<p>Here are some further points to keep in mind while implementing:</p>
-<ul>
-<li>Set up a TiDB development environment.</li>
-<li>Follow the <a href="code-style-and-quality-guide.html">Code Style and Quality Guide</a> of TiDB.</li>
-<li>Take any discussions and requirements from the GitHub issue or design document into account.</li>
-<li>Do not mix unrelated issues into one contribution.</li>
-</ul>
-<h3 id="3-open-a-pull-request"><a class="header" href="#3-open-a-pull-request">3. Open a Pull Request</a></h3>
-<p>Considerations before opening a pull request:</p>
-<ul>
-<li>Make sure that <code>make test</code> is passing on your changes to ensure that all checks pass, the code builds and that all tests pass.</li>
-<li>Make sure your commit history adheres to the requirements.</li>
-<li>Make sure your change is up to date with the base branch.</li>
-</ul>
-<p>Code changes in TiDB are reviewed and accepted through <a href="https://help.github.com/en/articles/creating-a-pull-request">GitHub pull requests</a>.</p>
-<p>GitHub will auto assign reviewers to the pull requests, but you can also request reviews by commenting <code>/cc @reviewer</code>.</p>
-<p>There is a separate guide on <a href="review-a-pr.html">how to review a pull request</a>, including our pull request review process. As a code author, you should prepare your pull request to meet all requirements.</p>
-<h3 id="4-merge-change"><a class="header" href="#4-merge-change">4. Merge change</a></h3>
-<p>The code will be merged by a committer of TiDB once the review is finished. The related GitHub issue will be closed afterwards.</p>
+<h2 id="waiting-for-review"><a class="header" href="#waiting-for-review">Waiting for review</a></h2>
+<p>To begin with, please be patient! There are many more people submitting pull requests than there are people capable of reviewing your pull request. Getting your pull request reviewed requires a reviewer to have the spare time and motivation to look at your pull request. If your pull request has not received any notice from reviewers (i.e., no comment made) for some time, you can ping the reviewers and assignees, or take it to <a href="https://internals.tidb.io">internal.tidb.io</a> for more attention.</p>
+<p>When someone does manage to find the time to look at your pull request, they will most likely make comments about how it can be improved (don't worry, even committers/maintainers have their pull requests sent back to them for changes). It is then expected that you update your pull request to address these comments, and the review process will thus iterate until a satisfactory solution has emerged.</p>
 
                     </main>
 
