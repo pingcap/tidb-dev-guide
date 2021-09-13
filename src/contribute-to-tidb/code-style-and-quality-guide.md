@@ -64,7 +64,7 @@ As a rule of thumb is that when a struct has 10 or more words we should use poin
 
 ## Some tips for range and goroutines
 
-There are 2 types of range, with index and without index. Let's see an example for range with index.
+There are 2 types of range, `with index` and `without index`. Let's see an example for range `with index`.
 
 ```go
 func TestRangeWithIndex(t *testing.T) {
@@ -78,6 +78,8 @@ func TestRangeWithIndex(t *testing.T) {
 }
 ```
 
+the output is:
+
 ```shell
     Error Trace:	version_test.go:39
     Error:      	Not equal: 
@@ -86,7 +88,7 @@ func TestRangeWithIndex(t *testing.T) {
     Test:       	TestShowRangeWithIndex
 ```
 
-Above test fails since when range with index, the loop iterator variable is `the same instance of the variable` with `a clone of iteration target value`.
+Above test fails since when range `with index`, the loop iterator variable is `the same instance of the variable` with `a clone of iteration target value`.
 
 ### the same instance of the variable
 
