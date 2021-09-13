@@ -19,6 +19,7 @@
     * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
     * [Write Document](contribute-to-tidb/write-document.md)
+    * [Miscellaneous Topics](contribute-to-tidb/miscellaneous-topics.md)
 
 * [Understand TiDB](understand-tidb/introduction.md)
     * [The Lifecycle of a Statement](understand-tidb/the-lifecycle-of-a-statement.md)
