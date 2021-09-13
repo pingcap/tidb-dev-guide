@@ -34,7 +34,7 @@ Deep thoughts could help the issue proceed faster and help build your own reputa
 
 ## Understanding the issue's progress and status
 
-Once your issue is created, other contributors might take part in. You can [/cc](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#cc) reviewers to request reviews. You need to discuss with them, provide more information they might want to know, address their comments to reach consensus and make the progress proceeds. But please realize there are always more pending issues than contributors are able to handle, and especially TiDB community is a global one, contributors reside all over the world and they might already be very busy with their own work and life. Please be patient! If your issue gets stale for some time, it's okay to ping the reviewers and assignees, or take it to [internal.tidb.io](https://internals.tidb.io) for more attention.
+Once your issue is created, other contributors might take part in. You need to discuss with them, provide more information they might want to know, address their comments to reach consensus and make the progress proceeds. But please realize there are always more pending issues than contributors are able to handle, and especially TiDB community is a global one, contributors reside all over the world and they might already be very busy with their own work and life. Please be patient! If your issue gets stale for some time, it's okay to ping other participants, or take it to [internal.tidb.io](https://internals.tidb.io) for more attention.
 
 ## Disagreement with a resolution on the issue tracker
 
