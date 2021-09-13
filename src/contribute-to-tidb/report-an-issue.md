@@ -17,7 +17,7 @@ If the problem you’re reporting is not already in the issue tracker, you can [
 
 Answering these questions give the details about your problem so other contributors or TiDB users could pick up your issue more easily. 
 
-As previous section shows, duplicated issues should be reduced. To help others who encountered the problem find your issue, except for problem details answered in the issue template, a descriptive title which contains information that might be unique to it also helps. This can be the components related to or database feature used, the conditions that trigger the bug, or part of the error message if there is any. 
+As previous section shows, duplicated issues should be reduced. To help others who encountered the problem find your issue, except for problem details answered in the issue template, a descriptive title which contains information that might be unique to it also helps. This can be the components your issue belongs to or database features used in your issue, the conditions that trigger the bug, or part of the error message if there is any. 
 
 ## Making good issues
 
