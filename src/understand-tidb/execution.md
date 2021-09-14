@@ -18,7 +18,9 @@ Like the Volcano iteration model, vectorization uses pull-based (root-to-leaf tr
 
 The main principle of vectorized execution is batched execution on a columnar data representation: every "work" primitive function that manipulates data does not work on a single data item, but on a vector (an array) of such data items that represents multiple tuples. The idea behind vectorized execution is to amortize the iterator call overhead by performing as much as possible inside the data manipulation methods. For example, this work can be to hash 1000s of values, compare 1000s of string pairs, update a 1000 aggregates, or fetch a 1000 values from 1000s of addresses.
 
-Columnar Different from the row-oriented data representation, columnar format organize data by column rather by row. By storing data in columns rather than rows, the database can more precisely access the data it needs to answer a query rather than scanning and discarding unwanted data in rows. The memory columnar data representation in TiDB is defined as `Chunk`, which is inspired by [Apache Arrow](https://arrow.apache.org/).  The detailed definition and usage of `Chunk` will be introduced in the [implementation-of-vectorized-execution.md](implementation-of-vectorized-execution.md) section.
+Columnar Different from the row-oriented data representation, columnar format organize data by column rather by row. By storing data in columns rather than rows, the database can more precisely access the data it needs to answer a query rather than scanning and discarding unwanted data in rows. The memory columnar data representation in TiDB is defined as `Chunk`, which is inspired by [Apache Arrow](https://arrow.apache.org/).
+
+The detailed definition and usage of `Chunk` will be introduced in the [Implementation of Vectorized Execution](implementation-of-vectorized-execution.md) section.
 
 ## Memory Management Machanism
 
