@@ -471,6 +471,19 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
 }
 </code></pre>
 <p>Generally, if a test modifies global configs or fail points, it should be run in serial.</p>
+<p>When use parallel with range, you need be careful. </p>
+<p>In Golang, the loop iterator variable is a single variable that takes different value in each loop iteration, so there is a very good chance that when you run this code you will see the last element used for every iteration. You may use below paradigm to work around.</p>
+<pre><code class="language-go">func TestParallelWithRange(t *testing.T) {
+    for _, tc := range tests {
+        // copy iterator variable into a new variable, see issue #27779 in tidb repo
+        tc := tc
+        t.Run(tc.Name, func(t *testing.T) {
+            t.Parallel()
+            ...
+        })
+    }
+}
+</code></pre>
 <h3 id="test-kits"><a class="header" href="#test-kits">Test kits</a></h3>
 <p>Most of our tests are much more complex than what we describe above. For example, to set up a test, we may create a mock storage, a mock session, or even a local database instance.</p>
 <p>These functions are known as test kits. Some are used in one package so we implement them in place; others are quite common so we move it to the <code>testkit</code> directory.</p>
@@ -997,7 +1010,7 @@ git rebase --continue
 <h2 id="the-newtype-pattern-improves-code-quality"><a class="header" href="#the-newtype-pattern-improves-code-quality">The newtype pattern improves code quality</a></h2>
 <p>We can create a new type using the <code>type</code> keyword.</p>
 <p>The newtype pattern is perhaps most often used in Golang to get around type restrictions rather than to try to create new ones. It is used to create different interface implementations for a type or to extend a builtin type or a type from an existing package with new methods.</p>
-<p>However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage. </p>
+<p>However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage.</p>
 <pre><code class="language-go">package main
 
 import (
@@ -1041,6 +1054,76 @@ However, pointer receivers are often required to satisfy an interface or for per
 <li>Is the struct called repeatedly in a for loop? This favors pointer receivers.</li>
 <li>What is the GC behavior of the rest of the program? GC pressure may favor value receivers.</li>
 </ul>
+<h2 id="some-tips-for-range-and-goroutines"><a class="header" href="#some-tips-for-range-and-goroutines">Some tips for range and goroutines</a></h2>
+<p>There are 2 types of range, <code>with index</code> and <code>without index</code>. Let's see an example for range <code>with index</code>.</p>
+<pre><code class="language-go">func TestRangeWithIndex(t *testing.T) {
+	rows := []struct{ index int }{{index: 0}, {index: 1}, {index: 2}}
+	for _, row := range rows {
+		row.index += 10
+	}
+	for i, row := range rows {
+		require.Equal(t, i+10, row.index)
+	}
+}
+</code></pre>
+<p>the output is:</p>
+<pre><code class="language-shell">    Error Trace:	version_test.go:39
+    Error:      	Not equal: 
+                    expected: 10
+                    actual  : 0
+    Test:       	TestShowRangeWithIndex
+</code></pre>
+<p>Above test fails since when range <code>with index</code>, the loop iterator variable is <code>the same instance of the variable</code> with <code>a clone of iteration target value</code>.</p>
+<h3 id="the-same-instance-of-the-variable"><a class="header" href="#the-same-instance-of-the-variable">The same instance of the variable</a></h3>
+<p>Since the the loop iterator variable is <code>the same instance of the variable</code>, it may result in hard to find error when use with goroutines.</p>
+<pre><code class="language-go">	done := make(chan bool)
+	values := []string{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}
+	for _, v := range values {
+		go func() {
+			fmt.Println(v)
+			done &lt;- true
+		}()
+	}
+	for _ = range values {
+		&lt;-done
+	}
+</code></pre>
+<p>You might mistakenly expect to see a, b, c as the output, but you'll probably see instead is c, c, c. 
+This is because each iteration of the loop uses the same instance of the variable v, so each closure shares that single variable.</p>
+<p>This is the same reason which result wrong test when use <code>t.Parallel()</code> with range, which is covered in <code>parallel</code> section of <a href="contribute-to-tidb/../get-started/write-and-run-unit-tests.html">write-and-run-unit-tests</a></p>
+<h3 id="a-clone-of-iteration-target-value"><a class="header" href="#a-clone-of-iteration-target-value">A clone of iteration target value</a></h3>
+<p>Since the loop iterator variable is <code>a clone of iteration target value</code>, it may result in logic error if you do not pay attention. It can also lead to performance issue compared with <code>without index</code> range or <code>for</code> loop.</p>
+<pre><code class="language-go">type Item struct {
+	id  int
+	value [1024]byte
+}
+
+func BenchmarkRangeIndexStruct(b *testing.B) {
+	var items [1024]Item
+	for i := 0; i &lt; b.N; i++ {
+		var tmp int
+		for k := range items {
+			tmp = items[k].id
+		}
+		_ = tmp
+	}
+}
+
+func BenchmarkRangeStruct(b *testing.B) {
+	var items [1024]Item
+	for i := 0; i &lt; b.N; i++ {
+		var tmp int
+		for _, item := range items {
+			tmp = item.id
+		}
+		_ = tmp
+	}
+}
+</code></pre>
+<pre><code class="language-shell">BenchmarkRangeIndexStruct-12             4875518               246.0 ns/op
+BenchmarkRangeStruct-12                    16171             77523 ns/op
+</code></pre>
+<p>You can see range <code>with index</code> is much slower than range <code>without index</code>, since range <code>with index</code> use cloned value so have big performance decrease if <code>iteration target</code> is a large struct which  use a lot of memory.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="write-document"><a class="header" href="#write-document">Write Document</a></h1>
 <p>Good documentation is crucial for any kind of software. This is especially true for sophisticated software systems such as distributed database like TiDB. The TiDB community aims to provide concise, precise, and complete documentation and welcomes any contribution to improve TiDB's documentation.</p>
 <h2 id="where-you-can-contribute"><a class="header" href="#where-you-can-contribute">Where you can contribute</a></h2>
