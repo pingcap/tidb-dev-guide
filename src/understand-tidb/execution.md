@@ -34,4 +34,4 @@ For more details, you can refers to the [Memory Management Mechanism](memory-man
 
 ## Typical Operators
 
-TiDB implements multiple algorithms for the Join, Aggregation, Sort operators, and so on. We'll take some of them for detailed introduction. Readers who are interested can refer to the [implementation-of-typical-operators.md](implementation-of-typical-operators.md).
+TiDB implements multiple algorithms for the Join, Aggregation, Sort operators, and so on. We'll take some of them for detailed introduction. If you are interested, you can refer to the [Implementation of Typical Operators](implementation-of-typical-operators.md) section.
