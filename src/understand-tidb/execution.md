@@ -22,7 +22,7 @@ Columnar Different from the row-oriented data representation, columnar format or
 
 The detailed definition and usage of `Chunk` will be introduced in the [Implementation of Vectorized Execution](implementation-of-vectorized-execution.md) section.
 
-## Memory Management Machanism
+## Memory Management Mechanism
 
 In TiDB, we set a memory usage quota for a query, and introduce two interfaces called `Tracker` and `OOMAction` for memory management.
 
