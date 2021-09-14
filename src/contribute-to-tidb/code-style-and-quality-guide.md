@@ -90,7 +90,7 @@ the output is:
 
 Above test fails since when range `with index`, the loop iterator variable is `the same instance of the variable` with `a clone of iteration target value`.
 
-### the same instance of the variable
+### The same instance of the variable
 
 Since the the loop iterator variable is `the same instance of the variable`, it may result in hard to find error when use with goroutines.
 
@@ -110,11 +110,12 @@ Since the the loop iterator variable is `the same instance of the variable`, it 
 
 You might mistakenly expect to see a, b, c as the output, but you'll probably see instead is c, c, c. 
 This is because each iteration of the loop uses the same instance of the variable v, so each closure shares that single variable.
+
 This is the same reason which result wrong test when use `t.Parallel()` with range, which is covered in `parallel` section of [write-and-run-unit-tests](../get-started/write-and-run-unit-tests.md)
 
-### a clone of iteration target value
+### A clone of iteration target value
 
-Since the loop iterator variable is `a clone of iteration target value`, it may result in logic error if you do not pay attention. It can also lead to performance issue compared with `none-index range` loop or `for` loop.
+Since the loop iterator variable is `a clone of iteration target value`, it may result in logic error if you do not pay attention. It can also lead to performance issue compared with `without index` range or `for` loop.
 
 ```go
 type Item struct {
@@ -150,4 +151,4 @@ BenchmarkRangeIndexStruct-12             4875518               246.0 ns/op
 BenchmarkRangeStruct-12                    16171             77523 ns/op
 ```
 
-you can see range `with index` is much slower than range `without index`, since range `with index` use cloned value so have big performance decrease if cloned value use lots of memory.
+You can see range `with index` is much slower than range `without index`, since range `with index` use cloned value so have big performance decrease if `iteration target` is a large struct which  use a lot of memory.
