@@ -98,16 +98,16 @@ func TestParent(t *testing.T) {
 
 Generally, if a test modifies global configs or fail points, it should be run in serial.
 
-When use parallel with range, you need be careful. 
+When writing parallel tests, there are several common considerations.
 
-In Golang, the loop iterator variable is a single variable that takes different value in each loop iteration, so there is a very good chance that when you run this code you will see the last element used for every iteration. You may use below paradigm to work around.
+In Golang, the loop iterator variable is a single variable that takes different value in each loop iteration. Thus, when you run this code it is highly possible to see the last element used for every iteration. You may use below paradigm to work around.
 
 ```go
 func TestParallelWithRange(t *testing.T) {
-    for _, tc := range tests {
+    for _, test := range tests {
         // copy iterator variable into a new variable, see issue #27779 in tidb repo
-        tc := tc
-        t.Run(tc.Name, func(t *testing.T) {
+        test := test
+        t.Run(test.Name, func(t *testing.T) {
             t.Parallel()
             ...
         })

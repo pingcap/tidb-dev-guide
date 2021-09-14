@@ -62,9 +62,9 @@ As a rule of thumb is that when a struct has 10 or more words we should use poin
 * Is the struct called repeatedly in a for loop? This favors pointer receivers.
 * What is the GC behavior of the rest of the program? GC pressure may favor value receivers.
 
-## Some tips for range and goroutines
+## Parallel For-Loop
 
-There are 2 types of range, `with index` and `without index`. Let's see an example for range `with index`.
+There are two types of for loop on range: "with index" and "without index". Let's see an example for range with index.
 
 ```go
 func TestRangeWithIndex(t *testing.T) {
@@ -80,7 +80,7 @@ func TestRangeWithIndex(t *testing.T) {
 
 the output is:
 
-```shell
+```
     Error Trace:	version_test.go:39
     Error:      	Not equal: 
                     expected: 10
@@ -88,34 +88,35 @@ the output is:
     Test:       	TestShowRangeWithIndex
 ```
 
-Above test fails since when range `with index`, the loop iterator variable is `the same instance of the variable` with `a clone of iteration target value`.
+Test fails because when range with index, the loop iterator variable is the same instance of the variable with a clone of iteration target value.
 
 ### The same instance of the variable
 
-Since the the loop iterator variable is `the same instance of the variable`, it may result in hard to find error when use with goroutines.
+Since the the loop iterator variable is the same instance of the variable, it may result in tricky error with parallel for-loop.
 
 ```go
-	done := make(chan bool)
-	values := []string{"a", "b", "c"}
-	for _, v := range values {
-		go func() {
-			fmt.Println(v)
-			done <- true
-		}()
-	}
-	for _ = range values {
-		<-done
-	}
+done := make(chan bool)
+values := []string{"a", "b", "c"}
+for _, v := range values {
+	go func() {
+		fmt.Println(v)
+		done <- true
+	}()
+}
+for _ = range values {
+	<-done
+}
 ```
 
-You might mistakenly expect to see a, b, c as the output, but you'll probably see instead is c, c, c. 
-This is because each iteration of the loop uses the same instance of the variable v, so each closure shares that single variable.
+You might expect to see `a`, `b`, `c` as the output, but you'll probably see instead is `c`, `c`, `c`. 
 
-This is the same reason which result wrong test when use `t.Parallel()` with range, which is covered in `parallel` section of [write-and-run-unit-tests](../get-started/write-and-run-unit-tests.md)
+This is because each iteration of the loop uses the same instance of the variable `v`, so each closure shares that single variable.
+
+This is the same reason which result wrong test when use `t.Parallel()` with range, which is covered in [Parallel section of Write and run unit tests](../get-started/write-and-run-unit-tests.md#parallel)
 
 ### A clone of iteration target value
 
-Since the loop iterator variable is `a clone of iteration target value`, it may result in logic error if you do not pay attention. It can also lead to performance issue compared with `without index` range or `for` loop.
+Since the loop iterator variable is a clone of iteration target value, it may result in logic error. It can also lead to performance issue compared with none-index range loop or bare for loop.
 
 ```go
 type Item struct {
@@ -146,9 +147,9 @@ func BenchmarkRangeStruct(b *testing.B) {
 }
 ```
 
-```shell
+```
 BenchmarkRangeIndexStruct-12             4875518               246.0 ns/op
 BenchmarkRangeStruct-12                    16171             77523 ns/op
 ```
 
-You can see range `with index` is much slower than range `without index`, since range `with index` use cloned value so have big performance decrease if `iteration target` is a large struct which  use a lot of memory.
+You can see range with index is much slower than range without index, since range with index use cloned value so have big performance decrease if cloned value use lots of memory.
