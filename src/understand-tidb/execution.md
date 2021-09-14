@@ -6,7 +6,9 @@ The `executor` package contains most of the codes related to execution. The inpu
 
 TiDB builds the computing engine based on the distributed storage provided by TiKV. The TiKV server implements a coprocessor framework to support distributed computing. The computing operations will be pushed to the TiKV coprocessor as far as possible to accelerate the computation speed. That is to say, a sub-plan of the SQL execution plan will be executed in parallel on different TiKV servers, and the result of each sub-plan will be collected to a TiDB server to compute for the final result. 
 
-The processing model of the execution plan tree is known as the Volcano iterator model. The essential of the Volcano model is abstracted to 3 interfaces: `Open`, `Next`, `Close`. All operators offer the same interfaces and the implementation is opaque. `Open` will be invoked in turn for each operator to init the needed resources before computing. Conversely, `Close` will release the resources. To obtain the query output, the final operator in the plan tree will keep invoking `next` until no tuple is pulled from its child.
+The processing model of the execution plan tree is known as the Volcano iterator model. The essential of the Volcano model is abstracted to 3 interfaces: `Open`, `Next`, and `Close`. All operators offer the same interfaces and the implementation is opaque.
+
+`Open` will be invoked in turn for each operator to init the needed resources before computing. Conversely, `Close` will release the resources. To obtain the query output, the final operator in the plan tree will keep invoking `Next` until no tuple is pulled from its child.
 
 It's easy to understand how the Volcano model works for single-process execution. For parallism issues, the Volcano introduces an operator called `exchange` at any desired point in a plan tree. Further explanation about the parallism-related issues would be introduced in the [execution-framework.md](execution-framework.md) section.
 
