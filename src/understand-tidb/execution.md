@@ -1,10 +1,10 @@
 # Execution
 
-The `executor` package contains most of the codes related to execution. The input of the executor is a plan tree of the query returned from the planner, and the output of the executor is the result of the query.
+The `executor` package contains most of the codes related to execution. The input of the executor is a plan tree of the query returned from the planner, and the output of the executor is the result of the query. The entry function of execution module is `executorBuild::build`, the output result is fetched in `clientConn::writeChunks`.
 
 ## Execution Framework
 
-TiDB builds the computing engine based on the distributed storage provided by TiKV. The TiKV server implements a coprocessor framework to support distributed computing. The computing operations will be pushed to the TiKV coprocessor as far as possible to accelerate the computation speed. That is to say, a sub-plan of the SQL execution plan will be executed in parallel on different TiKV servers, and the result of each sub-plan will be collected to a TiDB server to compute for the final result. 
+TiDB builds the computing engine based on the distributed storage provided by TiKV. The TiKV server implements a coprocessor framework to support distributed computing. The computing operations will be pushed to the TiKV coprocessor as far as possible to accelerate the computation speed. That is to say, a sub-plan of the SQL execution plan will be executed in parallel on different TiKV servers, and the result of each sub-plan will be collected to a TiDB server to compute for the final result.
 
 The processing model of the execution plan tree is known as the Volcano iterator model. The essential of the Volcano model is abstracted to 3 interfaces: `Open`, `Next`, and `Close`. All operators offer the same interfaces and the implementation is opaque.
 
@@ -14,7 +14,7 @@ It's easy to understand how the Volcano model works for single-process execution
 
 ## Vectorized Execution
 
-Like the Volcano iteration model, vectorization uses pull-based (root-to-leaf traversal) iteration where each operator has a `Next` method that produces result tuples. However, each `Next` call fetches a block of tuples instead of just one tuple.
+Vectorization uses the Volcano iteration model where each operator has a `Next` method that produces result tuples. However, each `Next` call fetches a block of tuples instead of just one tuple.
 
 The main principle of vectorized execution is batched execution on a columnar data representation: every "work" primitive function that manipulates data does not work on a single data item, but on a vector (an array) of such data items that represents multiple tuples. The idea behind vectorized execution is to amortize the iterator call overhead by performing as much as possible inside the data manipulation methods. For example, this work can be to hash 1000s of values, compare 1000s of string pairs, update a 1000 aggregates, or fetch a 1000 values from 1000s of addresses.
 
