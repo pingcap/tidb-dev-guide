@@ -43,7 +43,7 @@ message PrewriteRequest {
 }
 ```
 
-The `mutations` are changes made by the transaction, `start_version` is the transaction identifier fetched from PD, `for_update_ts` is used by the pessimistic transactions which will be introduced seperately. The `try_one_pc` field is about committing the transaction using `one-phase` protocol, the `use_async_commit` and `secondaries` will be used if the transaction is committing in the `async-commit` mode, these optimizations will be introduced seperately in other documents.
+The `mutations` are changes made by the transaction, `start_version` is the transaction identifier fetched from PD, `for_update_ts` is used by the pessimistic transactions. The `try_one_pc` field is used if the transaction is committed using `one-phase` protocol, the `use_async_commit` and `secondaries` will be used if the transaction is committed in the `async-commit` mode.
 
 Besides `prewrite` request, there are some other important request types:
 - `pessimistic_lock` [request](https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L125) is used to lock a key. Note pessimistic locking happens in the transaction execution phase, for example a `select for update` statment will need to pessimistically lock the correspond rows.
