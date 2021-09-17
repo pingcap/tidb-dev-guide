@@ -100,4 +100,4 @@ They will both be introduced other documents in details.
 
 # Summary
 
-This section talks about the brief steps of tranaction processing in the TiKV part, and related interfaces, implementations and optimizations.
+This section talks about the brief steps of transaction processing in the TiKV part, and related interfaces, implementations and optimizations.
