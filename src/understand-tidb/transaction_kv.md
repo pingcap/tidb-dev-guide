@@ -64,7 +64,7 @@ The future processing is done in the transaction scheduler thread-pool, usually 
 
 In TiDB the key space is splitted into different ranges or regions, each region is a raft group and its leader will be responsible for handling its key range related read/write requests. 
 
-After the transaction command processing and there is no error reported, the generated transaction writes will be written into the raft log engine by the region leaders in `raftStore`(raftStore will be introduced in other documents in details). The work flow is like this:
+If the transaction command processing in the transaction scheduler is successful, the generated transaction writes will be written into the raft log engine by the region leaders in `raftStore`(raftStore will be introduced in other documents in details). The work flow is like this:
 
 ![raftStore](../img/raftStore.png)
 
