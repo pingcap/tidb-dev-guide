@@ -86,7 +86,9 @@ After `prewrite`, the lock correspond records for the transaction will be writte
 
 # Transaction Recovery
 
-In TiDB the transaction coordinator(in `tidb-server`) is stateless and it will not persist any information. If the transaction coordinator fails for example the `tidb-server` crashes, the transaction context in memory will get lost, and as the coordinator is gone the normal commit processing will stop. How to recover the transaction state and make a decision if it should commit or abort? Actually there is no special mechanism to recover the failed transctions, the recovery is done by other conflict concurrent transactions, or the conflict transactions will help decide the actual states for the failed tranactions. The lock resolve process will be triggered if current ongoing transaction encounters conflicts with other transaction locks doing reads or writes. The whole process will be introduced in other documents in details.
+In TiDB the transaction coordinator(in `tidb-server`) is stateless and it will not persist any information. If the transaction coordinator fails for example the `tidb-server` crashes, the transaction context in memory will get lost, and as the coordinator is gone the normal commit processing will stop. How to recover the transaction state and make a decision if it should commit or abort? 
+
+Actually there is no special mechanism to recover the failed transctions, the recovery is done by other concurrent conflict transactions, or the conflict transactions will help decide the actual states of the failed tranactions. The lock resolve process will be triggered if current ongoing transaction encounters locks of other transactions doing reads or writes. The whole resolve process will be introduced in other documents in details.
 
 # Transaction Optimizations
 
