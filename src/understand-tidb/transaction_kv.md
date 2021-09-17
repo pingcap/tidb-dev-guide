@@ -6,7 +6,7 @@ As described in the previous [docuemnt](./transaction.md), the distributed trans
 
 # Transactional Protocol
 
-Based on the percolator model, the RPC interfaces in TiDB are described in proto [file](https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L77). They will be used by the transaction coordinator to drive the whole commit process, for example `Prewrite` will be used to write the lock record in TiKV:
+Based on the percolator model, the RPC interfaces in TiDB are described in proto [file](https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L77). They will be used by the transaction coordinator to drive the whole commit process. For example `Prewrite` will be used to write the lock record in TiKV:
 ```
 message PrewriteRequest {
     Context context = 1;
