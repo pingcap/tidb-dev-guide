@@ -92,7 +92,7 @@ Actually, there is no special mechanism to recover the undetermined-status trans
 
 # Transaction Optimizations
 
-Normally the transaction commit will need two pahses, the `prewrite` phase and `commit` phase. Under certain circumstances transaction commit could be done in a single phase for example the generated transaction mutations could be processed by a single region leader. This optimization is called one-phase commit in TiDB.
+Normally the transaction commit will need two phases, the `prewrite` phase and `commit` phase. Under certain circumstances transaction commit could be done in a single phase for example the generated transaction mutations could be processed by a single region leader. This optimization is called one-phase commit in TiDB.
 
 The final transaction status is determined by the commit status of the primary key lock, so the reponse to the client has to wait until the primary key commit has finished. This wait could be saved using the `async-commit` protocol so the latency of commit processing could be reduced.
 
