@@ -1,12 +1,13 @@
 # Session
 
-The `session` package (and related packages such as `sessionctx` and `variable`) are responsible for maintaining the state of both sessions and transactions.
+The `session` package (and related packages such as `sessionctx` and `sessionctx/variable`) are responsible for maintaining the state of both sessions and transactions.
 
 ## New session origins
 
 New connections are first established in the `server` package. After some initial protocol negotiation, the `server` package [calls](https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/server/driver_tidb.go#L181-L186) `session.CreateSession()`. This function then calls `session.createSessionWithOpt()` (via `CreateSessionWithOpt()`) which creates the session.
 
-Sessions used for internal server operations are [usually created in a different manner](https://github.com/pingcap/tidb/blob/649ed6abc9790cfdd2a17065118379d8abcc7595/executor/simple.go#L83-L93), with the sessionctx being retrieved from a pool of sessions maintained by `domain`:
+Sessions used for internal server operations are usually created in a different manner, with the sessionctx being retrieved from a pool of sessions maintained by `domain`. For example:
+
 ```go
 dom := domain.GetDomain(e.ctx)
 sysSessionPool := dom.SysSessionPool()
@@ -18,11 +19,12 @@ restrictedCtx := ctx.(sessionctx.Context)
 restrictedCtx.GetSessionVars().InRestrictedSQL = true
 ```
 
-Internal sessions will not show up in the output of `SHOW PROCESSLIST`, and because they do not have a privilege manager handle attached skip all privilege checks.
+Internal sessions will not show up in the output of `SHOW PROCESSLIST`, and skip all privilege checks because they do not have a privilege manager handle attached.
 
 ## System variable state
 
 System variables follow similar semantics to MySQL:
+
 - If a variable includes `SESSION` scope, the value is copied to the session state when the session is created.
 - Any changes to the `GLOBAL` value will not apply to any existing sessions.
 
@@ -36,9 +38,9 @@ The typed value is set when the `SetSession` attached to the [system variable de
 
 ```go
 {Scope: ScopeGlobal | ScopeSession, Name: TiDBSkipUTF8Check, Value: BoolToOnOff(DefSkipUTF8Check), Type: TypeBool, SetSession: func(s *SessionVars, val string) error {
-		s.SkipUTF8Check = TiDBOptOn(val)
-		return nil
-	}},
+	s.SkipUTF8Check = TiDBOptOn(val)
+	return nil
+}},
 ```
 
 The `SetSession` function can also be considered an `Init` function, since it is called when the session is created and the values are copied from global scope. To disable `SetSession` from being called on creation, `skipInit` can be set to `true`. For example with [`CharsetDatabase`](https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L745-L752):
@@ -91,7 +93,7 @@ As you can see by the `Scope: Session`, instance-scoped variables are not native
 
 ## Transaction state
 
-The `session` is responsible for keeping modified KV-pairs in an in-memory buffer until the transaction commits. A `commit` statement only sets the session variable state that it is [no longer in an active transaction](https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/executor/simple.go#L701-L703):
+The `session` struct (`s.txn`) is responsible for keeping modified key-value pairs in a [`LazyTxn`](https://github.com/pingcap/tidb/blob/bfbea9c3ef4232d76296a9c8390eb8b7da5bf45d/session/txn.go#L46-L71) until the transaction commits. A `commit` statement only sets the session variable state that it is [no longer in an active transaction](https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/executor/simple.go#L701-L703):
 
 ```go
 func (e *SimpleExec) executeCommit(s *ast.CommitStmt) {
@@ -113,7 +115,7 @@ if !sessVars.InTxn() {
 }
 ```
 
-The `session.CommitTxn()` function will handle the `commit`, including retry (if permitted). There is also special handling for both pessimistic and optimistic transactions, as well as removing the KV pairs which apply to temporary tables from the transaction buffer.
+The `session.CommitTxn()` function will handle the `commit`, including retry (if permitted). There is also special handling for both pessimistic and optimistic transactions, as well as removing the key-value pairs which apply to temporary tables from the transaction buffer.
 
 ## See also
 
