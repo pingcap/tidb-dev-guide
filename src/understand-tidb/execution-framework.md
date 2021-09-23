@@ -13,7 +13,7 @@ And the parallel implementation of each operator is different. Hashagg is divide
 It's still the traditional Volcano-model, and the `Next()` is still called by a single thread. The parallelism only occurs in the internal processing of the operator.
 
 The degree of parallelism(DOP) can be controlled by the session variable. For example, in TiDB `tidb_executor_Concurrency` is 5 by default. it means HashJoin will create 5 goroutines to probe HashTable when it's opened.
-You can also control the parallelism of a specific operator by setting the session variable, such as ` tidb_hash_join_concurrency`.
+You can also control the parallelism of a specific operator by setting the session variable, such as `tidb_hash_join_concurrency`.
 
 ## Exchange Operator
 Intra operator parallelism is the most intuitive way to implement parallelism, but the implementation is more complex, because every operator needs to implement parallelism independently.
