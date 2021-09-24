@@ -170,6 +170,94 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="session"><a class="header" href="#session">Session</a></h1>
+<p>The <code>session</code> package (and related packages such as <code>sessionctx</code> and <code>sessionctx/variable</code>) are responsible for maintaining the state of both sessions and transactions.</p>
+<h2 id="new-session-origins"><a class="header" href="#new-session-origins">New session origins</a></h2>
+<p>New connections are first established in the <code>server</code> package. After some initial protocol negotiation, the <code>server</code> package <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/server/driver_tidb.go#L181-L186">calls</a> <code>session.CreateSession()</code>. This function then calls <code>session.createSessionWithOpt()</code> (via <code>CreateSessionWithOpt()</code>) which creates the session.</p>
+<p>Sessions used for internal server operations are usually created in a different manner, with the sessionctx being retrieved from a pool of sessions maintained by <code>domain</code>. For example:</p>
+<pre><code class="language-go">dom := domain.GetDomain(e.ctx)
+sysSessionPool := dom.SysSessionPool()
+ctx, err := sysSessionPool.Get()
+if err != nil {
+    return nil, err
+}
+restrictedCtx := ctx.(sessionctx.Context)
+restrictedCtx.GetSessionVars().InRestrictedSQL = true
+</code></pre>
+<p>Internal sessions will not show up in the output of <code>SHOW PROCESSLIST</code>, and skip all privilege checks because they do not have a privilege manager handle attached.</p>
+<h2 id="system-variable-state"><a class="header" href="#system-variable-state">System variable state</a></h2>
+<p>System variables follow similar semantics to MySQL:</p>
+<ul>
+<li>If a variable includes <code>SESSION</code> scope, the value is copied to the session state when the session is created.</li>
+<li>Any changes to the <code>GLOBAL</code> value will not apply to any existing sessions.</li>
+</ul>
+<p>The state of the variables is stored in <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L432-L958"><code>sessionVars</code></a>. The raw <em>string</em> values are stored in a map named <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L449-L450"><code>systems</code></a>. This string value is used for persistence in the <code>mysql.global_variables</code> table.</p>
+<p>For many variables, as well as a <em>string</em> value there is a typed field in <code>sessionVars</code>. For example:</p>
+<p><code>SessionVars.systems[&quot;tidb_skip_utf8_check&quot;]</code> (string) maps to <code>SessionVars.SkipUTF8Check</code> (bool).</p>
+<p>The typed value is set when the <code>SetSession</code> attached to the <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1029-L1032">system variable definition</a> is called. For <code>tidb_skip_utf8_check</code> this is as follows:</p>
+<pre><code class="language-go">{Scope: ScopeGlobal | ScopeSession, Name: TiDBSkipUTF8Check, Value: BoolToOnOff(DefSkipUTF8Check), Type: TypeBool, SetSession: func(s *SessionVars, val string) error {
+	s.SkipUTF8Check = TiDBOptOn(val)
+	return nil
+}},
+</code></pre>
+<p>The <code>SetSession</code> function can also be considered an <code>Init</code> function, since it is called when the session is created and the values are copied from global scope. To disable <code>SetSession</code> from being called on creation, <code>skipInit</code> can be set to <code>true</code>. For example with <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L745-L752"><code>CharsetDatabase</code></a>:</p>
+<pre><code class="language-go">{Scope: ScopeGlobal | ScopeSession, Name: CharsetDatabase, Value: mysql.DefaultCharset, skipInit: true, Validation: func(vars *SessionVars, normalizedValue string, originalValue string, scope ScopeFlag) (string, error) {
+    return checkCharacterSet(normalizedValue, CharsetDatabase)
+}, SetSession: func(s *SessionVars, val string) error {
+	if cs, err := charset.GetCharsetInfo(val); err == nil {
+		s.systems[CollationDatabase] = cs.DefaultCollation
+	}
+	return nil
+}},
+</code></pre>
+<p>In the above example, skipping the <code>SetSession</code> function is useful because it prevents the <code>CollationDatabase</code> from being overwritten when the session is initialized. This is only expected if the user issues a statement to change the <code>CharsetDatabase</code> value.</p>
+<h3 id="differences-from-mysql"><a class="header" href="#differences-from-mysql">Differences from MySQL</a></h3>
+<p>In TiDB, changes to <code>GLOBAL</code> scoped system variables are propagated to other TiDB servers in the cluster and persist across restarts. The notification event to other servers is sent via an etcd channel in the call <code>domain.GetDomain(s).NotifyUpdateSysVarCache()</code>:</p>
+<pre><code class="language-go">// replaceGlobalVariablesTableValue executes restricted sql updates the variable value
+// It will then notify the etcd channel that the value has changed.
+func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName, val string) error {
+	stmt, err := s.ParseWithParams(ctx, `REPLACE INTO %n.%n (variable_name, variable_value) VALUES (%?, %?)`, mysql.SystemDB, mysql.GlobalVariablesTable, varName, val)
+	if err != nil {
+		return err
+	}
+	_, _, err = s.ExecRestrictedStmt(ctx, stmt)
+	domain.GetDomain(s).NotifyUpdateSysVarCache() // &lt;-- the notification happens here
+	return err
+}
+</code></pre>
+<p>Because <code>GLOBAL</code> scoped variables are propagated to other servers, TiDB also has a special concept of &quot;instance-scoped variables&quot;. An instance scoped variable is actually a <code>SESSION</code> scoped variable that has a <code>GetSession</code> method which returns data that is specific to an instance. For example, <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1315-L1321"><code>tidb_general_log</code></a>:</p>
+<pre><code class="language-go">{Scope: ScopeSession, Name: TiDBGeneralLog, Value: BoolToOnOff(DefTiDBGeneralLog), Type: TypeBool, skipInit: true, SetSession: func(s *SessionVars, val string) error {
+	ProcessGeneralLog.Store(TiDBOptOn(val))
+	return nil
+}, GetSession: func(s *SessionVars) (string, error) {
+	return BoolToOnOff(ProcessGeneralLog.Load()), nil
+}},
+</code></pre>
+<p>The decision to make an option such as <code>tidb_general_log</code> instance scoped is because it references a file on the local filesystem. This may create issues when global, as the path may not be writable on each tidb-server in the cluster.</p>
+<p>As you can see by the <code>Scope: Session</code>, instance-scoped variables are not natively handled by the sysvar framework, but are instead denoted by the <code>GetSession()</code> function reading from a global location. The documentation for <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_general_log"><code>tidb_general_log</code></a> also notes it as &quot;instance&quot; scoped by convention.</p>
+<h2 id="transaction-state"><a class="header" href="#transaction-state">Transaction state</a></h2>
+<p>The <code>session</code> struct (<code>s.txn</code>) is responsible for keeping modified key-value pairs in a <a href="https://github.com/pingcap/tidb/blob/bfbea9c3ef4232d76296a9c8390eb8b7da5bf45d/session/txn.go#L46-L71"><code>LazyTxn</code></a> until the transaction commits. A <code>commit</code> statement only sets the session variable state that it is <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/executor/simple.go#L701-L703">no longer in an active transaction</a>:</p>
+<pre><code class="language-go">func (e *SimpleExec) executeCommit(s *ast.CommitStmt) {
+	e.ctx.GetSessionVars().SetInTxn(false)
+}
+</code></pre>
+<p>The function <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/session/tidb.go#L242-L267"><code>autoCommitAfterStmt()</code></a> which is called as part of <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/session/tidb.go#L207-L224"><code>finishStmt()</code></a> is responsible for committing the transaction:</p>
+<pre><code class="language-go">if !sessVars.InTxn() {
+	if err := se.CommitTxn(ctx); err != nil {
+		if _, ok := sql.(*executor.ExecStmt).StmtNode.(*ast.CommitStmt); ok {
+			err = errors.Annotatef(err, &quot;previous statement: %s&quot;, se.GetSessionVars().PrevStmt)
+		}
+		return err
+	}
+	return nil
+}
+</code></pre>
+<p>The <code>session.CommitTxn()</code> function will handle the <code>commit</code>, including retry (if permitted). There is also special handling for both pessimistic and optimistic transactions, as well as removing the key-value pairs which apply to temporary tables from the transaction buffer.</p>
+<h2 id="see-also"><a class="header" href="#see-also">See also</a></h2>
+<ul>
+<li><a href="the-lifecycle-of-a-statement.html">The lifecycle of a statement</a></li>
+<li><a href="privilege.html">Privilege management</a></li>
+<li><a href="transaction.html">Transaction</a></li>
+</ul>
 
                     </main>
 
