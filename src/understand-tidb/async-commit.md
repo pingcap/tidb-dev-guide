@@ -326,5 +326,12 @@ In TiKV, we must guarantee that when a key is prewritten using the async-commit 
 
 So, for safety, we choose to get a latest timestamp from PD when a region [becomes leader](https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/peer.rs#L1391) or a region [is merged](https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/fsm/peer.rs#L2992).
 
-Before the max TS is updated, the corresponding region is not allowed to proceed an async-write prewrite. The property is checked [here](https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L364).
+Before the max TS is updated, the corresponding region is not allowed to proceed an async-commit prewrite. The property is checked [here](https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L364).
 
+## Summary
+
+This is how the "async commit" optimization is implemented in TiDB.
+
+Due to limited space, some subtle problems such as non-unique timestamps and the compatibility with follower read are not involved.
+
+During the implementation of async commit, many problems blocking one-phase commit (1PC) are solved. So it becomes relatively easy to implement 1PC in TiDB. The next document will introduce the implementation details of 1PC.
