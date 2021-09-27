@@ -170,6 +170,273 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="async-commit"><a class="header" href="#async-commit">Async Commit</a></h1>
+<p>Async commit is an optimization of two phase commit introduced in TiDB 5.0. The optimization greatly reduces the latency of the two phase commit process.</p>
+<p>This document talks about the implementation of async commit in TiDB. It is recommended that you have learned about the <a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">theories of async commit</a> first.</p>
+<p>This document refers to the code of <a href="https://github.com/pingcap/tidb/tree/v5.2.1">TiDB v5.2.1</a>, the corresponding <a href="https://github.com/tikv/client-go/tree/daddf73a0706d78c9e980c91c97cc9ed100f1919">client-go</a> and <a href="https://github.com/tikv/tikv/tree/v5.2.1">TiKV v5.2.1</a>.</p>
+<h2 id="tidb-part"><a class="header" href="#tidb-part">TiDB part</a></h2>
+<h3 id="preparations"><a class="header" href="#preparations">Preparations</a></h3>
+<p>Async commit does not change the behavior during transaction execution. The changes begin from <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1112">2PC execution</a>.</p>
+<p>Because we need to record the key list in the primary lock, it is not suitable to use the async commit protocol for large transactions. And binlog does not support async commit, so we disable async commit if binlog is enabled. These checks can be found <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L999">here</a>.</p>
+<p>And in the <a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">theory blog</a>, we proves that using a latest timestamp from PD can guarantee linearizability. You can find the code <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1191">here</a>. Actually, it is not always necessary to get this timestamp, the comment <a href="https://github.com/pingcap/tidb/blob/v5.2.1/session/session.go#L559">here</a> explains it:</p>
+<pre><code class="language-go">// priority of the sysvar is lower than `start transaction with causal consistency only`
+if val := s.txn.GetOption(kv.GuaranteeLinearizability); val == nil || val.(bool) {
+    // We needn't ask the TiKV client to guarantee linearizability for auto-commit transactions
+    // because the property is naturally holds:
+    // We guarantee the commitTS of any transaction must not exceed the next timestamp from the TSO.
+    // An auto-commit transaction fetches its startTS from the TSO so its commitTS &gt; its startTS &gt; the commitTS
+    // of any previously committed transactions.
+    s.txn.SetOption(kv.GuaranteeLinearizability,
+                    sessVars.TxnCtx.IsExplicit &amp;&amp; sessVars.GuaranteeLinearizability)
+}
+</code></pre>
+<p>Later, we also calculate a <code>maxCommitTS</code>. This will be discussed later in the DDL compatibility part.</p>
+<h3 id="prewrite"><a class="header" href="#prewrite">Prewrite</a></h3>
+<p>If we decide to use async commit, we need to provide some <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L131">extra information</a> to enable the async commit protocol, the <code>UseAsyncCommit</code> flag and the secondary keys:</p>
+<pre><code class="language-go">req := &amp;kvrpcpb.PrewriteRequest{/* ommitted */}
+if c.isAsyncCommit() {
+    if batch.isPrimary {
+        req.Secondaries = c.asyncSecondaries()
+    }
+    req.UseAsyncCommit = true
+}
+</code></pre>
+<p>If the <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L292">prewriting succeeds</a>, there are two cases.</p>
+<p>If TiKV cannot proceed the async-commit protocol successfully, (probably because the calculated commit TS exceeds <code>maxCommitTS</code>), we fallback to the traditional percolator protocol. Otherwise, the prewrite request succeeds, so we can update the global <code>MinCommitTS</code>.</p>
+<pre><code class="language-go">// 0 if the min_commit_ts is not ready or any other reason that async
+// commit cannot proceed. The client can then fallback to normal way to
+// continue committing the transaction if prewrite are all finished.
+if prewriteResp.MinCommitTs == 0 {
+    c.setAsyncCommit(false)
+} else {
+    c.mu.Lock()
+    if prewriteResp.MinCommitTs &gt; c.minCommitTS {
+        c.minCommitTS = prewriteResp.MinCommitTs
+    }
+    c.mu.Unlock()
+}
+</code></pre>
+<p>However, if any response of prewrite is finally lost due to RPC reasons, it is impossible for us to know whether the prewriting succeeds. And it also means we cannot know whether the transaction succeeds. In this case, we can only <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L187">return an &quot;undetermined error&quot;</a> and the client connection will be closed:</p>
+<pre><code class="language-go">defer func() {
+    if err != nil {
+        // If we fail to receive response for async commit prewrite, it will be undetermined whether this
+        // transaction has been successfully committed.
+        // If prewrite has been cancelled, all ongoing prewrite RPCs will become errors, we needn't set undetermined
+        // errors.
+        if (c.isAsyncCommit() || c.isOnePC()) &amp;&amp; sender.GetRPCError() != nil &amp;&amp; atomic.LoadUint32(&amp;c.prewriteCancelled) == 0 {
+            c.setUndeterminedErr(errors.Trace(sender.GetRPCError()))
+        }
+    }
+}()
+</code></pre>
+<p>But don't worry, this does not happen very often. It is safe to retry a prewrite which temporarily fails due to network reasons. The above problem only happens if a prewrite request has been sent, but later retries all fail due to RPC errors.</p>
+<h3 id="commit"><a class="header" href="#commit">Commit</a></h3>
+<p>The whole commit process is <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1370">done asynchronously in background</a>. This is why the optimization is called &quot;async commit&quot;:</p>
+<pre><code class="language-go">if c.isAsyncCommit() {
+    // For async commit protocol, the commit is considered success here.
+    c.txn.commitTS = c.commitTS
+    go func() {
+        commitBo := retry.NewBackofferWithVars(c.store.Ctx(), CommitSecondaryMaxBackoff, c.txn.vars)
+        c.commitMutations(commitBo, c.mutations)
+    }()
+    return nil
+}
+</code></pre>
+<p>It does not matter even if some temporary error happens in the commit process. Anyone who encounters these uncommitted async-commit locks is able to finally commit them. Next, we will talk about this.</p>
+<h3 id="transaction-recovery"><a class="header" href="#transaction-recovery">Transaction recovery</a></h3>
+<p>If a reader encounters an expired async-commit lock, it needs to resolve this lock.</p>
+<p>As usual, the primary lock is checked first to get the transaction information. If it is using the async-commit protocol, the primary lock is never cleaned in <code>CheckTxnStatus</code>. Then we call the <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/txnlock/lock_resolver.go#L732"><code>resolveLockAsync</code> function</a> to resolve this transaction.</p>
+<p>First, it checks all secondary locks. After that we should know the commit TS of this transaction. If all locks exist or some key has been committed, we can calculate a real commit TS. And if some lock does not exist, the commit TS is zero which indicates the transaction should be rolled back.</p>
+<pre><code class="language-go">resolveData, err := lr.checkAllSecondaries(bo, l, &amp;status)
+if err != nil {
+    return err
+}
+status.commitTS = resolveData.commitTs
+</code></pre>
+<p>Then we can use this commit TS to resolve all the locks in this transaction.</p>
+<p>Another case is when the transaction is actually not an async-commit transaction. Some keys are prewritten with the async-commit protocol while some keys fail and fallback. Such a case can be <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/txnlock/lock_resolver.go#L674">detected</a> when checking secondary locks:</p>
+<pre><code class="language-go">if !lockInfo.UseAsyncCommit {
+    return &amp;nonAsyncCommitLock{}
+}
+</code></pre>
+<p>And then, we will <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/txnlock/lock_resolver.go#L341">retry the lock resolving process</a> assuming the transaction is not an async-commit transaction. And now, <code>CheckTxnStatus</code> can clean up an expired primary lock:</p>
+<pre><code class="language-go">if _, ok := errors.Cause(err).(*nonAsyncCommitLock); ok {
+    err = resolve(l, true)
+}
+</code></pre>
+<h3 id="ddl-compatibility"><a class="header" href="#ddl-compatibility">DDL compatibility</a></h3>
+<p>Without async commit, we check whether the schema changes before the second phase of the commit. But as the transaction is committed after prewriting all the locks, we don't have the chance to check the schema version. Here we use a trick to work around the problem.</p>
+<p>For DDLs which involve data reorganizations, we <a href="https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/ddl/ddl.go#L691">delay</a> 3 seconds by default. Then, before doing 2PC, we <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1625">set <code>MaxCommitTS</code></a> to 2 seconds later from now:</p>
+<pre><code class="language-go">func (c *twoPhaseCommitter) calculateMaxCommitTS(ctx context.Context) error {
+	// Amend txn with current time first, then we can make sure we have another SafeWindow time to commit
+	currentTS := oracle.ComposeTS(int64(time.Since(c.txn.startTime)/time.Millisecond), 0) + c.startTS
+	_, _, err := c.checkSchemaValid(ctx, currentTS, c.txn.schemaVer, true)
+	if err != nil {
+		return errors.Trace(err)
+	}
+
+	safeWindow := config.GetGlobalConfig().TiKVClient.AsyncCommit.SafeWindow
+	maxCommitTS := oracle.ComposeTS(int64(safeWindow/time.Millisecond), 0) + currentTS
+
+	c.maxCommitTS = maxCommitTS
+	return nil
+}
+</code></pre>
+<p>Therefore, all async-commit transaction using the old schema should be committed before DDL reorganization happens. So, the DDL reorganization will not miss these data.</p>
+<h2 id="tikv-part"><a class="header" href="#tikv-part">TiKV part</a></h2>
+<h3 id="concurrency-manager"><a class="header" href="#concurrency-manager">Concurrency manager</a></h3>
+<p>As discussed in the <a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">theory blog</a>, TiKV needs to record the max TS and set some memory locks for ongoing prewrite requests.</p>
+<p>For simplicity, we use a global component to implement it. We call it the &quot;concurrency manager&quot;.</p>
+<p>The methods provided by the concurrency manager can be found in <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lib.rs">this file</a>.</p>
+<p>It is very easy to update the max TS. It's just an atomic operation:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn update_max_ts(&amp;self, new_ts: TimeStamp) {
+    if new_ts != TimeStamp::max() {
+        self.max_ts.fetch_max(new_ts.into_inner(), Ordering::SeqCst);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>It is a bit complex for memory locks.</p>
+<p>The memory locks can have multiple accessors. Of course, the first one is the prewrite process. And because all readers need to check the memory locks, they are accessors of the memory locks, too. The locks can be removed from the table when there are no accessors.</p>
+<p>So the memory table just owns a weak reference to the lock. We define the table like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LockTable(pub Arc&lt;SkipMap&lt;Key, Weak&lt;KeyHandle&gt;&gt;&gt;);
+<span class="boring">}
+</span></code></pre></pre>
+<p>To add a memory lock and be able to write lock information, the <code>lock_key</code> method needs to be called to get a lock guard. The locking process is a bit tricky to handle various possiblities in the multi-thread environment. If interested, you can refer to <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lock_table.rs#L22">the code</a> for details.</p>
+<h3 id="prewrite-1"><a class="header" href="#prewrite-1">Prewrite</a></h3>
+<p>The code of prewrite can be found <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L405">here</a>. We will talk about some key points in the code about async commit.</p>
+<p>In TiKV, <code>secondary_keys</code> and <code>try_one_pc</code> in the prewrite request are used to <a href="">determine the type</a> of the prewrite:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let commit_kind = match (&amp;self.secondary_keys, self.try_one_pc) {
+    (_, true) =&gt; CommitKind::OnePc(self.max_commit_ts),
+    (&amp;Some(_), false) =&gt; CommitKind::Async(self.max_commit_ts),
+    (&amp;None, false) =&gt; CommitKind::TwoPc,
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Only when prewriting the primary lock, secondary locks need to be written in the lock:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut secondaries = &amp;self.secondary_keys.as_ref().map(|_| vec![]);
+if Some(m.key()) == async_commit_pk {
+    secondaries = &amp;self.secondary_keys;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In the prewrite action, async commit does not change the checks. What is different is in the <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L367"><code>write_lock</code> function</a>.</p>
+<p>Besides setting secondary keys in the primary lock, it calls <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L367"><code>async_commit_timestamps</code></a> to set <code>min_commit_ts</code> in the lock.</p>
+<p>Here is the simplified code:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let final_min_commit_ts = key_guard.with_lock(|l| {
+    let max_ts = txn.concurrency_manager.max_ts();
+
+    let min_commit_ts = cmp::max(cmp::max(max_ts, start_ts), for_update_ts).next();
+    let min_commit_ts = cmp::max(lock.min_commit_ts, min_commit_ts);
+
+    let max_commit_ts = max_commit_ts;
+    if (!max_commit_ts.is_zero() &amp;&amp; min_commit_ts &gt; max_commit_ts) {
+        return Err(ErrorInner::CommitTsTooLarge {
+            start_ts,
+            min_commit_ts,
+            max_commit_ts,
+        });
+    }
+
+    lock.min_commit_ts = min_commit_ts;
+    *l = Some(lock.clone());
+    Ok(min_commit_ts)
+})?;
+
+txn.guards.push(key_guard);
+<span class="boring">}
+</span></code></pre></pre>
+<p>The final <code>min_commit_ts</code> is set to the maximum of (max TS + 1) and the original <code>min_commit_ts</code>. And if the <code>min_commit_ts</code> is greater than <code>max_commit_ts</code>, a <code>CommitTsTooLarge</code> is returned and triggers a fallback to non-async commit.</p>
+<p>The operation is done while locked to guarantee the atomicity of getting the max TS and setting the <code>min_commit_ts</code> in the lock.</p>
+<p>The key guard is saved until the lock is successfully written into RocksDB. Before that, readers are able to check the locks in order not to break any constraint. We can release the guard to remove the lock in the memory table after the readers can read the lock from the RocksDB.</p>
+<h4 id="fallback-to-non-async-commit"><a class="header" href="#fallback-to-non-async-commit">Fallback to non-async commit</a></h4>
+<p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit. </p>
+<p>When the <code>CommitTsTooLarge</code> error happens, the lock will still be written, but in the lock <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L406">there will be no <code>use_async_commit</code> flag</a> and no secondary keys will be recorded:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if let Err(Error(box ErrorInner::CommitTsTooLarge { .. })) = &amp;res {
+    lock.use_async_commit = false;
+    lock.secondaries = Vec::new();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>After any key encounters this error, we <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L501">don't need to do async commit prewrite</a> for later keys:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span> Err(MvccError(box MvccErrorInner::CommitTsTooLarge { .. })) | Ok((..)) =&gt; {
+    // fallback to not using async commit or 1pc
+    props.commit_kind = CommitKind::TwoPc;
+    async_commit_pk = None;
+    self.secondary_keys = None;
+    // release memory locks
+    txn.guards = Vec::new();
+    final_min_commit_ts = TimeStamp::zero();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>When any key in a transaction fallbacks to non-async commit mode, the transaction will be considered as a non-async commit transaction.</p>
+<h3 id="memory-lock-checking"><a class="header" href="#memory-lock-checking">Memory lock checking</a></h3>
+<p>All transactional reading requests need to update max TS and check memory locks. If the <code>min_commit_ts</code> of the lock is not larger than the snapshot timestamp of the reading, it is not safe to proceed this read. Then, an error will be returned and the client needs to retry later.</p>
+<p>Here is <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/mod.rs#L1808">an example</a> in the storage module:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Update max_ts and check the in-memory lock table before getting the snapshot
+if !pb_ctx.get_stale_read() {
+    concurrency_manager.update_max_ts(start_ts);
+}
+let isolation_level = pb_ctx.get_isolation_level();
+if isolation_level == IsolationLevel::Si {
+    for key in keys.clone() {
+        concurrency_manager
+            .read_key_check(key, |lock| {
+                Lock::check_ts_conflict(Cow::Borrowed(lock), key, start_ts, bypass_locks)
+            })
+            .map_err(|e| txn::Error::from_mvcc(e))?;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="check-transaction-status"><a class="header" href="#check-transaction-status">Check transaction status</a></h3>
+<p>We use <code>CheckTxnStatus</code> to get the status of the primary lock and use <code>CheckSecondaryLocks</code> for secondary locks.</p>
+<p>In <code>CheckTxnStatus</code>, we cannot remove the primary lock simply because it is expired because the transaction may have prewritten all the locks. So we always just return the lock information for async commit locks:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if lock.use_async_commit {
+    if force_sync_commit {
+        // The fallback case
+    } else {
+        return Ok((TxnStatus::uncommitted(lock, false), None));
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The idea of <code>CheckSecondaryLocks</code> is simple. If any lock in the list of secondary keys does not exist, remove the lock and write rollback if necessary. And if any lock has been committed, the transaction is committed. You can refer to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/check_secondary_locks.rs#L54">its implementation</a> for details.</p>
+<h3 id="update-max-ts-on-region-changes"><a class="header" href="#update-max-ts-on-region-changes">Update max TS on region changes</a></h3>
+<p>In TiKV, we must guarantee that when a key is prewritten using the async-commit protocol, all readings at this key have updated the max TS. Now we update the max TS on the local TiKV. But there are some other cases we missed. If the reading happens on other TiKVs, then the region leader is transfered to the current TiKV or the region is merged into a region whose leader is on this TiKV, the max TS can be incorrect.</p>
+<p>So, for safety, we choose to get a latest timestamp from PD when a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/peer.rs#L1391">becomes leader</a> or a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/fsm/peer.rs#L2992">is merged</a>.</p>
+<p>Before the max TS is updated, the corresponding region is not allowed to proceed an async-commit prewrite. The property is checked <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L364">here</a>.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>This is how the &quot;async commit&quot; optimization is implemented in TiDB.</p>
+<p>Due to limited space, some subtle problems such as non-unique timestamps and the compatibility with follower read are not involved.</p>
+<p>During the implementation of async commit, many problems blocking one-phase commit (1PC) are solved. So it becomes relatively easy to implement 1PC in TiDB. The next document will introduce the implementation details of 1PC.</p>
 
                     </main>
 
