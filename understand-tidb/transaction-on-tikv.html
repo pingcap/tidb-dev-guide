@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Transaction on TiKV - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.5.</strong> Debug and profile</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.6.</strong> Commit code and submit a pull request</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-an-issue.html"><strong aria-hidden="true">2.3.</strong> Report an Issue</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.4.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.5.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.6.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.7.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.8.</strong> Write Document</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/miscellaneous-topics.html"><strong aria-hidden="true">2.9.</strong> Miscellaneous Topics</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-statement.html"><strong aria-hidden="true">3.1.</strong> The Lifecycle of a Statement</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.1.1.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.1.2.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dql.html"><strong aria-hidden="true">3.1.3.</strong> DQL</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/parser.html"><strong aria-hidden="true">3.2.</strong> Parser</a></li><li class="chapter-item expanded "><a href="../understand-tidb/planner.html"><strong aria-hidden="true">3.3.</strong> Planner</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.3.1.</strong> Table Statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/rbo.html"><strong aria-hidden="true">3.3.2.</strong> Rule-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/cbo.html"><strong aria-hidden="true">3.3.3.</strong> Cost-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.3.4.</strong> Plan Cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.3.5.</strong> SQL Plan Management</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/execution.html"><strong aria-hidden="true">3.4.</strong> Execution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/execution-framework.html"><strong aria-hidden="true">3.4.1.</strong> Execution Framework</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-vectorized-execution.html"><strong aria-hidden="true">3.4.2.</strong> Implementation of Vectorized Execution</a></li><li class="chapter-item expanded "><a href="../understand-tidb/memory-management-mechanism.html"><strong aria-hidden="true">3.4.3.</strong> Memory Management Mechanism</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-typical-operators.html"><strong aria-hidden="true">3.4.4.</strong> Implementation of Typical Operators</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction.html"><strong aria-hidden="true">3.5.</strong> Transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/transaction-on-tikv.html" class="active"><strong aria-hidden="true">3.5.1.</strong> Transaction on TiKV</a></li><li class="chapter-item expanded "><a href="../understand-tidb/optimistic-transaction.html"><strong aria-hidden="true">3.5.2.</strong> Optimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/lock-resolver.html"><strong aria-hidden="true">3.5.3.</strong> Lock Resolver</a></li><li class="chapter-item expanded "><a href="../understand-tidb/pessimistic-transaction.html"><strong aria-hidden="true">3.5.4.</strong> Pessimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/async-commit.html"><strong aria-hidden="true">3.5.5.</strong> Async Commit</a></li><li class="chapter-item expanded "><a href="../understand-tidb/1pc.html"><strong aria-hidden="true">3.5.6.</strong> 1PC</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.5.7.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/session.html"><strong aria-hidden="true">3.6.</strong> Session</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege.html"><strong aria-hidden="true">3.7.</strong> Privilege</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plugin.html"><strong aria-hidden="true">3.8.</strong> Plugin</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/release-train-model.html"><strong aria-hidden="true">4.1.</strong> Releases Train Model</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="transaction-on-tikv"><a class="header" href="#transaction-on-tikv">Transaction on TiKV</a></h1>
+<p><a href="transaction.html">The previous section</a> introduces the architecture of the transaction engine and several implementation details in TiDB part. This document is mainly about the TiKV part.</p>
+<p>As described in the previous section, the distributed transaction coordinator is <code>tidb-server</code> which receives and processes <code>COMMIT</code> query, and the transaction participants involved are <code>tikv-server</code>s.</p>
+<h1 id="transactional-protocol"><a class="header" href="#transactional-protocol">Transactional Protocol</a></h1>
+<p>The RPC interfaces in TiDB are defined in <a href="https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L77">a protobuf file</a>, based on the Percolator model.</p>
+<p>These interfaces will be used by the transaction coordinator to drive the whole commit process. For example <code>Prewrite</code> will be used to write the lock record in TiKV:</p>
+<pre><code class="language-proto">message PrewriteRequest {
+    Context context = 1;
+    // The data to be written to the database.
+    repeated Mutation mutations = 2;
+    // The client picks one key to be primary (unrelated to the primary key concept in SQL). This
+    // key's lock is the source of truth for the state of a transaction. All other locks due to a
+    // transaction will point to the primary lock.
+    bytes primary_lock = 3;
+    // Identifies the transaction being written.
+    uint64 start_version = 4;
+    uint64 lock_ttl = 5;
+    // TiKV can skip some checks, used for speeding up data migration.
+    bool skip_constraint_check = 6;
+    // For pessimistic transaction, some mutations don't need to be locked, for example, non-unique index key.
+    repeated bool is_pessimistic_lock = 7;
+    // How many keys this transaction involves in this region.
+    uint64 txn_size = 8;
+    // For pessimistic transactions only; used to check if a conflict lock is already committed.
+    uint64 for_update_ts = 9;
+    // If min_commit_ts &gt; 0, this is a large transaction request, the final commit_ts
+    // will be inferred from `min_commit_ts`.
+    uint64 min_commit_ts = 10;
+    // When async commit is enabled, `secondaries` should be set as the key list of all secondary
+    // locks if the request prewrites the primary lock.
+    bool use_async_commit = 11;
+    repeated bytes secondaries = 12;
+    // When the transaction involves only one region, it's possible to commit the transaction
+    // directly with 1PC protocol.
+    bool try_one_pc = 13;
+    // The max commit ts is reserved for limiting the commit ts of 1PC or async commit, which can be used to avoid
+    // inconsistency with schema change.
+    uint64 max_commit_ts = 14;
+}
+</code></pre>
+<ul>
+<li><code>mutations</code> are changes made by the transaction.</li>
+<li><code>start_version</code> is the transaction identifier fetched from PD.</li>
+<li><code>for_update_ts</code> is used by the pessimistic transactions.</li>
+<li><code>try_one_pc</code> field is used if the transaction is committed using <code>one-phase</code> protocol.</li>
+<li><code>use_async_commit</code> and <code>secondaries</code> will be used if the transaction is committed in the <code>async-commit</code> mode.</li>
+</ul>
+<p>Besides <code>prewrite</code> request, there are some other important request types:</p>
+<ul>
+<li><a href="https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L125"><code>pessimistic_lock</code> request</a> is used to lock a key. Note pessimistic locking happens in the transaction execution phase, for example a <code>select for update</code> statement will need to pessimistically lock the corresponding rows.</li>
+<li><a href="https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L268"><code>commit</code> request</a> is used to commit a key. After commit the write content is visible to other read or write transactions.</li>
+<li><a href="https://github.com/pingcap/kvproto/blob/master/proto/kvrpcpb.proto#L206"><code>check_txn_status</code> request</a> will be used to check the status of a given transaction, so that it could be decided how to process the conflicts.</li>
+<li><a href="https://github.com/pingcap/kvproto/blob/0f5764a128ad77ccf0a5b0ce0d6e2bfa50a108ce/proto/kvrpcpb.proto#L374"><code>resolve</code> request</a> will be used to help doing the transaction crash recovery.</li>
+<li><a href="https://github.com/pingcap/kvproto/blob/master/proto/kvrpcpb.proto#L247"><code>check_secondary_locks</code> request</a> is a special API, it will be used if the commit mode of the transaction is <code>async-commit</code>.</li>
+</ul>
+<h1 id="transaction-scheduler"><a class="header" href="#transaction-scheduler">Transaction Scheduler</a></h1>
+<p><img src="../img/transaction_scheduler.png" alt="transaction-scheduler" /></p>
+<p>The receiving input transaction requests will be translated into transaction <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/commands/mod.rs#L114">commands</a>. Then the transaction <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/scheduler.rs#L286">scheduler</a> will handle these transaction commands, it will first try to fetch the needed key <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/latch.rs#L22">latches</a> (latch is used to sequence all the transaction commands on the same key)，then try to fetch a storage <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/components/tikv_kv/src/lib.rs#L191">snapshot</a> for the current transaction processing.</p>
+<p>The task will be processed as a <a href="https://doc.rust-lang.org/stable/std/future/trait.Future.html">future</a>. The future processing is done in the transaction scheduler thread-pool. Usually, there will be some tasks like conflict and constraint checks, write mutation generations. For example, the prewrite request processing will need to check if there is already a conflict <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/actions/prewrite.rs#L45">lock</a> or a conflict committed write <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/actions/prewrite.rs#L59">record</a>.</p>
+<h1 id="transaction-log-replication"><a class="header" href="#transaction-log-replication">Transaction Log Replication</a></h1>
+<p>In TiDB, the key space is split into different ranges or regions. Each region is a raft group and its leader will be responsible for handling its key range related read/write requests. </p>
+<p>If the transaction command processing in the transaction scheduler is successful, the generated transaction writes will be written into the raft log engine by the region leaders in <code>raftStore</code> (raft store will be introduced in other documents in details). The work flow is like this:</p>
+<p><img src="../img/raftStore.png" alt="RaftStore" /></p>
+<p>The writes generated by transaction commands will be sent to the raft peer message task queue first, then the raft batch system will poll each raft peer and handle these requests in the raft thread-pool. After all the raft logs are persisted on majority raft group members, they are regarded as <code>commit</code>. Then the correspond apply task be delivered to the apply worker pool to apply the actual write contents to the storage engine, after that the transaction command processing is considered successful and the callback will be invoked to response <code>OK</code> results to the RPC client.</p>
+<h1 id="transaction-record-in-tikv"><a class="header" href="#transaction-record-in-tikv">Transaction Record In TiKV</a></h1>
+<p>In TiDB, a transaction is considered committed only if its primary key lock is committed successfully (if async commit protocol is not used). The actual key and value written into storage engine is in the following format:</p>
+<table><thead><tr><th>CF</th><th align="left">RocksDB Key</th><th>RocksDB Value</th></tr></thead><tbody>
+<tr><td>Lock</td><td align="left">user_key</td><td>lock_info</td></tr>
+<tr><td>Default</td><td align="left">{user_key}{start_ts}</td><td>user_value</td></tr>
+<tr><td>Write</td><td align="left">{user_key}{commit_ts}</td><td>write_info</td></tr>
+</tbody></table>
+<p>After <code>prewrite</code>, the lock correspond records for the transaction will be written into the storage. Read and write conflicts on the &quot;locked&quot; key will need to consider if it's safe to bypass the lock or it must try to resolve the encountered locks. As <code>commit_ts</code> is part of the stored key, there could be different historical versions for it, and GC is responsible to clean up all the old versions which will not be needed any more. GC mechanism will be introduced in another document.</p>
+<h1 id="transaction-recovery"><a class="header" href="#transaction-recovery">Transaction Recovery</a></h1>
+<p>In TiDB, the transaction coordinator (in <code>tidb-server</code>) is stateless and it will not persist any information. If the transaction coordinator fails for example the <code>tidb-server</code> crashes, the transaction context in memory will get lost, and as the coordinator is gone the normal commit processing will stop. How to recover the transaction state and make a decision if it should commit or abort? </p>
+<p>Actually, there is no special mechanism to recover the undetermined-status transactions, the recovery is done by other concurrent conflict transactions, or the conflict transactions will help decide the actual states of the undetermined-status transactions. The lock resolve process will be triggered if the current ongoing transaction encounters locks of other transactions doing reads or writes. The whole resolve process will be introduced in other documents in details.</p>
+<h1 id="transaction-optimizations"><a class="header" href="#transaction-optimizations">Transaction Optimizations</a></h1>
+<p>Normally the transaction commit will need two phases, the <code>prewrite</code> phase and <code>commit</code> phase. Under certain circumstances transaction commit could be done in a single phase for example the generated transaction mutations could be processed by a single region leader. This optimization is called one-phase commit in TiDB.</p>
+<p>The final transaction status is determined by the commit status of the primary key lock, so the response to the client has to wait until the primary key commit has finished. This wait could be saved using the <code>async-commit</code> protocol so the latency of commit processing could be reduced.</p>
+<p>They will both be introduced other documents in details.</p>
+<h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
+<p>This section talks about the brief steps of transaction processing in the TiKV part, and related interfaces, implementations and optimizations.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../understand-tidb/transaction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../understand-tidb/optimistic-transaction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../understand-tidb/transaction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../understand-tidb/optimistic-transaction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
