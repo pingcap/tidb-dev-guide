@@ -2,14 +2,13 @@
 
 This is an attempt to capture the code and quality standard that we want to maintain.
 
-
 ## The newtype pattern improves code quality
 
 We can create a new type using the `type` keyword.
 
 The newtype pattern is perhaps most often used in Golang to get around type restrictions rather than to try to create new ones. It is used to create different interface implementations for a type or to extend a builtin type or a type from an existing package with new methods.
 
-However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage. 
+However, it is generally useful to improve code clarity by marking that data has gone through either a validation or a transformation. Using a different type can reduce error handling and prevent improper usage.
 
 ```go
 package main
@@ -62,3 +61,95 @@ As a rule of thumb is that when a struct has 10 or more words we should use poin
 * method size: small inlineable methods favor value receivers.
 * Is the struct called repeatedly in a for loop? This favors pointer receivers.
 * What is the GC behavior of the rest of the program? GC pressure may favor value receivers.
+
+## Parallel For-Loop
+
+There are two types of for loop on range: "with index" and "without index". Let's see an example for range with index.
+
+```go
+func TestRangeWithIndex(t *testing.T) {
+	rows := []struct{ index int }{{index: 0}, {index: 1}, {index: 2}}
+	for _, row := range rows {
+		row.index += 10
+	}
+	for i, row := range rows {
+		require.Equal(t, i+10, row.index)
+	}
+}
+```
+
+the output is:
+
+```
+    Error Trace:	version_test.go:39
+    Error:      	Not equal: 
+                    expected: 10
+                    actual  : 0
+    Test:       	TestShowRangeWithIndex
+```
+
+Test fails because when range with index, the loop iterator variable is the same instance of the variable with a clone of iteration target value.
+
+### The same instance of the variable
+
+Since the the loop iterator variable is the same instance of the variable, it may result in tricky error with parallel for-loop.
+
+```go
+done := make(chan bool)
+values := []string{"a", "b", "c"}
+for _, v := range values {
+	go func() {
+		fmt.Println(v)
+		done <- true
+	}()
+}
+for _ = range values {
+	<-done
+}
+```
+
+You might expect to see `a`, `b`, `c` as the output, but you'll probably see instead is `c`, `c`, `c`. 
+
+This is because each iteration of the loop uses the same instance of the variable `v`, so each closure shares that single variable.
+
+This is the same reason which result wrong test when use `t.Parallel()` with range, which is covered in [Parallel section of Write and run unit tests](../get-started/write-and-run-unit-tests.md#parallel)
+
+### A clone of iteration target value
+
+Since the loop iterator variable is a clone of iteration target value, it may result in logic error. It can also lead to performance issue compared with none-index range loop or bare for loop.
+
+```go
+type Item struct {
+	id  int
+	value [1024]byte
+}
+
+func BenchmarkRangeIndexStruct(b *testing.B) {
+	var items [1024]Item
+	for i := 0; i < b.N; i++ {
+		var tmp int
+		for k := range items {
+			tmp = items[k].id
+		}
+		_ = tmp
+	}
+}
+
+func BenchmarkRangeStruct(b *testing.B) {
+	var items [1024]Item
+	for i := 0; i < b.N; i++ {
+		var tmp int
+		for _, item := range items {
+			tmp = item.id
+		}
+		_ = tmp
+	}
+}
+```
+
+```
+BenchmarkRangeIndexStruct-12             4875518               246.0 ns/op
+BenchmarkRangeStruct-12                    16171             77523 ns/op
+```
+
+You can see range with index is much slower than range without index, since range with index use cloned value so have big performance decrease if cloned value use lots of memory.

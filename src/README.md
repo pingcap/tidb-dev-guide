@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -45,7 +45,25 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.hawkingrei.com/blog/"><img src="https://avatars.githubusercontent.com/u/3427324?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Weizhen Wang</b></sub></a><br /><a href="#content-hawkingrei" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/TomShawn"><img src="https://avatars.githubusercontent.com/u/41534398?v=4?s=100" width="100px;" alt=""/><br /><sub><b>TomShawn</b></sub></a><br /><a href="#content-TomShawn" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/mjonss"><img src="https://avatars.githubusercontent.com/u/5520054?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mattias Jonsson</b></sub></a><br /><a href="#content-mjonss" title="Content">🖋</a></td>
-    <td align="center"><a href="http://www.tocker.ca/"><img src="https://avatars.githubusercontent.com/u/57982?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Morgan Tocker</b></sub></a><br /><a href="#content-morgo" title="Content">🖋</a></td>
+    <td align="center"><a href="http://www.tocker.ca/"><img src="https://avatars.githubusercontent.com/u/57982?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Morgan Tocker</b></sub></a><br /><a href="#content-morgo" title="Content">🖋</a> <a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Amorgo" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://databaseblog.myname.nl"><img src="https://avatars.githubusercontent.com/u/1272980?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Daniël van Eeden</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Adveeden" title="Reviewed Pull Requests">👀</a> <a href="#content-dveeden" title="Content">🖋</a></td>
+    <td align="center"><a href="https://xxchan.github.io"><img src="https://avatars.githubusercontent.com/u/37948597?v=4?s=100" width="100px;" alt=""/><br /><sub><b>xxchan</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Axxchan" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.iamhlbx.xyz"><img src="https://avatars.githubusercontent.com/u/50866227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>iamhlbx</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3AHuGanghui" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/sunxiaoguang"><img src="https://avatars.githubusercontent.com/u/3982329?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Xiaoguang Sun</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Asunxiaoguang" title="Reviewed Pull Requests">👀</a> <a href="#content-sunxiaoguang" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/eurekaka"><img src="https://avatars.githubusercontent.com/u/6261973?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kenan Yao</b></sub></a><br /><a href="#content-eurekaka" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://about.me/li.su"><img src="https://avatars.githubusercontent.com/u/528332?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lysu</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Alysu" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/cfzjywxk"><img src="https://avatars.githubusercontent.com/u/3692139?v=4?s=100" width="100px;" alt=""/><br /><sub><b>cfzjywxk</b></sub></a><br /><a href="#content-cfzjywxk" title="Content">🖋</a> <a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Acfzjywxk" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://blog.tongmu.me"><img src="https://avatars.githubusercontent.com/u/9587680?v=4?s=100" width="100px;" alt=""/><br /><sub><b>you06</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Ayou06" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/ekexium"><img src="https://avatars.githubusercontent.com/u/31720476?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ziqian Qin</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aekexium" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/zhangyangyu"><img src="https://avatars.githubusercontent.com/u/3690895?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Xiang Zhang</b></sub></a><br /><a href="#content-zhangyangyu" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/XuHuaiyu"><img src="https://avatars.githubusercontent.com/u/9039012?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HuaiyuXu</b></sub></a><br /><a href="#content-XuHuaiyu" title="Content">🖋</a></td>
+    <td align="center"><a href="https://sticnarf.me"><img src="https://avatars.githubusercontent.com/u/17217495?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yilin Chen</b></sub></a><br /><a href="#content-sticnarf" title="Content">🖋</a></td>
   </tr>
 </table>
 

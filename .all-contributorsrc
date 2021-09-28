@@ -140,6 +140,118 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/57982?v=4",
       "profile": "http://www.tocker.ca/",
       "contributions": [
+        "content",
+        "review"
+      ]
+    },
+    {
+      "login": "dveeden",
+      "name": "Daniël van Eeden",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1272980?v=4",
+      "profile": "http://databaseblog.myname.nl",
+      "contributions": [
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "xxchan",
+      "name": "xxchan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37948597?v=4",
+      "profile": "https://xxchan.github.io",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "HuGanghui",
+      "name": "iamhlbx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50866227?v=4",
+      "profile": "https://www.iamhlbx.xyz",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "sunxiaoguang",
+      "name": "Xiaoguang Sun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3982329?v=4",
+      "profile": "https://github.com/sunxiaoguang",
+      "contributions": [
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "eurekaka",
+      "name": "Kenan Yao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6261973?v=4",
+      "profile": "https://github.com/eurekaka",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "lysu",
+      "name": "lysu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/528332?v=4",
+      "profile": "https://about.me/li.su",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "cfzjywxk",
+      "name": "cfzjywxk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3692139?v=4",
+      "profile": "https://github.com/cfzjywxk",
+      "contributions": [
+        "content",
+        "review"
+      ]
+    },
+    {
+      "login": "you06",
+      "name": "you06",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9587680?v=4",
+      "profile": "https://blog.tongmu.me",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "ekexium",
+      "name": "Ziqian Qin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31720476?v=4",
+      "profile": "https://github.com/ekexium",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "zhangyangyu",
+      "name": "Xiang Zhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3690895?v=4",
+      "profile": "https://github.com/zhangyangyu",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "XuHuaiyu",
+      "name": "HuaiyuXu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9039012?v=4",
+      "profile": "https://github.com/XuHuaiyu",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "sticnarf",
+      "name": "Yilin Chen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17217495?v=4",
+      "profile": "https://sticnarf.me",
+      "contributions": [
         "content"
       ]
     }
