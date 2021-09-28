@@ -39,6 +39,7 @@
         * [Memory Management Mechanism](understand-tidb/memory-management-mechanism.md)
         * [Implementation of Typical Operators](understand-tidb/implementation-of-typical-operators.md)
     * [Transaction](understand-tidb/transaction.md)
+        * [Transaction on TiKV](understand-tidb/transaction-on-tikv.md)
         * [Optimistic Transaction](understand-tidb/optimistic-transaction.md)
         * [Lock Resolver](understand-tidb/lock-resolver.md)
         * [Pessimistic Transaction](understand-tidb/pessimistic-transaction.md)
