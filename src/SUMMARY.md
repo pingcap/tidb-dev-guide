@@ -34,7 +34,7 @@
         * [Plan Cache](understand-tidb/plan-cache.md)
         * [SQL Plan Management](understand-tidb/sql-plan-management.md)
     * [Execution](understand-tidb/execution.md)
-        * [Execution Framework](understand-tidb/execution-framework.md)
+        * [Parallel Execution Framework](understand-tidb/parallel-execution-framework.md)
         * [Implementation of Vectorized Execution](understand-tidb/implementation-of-vectorized-execution.md)
         * [Memory Management Mechanism](understand-tidb/memory-management-mechanism.md)
         * [Implementation of Typical Operators](understand-tidb/implementation-of-typical-operators.md)
