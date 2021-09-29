@@ -8,7 +8,7 @@ There are three common parallel implementations: Intra operator parallelism, Exc
 
 In intra-operator parallelism, multiple goroutines will be created inside the operator for parallel processing. The creation, termination and synchronization of the goroutines are handled by the operator itself.
 
-Most operators will create multiple goroutines in `Open()` and they will wait on some channels. Also, a special channel is responsible for notifying whether to stop the computation, some operators use `Context`. And `WaitGroup` can also be used to wait for the termination of all goroutines. This usually happens when `Close()` is called.
+Most operators will create multiple goroutines in `Open()` or the first call of `Next()`. And they will wait on channels for input Chunk. Also, a special channel is responsible for notifying whether to stop the computation. And `WaitGroup` can be used to wait for the termination of all goroutines. This usually happens when `Close()` is called.
 
 Taking HashJoin as an example, all workers will be started at the first call of `Next()`, including:
 
@@ -48,6 +48,8 @@ There are usually two ways to control DOP:
 1. Users can use hints to specify DOP explicitly.
 2. The optimizer can choose DOP according to the table size of the scan operation automatically.
 
-This approach requires the optimizer to generate parallel plans. Generally, plan generation is divided into two stages. The first stage generates serial plans, and the second stage generates its corresponding parallel plans. The second stage is mainly responsible for inserting the exchange operator into the plan tree at the appropriate position. Both heuristic rules and costs model can be used to get the optimal parallel plan.
+This approach requires the optimizer to generate parallel plans. Generally, plan generation is divided into two stages. The first stage generates serial plans, and the second stage generates its corresponding parallel plans. The second stage is mainly responsible for inserting the exchange operator into the plan tree at the appropriate position. Both heuristic rules and cost model can be used to get the optimal parallel plan.
 
-Currently, TiDB has a simplified implementation of exchange operator: `ShuffleExec`. It can make MergeJoin, StreamAgg and WindowFunc run in parallel. And you can enable MergeJoin be parallel by setting `tidb_merge_join_concurrency` be greater than 1.
+Currently, TiDB has a simplified implementation of exchange operator: `Shuffle Operator`. It can make MergeJoin, StreamAgg and WindowFunc run in parallel. And you can enable MergeJoin to be parallel by setting `tidb_merge_join_concurrency` be greater than 1.
+
+For Morsel-Driven, it implements parallelism by dividing data into fixed size blocks (Morsel: usually 100000 rows). And a customized scheduler will be responsible for task scheduling to achieve better load balancing. And TiDB doesn't use this approach for now.
