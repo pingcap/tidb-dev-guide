@@ -1,6 +1,6 @@
 # Parser
 
-Parser is responsible for interpreting a SQL string into an abstract syntax tree(AST), which is more structural and easier to process. AST can be used for preprocess, syntactic analysis, and so on.
+Parser is responsible for interpreting a SQL string into an abstract syntax tree (AST), which is more structural and easier to process. AST can be used for preprocess, syntactic analysis, and so on.
 
 The code lives in the [pingcap/parser](https://github.com/pingcap/parser) repo.
 
