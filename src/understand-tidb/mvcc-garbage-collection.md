@@ -146,6 +146,8 @@ func (w *GCWorker) calcGlobalMinStartTS(ctx context.Context) (uint64, error) {
 }
 ```
 
+TiDB server has the risk of crash, however, if a never-pushed-up min start ts is left in the system, GC will never works. To solve this issue, the min start ts is set with a lease and if TiDB is offline for a long duration, that min start ts will be cleared.
+
 After we get all the min start timestamps from etcd, it's easy to calculate the global min start timestamp. It's easy to know the min start timestamp from a single TiDB instance, and every TiDB instance will report it's min start timestamp to etcd in [`ReportMinStartTS`](https://github.com/pingcap/tidb/blob/v5.2.1/domain/infosync/info.go#L548-L570) function every interval.
 
 ### GC Workflow
