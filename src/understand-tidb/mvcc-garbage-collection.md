@@ -86,7 +86,7 @@ func (w *GCWorker) tick(ctx context.Context) {
 
 Luckily, TiDB is built on a durable and high-available storage layer, which makes the election quite easy by the following mechanism.
 
-![gc-leader-election.drawio.png](/img/gc-leader-election.drawio.png)
+![gc-leader-election.png](../img/gc-leader-election.png)
 
 This is the flowchart of leader election which is implemented in `[checkLeader](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1669)` function, if the result is leader, we then trying to tick a GC.
 
