@@ -31,7 +31,7 @@ AlterDatabaseStmt:
 
 * `AlterDatabaseStmt` is a non-terminal symbol because there is no such token.
 * `"ALTER"` is a terminal symbol.
-* `DatabaseSym`, `DBName`, `DatabaseOptionList` are non-terminal symbols that are defined in other rules.
+* `DatabaseSym`, `DBName` and `DatabaseOptionList` are non-terminal symbols that are defined in other grammar rules.
 * The pseudo-code in brackets is the semantic action. It means an AST node `ast.AlterDatabaseStmt` will be constructed when the rule is reduced by the parser. Note that a dollar character `$` followed by a number represents the binding Golang value previously (in other rules), where the number is the index of symbol in rule (1-based). `$$` represents current binding value. After goyacc substitution, this code snippet will be valid Golang code.
 
 Getting back to `parser.y`, the structure of this file is divided into three parts:
@@ -73,4 +73,4 @@ Put the test file in the `parser` package. Set [`yyDebug`](https://github.com/pi
 
 Shift means "move the next token in" to match the current rule. Reduce means "replace current tokens/symbols to a non-terminal symbol". Shift-reduce conflicts occur when the parser cannot decide the next step is to shift or to reduce.
 
-When yacc reports such conflicts, it also keeps file `y.output`. You can search the "conflict on" in the file to locate which rule conflicts with other rules. Then you can try to annotate the `%precedence` to tokens, rewrite the rule, or ask for help in GitHub.
+When yacc reports such conflicts, it also keeps the file `y.output`. You can search "conflict on" in the file to locate which rule conflicts with other rules. Then you can try to annotate the `%precedence` to tokens, rewrite the grammar rule, or ask for help on GitHub.
