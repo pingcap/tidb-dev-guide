@@ -34,7 +34,7 @@ AlterDatabaseStmt:
 * `DatabaseSym`, `DBName`, `DatabaseOptionList` are non-terminal symbols that are defined in other rules.
 * The pseudo-code in brackets is the semantic action. It means an AST node `ast.AlterDatabaseStmt` will be constructed when the rule is reduced by the parser. Note that a dollar character `$` followed by a number represents the binding Golang value previously (in other rules), where the number is the index of symbol in rule (1-based). `$$` represents current binding value. After goyacc substitution, this code snippet will be valid Golang code.
 
-Getting back to `parser.y`, the structure of this file is divided into 3 parts:
+Getting back to `parser.y`, the structure of this file is divided into three parts:
 
 1. `%union` enumerates all the Golang types that can be passed around grammar rules.
 2. `%token` or `%type` declares the terminal or non-terminal symbols that will be used in grammar rules.
