@@ -10,7 +10,7 @@ The processing model of the execution plan tree is known as the Volcano iterator
 
 `Open` will be invoked in turn for each operator to init the needed resources before computing. Conversely, `Close` will release the resources. To obtain the query output, the final operator in the plan tree will keep invoking `Next` until no tuple is pulled from its child.
 
-It's easy to understand how the Volcano model works for single-process execution. For parallelism issues, the Volcano introduces an operator called `Exchange` at any desired point in a plan tree. Further explanation about the parallelism-related issues would be introduced in the [Execution Framework](execution-framework.md) section.
+It's easy to understand how the Volcano model works for single-process execution. For parallelism issues, the Volcano introduces an operator called `Exchange` at any desired point in a plan tree. Further explanation about the parallelism-related issues would be introduced in the [Parallel Execution Framework](parallel-execution-framework.md) section.
 
 ## Vectorized Execution
 
