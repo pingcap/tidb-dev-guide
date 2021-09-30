@@ -88,7 +88,7 @@ Luckily, TiDB is built on a durable and high-available storage layer, which make
 
 ![gc-leader-election.png](../img/gc-leader-election.png)
 
-This is the flowchart of leader election which is implemented in `[checkLeader](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1669)` function, if the result is leader, we then trying to tick a GC.
+This is the flowchart of leader election which is implemented in [`checkLeader`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1669) function, if the result is leader, we then trying to tick a GC.
 
 ### GC Prepare
 
@@ -146,7 +146,7 @@ func (w *GCWorker) calcGlobalMinStartTS(ctx context.Context) (uint64, error) {
 }
 ```
 
-After we get all the min start timestamps from etcd, it's easy to calculate the global min start timestamp. It's easy to know the min start timestamp from a single TiDB instance, and every TiDB instance will report it's min start timestamp to etcd in `[ReportMinStartTS](https://github.com/pingcap/tidb/blob/v5.2.1/domain/infosync/info.go#L548-L570)` function every interval.
+After we get all the min start timestamps from etcd, it's easy to calculate the global min start timestamp. It's easy to know the min start timestamp from a single TiDB instance, and every TiDB instance will report it's min start timestamp to etcd in [`ReportMinStartTS`](https://github.com/pingcap/tidb/blob/v5.2.1/domain/infosync/info.go#L548-L570) function every interval.
 
 ### GC Workflow
 
@@ -158,9 +158,9 @@ Once the safepoint is decided and prepare stage is done, it's ready to start a G
 
 The workflow can be found from [GC job function](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L614-L682). The main intent of this workflow is to clean up data has more impact on the running tasks earlier.
 
-In resolve lock phase, GC will clean up the locks of aborted transaction and commit the locks of success transaction. `GCworker` scans the locks from every store and call `[BatchResolveLocks](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/txnkv/txnlock/lock_resolver.go#L184)` for cleaning up, you may read [lock resolver chapter](./lock-resolver.html) for more information of lock.
+In resolve lock phase, GC will clean up the locks of aborted transaction and commit the locks of success transaction. `GCworker` scans the locks from every store and call [`BatchResolveLocks`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/txnkv/txnlock/lock_resolver.go#L184) for cleaning up, you may read [lock resolver chapter](./lock-resolver.html) for more information of lock.
 
-From TiDB 5.0, it's possible to scan by physical mode which bypass the Raft layer and scan the locks directly. The `[resolveLocks](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1001-L1018)` function will use legecy mode as a fallback even if physical mode is set.
+From TiDB 5.0, it's possible to scan by physical mode which bypass the Raft layer and scan the locks directly. The [`resolveLocks`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1001-L1018) function will use legecy mode as a fallback even if physical mode is set.
 
 ```go
 func (w *GCWorker) resolveLocks(ctx context.Context, safePoint uint64, concurrency int, usePhysical bool) (bool, error) {
@@ -248,7 +248,7 @@ This is a document about TiDB dev guide, so there will simply introduce how TiKV
 
 ### Distributed GC
 
-As we talked above, TiDB only push up the safepoint in PD instead of cleaning up keys directly. Every TiKV has an inner `[GcManager](https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L217-L237)` with `safe_point` field.
+As we talked above, TiDB only push up the safepoint in PD instead of cleaning up keys directly. Every TiKV has an inner [`GcManager`](https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L217-L237) with `safe_point` field.
 
 ```rust
 pub(super) struct GcManager<S: GcSafePointProvider, R: RegionInfoProvider, E: KvEngine> {
