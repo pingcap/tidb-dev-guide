@@ -1,5 +1,6 @@
 # Memory Management Mechanism
-In TiDB, we set a memory usage quota for a query, and introduce two interfaces called `Tracker` and `OOMAction` for memory management.
+
+TiDB's memory management basically consists of a memory usage quota settings for each query, and two interfaces, called `Tracker` and `OOMAction`.
 
 ## Tracker
 
