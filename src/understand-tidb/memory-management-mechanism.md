@@ -41,7 +41,7 @@ TiDB supports disk spill for execution operators. When the memory usage of a SQL
 
 #### SpillDiskAction
 
-In implementation, we use `SpillDiskAction` to control the spill disk of `HashJoin` and `MergeJoin`. The data will be placed in Chunk unit when spilling. We can get any data in Chunk through random I/O.
+We use `SpillDiskAction` to control the spill disk of `HashJoin` and `MergeJoin`. The data will be placed in Chunk unit when spilling. We can get any data in Chunk through random I/O.
 
 #### SortAndSpillDiskAction
 
