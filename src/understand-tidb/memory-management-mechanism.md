@@ -45,8 +45,11 @@ We use `SpillDiskAction` to control the spill disk of `HashJoin` and `MergeJoin`
 
 #### SortAndSpillDiskAction
 
-In implementation, we use `SortAndSpillDiskAction` to control the spill disk of `Sort`.
-If the input of `SortExec` is small then the sort occurs in memory. If the input is large, the `SortAndSpillDiskAction` will be triggered, an external sort algorithm is used. We can split the input into multiple partitions and perform a merge sort on them. External sorting algorithms generally fall into two ways, sorting and merge. In the sorting phase, chunks of data small enough to fit in main memory are read, sorted, and written out to a temporary file. In the merge phase, the sorted subfiles are combined, and the final result will be outputted.
+We use `SortAndSpillDiskAction` to control the spill disk of `Sort`.
+
+If the input of `SortExec` is small, then it sorts in memory. If the input is large, the `SortAndSpillDiskAction` will be triggered, and an external sort algorithm will be used. We can split the input into multiple partitions and perform a merge sort on them.
+
+External sorting algorithms generally have two stages, sort and merge. In the sort stage, chunks of data small enough to fit in main memory are read, sorted, and written out to a temporary file. In the merge stage, the sorted subfiles are combined, and the final result will be outputted.
 
 #### AggSpillDiskAction
 
