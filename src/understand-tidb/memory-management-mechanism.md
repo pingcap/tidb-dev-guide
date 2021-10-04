@@ -4,7 +4,7 @@ TiDB's memory management basically consists of a memory usage quota settings for
 
 ## Tracker
 
-`Tracker` tracks the memory usage of each element. `Tracker` uses a tree structure to track memory usage.
+`Tracker` tracks the memory usage of each element with a tree structure.
 
 ```golang
 // Genral use cases:
