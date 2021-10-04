@@ -32,7 +32,8 @@ When a component allocates some memory, we can call the function `Tracker.Consum
 ### Rate Limit
 
 TiDB supports dynamic memory control for the operator that reads data. By default, this operator uses the maximum number of threads that `tidb_disql_scan_concurrency` allows to read data. When the memory usage of a single SQL execution exceeds `tidb_mem_quota_query` each time, the operator that reads data stops one thread.
-In implementation, we use `rateLimitAction` to dynamically control the data reading speed of `TableReader`.
+
+We use `rateLimitAction` to dynamically control the data reading speed of `TableReader`.
 
 ### Spill Disk
 
