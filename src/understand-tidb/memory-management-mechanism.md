@@ -23,7 +23,7 @@ Tracker(Session) ---+--- Tracker(Executor2)
      ...
 ```
 
-When a component allocates some memory, we can call the function `Tracker.Consume(bytes)` to tell `Tracker` how much memory it uses. `Tracker.Comsume` will call recursively, accumulate memory usage and trigger OOM-Action when exceeded.
+When a component allocates some memory, it will call the function `Tracker.Consume(bytes)` to tell the `Tracker` how much memory it uses. `Tracker.Comsume` will traverse all its ancestor nodes, accumulate memory usage and trigger OOM-Action when exceeded.
 
 ## OOM-Action
 
