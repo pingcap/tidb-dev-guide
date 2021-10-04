@@ -6,21 +6,21 @@ TiDB's memory management basically consists of a memory usage quota settings for
 
 `Tracker` tracks the memory usage of each element with a tree structure.
 
-```golang
-// Genral use cases:
-//
-//                                                   /--- Tracker(Component in Executor, e.g. list/rowContainer/worker)
-//                                                   |           ...
-//                        /--- Tracker(Executor1) ---+--- Tracker(Component)
-//                        |
-//    Tracker(Session) ---+--- Tracker(Executor2)
-//          |             |         ...
-//          |             \--- Tracker(Executor3)
-//     OOM-Action1
-//          |
-//          |
-//     OOM-Action2
-//         ...
+Genral use cases:
+
+```text
+                                               /--- Tracker(Component in Executor, e.g. list/rowContainer/worker)
+                                               |           ...
+                    /--- Tracker(Executor1) ---+--- Tracker(Component)
+                    |
+Tracker(Session) ---+--- Tracker(Executor2)
+      |             |         ...
+      |             \--- Tracker(Executor3)
+ OOM-Action1
+      |
+      |
+ OOM-Action2
+     ...
 ```
 
 When a component allocates some memory, we can call the function `Tracker.Consume(bytes)` to tell `Tracker` how much memory it uses. `Tracker.Comsume` will call recursively, accumulate memory usage and trigger OOM-Action when exceeded.
