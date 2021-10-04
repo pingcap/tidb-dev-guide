@@ -56,11 +56,12 @@ External sorting algorithms generally have two stages, sort and merge. In the so
 We use `AggSpillDiskAction` to control the spill disk of `HashAgg`. When `AggSpillDiskAction` is triggered, it will switch HashAgg executor to spill-mode, and the memory usage of HashAgg won't grow.
 
 We use the following algorithm to control the memory increasing:
-1. When the memory usage is higher than the mem-quota, switch the HashAgg executor to spill-mode.
-2. When HashAgg is in spill-mode, keep the tuple in the hashMap no longer growing.
+
+1. When the memory usage is higher than the `mem-quota-query`, switch the HashAgg executor to spill-mode.
+2. When HashAgg is in spill-mode, keep the tuple in the hash map no longer growing.
   a. If the processing key exists in the Map, aggregate the result.
   b. If the processing key doesn't exist in the Map, spill the data to disk.
-3. After all data have been processed, output the aggregate result in the Map, clear the Map. Then read the spilling data from disk, repeat the Step1-Step3 until all data have been aggregated.
+3. After all data have been processed, output the aggregate result in the map, clear the map. Then read the spilling data from disk, repeat the Step1-Step3 until all data gets aggregated.
 
 As we can see, unlike other spilling implementations, `AggSpillDiskAction` does not make the memory drop immediately, but keeps the memory no longer growing. 
 
