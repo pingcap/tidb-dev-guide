@@ -27,7 +27,7 @@ When a component allocates some memory, we can call the function `Tracker.Consum
 
 ## OOM-Action
 
-`OOM-Action` is a series of actions linked by a linked list to reduce memory usage. Each node on the linked list abstracts a strategy to be used when the memory usage of a SQL exceeds the memory quota. For example, we define the spill to disk strategy as `SpillDiskAction`, rate limit strategy as `rateLimitAction` and cancel strategy as `PanicOnExceed`.
+`OOM-Action` is a series of actions grouped in a linked list to reduce memory usage. Each node on the linked list abstracts a strategy to be used when the memory usage of a SQL exceeds the memory quota. For example, we define the spill to disk strategy as `SpillDiskAction`, rate limit strategy as `rateLimitAction` and cancel strategy as `PanicOnExceed`.
 
 ### Rate Limit
 
