@@ -53,7 +53,7 @@ External sorting algorithms generally have two stages, sort and merge. In the so
 
 #### AggSpillDiskAction
 
-In implementation, we use `AggSpillDiskAction` to control the spill disk of `HashAgg`. When `AggSpillDiskAction` is triggered, it will switch HashAgg executor to spill-mode, and the memory usage of HashAgg will not grow.
+We use `AggSpillDiskAction` to control the spill disk of `HashAgg`. When `AggSpillDiskAction` is triggered, it will switch HashAgg executor to spill-mode, and the memory usage of HashAgg won't grow.
 
 We use the following algorithm to control the memory increasing:
 1. When the memory usage is higher than the mem-quota, switch the HashAgg executor to spill-mode.
