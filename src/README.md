@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-28-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -65,6 +65,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/XuHuaiyu"><img src="https://avatars.githubusercontent.com/u/9039012?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HuaiyuXu</b></sub></a><br /><a href="#content-XuHuaiyu" title="Content">🖋</a></td>
     <td align="center"><a href="https://sticnarf.me"><img src="https://avatars.githubusercontent.com/u/17217495?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yilin Chen</b></sub></a><br /><a href="#content-sticnarf" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/tangenta"><img src="https://avatars.githubusercontent.com/u/24713065?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tangenta</b></sub></a><br /><a href="#content-tangenta" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/wshwsh12"><img src="https://avatars.githubusercontent.com/u/14054293?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shenghui Wu</b></sub></a><br /><a href="#content-wshwsh12" title="Content">🖋</a></td>
   </tr>
 </table>
 
