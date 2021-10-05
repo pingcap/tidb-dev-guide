@@ -170,6 +170,50 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="memory-management-mechanism"><a class="header" href="#memory-management-mechanism">Memory Management Mechanism</a></h1>
+<p>TiDB's memory management basically consists of a memory usage quota settings for each query, and two interfaces, called <code>Tracker</code> and <code>OOMAction</code>.</p>
+<h2 id="tracker"><a class="header" href="#tracker">Tracker</a></h2>
+<p><code>Tracker</code> tracks the memory usage of each element with a tree structure.</p>
+<p>Genral use cases:</p>
+<pre><code class="language-text">                                               /--- Tracker(Component in Executor, e.g. list/rowContainer/worker)
+                                               |           ...
+                    /--- Tracker(Executor1) ---+--- Tracker(Component)
+                    |
+Tracker(Session) ---+--- Tracker(Executor2)
+      |             |         ...
+      |             \--- Tracker(Executor3)
+ OOM-Action1
+      |
+      |
+ OOM-Action2
+     ...
+</code></pre>
+<p>When a component allocates some memory, it will call the function <code>Tracker.Consume(bytes)</code> to tell the <code>Tracker</code> how much memory it uses. <code>Tracker.Comsume</code> will traverse all its ancestor nodes, accumulate memory usage and trigger OOM-Action when exceeded.</p>
+<h2 id="oom-action"><a class="header" href="#oom-action">OOM-Action</a></h2>
+<p><code>OOM-Action</code> is a series of actions grouped in a linked list to reduce memory usage. Each node on the linked list abstracts a strategy to be used when the memory usage of a SQL exceeds the memory quota. For example, we define the spill to disk strategy as <code>SpillDiskAction</code>, rate limit strategy as <code>rateLimitAction</code> and cancel strategy as <code>PanicOnExceed</code>.</p>
+<h3 id="rate-limit"><a class="header" href="#rate-limit">Rate Limit</a></h3>
+<p>TiDB supports dynamic memory control for the operator that reads data. By default, this operator uses the maximum number of threads that <code>tidb_disql_scan_concurrency</code> allows to read data. When the memory usage of a single SQL execution exceeds <code>tidb_mem_quota_query</code> each time, the operator that reads data stops one thread.</p>
+<p>We use <code>rateLimitAction</code> to dynamically control the data reading speed of <code>TableReader</code>.</p>
+<h3 id="spill-disk"><a class="header" href="#spill-disk">Spill Disk</a></h3>
+<p>TiDB supports disk spill for execution operators. When the memory usage of a SQL execution exceeds the memory quota, tidb-server can spill the intermediate data of execution operators to the disk to relieve memory pressure. Operators supporting disk spill include Sort, MergeJoin, HashJoin, and HashAgg.</p>
+<h4 id="spilldiskaction"><a class="header" href="#spilldiskaction">SpillDiskAction</a></h4>
+<p>We use <code>SpillDiskAction</code> to control the spill disk of <code>HashJoin</code> and <code>MergeJoin</code>. The data will be placed in Chunk unit when spilling. We can get any data in Chunk through random I/O.</p>
+<h4 id="sortandspilldiskaction"><a class="header" href="#sortandspilldiskaction">SortAndSpillDiskAction</a></h4>
+<p>We use <code>SortAndSpillDiskAction</code> to control the spill disk of <code>Sort</code>.</p>
+<p>If the input of <code>SortExec</code> is small, then it sorts in memory. If the input is large, the <code>SortAndSpillDiskAction</code> will be triggered, and an external sort algorithm will be used. We can split the input into multiple partitions and perform a merge sort on them.</p>
+<p>External sorting algorithms generally have two stages, sort and merge. In the sort stage, chunks of data small enough to fit in main memory are read, sorted, and written out to a temporary file. In the merge stage, the sorted subfiles are combined, and the final result will be outputted.</p>
+<h4 id="aggspilldiskaction"><a class="header" href="#aggspilldiskaction">AggSpillDiskAction</a></h4>
+<p>We use <code>AggSpillDiskAction</code> to control the spill disk of <code>HashAgg</code>. When <code>AggSpillDiskAction</code> is triggered, it will switch HashAgg executor to spill-mode, and the memory usage of HashAgg won't grow.</p>
+<p>We use the following algorithm to control the memory increasing:</p>
+<ol>
+<li>When the memory usage is higher than the <code>mem-quota-query</code>, switch the HashAgg executor to spill-mode.</li>
+<li>When HashAgg is in spill-mode, keep the tuple in the hash map no longer growing.
+a. If the processing key exists in the Map, aggregate the result.
+b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
+<li>After all data have been processed, output the aggregate result in the map, clear the map. Then read the spilling data from disk, repeat the Step1-Step3 until all data gets aggregated.</li>
+</ol>
+<p>As we can see, unlike other spilling implementations, <code>AggSpillDiskAction</code> does not make the memory drop immediately, but keeps the memory no longer growing. </p>
+<h3 id="logcancel"><a class="header" href="#logcancel">Log/Cancel</a></h3>
+<p>When the above methods cannot control the memory within the threshold, we will try to use <code>PanicOnExceed</code> to cancel the SQL or use <code>LogOnExceed</code> to log the SQL info.</p>
 
                     </main>
 
