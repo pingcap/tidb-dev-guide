@@ -164,7 +164,7 @@ Once the safepoint is decided and prepare stage is done, it's ready to start a G
 
 The workflow can be found from [GC job function](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L614-L682). The main intent of this workflow is to clean up data has more impact on the running tasks earlier.
 
-In resolve lock phase, GC will clean up the locks of aborted transaction and commit the locks of success transaction. `GCworker` scans the locks from every store and call [`BatchResolveLocks`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/txnkv/txnlock/lock_resolver.go#L184) for cleaning up, you may read [lock resolver chapter](./lock-resolver.html) for more information of lock.
+In resolve locks phase, GC will clean up the locks of aborted transaction and commit the locks of success transaction. `GCWorker` scans the locks from every store and call [`BatchResolveLocks`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/txnkv/txnlock/lock_resolver.go#L184) for cleaning up, you may read [lock resolver chapter](lock-resolver.md) for more information about locks.
 
 From TiDB 5.0, it's possible to scan by physical mode which bypass the Raft layer and scan the locks directly. The [`resolveLocks`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1001-L1018) function will use legecy mode as a fallback even if physical mode is set.
 
