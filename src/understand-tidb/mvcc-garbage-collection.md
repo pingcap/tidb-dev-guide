@@ -156,7 +156,7 @@ After we get all the min start timestamps from etcd, it's easy to calculate the 
 
 ### GC Workflow
 
-Once the safepoint is decided and prepare stage is done, it's ready to start a GC workflow. Generally, there are 3 steps to do.
+Once the safepoint is decided and prepare stage is done, it's ready to start a GC workflow. Generally, there are three steps to do.
 
 - Resolve locks.
 - Delete unused ranges.
