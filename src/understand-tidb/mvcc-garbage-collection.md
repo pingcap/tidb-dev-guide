@@ -248,11 +248,7 @@ func (s *Server) UpdateGCSafePoint(ctx context.Context, request *pdpb.UpdateGCSa
 
 If PD returns the same new safepoint as TiDB provides, TiDB takes this GC round success.
 
-## TiKV Part
-
-This is a document about TiDB dev guide, so there will simply introduce how TiKV works with TiDB with less implementations.
-
-### Distributed GC
+### Distributed GC on TiKV
 
 As we talked above, TiDB only pushes up the safepoint in PD instead of cleaning up keys directly. Every TiKV has an inner [`GcManager`](https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L217-L237) with `safe_point` field.
 
