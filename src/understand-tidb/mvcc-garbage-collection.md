@@ -120,7 +120,7 @@ In TiDB, there is a variable named `tikv_gc_run_interval` which controls the fre
 
 Once it's ready to perform a GC round, `calcNewSafePoint` is called to get a new safepoint, this deals with some long-term opened transactions. We'll talk about how safepoint is decided later.
 
-If a new safepoint is got, we then update the GC checkpoint and new safepoint, here we're ready to start a GC round. It's ok that TiDB collapse after the new GC round is set because it won't broke the GC promises, we just skip a round of GC.
+If a new safepoint is got, we then update the GC checkpoint and new safepoint, here we're ready to start a GC round. It's ok that TiDB collapses after the new GC round is set because it won't break the GC promises, we just skip a round of GC.
 
 ### GC Safepoint
 
