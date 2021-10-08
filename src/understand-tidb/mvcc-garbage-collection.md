@@ -67,7 +67,7 @@ There is a [ticker](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/g
 
 ### GC Leader
 
-In TiDB's design, there is only one GC leader which can trigger GC in the cluster, so there is an election and lease for the proposal of the leader. `GCWorker` check if it's the leader before starting a real GC job.
+In TiDB's design, there is only one GC leader which can trigger GC in the cluster, so there is an election and lease for the proposal of the leader. `GCWorker` checks if it itself is the leader before starting a real GC job.
 
 ```go
 func (w *GCWorker) tick(ctx context.Context) {
