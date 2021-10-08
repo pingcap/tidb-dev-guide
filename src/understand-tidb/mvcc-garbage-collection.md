@@ -211,7 +211,7 @@ MySQL [test]> SELECT HIGH_PRIORITY job_id, element_id, start_key, end_key FROM m
 1 row in set (0.002 sec)
 ```
 
-The to-be-deleted ranges are stored in `mysql.gc_delete_range`, in GC, they will be deleted in `deleteRanges`. After they are cleaned up, they will be moved into `mysql.gc_delete_range_done`, and double-checked after 24 hours.
+The to-be-deleted ranges are stored in `mysql.gc_delete_range`, in GC. They will be deleted in `deleteRanges`. After they are cleaned up, they will be moved into `mysql.gc_delete_range_done`, and double-checked after 24 hours.
 
 Finally, the `GCWorker` is going to clean up the stale keys. There are `central` mode and `distributed` mode. From TiDB 3.0, `tikv_gc_mode` is set to `distributed` mode by default, this document will talk about `distributed` mode only.
 
