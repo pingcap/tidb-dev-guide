@@ -273,7 +273,7 @@ pub(super) struct GcManager<S: GcSafePointProvider, R: RegionInfoProvider, E: Kv
 }
 ```
 
-By default, TiKV tries to [pull safepoint](https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L301-L322) from PD every 10 seconds. If the pulled safepoint is greater than the local one, the local one will be pushed up, meanwhile, a GC job is trigger in TiKV locally.
+By default, TiKV tries to [pull safepoint](https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L301-L322) from PD every 10 seconds. If the pulled safepoint is greater than the local one, the local one will be pushed up, and meanwhile, a GC job is trigger in TiKV locally.
 
 ## Summary
 
