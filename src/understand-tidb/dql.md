@@ -12,7 +12,7 @@ Briefly, the execution process of a SQL statement can be divided into three stag
    Protocol layer is responsible for parsing the network protocol. Its codes locate at `server` package, mainly consisting of two parts: one for connection establishing and management, every connection corresponds to one session; one for handling the packets read from the connection.
 
 2. SQL Layer
-   SQL layer is the most complex part in TiDB, handling SQL statement parsing and execution. SQL is a complex language, hasing various data types and operators, numerous syntax combinations, so a large portion of TiDB codes spent on SQL layer. Besides, TiDB uses a distributed storage engine underneath, so it will encounter many problems stand-alone storage engine won't.
+   SQL layer is the most complex part in TiDB, handling SQL statement parsing and execution. SQL is a complex language, hasing various data types and operators, numerous syntax combinations, so a large portion of TiDB codes are spent on SQL layer. Besides, TiDB uses a distributed storage engine underneath, so it will encounter many problems stand-alone storage engines won't.
 
 3. KV API Layer
    KV API layer routes requests to the right KV server and passes the results back to SQL layer. It should handle the exceptions happened in this stage.
@@ -127,7 +127,7 @@ compiler := executor.Compiler{Ctx: s}
 stmt, err := compiler.Compile(ctx, stmtNode)
 ```
 
-There are there steps:
+There are three steps:
 
 1. `plan.Preprocess`: do some validatation and name binding.
 2. `plan.Optimize`: make and optimize query plans, this is the core part.
@@ -161,7 +161,7 @@ type RecordSet interface {
 }
 ```
 
-The functionality of each method is described in the comments. In short, `Fields()` retrieves the type of each colume. `Next()` returns a batch of the result. `Close()` closes the result set.
+The functionality of each method is described in the comments. In short, `Fields()` retrieves the type of each column. `Next()` returns a batch of the result. `Close()` closes the result set.
 
 TiDB's execution engine executes in Volcano model. All the executors constitute an executor tree. Every upper layer gathers results from the lower layer by calling its `Next()` method. Assuming we have a SQL statement `SELECT c1 FROM t WHERE c2 > 1;` and the query plan is full table scanning plus filtering, the executor tree is like:
 
