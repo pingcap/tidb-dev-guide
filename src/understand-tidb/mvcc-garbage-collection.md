@@ -1,6 +1,6 @@
 # MVCC Garbage Collection
 
-TiDB is a database built on a multi-version storage engine TiKV, and it supports [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation)(SI) based on the [MultiVersion Concurrency Control](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)(MVCC). Semantically, a multi-version system keeps multi copies of data. However, in the long-term running, there will be many garbage data that takes up a lot of disk space as well as has an impact on performance. A GC is responsible for cleaning up unused data and free the space while making less impact on the system as possible. This document talks about how MVCC GC works and implements in TiDB.
+TiDB is a database built on TiKV, a multi-version storage engine which supports [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation)(SI) based on the [MultiVersion Concurrency Control](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) (MVCC). Semantically, a multi-version system keeps multi copies of data. However, in the long-term running, there will be many garbage data that takes up a lot of disk space as well as has an impact on performance. A GC is responsible for cleaning up unused data and free the space while making less impact on the system as possible. This document talks about how MVCC GC works and implements in TiDB.
 
 This document refers to the code of [TiDB v5.2.1](https://github.com/pingcap/tidb/tree/v5.2.1), [PD v5.2.1](https://github.com/tikv/pd/tree/v5.2.1), and [TiKV v5.2.1](https://github.com/tikv/tikv/tree/v5.2.1).
 
