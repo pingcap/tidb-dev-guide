@@ -124,7 +124,9 @@ If a new safepoint is got, we then update the GC checkpoint and new safepoint, h
 
 ### GC Safepoint
 
-This is the key problem of GC. What we desired is the min transaction start timestamp between all TiDB instances. TiDB instances will store their min start ts in PD's etcd, so we just fetch all the min transaction start timestamps [here](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L395-L413). `GetWithPrefix` will get all KV pairs from the etcd storage.
+This is the key problem of GC.
+
+What we desired is the min transaction start timestamp between all TiDB instances. TiDB instances will store their min start timestamp in PD's etcd, so we just fetch all the min transaction start timestamps [here](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L395-L413). `GetWithPrefix` will get all KV pairs from the etcd storage.
 
 ```go
 func (w *GCWorker) calcGlobalMinStartTS(ctx context.Context) (uint64, error) {
