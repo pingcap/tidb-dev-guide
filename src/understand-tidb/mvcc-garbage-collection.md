@@ -217,7 +217,7 @@ The to-be-deleted ranges are stored in `mysql.gc_delete_range`, in GC. They will
 
 Finally, the `GCWorker` is going to clean up the stale keys. There are `central` mode and `distributed` mode. From TiDB 3.0, `tikv_gc_mode` is set to `distributed` mode by default, this document will talk about `distributed` mode only.
 
-Distributed GC is implemented by push up the safepoint in PD. Notice that the safepoint is monotonic, PD guarantees it by comparing the old and new values [here](https://github.com/tikv/pd/blob/v5.2.1/server/grpc_service.go#L1081-L1127).
+Distributed GC is implemented by pushing up the safepoint in PD. Notice that the safepoint is monotonic. PD guarantees this by comparing the old and new values [here](https://github.com/tikv/pd/blob/v5.2.1/server/grpc_service.go#L1081-L1127).
 
 ```go
 // UpdateGCSafePoint implements gRPC PDServer.
