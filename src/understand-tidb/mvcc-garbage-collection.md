@@ -158,9 +158,9 @@ After we get all the min start timestamps from etcd, it's easy to calculate the 
 
 Once the safepoint is decided and prepare stage is done, it's ready to start a GC workflow. Generally, there are three steps to do.
 
-- Resolve locks.
-- Delete unused ranges.
-- GC for every key.
+* Resolve locks.
+* Delete unused ranges.
+* GC for every key.
 
 The workflow can be found from [GC job function](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L614-L682). The main intent of this workflow is to clean up data has more impact on the running tasks earlier.
 
