@@ -114,7 +114,7 @@ func (w *GCWorker) checkPrepare(ctx context.Context) (bool, uint64, error) {
 }
 ```
 
-Check GC is enabled first, GC is enabled by default, but it's allowed to be turned off.
+GC is enabled by default, but it's allowed to be turned off. In prepare stage, it'll check if GC is enabled first.
 
 In TiDB, there is a variable named `tikv_gc_run_interval` which controls the frequency of GC. It's the min interval between 2 GC rounds, 10min by default.
 
