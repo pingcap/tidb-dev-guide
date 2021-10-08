@@ -8,9 +8,9 @@ This document refers to the code of [TiDB v5.2.1](https://github.com/pingcap/tid
 
 You probably already know that data is stored in TiKV instances in a TiDB cluster. However, the GC process should be triggered by TiDB because it's the coordinator of the cluster. There are several requirements for TiDB when triggering GC.
 
-- Clean up more garbage data as possible.
-- Any data that is possibly read by opened transactions should be kept.
-- The GC is not frequently triggered.
+* Clean up as more garbage data as possible.
+* Any data that is possibly read by opened transactions should be kept.
+* GC should not be frequently triggered.
 
 There is an inner table named `mysql.tidb` in TiDB which stores many runtime information. Actually, these variables are stored in TiKV as common KV variables. We'll talk about the usage of these variables in the GC workflow later.
 
