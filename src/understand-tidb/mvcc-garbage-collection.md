@@ -47,7 +47,7 @@ type GCWorker struct {
 }
 ```
 
-In `GCWorker` structure, `uuid` field is the unique identifier, when it's initialized, a timestamp is fetched from PD and formatted as a 16bit string, and used as the `uuid`. On the opposite, `desc` is a human-readable identifier that is composed of [some instance information](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L93).
+In `GCWorker` structure, `uuid` field is the unique identifier. When it's initialized, a timestamp is fetched from PD and formatted as a 16bit string, and used as the `uuid`. `desc` is a human-readable identifier that is composed of [some instance information](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L93).
 
 The Start function of GCWorker will call when TiDB is bootstraped. In [this file](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L105-L113), a goroutine will be created for GC jobs periodically.
 
