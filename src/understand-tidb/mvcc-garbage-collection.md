@@ -183,7 +183,7 @@ func (w *GCWorker) resolveLocks(ctx context.Context, safePoint uint64, concurren
 }
 ```
 
-The `GCworker` then clean up the unused ranges, they are caused by drop table or drop index statements, when executing the drop statements in TiDB, TiDB only marks some ranges to be deleted and returns success, they are actually cleaned up in GC.
+The `GCWorker` then cleans up unused ranges, which are caused by drop table or drop index statements. When executing the drop statements in TiDB, TiDB only marks some ranges to be deleted and returns success. These to-be-deleted ranges are actually cleaned up in GC.
 
 ```
 MySQL [test]> create table t(id int primary key, v int, key k(v));
