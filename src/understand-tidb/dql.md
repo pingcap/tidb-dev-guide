@@ -40,7 +40,7 @@ func (tc *TiDBContext) ExecuteStmt(ctx context.Context, stmt ast.StmtNode) (Resu
 	rs, err := tc.Session.ExecuteStmt(ctx, stmt)
 ```
 
-[session.ExecuteStmt()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/session/session.go#L1620) is in `session.go`. It's the entry of the SQL layer kernel and returns the result of the SQL execution.
+[session.ExecuteStmt()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/session/session.go#L1620) is the entry of the SQL layer kernel and returns the result of the SQL execution.
 
 #### Exit
 
