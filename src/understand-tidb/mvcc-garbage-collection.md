@@ -94,7 +94,7 @@ This is the flowchart of leader election which is implemented in [`checkLeader`]
 
 When a GC workflow is triggered, we are facing another issue - find out the data that can be cleaned up.
 
-Since TiDB follows SI isolation level, all reads performed in a transaction should get the result from the same timestamp, if not so, there will be consistency and repeatable read issues. Besides, we don't want that the garbage data is cleanup once after it's not used. Because recovery is important when misoperations. That means before starting a GC round, there are [many checks](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L362-L393).
+Since TiDB follows SI isolation level, all reads performed in a transaction should get the result from the same timestamp, if not so, there will be consistency and repeatable read issues. Besides, we don't want that the garbage data is cleaned up once after it's not used, because recovery is important when misoperations. That means before starting a GC round, there are [many checks](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L362-L393).
 
 ```go
 func (w *GCWorker) checkPrepare(ctx context.Context) (bool, uint64, error) {
