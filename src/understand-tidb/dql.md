@@ -2,7 +2,7 @@
 
 ## Overview
 
-This chapter describes the execution process of a data query statement in TiDB. Starting from the SQL processing flow, it describes how a SQL statement is sent to TiDB, how TiDB processes it after receiving the SQL statement and how the execution result is returned.
+This chapter describes the execution process of a data query statement in TiDB. Starting from the SQL processing flow, it describes how a SQL statement is sent to TiDB, how TiDB processes it after receiving the SQL statement, and how the execution result is returned.
 
 ## Execution Process
 
@@ -10,11 +10,11 @@ Briefly, the execution process of a SQL statement can be divided into three stag
 
 1. Protocol Layer
 
-   Protocol layer is responsible for parsing the network protocol. Its codes locate at `server` package, mainly consisting of two parts: one for connection establishing and management, every connection corresponds to one session; one for handling the packets read from the connection.
+   Protocol layer is responsible for parsing the network protocol. Its code locates at `server` package, mainly consisting of two parts: one for connection establishing and management, every connection corresponds to one session separately; one for handling the packets read from the connection.
 
 2. SQL Layer
 
-   SQL layer is the most complex part in TiDB, handling SQL statement parsing and execution. SQL is a complex language, hasing various data types and operators, numerous syntax combinations, so a large portion of TiDB codes are spent on SQL layer. Besides, TiDB uses a distributed storage engine underneath, so it will encounter many problems stand-alone storage engines won't.
+   SQL layer is the most complex part in TiDB, handling SQL statement parsing and execution. SQL is a complex language, having various data types and operators, numerous syntax combinations. Besides, TiDB uses a distributed storage engine underneath, so it will encounter many problems standalone storage engines won't.
 
 3. KV API Layer
 
@@ -132,7 +132,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 
 There are three steps:
 
-1. `plan.Preprocess`: do some validatation and name binding.
+1. `plan.Preprocess`: do validations and name binding.
 2. `plan.Optimize`: make and optimize query plans, this is the core part.
 3. construct `executor.ExecStmt` structure: [ExecStmt](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/adapter.go#L186) holds the query plans. It's the foundation for following execution.
 
