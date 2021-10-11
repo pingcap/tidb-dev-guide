@@ -310,7 +310,7 @@ status.commitTS = resolveData.commitTs
 <p>To add a memory lock and be able to write lock information, the <code>lock_key</code> method needs to be called to get a lock guard. The locking process is a bit tricky to handle various possiblities in the multi-thread environment. If interested, you can refer to <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lock_table.rs#L22">the code</a> for details.</p>
 <h3 id="prewrite-1"><a class="header" href="#prewrite-1">Prewrite</a></h3>
 <p>The code of prewrite can be found <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L405">here</a>. We will talk about some key points in the code about async commit.</p>
-<p>In TiKV, <code>secondary_keys</code> and <code>try_one_pc</code> in the prewrite request are used to <a href="">determine the type</a> of the prewrite:</p>
+<p>In TiKV, <code>secondary_keys</code> and <code>try_one_pc</code> in the prewrite request are used to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L411-L415">determine the type</a> of the prewrite:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
