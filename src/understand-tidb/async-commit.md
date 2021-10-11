@@ -195,7 +195,7 @@ To add a memory lock and be able to write lock information, the `lock_key` metho
 
 The code of prewrite can be found [here](https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L405). We will talk about some key points in the code about async commit.
 
-In TiKV, `secondary_keys` and `try_one_pc` in the prewrite request are used to [determine the type]() of the prewrite:
+In TiKV, `secondary_keys` and `try_one_pc` in the prewrite request are used to [determine the type](https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L411-L415) of the prewrite:
 
 ```rust
 let commit_kind = match (&self.secondary_keys, self.try_one_pc) {
