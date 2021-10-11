@@ -8,7 +8,7 @@ This document refers to the code of [TiDB v5.2.1](https://github.com/pingcap/tid
 
 You probably already know that data is stored in TiKV instances in a TiDB cluster. However, the GC process should be triggered by TiDB because it's the coordinator of the cluster. There are several requirements for TiDB when triggering GC.
 
-* Clean up as more garbage data as possible.
+* Clean up as much garbage data as possible.
 * Any data that is possibly read by opened transactions should be kept.
 * GC should not be frequently triggered.
 
