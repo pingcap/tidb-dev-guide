@@ -55,11 +55,11 @@ In SQL layer, there are multiple concepts and interfaces we need to pay close at
 * [Plan](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/planner/core/plan.go#L36)
 * [Executor](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/executor.go#L258)
 
-#### Session
+#### [Session](session.md)
 
 The most important function in `Session` is `ExecuteStmt`. It wraps calls to other modules. The SQL execution will respect environment variables in `Session` like `AutoCommit` and timezone.
 
-#### Parser
+#### [Parser](parser.md)
 
 [Parser](https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/yy_parser.go) consists of [Lexer](https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/lexer.go) and Yacc. It turns the SQL text to AST:
 
@@ -136,7 +136,7 @@ There are three steps:
 2. `plan.Optimize`: make and optimize query plans, this is the core part.
 3. construct `executor.ExecStmt` structure: [ExecStmt](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/adapter.go#L186) holds the query plans. It's the foundation for following execution.
 
-#### Executor
+#### [Executor](execution.md)
 
 While constructing the executor in [ExecStmt.buildExecutor()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/adapter.go#L764), query plans are turned to executor. Then the execution engine could perform the query plans via the executor. The generated executor is encapsulated in a `recordSet` structure:
 
