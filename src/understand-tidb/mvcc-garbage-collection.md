@@ -154,7 +154,7 @@ TiDB server has the risk of crash, however, if a never-pushed-up min start times
 
 After we get all the min start timestamps from etcd, it's easy to calculate the global min start timestamp. It's easy to know the min start timestamp from a single TiDB instance, and every TiDB instance will report it's min start timestamp to etcd in [`ReportMinStartTS`](https://github.com/pingcap/tidb/blob/v5.2.1/domain/infosync/info.go#L548-L570) function every interval.
 
-There is a further situation cannot be handled by calculating the global min start timestamp across all TiDB servers, some tools may require TiDB keep data available for a long time. e.g., when [BR](https://github.com/pingcap/tidb/tree/v5.2.1/br) is processing back up task, the snapshot should be kept even the specific lifetime has been passed. This is checked when [`setGCWorkerServiceSafePoint`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L590-L612) is called.
+There is a further situation cannot be handled by calculating the global min start timestamp across all TiDB servers, some tools may require TiDB keep data available for a long time. e.g., when [BR](https://github.com/pingcap/tidb/tree/v5.2.1/br) is processing backup task, the snapshot should be kept even the specific lifetime has been passed. This is checked when [`setGCWorkerServiceSafePoint`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L590-L612) is called.
 
 ### GC Workflow
 
