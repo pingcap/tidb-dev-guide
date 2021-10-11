@@ -154,6 +154,8 @@ TiDB server has the risk of crash, however, if a never-pushed-up min start times
 
 After we get all the min start timestamps from etcd, it's easy to calculate the global min start timestamp. It's easy to know the min start timestamp from a single TiDB instance, and every TiDB instance will report it's min start timestamp to etcd in [`ReportMinStartTS`](https://github.com/pingcap/tidb/blob/v5.2.1/domain/infosync/info.go#L548-L570) function every interval.
 
+There is a further situation cannot be handled by calculating the global min start timestamp across all TiDB servers, some tools may require TiDB keep data available for a long time. e.g., when [BR](https://github.com/pingcap/tidb/tree/v5.2.1/br) is processing back up task, the snapshot should be kept even the specific lifetime has been passed. This is checked when [`setGCWorkerServiceSafePoint`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L590-L612) is called.
+
 ### GC Workflow
 
 Once the safepoint is decided and prepare stage is done, it's ready to start a GC workflow. Generally, there are three steps to do.
@@ -166,7 +168,7 @@ The workflow can be found from [GC job function](https://github.com/pingcap/tidb
 
 In resolve locks phase, GC will clean up the locks of aborted transaction and commit the locks of success transaction. `GCWorker` scans the locks from every store and call [`BatchResolveLocks`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/txnkv/txnlock/lock_resolver.go#L184) for cleaning up, you may read [lock resolver chapter](lock-resolver.md) for more information about locks.
 
-From TiDB 5.0, it's possible to scan by physical mode which bypass the Raft layer and scan the locks directly. The [`resolveLocks`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1001-L1018) function will use legecy mode as a fallback even if physical mode is set.
+There are two modes when scanning locks, legacy mode and physical mode. Currently, only legacy mode is stable. The physical mode(a.k.a., Green GC) is introduced in TiDB 4.0, however not GA yet. When it is available, it's possible to scan locks by physical mode which bypasses the Raft layer and scan the locks directly. The [`resolveLocks`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L1001-L1018) function will use legacy mode as a fallback even if physical mode is set.
 
 ```go
 func (w *GCWorker) resolveLocks(ctx context.Context, safePoint uint64, concurrency int, usePhysical bool) (bool, error) {
@@ -213,9 +215,9 @@ MySQL [test]> SELECT HIGH_PRIORITY job_id, element_id, start_key, end_key FROM m
 1 row in set (0.002 sec)
 ```
 
-The to-be-deleted ranges are stored in `mysql.gc_delete_range`, in GC. They will be deleted in `deleteRanges`. After they are cleaned up, they will be moved into `mysql.gc_delete_range_done`, and double-checked after 24 hours.
+The to-be-deleted ranges are stored in `mysql.gc_delete_range`. They will be deleted in [`deleteRanges`](https://github.com/pingcap/tidb/blob/v5.2.1/store/gcworker/gc_worker.go#L686) in GC. After they are cleaned up, they will be moved into `mysql.gc_delete_range_done`, and double-checked after 24 hours.
 
-Finally, the `GCWorker` is going to clean up the stale keys. There are `central` mode and `distributed` mode. From TiDB 3.0, `tikv_gc_mode` is set to `distributed` mode by default, this document will talk about `distributed` mode only.
+Finally, the `GCWorker` is going to clean up the stale keys. From TiDB 5.0, only `distributed` mode is supported, this document will talk about `distributed` mode below.
 
 Distributed GC is implemented by pushing up the safepoint in PD. Notice that the safepoint is monotonic. PD guarantees this by comparing the old and new values [here](https://github.com/tikv/pd/blob/v5.2.1/server/grpc_service.go#L1081-L1127).
 
