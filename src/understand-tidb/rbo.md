@@ -268,6 +268,7 @@ First, we will try to "simplify" outer joins, which means convert outer joins to
 Example:
 ```sql
 CREATE TABLE t(a int, b int);
+CREATE TABLE t1(a int, b int);
 EXPLAIN SELECT * FROM t LEFT JOIN t1 ON t.a = t1.a WHERE t1.a IS NOT NULL;
 ```
 ```
@@ -288,7 +289,7 @@ Second, we will also try to derive some extra conditions from the existing predi
 
 Example:
 ```sql
-EXPLAIN SELECT * FROM t1 JOIN t2 ON t1.b = t2.b WHERE (t1.a=1 AND t2.a=1) OR (t1.a=2 AND t2.a=2);
+EXPLAIN SELECT * FROM t1 JOIN t ON t1.b = t.b WHERE (t1.a=1 AND t.a=1) OR (t1.a=2 AND t.a=2);
 ```
 ```
 +---------------------------------+----------+-----------+----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
