@@ -14,24 +14,22 @@ Histogram splits the data into a number of buckets and maintains some informatio
 
 Among two commonly used histogram strategies, equal-depth and equal-width, we choose the equal-depth histogram for it has a better guarantee of worst case error rate compared to that of the equal-width histogram. You can refer to the paper [Accurate estimation of the number of tuples satisfying a condition](https://dl.acm.org/citation.cfm?id=602294) for more information. With the equal-depth histogram, the number of values in each bucket is to be as equal as possible. For example, to split the given record set of `1.6, 1.9, 1.9, 2.0, 2.4, 2.6, 2.7, 2.7, 2.8, 2.9, 3.4, 3.5` into 4 buckets, the final buckets would look like `[1.6, 1.9], [2.0, 2.6], [2.7, 2.8], [2.9, 3.5]`.	Thus the depth, (a.k.a. the number of records) of each bucket is 3, as shown in the following graph.
 
-![equal-depth histogram](/src/img/stats-histogram.png)
+![equal-depth histogram](../img/stats-histogram.png)
 
-###Count-Min Sketch 
+### Count-Min Sketch 
 
 The Count-Min Sketch (CM sketch) is a data structure used for query cardinality estimation for the equal predicate, or join, etc., and provides strong accuracy guarantees. Since its introduction in 2003 in the paper [An improved data stream summary: The count-min sketch and its applications](http://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf), it has gained widespread use given its simplicity of construction and use.
 
 CM sketch maintains an array of `d*w` counts, and for each value, maps it to a column in each row using `d` separate hash functions and modifies the count value at those `d` positions. This is shown in the following figure.
 
-![count-min sketch](/src/img/stats-cmsketch.png)
+![count-min sketch](../img/stats-cmsketch.png)
 
 This way, when querying how many times a value appears, the d hash functions are still used to find the position mapped to in each row, and the minimum of these d values is used as the estimate. 
 
 **Please note that CM sketch is not used as default statistics since version 5.1 given the increasing concerns on estimation bias under the scenarios with large distinct values of a column.**
+### Top-N Value (Most Frequent Value)
 
-
-### Top-N value(Most Frequent Value)
-
-The CM sketch would encounter severe hash collisions when the dataset grows while the histogram has its limit to estimate the selectivity of equal predicates. Thus we extract the Top-N value (a.k.a., the most frequent value) of the dataset out of the histogram to improve the accuracy of the estimation of an equal predicate. Here, the top-n statistics are stored as a pair of `(value, cnt)`. For example, for a dataset `1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 7`. if n of top-n is 1, the top-n value pair will be `[(1, 7)]`, and the rest of the histogram is constructed using the remaining data `2, 2, 3, 4, 4, 5, 6, 7`. You may refer to the paper [Synopses for Massive Data: Samples,Histograms, Wavelets, Sketches](https://dl.acm.org/doi/10.1561/1900000004) for additional information.
+The CM sketch would encounter severe hash collisions when the dataset grows while the histogram has its limit to estimate the selectivity of equal predicates. Thus we extract the Top-N value (a.k.a., the most frequent value) of the dataset out of the histogram to improve the accuracy of the estimation of an equal predicate. Here, the top-n statistics are stored as a pair of `(value, cnt)`. For example, for a dataset `1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 7`. if n of top-n is 1, the top-n value pair will be `[(1, 7)]`, and the rest of the histogram is constructed using the remaining data `2, 2, 3, 4, 4, 5, 6, 7`. You may refer to the paper [Synopses for Massive Data: Samples, Histograms, Wavelets, Sketches](https://dl.acm.org/doi/10.1561/1900000004) for additional information.
 
 ## Statistics Construction
 
@@ -43,9 +41,10 @@ When constructing a column histogram, sampling will be performed first, and then
 
 In the [collect](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/sample.go#L228) function, we implemented the reservoir sampling algorithm to generate a uniform sampling set. Since its principle and code are relatively simple, it will not be introduced here.
 
-After sampling, in [BuildColumn](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L210), we implemented the construction of column histogram. The samples are sorted first, then the height of each bucket is determined, and followed by traversing each value `v` sequentially:
-- If `v` is equal to the previous value, then put `v` in the same bucket as the previous value, regardless of whether the bucket is full or not so that each value can only exist in one bucket.
-- If it is not equal to the previous value, then check whether the current bucket is full, put it directly into the current bucket, and use [updateLastBucket](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L225) to change the upper bound and depth of the bucket.
+After sampling, in [BuildColumn](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L210), we implement the construction of column histogram. The samples are sorted first, then the height of each bucket is determined, and followed by traversing each value `v` sequentially:
+
+* If `v` is equal to the previous value, then put `v` in the same bucket as the previous value, regardless of whether the bucket is full or not so that each value can only exist in one bucket.
+* If it is not equal to the previous value, then check whether the current bucket is full. If bucket still has room to store a new item, put `v` directly into the current bucket, and use [updateLastBucket](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L225) to change the upper bound and depth of the bucket.
 - Otherwise, use [AppendBucket](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L214) to put in a new bucket.
 
 > You can find how we extract the top-n values then build the histogram in [BuildHistAndTopN](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L215).
@@ -55,9 +54,10 @@ After sampling, in [BuildColumn](https://github.com/pingcap/tidb/blob/466f6e77b6
 When constructing the index column histogram, we use [SortedBuilder](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L28) to maintain the intermediate state of the building process. Since the number of rows of data cannot be known in advance, the depth of each bucket cannot be determined. However, since the data in the index column is already ordered, we set the initial depth of each bucket to 1 in [NewSortedBuilder](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L44). For each piece of data, [Iterate](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/builder.go#L56) will insert the data in a similar way when constructing a column histogram. If at a certain point, the number of required buckets exceeds the current bucket number, then use [mergeBucket](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L532) to merge every two previous buckets into one, double the bucket depth, and then continue to insert.
 
 After collecting the histograms separately established on each Region, we also need to merge the histograms on each Region with [MergeHistogram](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L761). In this function:
-- In order to ensure that each value only appears in one bucket, we dealt with the problem of the buckets at the junction, that is, if the upper and lower bounds of the two buckets at the junction are [equal](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L775), then the two buckets need to be merged first;
-- Before actual merging, we [adjust](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L795-L806) the average bucket depth of the two histograms to be approximately equal;
-- If the number of buckets exceeds the limit after the histogram is merged, then the two adjacent buckets are [merged](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L814) into one.
+
+* In order to ensure that each value only appears in one bucket, we deal with the problem of the buckets at the junction, that is, if the upper and lower bounds of the two buckets at the junction are [equal](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L775), then the two buckets need to be merged first;
+* Before actual merging, we [adjust](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L795-L806) the average bucket depth of the two histograms to be approximately equal;
+* If the number of buckets exceeds the limit after the histogram is merged, then the two adjacent buckets are [merged](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L814) into one.
 
 ## Statistics maintenance
 
@@ -73,7 +73,7 @@ What needs to be pointed out here is that dynamically adjusting statistics based
 
 Query filtering conditions are often used in query statements to filter out certain data. Thus the main function to exploit statistics is to estimate the number of data after applying these filter conditions so that the optimizer may choose the optimal execution plan based on those estimates. We will introduce two main types of estimation for range and point filtering.
 
-#### Range Estimation
+#### Range estimation
 
 For a query that results in a range of data sets on a particular column, we choose the histogram for estimation.
 
@@ -106,16 +106,18 @@ It should be noted that we divide the statistics of a single column into [three 
 The above two subsections describe how we estimate query conditions on a single column, but actual query statements often contain multiple query conditions on multiple columns, so we need to consider how to handle the multi-column case. In TiDB, the Selectivity function implements this functionality, and it is the most important interface to the optimizer provided by the statistics information module.
 
 In Selectivity, there are the following steps:
-- [getMaskAndRange](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/selectivity.go#L363) calculates the filter conditions that can be covered for each column and each index, uses an int64 as a bitset, and sets the bit position of the filter conditions that can be covered by the column to 1.
-- Next, in [getUsableSetsByGreedy](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/selectivity.go#L404), select as few bitsets as possible to cover as many filter conditions as possible. Every time in the unused bitset, select a filter condition that can cover up to the uncovered. And if the same number of filter conditions can be covered, we will give preference to `pkType` or `indexType`.
-- Use the method mentioned above to estimate the selectivity on each column and each index, and use the independence assumption to combine them as the final result.
+
+ * [getMaskAndRange](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/selectivity.go#L363) calculates the filter conditions that can be covered for each column and each index, uses an int64 as a bitset, and sets the bit position of the filter conditions that can be covered by the column to 1.
+* Next, in [getUsableSetsByGreedy](https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/selectivity.go#L404), select as few bitsets as possible to cover as many filter conditions as possible. Every time in the unused bitset, select a filter condition that can cover up to the uncovered. And if the same number of filter conditions can be covered, we will give preference to `pkType` or `indexType`.
+* Use the method mentioned above to estimate the selectivity on each column and each index, and use the independence assumption to combine them as the final result.
 
 ## Summary
 
-The collection and maintenance of statistics are one of the core functions of the database. And for the cost-based query optimizer, the accuracy of statistics directly affects the optimizer’s decision and, therefore, the query performance. In the distributed database, collecting statistics is not much different from a single node database. However, it is more challenging to maintain the statistics, e.g., how to maintain accurate and up-to-date statistics in the case of multi-node updates.
+The collection and maintenance of statistics are one of the core functions of the database. And for the cost-based query optimizer, the accuracy of statistics directly affects the optimizer's decision and, therefore, the query performance. In distributed databases, collecting statistics is not much different from a single node database. However, it is more challenging to maintain the statistics, e.g., how to maintain accurate and up-to-date statistics in the case of multi-node updates.
 
 For dynamic updating of histograms, the industry generally has two approaches.
-- For each addition or deletion, go to update the corresponding bucket depth. When its depth is too high, a bucket is split into two equal width buckets, although it is hard to determine the splitting point accurately and may cause estimation error.
-- Using the actual number obtained from the executed query to adjust the histogram with feedback, assuming that the error contributed by all buckets is uniform, and uses the continuous value assumption to adjust all the buckets involved. However, the assumption of uniformity of errors may not hold and cause problems. For example, when a newly inserted value is larger than the maximum value of the histogram, it will spread the error caused by the newly inserted value to the whole histogram, which causes estimation errors.
 
-Currently, TiDB's statistics are still dominated by single-column statistics. To reduce the use of independence assumptions, TiDB will further explore the collection and maintenance of multi-column statistics, as well as other synopses to provide more accurate statistics for the optimizer in the near future.
+* For each addition or deletion, update the corresponding bucket depth. When its depth is too high, a bucket is split into two equal width buckets, although it is hard to determine the splitting point accurately and may cause estimation error.
+* Using the actual number obtained from the executed query to adjust the histogram with feedback, assuming that the error contributed by all buckets is uniform, and uses the continuous value assumption to adjust all the buckets involved. However, the assumption of uniformity of errors may not hold and cause problems. For example, when a newly inserted value is larger than the maximum value of the histogram, it will spread the error caused by the newly inserted value to the whole histogram, which causes estimation errors.
+
+Currently, TiDB's statistics are still dominated by single-column statistics. To reduce the use of independence assumptions, TiDB will further explore the collection and maintenance of multi-column statistics, as well as other synopses to provide more accurate statistics for the optimizer.
