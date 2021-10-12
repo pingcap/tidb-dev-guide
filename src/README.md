@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -56,13 +56,16 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://about.me/li.su"><img src="https://avatars.githubusercontent.com/u/528332?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lysu</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Alysu" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/cfzjywxk"><img src="https://avatars.githubusercontent.com/u/3692139?v=4?s=100" width="100px;" alt=""/><br /><sub><b>cfzjywxk</b></sub></a><br /><a href="#content-cfzjywxk" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/cfzjywxk"><img src="https://avatars.githubusercontent.com/u/3692139?v=4?s=100" width="100px;" alt=""/><br /><sub><b>cfzjywxk</b></sub></a><br /><a href="#content-cfzjywxk" title="Content">🖋</a> <a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Acfzjywxk" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://blog.tongmu.me"><img src="https://avatars.githubusercontent.com/u/9587680?v=4?s=100" width="100px;" alt=""/><br /><sub><b>you06</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Ayou06" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/ekexium"><img src="https://avatars.githubusercontent.com/u/31720476?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ziqian Qin</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Aekexium" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/zhangyangyu"><img src="https://avatars.githubusercontent.com/u/3690895?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Xiang Zhang</b></sub></a><br /><a href="#content-zhangyangyu" title="Content">🖋</a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/XuHuaiyu"><img src="https://avatars.githubusercontent.com/u/9039012?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HuaiyuXu</b></sub></a><br /><a href="#content-XuHuaiyu" title="Content">🖋</a></td>
+    <td align="center"><a href="https://sticnarf.me"><img src="https://avatars.githubusercontent.com/u/17217495?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yilin Chen</b></sub></a><br /><a href="#content-sticnarf" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/tangenta"><img src="https://avatars.githubusercontent.com/u/24713065?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tangenta</b></sub></a><br /><a href="#content-tangenta" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/wshwsh12"><img src="https://avatars.githubusercontent.com/u/14054293?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shenghui Wu</b></sub></a><br /><a href="#content-wshwsh12" title="Content">🖋</a></td>
   </tr>
 </table>
 

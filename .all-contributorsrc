@@ -206,7 +206,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/3692139?v=4",
       "profile": "https://github.com/cfzjywxk",
       "contributions": [
-        "content"
+        "content",
+        "review"
       ]
     },
     {
@@ -241,6 +242,33 @@
       "name": "HuaiyuXu",
       "avatar_url": "https://avatars.githubusercontent.com/u/9039012?v=4",
       "profile": "https://github.com/XuHuaiyu",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "sticnarf",
+      "name": "Yilin Chen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17217495?v=4",
+      "profile": "https://sticnarf.me",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "tangenta",
+      "name": "tangenta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24713065?v=4",
+      "profile": "https://github.com/tangenta",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "wshwsh12",
+      "name": "Shenghui Wu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14054293?v=4",
+      "profile": "https://github.com/wshwsh12",
       "contributions": [
         "content"
       ]
