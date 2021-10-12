@@ -121,3 +121,87 @@ For dynamic updating of histograms, the industry generally has two approaches.
 * Using the actual number obtained from the executed query to adjust the histogram with feedback, assuming that the error contributed by all buckets is uniform, and uses the continuous value assumption to adjust all the buckets involved. However, the assumption of uniformity of errors may not hold and cause problems. For example, when a newly inserted value is larger than the maximum value of the histogram, it will spread the error caused by the newly inserted value to the whole histogram, which causes estimation errors.
 
 Currently, TiDB's statistics are still dominated by single-column statistics. To reduce the use of independence assumptions, TiDB will further explore the collection and maintenance of multi-column statistics, as well as other synopses to provide more accurate statistics for the optimizer.
+
+
+## Appendix
+
+Below is the related code structure from the TiDB repository.
+
+```
+tidb
+.
+│
+...
+├── executor
+│   │
+│   ...
+│   ├── analyze.go
+│   │
+│   ...
+...
+├── statistics
+│   ├── analyze.go
+│   ├── analyze_jobs.go
+│   ├── analyze_jobs_serial_test.go
+│   ├── builder.go
+│   ├── cmsketch.go
+│   ├── cmsketch_test.go
+│   ├── estimate.go
+│   ├── feedback.go
+│   ├── feedback_test.go
+│   ├── fmsketch.go
+│   ├── fmsketch_test.go
+│   ├── handle
+│   │   ├── bootstrap.go
+│   │   ├── ddl.go
+│   │   ├── ddl_test.go
+│   │   ├── dump.go
+│   │   ├── dump_test.go
+│   │   ├── gc.go
+│   │   ├── gc_test.go
+│   │   ├── handle.go
+│   │   ├── handle_test.go
+│   │   ├── main_test.go
+│   │   ├── update.go
+│   │   ├── update_list_test.go
+│   │   └── update_test.go
+│   ├── histogram.go
+│   ├── histogram_test.go
+│   ├── integration_test.go
+│   ├── main_test.go
+│   ├── row_sampler.go
+│   ├── sample.go
+│   ├── sample_test.go
+│   ├── scalar.go
+│   ├── scalar_test.go
+│   ├── selectivity.go
+│   ├── selectivity_test.go
+│   ├── statistics_test.go
+│   ├── table.go
+│   └── testdata
+│       ├── integration_suite_in.json
+│       ├── integration_suite_out.json
+│       ├── stats_suite_in.json
+│       └── stats_suite_out.json
+...
+├── util
+│   │
+│   ...
+│   ├── ranger
+│   │   ├── checker.go
+│   │   ├── detacher.go
+│   │   ├── main_test.go
+│   │   ├── points.go
+│   │   ├── ranger.go
+│   │   ├── ranger_test.go
+│   │   ├── testdata
+│   │   │   ├── ranger_suite_in.json
+│   │   │   └── ranger_suite_out.json
+│   │   ├── types.go
+│   │   └── types_test.go
+... ...
+```
+
+The `exeutor/analyze.go` places how the ANALYZE executes and save to the TiKV storage. If you want to know the detailed data structure and how they are maintained, you can go thourgh the `statistics` directory. e.g. You can find how we define and maintain the histogram strcuture in `statistics/histogram.go`.
+
+And for the TiKV repository, you can look into the directory `src/coprocessor/statistics/`.
