@@ -170,9 +170,144 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="dql"><a class="header" href="#dql">DQL</a></h1>
-<p>Example:</p>
-<pre><code class="language-sql">select * from t where a = 1;
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>This chapter describes the execution process of a data query statement in TiDB. Starting from the SQL processing flow, it describes how a SQL statement is sent to TiDB, how TiDB processes it after receiving the SQL statement, and how the execution result is returned.</p>
+<h2 id="execution-process"><a class="header" href="#execution-process">Execution Process</a></h2>
+<p>Briefly, the execution process of a SQL statement can be divided into three stages:</p>
+<ol>
+<li>
+<p>Protocol Layer</p>
+<p>Protocol layer is responsible for parsing the network protocol. Its code locates at <code>server</code> package, mainly consisting of two parts: one for connection establishing and management, every connection corresponds to one session separately; one for handling the packets read from the connection.</p>
+</li>
+<li>
+<p>SQL Layer</p>
+<p>SQL layer is the most complex part in TiDB, handling SQL statement parsing and execution. SQL is a complex language, having various data types and operators, numerous syntax combinations. Besides, TiDB uses a distributed storage engine underneath, so it will encounter many problems standalone storage engines won't.</p>
+</li>
+<li>
+<p>KV API Layer</p>
+<p>KV API layer routes requests to the right KV server and passes the results back to SQL layer. It should handle the exceptions happened in this stage.</p>
+</li>
+</ol>
+<p>A SQL statement goes through the above three stages sequentially, get parsed and transformed, then handled by SQL layer. In SQL layer, query plans are generated and executed, retrieving data from the underneath storage engine. We'll give a detailed introduction to SQL layer.</p>
+<h3 id="protocol-layer"><a class="header" href="#protocol-layer">Protocol Layer</a></h3>
+<h4 id="entry"><a class="header" href="#entry">Entry</a></h4>
+<p>The entry of TiDB's SQL layer is in <code>server/conn.go</code>. After a connection is established between the client and TiDB, TiDB spawns a goroutine to listen and poll on the port. In <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L911">clientConn.Run()</a>, a loop keeps reading network packets and calls <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1111">clientConn.dispatch()</a> to handle them:</p>
+<pre><code class="language-go">data, err := cc.readPacket()
+if err = cc.dispatch(ctx, data)
 </code></pre>
+<p><code>dispatch</code> handles the raw data array. The first byte of the array represents command type. Among the types, <code>COM_QUERY</code> represents data query statement. You can refer to <a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html">MySQL protocol</a> for more information about the data array. For <code>COM_QUERY</code>, its content is SQL statement. <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1633">clientConn.handleQuery()</a> handles the SQL statement. It calls <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/driver_tidb.go#L217">TiDBContext.ExecuteStmt()</a> in <code>server/driver_tidb.go</code>:</p>
+<pre><code class="language-go">func (tc *TiDBContext) ExecuteStmt(ctx context.Context, stmt ast.StmtNode) (ResultSet, error) {
+	rs, err := tc.Session.ExecuteStmt(ctx, stmt)
+</code></pre>
+<p><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/session/session.go#L1620">session.ExecuteStmt()</a> is the entry of the SQL layer kernel and returns the result of the SQL execution.</p>
+<h4 id="exit"><a class="header" href="#exit">Exit</a></h4>
+<p>After a series of operations described above, the execution results will be returned to the client in <a href="https://dev.mysql.com/doc/internals/en/com-query-response.html">COM_QUERY response</a> format by <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1943">clientConn.writeResultSet()</a>.</p>
+<h3 id="sql-layer"><a class="header" href="#sql-layer">SQL Layer</a></h3>
+<p>In SQL layer, there are multiple concepts and interfaces we need to pay close attention to:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/session/session.go#L123">Session</a></li>
+<li><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/util/sqlexec/restricted_sql_executor.go#L133">RecordSet</a></li>
+<li><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/planner/core/plan.go#L36">Plan</a></li>
+<li><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/executor.go#L258">Executor</a></li>
+</ul>
+<h4 id="a-hrefsessionhtmlsessiona"><a class="header" href="#a-hrefsessionhtmlsessiona"><a href="session.html">Session</a></a></h4>
+<p>The most important function in <code>Session</code> is <code>ExecuteStmt</code>. It wraps calls to other modules. The SQL execution will respect environment variables in <code>Session</code> like <code>AutoCommit</code> and timezone.</p>
+<h4 id="a-hrefparserhtmlparsera"><a class="header" href="#a-hrefparserhtmlparsera"><a href="parser.html">Parser</a></a></h4>
+<p><a href="https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
+<pre><code class="language-go">p := parserPool.Get().(*parser.Parser)
+defer parserPool.Put(p)
+p.SetSQLMode(s.sessionVars.SQLMode)
+p.SetParserConfig(s.sessionVars.BuildParserConfig())
+tmp, warn, err := p.Parse(sql, charset, collation)
+</code></pre>
+<p>In the parsing process, lexer first transforms the SQL text to tokens, and then parser accepts the tokens as inputs and generates appropriate AST nodes. For example, statement <code>SELECT * FROM t WHERE c &gt; 1;</code> matches <a href="https://github.com/pingcap/tidb/blob/45457ea8810ca7b835da4ba7f55d0eee02043ac5/parser/parser.y#L3936">SelectStmt rule</a> finally turns to the structure below:</p>
+<pre><code class="language-go">type SelectStmt struct {
+	dmlNode
+	// SelectStmtOpts wraps around select hints and switches.
+	*SelectStmtOpts
+	// Distinct represents whether the select has distinct option.
+	Distinct bool
+	// From is the from clause of the query.
+	From *TableRefsClause
+	// Where is the where clause in select statement.
+	Where ExprNode
+	// Fields is the select expression list.
+	Fields *FieldList
+	// GroupBy is the group by expression list.
+	GroupBy *GroupByClause
+	// Having is the having condition.
+	Having *HavingClause
+	// WindowSpecs is the window specification list.
+	WindowSpecs []WindowSpec
+	// OrderBy is the ordering expression list.
+	OrderBy *OrderByClause
+	// Limit is the limit clause.
+	Limit *Limit
+	// LockInfo is the lock type
+	LockInfo *SelectLockInfo
+	// TableHints represents the table level Optimizer Hint for join type
+	TableHints []*TableOptimizerHint
+	// IsInBraces indicates whether it's a stmt in brace.
+	IsInBraces bool
+	// WithBeforeBraces indicates whether stmt's with clause is before the brace.
+	// It's used to distinguish (with xxx select xxx) and with xxx (select xxx)
+	WithBeforeBraces bool
+	// QueryBlockOffset indicates the order of this SelectStmt if counted from left to right in the sql text.
+	QueryBlockOffset int
+	// SelectIntoOpt is the select-into option.
+	SelectIntoOpt *SelectIntoOption
+	// AfterSetOperator indicates the SelectStmt after which type of set operator
+	AfterSetOperator *SetOprType
+	// Kind refer to three kind of statement: SelectStmt, TableStmt and ValuesStmt
+	Kind SelectStmtKind
+	// Lists is filled only when Kind == SelectStmtKindValues
+	Lists []*RowExpr
+	With  *WithClause
+}
+</code></pre>
+<p><code>From t</code> is parsed to <code>From</code> field. <code>WHERE c &gt; 1</code> is parsed to <code>Where</code> field. <code>*</code> is parsed to <code>Fields</code> field. Most data structures in <code>ast</code> package implement <code>ast.Node</code> interface. This interface has a <code>Accept</code> method, implementing the classic visitor pattern, used by following procedures to traverse the tree.</p>
+<h4 id="compile"><a class="header" href="#compile">Compile</a></h4>
+<p>After the AST is generated, it's going to be validated, transformed and optimized in <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/compiler.go#L50">Compiler.Compile()</a>:</p>
+<pre><code class="language-go">compiler := executor.Compiler{Ctx: s}
+stmt, err := compiler.Compile(ctx, stmtNode)
+</code></pre>
+<p>There are three steps:</p>
+<ol>
+<li><code>plan.Preprocess</code>: do validations and name binding.</li>
+<li><code>plan.Optimize</code>: make and optimize query plans, this is the core part.</li>
+<li>construct <code>executor.ExecStmt</code> structure: <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/adapter.go#L186">ExecStmt</a> holds the query plans. It's the foundation for following execution.</li>
+</ol>
+<h4 id="a-hrefexecutionhtmlexecutora"><a class="header" href="#a-hrefexecutionhtmlexecutora"><a href="execution.html">Executor</a></a></h4>
+<p>While constructing the executor in <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/executor/adapter.go#L764">ExecStmt.buildExecutor()</a>, query plans are turned to executor. Then the execution engine could perform the query plans via the executor. The generated executor is encapsulated in a <code>recordSet</code> structure:</p>
+<pre><code class="language-go">return &amp;recordSet{
+	executor:   e,
+	stmt:       a,
+	txnStartTS: txnStartTS,
+}
+</code></pre>
+<p>This structure implements <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/util/sqlexec/restricted_sql_executor.go#L133">ast.RecordSet</a> interface. It abstracts the query results and has the following methods:</p>
+<pre><code class="language-go">type RecordSet interface {
+	// Fields gets result fields.
+	Fields() []*ast.ResultField
+	// Next reads records into chunk.
+	Next(ctx context.Context, req *chunk.Chunk) error
+	// NewChunk create a chunk.
+	NewChunk() *chunk.Chunk
+	// Close closes the underlying iterator, call Next after Close will
+	// restart the iteration.
+	Close() error
+}
+</code></pre>
+<p>The functionality of each method is described in the comments. In short, <code>Fields()</code> retrieves the type of each column. <code>Next()</code> returns a batch of the result. <code>Close()</code> closes the result set.</p>
+<p>TiDB's execution engine executes in Volcano model. All the executors constitute an executor tree. Every upper layer gathers results from the lower layer by calling its <code>Next()</code> method. Assuming we have a SQL statement <code>SELECT c1 FROM t WHERE c2 &gt; 1;</code> and the query plan is full table scanning plus filtering, the executor tree is like:</p>
+<p><img src="../img/dql-volcano.png" alt="" /></p>
+<p>From the above picture, we can see the data flow between executors. The starting point of a SQL statement execution, also the first <code>Next()</code> call is in <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L2016">the function returning data back to the client</a>:</p>
+<pre><code class="language-go">err := rs.Next(ctx, req)
+</code></pre>
+<p><code>rs</code> is a <code>RecordSet</code> instance. Keep calling its <code>Next</code> method to get more results to return to the client.</p>
+<h2 id="overall-diagram"><a class="header" href="#overall-diagram">Overall Diagram</a></h2>
+<p>The above SQL query statement execution process can in general be described as the following picture:</p>
+<p><img src="../img/dql-frame-diagram.png" alt="" /></p>
 
                     </main>
 
