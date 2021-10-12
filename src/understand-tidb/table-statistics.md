@@ -27,6 +27,7 @@ CM sketch maintains an array of `d*w` counts, and for each value, maps it to a c
 This way, when querying how many times a value appears, the d hash functions are still used to find the position mapped to in each row, and the minimum of these d values is used as the estimate. 
 
 **Please note that CM sketch is not used as default statistics since version 5.1 given the increasing concerns on estimation bias under the scenarios with large distinct values of a column.**
+
 ### Top-N Value (Most Frequent Value)
 
 The CM sketch would encounter severe hash collisions when the dataset grows while the histogram has its limit to estimate the selectivity of equal predicates. Thus we extract the Top-N value (a.k.a., the most frequent value) of the dataset out of the histogram to improve the accuracy of the estimation of an equal predicate. Here, the top-n statistics are stored as a pair of `(value, cnt)`. For example, for a dataset `1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 7`. if n of top-n is 1, the top-n value pair will be `[(1, 7)]`, and the rest of the histogram is constructed using the remaining data `2, 2, 3, 4, 4, 5, 6, 7`. You may refer to the paper [Synopses for Massive Data: Samples, Histograms, Wavelets, Sketches](https://dl.acm.org/doi/10.1561/1900000004) for additional information.
@@ -202,6 +203,6 @@ tidb
 ... ...
 ```
 
-The `exeutor/analyze.go` places how the ANALYZE executes and save to the TiKV storage. If you want to know the detailed data structure and how they are maintained, you can go thourgh the `statistics` directory. e.g. You can find how we define and maintain the histogram strcuture in `statistics/histogram.go`.
+The `exeutor/analyze.go` places how `ANALYZE` executes and save to the TiKV storage. If you want to know the detailed data structure and how they are maintained, go through the `statistics` directory. For example, You can find how we define and maintain the histogram structure in `statistics/histogram.go`.
 
 And for the TiKV repository, you can look into the directory `src/coprocessor/statistics/`.
