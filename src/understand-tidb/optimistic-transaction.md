@@ -10,15 +10,30 @@ This document refers to the code of [TiDB v5.2.1](https://github.com/pingcap/tid
 
 The main function stack to start an optimistic transaction is as followers.
 
-![image-20211008150416690](C:\Users\lpbgy\AppData\Roaming\Typora\typora-user-images\image-20211008150416690.png)
+```go
+(a *ExecStmt) Exec
 
-The function “(e *SimpleExec) executeBegin” do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/master/executor/simple.go) .
+​    (a *ExecStmt) handleNoDelay
 
+​        (a *ExecStmt) handleNoDelayExecutor
+
+​            Next
+
+​                (e *SimpleExec) Next
+
+​                    (e *SimpleExec) executeBegin
+```
+
+The function "(e *SimpleExec) executeBegin" do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571) .
+
+```go
 /*
 
-- *Check the syntax "start transaction read only" and "as of timestamp" used correctly.*
-- *If stale read timestamp was set,  creates a new stale read transaction and sets "in transaction" state, and return.*
-- *create a new transaction and set some properties like snapshot, startTS etc*
+Check the syntax "start transaction read only" and "as of timestamp" used correctly.
+
+If stale read timestamp was set,  creates a new stale read transaction and sets "in transaction" state, and return.
+
+create a new transaction and set some properties like snapshot, startTS etc
 
 */
 
@@ -26,11 +41,11 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 
 ​    if s.**ReadOnly** {
 
-​       *// the statement "start transaction read only" must be used with tidb_enable_noop_functions is true*
+​       // the statement "start transaction read only" must be used with tidb_enable_noop_functions is true
 
-​       *//  the statement "start transaction read only  as of timestamp" can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.*
+​       //  the statement "start transaction read only  as of timestamp" can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
 
-​       *//  the statement "start transaction read only  as of timestamp" must ensure the timestamp is in the legal safe point range*        
+​       //  the statement "start transaction read only  as of timestamp" must ensure the timestamp is in the legal safe point range        
 
 ​       enableNoopFuncs := e.ctx.GetSessionVars().EnableNoopFuncs
 
@@ -52,11 +67,11 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 
 ​    } 
 
-​    *// process stale read transaction*
+​    // process stale read transaction
 
 ​    if e.staleTxnStartTS > 0 {
 
-​		*// check timestamp of stale read correctly*
+​      // check timestamp of stale read correctly
 
 ​       if err := e.ctx.NewStaleTxnWithStartTS(ctx, e.staleTxnStartTS); err != nil {
 
@@ -64,13 +79,13 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 
 ​       }
 
-​       *// ignore tidb_snapshot configuration if in stale read transaction*
+​       // ignore tidb_snapshot configuration if in stale read transaction
 
 ​       vars := e.ctx.GetSessionVars()
 
 ​       vars.SetSystemVar(variable.TiDBSnapshot, "")
 
-​       *// set "in transaction" state and return*
+​       // set "in transaction" state and return
 
 ​       vars.SetInTxn(true)
 
@@ -78,9 +93,7 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 
 ​    }
 
- 
-
-​    /* *If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the need to call NewTxn, which commits the existing transaction and begins a new one. If the last un-committed/un-rollback transaction is a time-bounded read-only transaction, we should always create a new transaction.* */
+​    */* *If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the need to call NewTxn, which commits the existing transaction and begins a new one. If the last un-committed/un-rollback transaction is a time-bounded read-only transaction, we should always create a new transaction. */
 
 ​    txnCtx := e.ctx.GetSessionVars().TxnCtx
 
@@ -90,15 +103,15 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 
 ​    }
 
-​     *// set "in transaction" state*
+​    // set "in transaction" state
 
-​    e.ctx.GetSessionVars().SetInTxn(true)
+   e.ctx.GetSessionVars().SetInTxn(true)
 
-​    *// create a new transaction and set some properties like snapshot, startTS etc.*
+   // create a new transaction and set some properties like snapshot, startTS etc.
 
    txn, err := e.ctx.Txn(true)
 
-​    *// set Linearizability option*
+​    // set Linearizability option
 
 ​    if s.CausalConsistencyOnly {
 
@@ -109,26 +122,44 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 ​    return nil
 
 }
+```
 
 
 
-## DML Execute In Optimistic Transaction
+## DML Executed In Optimistic Transaction
 
-There are three kinds of DML operations, such as update, delete and insert. For simplicity, This article only describes the update statement execution process.
+There are three kinds of DML operations, such as update, delete and insert. For simplicity, This article only describes the update statement execution process. DML mutations are not sended to tikv directly, but buffered in TiDB temporarily, commit operation make the mutations effective at last.
 
 The main function stack to execute an update statement such as "update t1 set id2 = 2 where pk = 1" is as followers.
 
-![image-20211009120600394](C:\Users\lpbgy\AppData\Roaming\Typora\typora-user-images\image-20211009120600394.png)
+```go
+(a *ExecStmt) Exec
 
-The function "(e *UpdateExec) updateRows" does the main work for update statement. he important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/master/executor/update.go) .
+​    (a *ExecStmt) handleNoDelay
 
+​        (a *ExecStmt) handleNoDelayExecutor
+
+​            (e *UpdateExec) updateRows
+
+​                 Next
+
+​                   (e *PointGetExecutor) Next
+```
+
+
+
+### (e *UpdateExec) updateRows
+
+The function "(e *UpdateExec) updateRows" does the main work for update statement. he important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/update.go#L229) .
+
+```go
 /*
 
-*Take a batch of data that needs to be updated each time*
+Take a batch of data that needs to be updated each time
 
-*Traverse every row in the batch, make handle which identifies the data uniquely for the row and generate a new row*
+Traverse every row in the batch, make handle which identifies the data uniquely for the row and generate a new row
 
-*Write the new row to table.*
+Write the new row to table.
 
 */
 
@@ -138,7 +169,7 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 
 ​    chk := newFirstChunk(e.children[0])
 
-​    *// composeFunc generates a new row* 
+​    // composeFunc generates a new row 
 
 ​    composeFunc = e.composeNewRow
 
@@ -146,11 +177,11 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 
 ​    for {
 
-​       *// call "Next" method recursively until every executor finished*, every "Next" returns a batch rows from tikv
+​       // call "Next" method recursively until every executor finished, every "Next" returns a batch rows
 
 ​       err := Next(ctx, e.children[0], chk)
 
-​       *// If all rows are updated, return*
+​       // If all rows are updated, return
 
 ​       if chk.NumRows() == 0 {
 
@@ -160,23 +191,23 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 
 ​       for rowIdx := 0; rowIdx < chk.NumRows(); rowIdx++ {
 
-​           *// take one row from the batch above*
+​           // take one row from the batch above
 
 ​           chunkRow := chk.GetRow(rowIdx)
 
-​		   *// convert the data from chunk.Row to types.DatumRow，stored by fields*
+​	      // convert the data from chunk.Row to types.DatumRow，stored by fields
 
 ​           datumRow := chunkRow.GetDatumRow(fields)
 
-​		   *// generate handle which is  unique ID for every row*
+​          // generate handle which is  unique ID for every row
 
 ​           e.prepare(datumRow)
 
-​           *// compose non-generated columns*
+​           // compose non-generated columns
 
 ​           newRow, err := composeFunc(globalRowIdx, datumRow, colsInfo)
 
-​           *// merge non-generated columns*
+​          // merge non-generated columns
 
 ​           e.merge(datumRow, newRow, false)
 
@@ -190,7 +221,7 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 
 ​           }
 
-​           *// write to table*
+​           // write to table
 
 ​           e.exec(ctx, e.children[0].Schema(), datumRow, newRow)
 
@@ -199,19 +230,24 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 ​    }
 
 }
+```
 
 
 
 ## Commit Optimistic Transaction
 
-Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function "(c *twoPhaseCommitter) execute" does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/master/txnkv/transaction/2pc.go) .
+Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function "(c *twoPhaseCommitter) execute" does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112) .
 
+```go
 /*
 
-- *do the "prewrite" operation first*
-- *if OnePC transaction, return immediately*
-- *if AsyncCommit transaction, commit the transaction Asynchronously and return*
-- *if not OnePC and AsyncCommit transaction, commit the transaction synchronously.*
+do the "prewrite" operation first
+
+if OnePC transaction, return immediately
+
+if AsyncCommit transaction, commit the transaction Asynchronously and return
+
+if not OnePC and AsyncCommit transaction, commit the transaction synchronously.
 
 */
 
@@ -227,7 +263,7 @@ func **(c *twoPhaseCommitter) execute**(ctx context.Context) (err error) {
 
 ​    if c.isOnePC() {
 
-​	   // If OnePC transaction, return immediately
+​       *// If OnePC transaction, return immediately*
 
 ​       return nil
 
@@ -254,6 +290,9 @@ func **(c *twoPhaseCommitter) execute**(ctx context.Context) (err error) {
 ​    } 
 
 }
+```
+
+
 
 ### prewrite
 
@@ -261,8 +300,9 @@ The entry function to prewrite a transaction is "(c *twoPhaseCommitter) prewrite
 
 #### (batchExe *batchExecutor) process
 
-The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
+The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1818) .
 
+```go
 // start worker routine to prewrite every batch parallely and collect results
 
 func (batchExe *batchExecutor) process(batches []batchMutations) error {
@@ -322,13 +362,15 @@ func (batchExe *batchExecutor) process(batches []batchMutations) error {
 ​    return err
 
 }
+```
 
 
 
 #### (batchExe *batchExecutor) startWorker
 
-The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
+The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1770) .
 
+```go
 // startWork concurrently do the work for each batch considering rate limit
 
 func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan error, batches []batchMutations) {
@@ -337,7 +379,7 @@ func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan err
 
 ​       waitStart := time.Now()
 
-​       *//  Limit the number of go routines by the buffer size of channel*
+​       //  Limit the number of go routines by the buffer size of channel
 
 ​       if exit := batchExe.rateLimiter.GetToken(exitCh); !exit {
 
@@ -345,11 +387,11 @@ func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan err
 
 ​           batch := batch1
 
-​           *//  call the function "handleSingleBatch" to prewrite every batch keys*
+​           //  call the function "handleSingleBatch" to prewrite every batch keys
 
 ​           go func() {
 
-​              defer batchExe.rateLimiter.PutToken() *//  release the chan buffer*
+​              defer batchExe.rateLimiter.PutToken() //  release the chan buffer
 
 ​              ch <- batchExe.action.**handleSingleBatch**(batchExe.committer, singleBatchBackoffer, batch)
 
@@ -364,25 +406,36 @@ func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan err
 ​    }
 
 }
+```
+
+
 
 #### (action actionPrewrite) handleSingleBatch
 
-The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
+The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/prewrite.go#L149) .
 
+
+
+```go
 /*
 
-- *create a prewrite request and a region request sender that sends the prewrite request to tikv.*
-- *get Prewrite Response coming from tikv*
-- *If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return*
-- *if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return*
-- *If errors hanpped beacause of lock confilict, extract the locks from the error responsed, resolove the locks expired*
-- *do the backoff for prewrite*
+create a prewrite request and a region request sender that sends the prewrite request to tikv.
+
+get Prewrite Response coming from tikv
+
+If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return
+
+if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return
+
+If errors hanpped beacause of lock confilict, extract the locks from the error responsed, resolove the locks expired
+
+do the backoff for prewrite
 
 */
 
 func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.Backoffer, batch batchMutations) (err error) {
 
-​	*// create a prewrite request and a region request sender that sends the prewrite request to tikv.*
+​    *// create a prewrite request and a region request sender that sends the prewrite request to tikv.*
 
 ​    txnSize := uint64(c.regionTxnSize[batch.region.GetID()])
 
@@ -396,7 +449,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ​       regionErr, err := resp.GetRegionError()       
 
-​	   *// get Prewrite Response coming from tikv*
+​       *// get Prewrite Response coming from tikv*
 
 ​       prewriteResp := resp.Resp.(*kvrpcpb.PrewriteResponse)
 
@@ -404,7 +457,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ​       if len(keyErrs) == 0 {  
 
-​		   *// If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return*
+​           *// If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return*
 
 ​           if c.isOnePC() {
 
@@ -414,7 +467,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ​          } 
 
-​		  *// if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return*
+​          *// if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return*
 
 ​          if c.isAsyncCommit() {
 
@@ -422,7 +475,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ​                       c.minCommitTS = prewriteResp.MinCommitTs
 
-​				   }
+​                  }
 
 ​           }
 
@@ -450,7 +503,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ​       }// for _, keyErr := range keyErrs
 
-​	  *// resolve conflict locks expired, do the backoff for prewrite*
+​       *// resolve conflict locks expired, do the backoff for prewrite*
 
 ​       start := time.Now()
 
@@ -471,8 +524,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​    }// for loop
 
 }
-
-
+```
 
 ### commit
 
@@ -482,11 +534,14 @@ The entry function to commit a transaction is "(c *twoPhaseCommitter) commitMuta
 
 The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
 
+```go
 /*
 
-- *If the groups contain primary, commit the primary batch synchronously*
-- *If the first time to commit, spawn a goroutine to commit secondary batches asynchronously*
-- *if retry to commit,  commit the secondary batches synchronously, because itself is in the asynchronously goroutine*
+If the groups contain primary, commit the primary batch synchronously
+
+If the first time to commit, spawn a goroutine to commit secondary batches asynchronously
+
+if retry to commit,  commit the secondary batches synchronously, because itself is in the asynchronously goroutine
 
 */
 
@@ -494,7 +549,7 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 
 ​    batchBuilder := newBatched(c.primary())
 
-​    *// Whether the groups being operated contain primary*
+​    // Whether the groups being operated contain primary
 
 ​    firstIsPrimary := batchBuilder.setPrimary()
 
@@ -502,7 +557,7 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 
 ​    c.checkOnePCFallBack(action, len(batchBuilder.allBatches()))
 
-​    *// If the groups contain primary, commit the primary batch synchronously*
+​    // If the groups contain primary, commit the primary batch synchronously
 
 ​    if firstIsPrimary &&
 
@@ -516,9 +571,9 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 
 ​    }
 
-​    *// If the first time to commit, spawn a goroutine to commit secondary batches asynchronously*
+​    // If the first time to commit, spawn a goroutine to commit secondary batches asynchronously
 
-​	*// if retry to commit,  commit the secondary batches synchronously, because itself is in the asynchronously goroutine*
+   // if retry to commit,  commit the secondary batches synchronously, because itself is in the asynchronously goroutine
 
 ​    if actionIsCommit && !actionCommit.retry && !c.isAsyncCommit() {
 
@@ -545,6 +600,9 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 ​    return errors.Trace(err)
 
 }
+```
+
+
 
 #### (batchExe *batchExecutor) process
 
@@ -560,19 +618,24 @@ The function "(batchExe *batchExecutor) process" calls the function "(actionComm
 
 The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
 
+```go
 /*
 
-- *create a commit request and commit sender*
-- *If regionErr happened, backoff and retry the commit operation*
-- *If the error is not a regionErr, but rejected by TiKV beacause the commit ts was expired, retry with a newer commits*
-- *Other errors happened, return error immediately*
-- *No error happened, exit the for loop and return success*
+create a commit request and commit sender
+
+If regionErr happened, backoff and retry the commit operation
+
+If the error is not a regionErr, but rejected by TiKV beacause the commit ts was expired, retry with a newer commits
+
+Other errors happened, return error immediately
+
+No error happened, exit the for loop and return success
 
 */
 
 func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backoffer, batch batchMutations) error {
 
-​    *// create a commit request and commit sender*
+​    // create a commit request and commit sender
 
 ​    keys := batch.mutations.GetKeys()
 
@@ -600,15 +663,15 @@ func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backof
 
 ​       resp, err := sender.SendReq(bo, req, batch.region, client.ReadTimeoutShort)
 
-​        regionErr, err := resp.GetRegionError()
+​       regionErr, err := resp.GetRegionError()
 
-​	   *// If regionErr happened, backoff and retry the commit operation*
+​       // If regionErr happened, backoff and retry the commit operation
 
 ​       if regionErr != nil {
 
-​           *// For other region error and the fake region error, backoff because there's something wrong.*
+​           // For other region error and the fake region error, backoff because there's something wrong.
 
-​           *// For the real EpochNotMatch error, don't backoff.*
+​           // For the real EpochNotMatch error, don't backoff.
 
 ​           if regionErr.GetEpochNotMatch() == nil || locate.IsFakeRegionError(regionErr) {
 
@@ -642,9 +705,9 @@ func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backof
 
 ​       }// if regionErr != nil
 
- 	  *// If the error is not a regionErr, but rejected by TiKV beacause the commit ts was expired, retry with a newer commits*
+​	   // If the error is not a regionErr, but rejected by TiKV beacause the commit ts was expired, retry with a newer commits
 
-​	  *//  Other errors happened, return error immediately* 
+​       *//  Other errors happened, return error immediately* 
 
 ​       commitResp := resp.Resp.(*kvrpcpb.CommitResponse)
 
@@ -674,7 +737,7 @@ func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backof
 
 ​              // 2PC failed commit key after primary key committed
 
-​                 // No secondary key could be rolled back after it's primary key is committed.
+​              // No secondary key could be rolled back after it's primary key is committed.
 
 ​               return errors.Trace(err)
 
@@ -691,6 +754,11 @@ func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backof
 ​    }// for loop
 
 }
+```
+
+
+
+
 
 
 
