@@ -36,8 +36,8 @@ All DDL jobs goes through two cluster wide DDL Queues:
 
 The two base operations for these queue are:
 
-* [enqueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L701), adding one DDL job to the queue.
-* [dequeue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L722), picking one DDL job from the queue.
+* [enqueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L701), adding one DDL job to the end of the queue.
+* [dequeue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L722), pop the first DDL job from the queue (removing it from the queue and returning it).
 
 When a DDL job is completed it will be [moved to the DDL history](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L883).
 
