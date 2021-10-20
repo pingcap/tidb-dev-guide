@@ -27,10 +27,6 @@ message PrewriteResponse {
 * The `max_commit_ts` is used by 1PC and async commit in common. It limits the maximum allowed commit ts. It's related to a mechanism to avoid a transaction commits while schema changed between the transaction's start_ts and commit_ts. This is mechanism is already explained in the [article about async commit](async-commit.md#ddl-compatibility).
 * When TiKV successfully commits a transaction in 1PC, the `one_pc_commit_ts` field in the `PrewriteResponse` will be set to tell TiDB the final commit_ts. Sometimes TiKV may fail to commit the transaction by 1PC, but it's able to prewrite it in normal 2PC way. In this case, the `one_pc_commit_ts` will be zero to indicate that TiDB still needs to proceed on the 2PC procedure (i.e. the commit phase of 2PC).
 
-<!-- ## Configurations
-
-1PC can be enabled or disabled by [the system variable `tidb_enable_1pc`](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/sessionctx/variable/sysvar.go#L1679-L1682), which is the same as async commit. When the transaction is committing, the configuration will be passed from `session` to `tikvTxn` ([here](https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/session/session.go#L547)) and then to [`KVTxn` in client-go](https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/txn.go#L253-L255). -->
-
 ## TiDB Part
 
 Based on the implementation of normal 2PC and async commit, there isn't too much additional code to support 1PC, but the code changes are scattered.
