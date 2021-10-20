@@ -3,11 +3,12 @@
 
 ## A short introduction to TiDB's DDL
 
-The design behind TiDB's DDL implementation can be read in the [Online DDL design doc](https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md)
+The design behind TiDB's DDL implementation can be read in the [Online DDL design doc](https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md).
 
 TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asyncronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be syncronised with the current state.
 
 The states used are defined in [parser/model/model.go](https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33):
+
 ```golang
         // StateNone means this schema element is absent and can't be used.
         StateNone SchemaState = iota
@@ -29,23 +30,26 @@ Note: this is a very different implementation from MySQL, which uses Meta Data L
 ## Implementation
 
 All DDL jobs goes through two cluster wide DDL Queues:
-- Generic queue for non data changes, [DefaultJobListKey](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L687).
-- Add Index Queue for data changes/reorganizations, [AddIndexJobListKey](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L689), to not block DDLs that does not require data reorganization/backfilling).
+
+* Generic queue for non data changes, [DefaultJobListKey](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L687).
+* Add Index Queue for data changes/reorganizations, [AddIndexJobListKey](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L689), to not block DDLs that does not require data reorganization/backfilling).
 
 The two base operations for these queue are:
-- [enqueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L701), adding one DDL job to the queue.
-- [dequeue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L722), picking one DDL job from the queue.
+
+* [enqueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L701), adding one DDL job to the queue.
+* [dequeue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L722), picking one DDL job from the queue.
 
 When a DDL job is completed it will be [moved to the DDL history](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L883).
 
 There are two main execution parts handling DDLs:
-- TiDB session, which are executing your statements. This will parse and validate the SQL DDL statement and create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208) and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.
-- DDL background goroutines:
-  - [limitDDLJobs](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257) which takes tasks from the sessions and adds to the DDL queues in batches.
-  - [workers](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L154) for processing DDLs:
-    - General worker, handling the default DDL Queue where only metadata changes are needed.
-    - Add Index worker, which updates/backfills data requested in the AddIndexJob Queue.
-  - [DDL Owner manager](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/owner/manager.go#L226) managing that one and only one TiDB node in the cluster is the DDL manager.
+
+* TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208), and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.
+* DDL background goroutines:
+  * [limitDDLJobs](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257) which takes tasks from the sessions and adds to the DDL queues in batches.
+  * [workers](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L154) for processing DDLs:
+    * General worker, handling the default DDL queue where only metadata changes are needed.
+    * Add Index worker, which updates/backfills data requested in the AddIndexJob queue.
+  * [DDL owner manager](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/owner/manager.go#L226) managing that one and only one TiDB node in the cluster is the DDL manager.
 
 ### Execution in the TiDB session
 
@@ -83,6 +87,7 @@ The execution of the DDL is started through the 'Next' iterator of the DDLExec c
 ```
 
 Where the different DDL operations are executed as their own functions, like:
+
 ```golang
         switch x := e.stmt.(type) {
         case *ast.AlterDatabaseStmt:
@@ -104,15 +109,17 @@ Where the different DDL operations are executed as their own functions, like:
 ```
 
 Let us use the simple CREATE TABLE as an example (which does not need any of the WriteOnly or DeleteOnly states):
+
 ```sql
 CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255));
 ```
 
 This statement has the CreateTableStmt Abstract Syntax Tree type and will be handled by [executeCreateTable](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/executor/ddl.go#L295)/[CreateTable](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl_api.go#L1862) functions.
 
-It will fill in a [TableInfo](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269) struct according to the table definition in the statement and create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208) and call [doDDLJob](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541) which goes through the [limitDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257) goroutine and adds one or more jobs to the DDL Job Queue in [addBatchDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279)
+It will fill in a [TableInfo](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269) struct according to the table definition in the statement and create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208) and call [doDDLJob](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541) which goes through the [limitDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257) goroutine and adds one or more jobs to the DDL job queue in [addBatchDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279)
 
-DDL Job encoded as JSON:
+DDL job encoded as JSON:
+
 ```json
 {
   "id": 56,
@@ -248,25 +255,27 @@ DDL Job encoded as JSON:
 
 ### Execution in the TiDB DDL Owner
 
-When the tidb-server starts, it will initialise a [domain](https://github.com/pingcap/tidb/blob/463cc34410d8075f41e5a6151170dbe8a5ae4088/domain/domain.go#L676) where it creates a DDL object and calls [ddl.Start()](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L346) which starts the limitDDLJobs goroutine and the two DDL workers. It also starts the [CampaignOwner](https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L187)/[campaignLoop](https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L226) which monitor the owner election and makes sure to elect a new Owner when needed.
+When the tidb-server starts, it will initialize a [domain](https://github.com/pingcap/tidb/blob/463cc34410d8075f41e5a6151170dbe8a5ae4088/domain/domain.go#L676) where it creates a DDL object and calls [ddl.Start()](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L346) which starts the limitDDLJobs goroutine and the two DDL workers. It also starts the [CampaignOwner](https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L187)/[campaignLoop](https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L226) which monitor the owner election and makes sure to elect a new owner when needed.
 
 A ddl worker goes through this workflow in a loop (which may handle one job state per loop, leaving other work to a new loop):
-- Wait for either a signal from local sessions, global changes through PD/etcd or a ticker (2 * lease time or max 1 second) and then calls [handleDDLJobQueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/ddl/ddl_worker.go#L484).
-- Start a transaction.
-- Checks if it is the owner (and if not just returns).
-- Picks the first job from its DDL queue.
-- Waits for dependent jobs (like reorganisations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).
-- Waits for the current/old schema version to be globally syncronised, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. 
-- If the job is done (completed or rolled back):
-  - Clean up old physical tables or indexes, not part of the new table.
-  - Remove the job from the ddl queue.
-  - Add the job to the DDL History.
-  - Return from handleDDLJobQueue, we are finished!
-- Execute the actual DDL job, [runDDLJob](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709) See more about this below!
-- Update the DDL Job in the queue, for the next loop/transaction.
-- Write to the binlog.
 
-The excution of the job's DDL changes in [runDDLJob](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709) looks like this:
+1. Wait for either a signal from local sessions, global changes through PD or a ticker (2 * lease time or max 1 second) and then calls [handleDDLJobQueue](https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/ddl/ddl_worker.go#L484).
+2. Start a transaction.
+3. Checks if it is the owner (and if not just returns).
+4. Picks the first job from its DDL queue.
+5. Waits for dependent jobs (like reorganizations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).
+6. Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. 
+7. If the job is done (completed or rolled back):
+  a. Clean up old physical tables or indexes, not part of the new table.
+  b. Remove the job from the ddl queue.
+  c. Add the job to the DDL History.
+  d. Return from handleDDLJobQueue, we are finished!
+8. Otherwise, execute the actual DDL job, [runDDLJob](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709) See more about this below!
+9. Update the DDL Job in the queue, for the next loop/transaction.
+10. Write to the binlog.
+
+The execution of the job's DDL changes in [runDDLJob](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709) looks like this:
+
 ```golang
         // For every type, `schema/table` modification and `job` modification are conducted
         // in the one kv transaction. The `schema/table` modification can be always discarded
@@ -313,7 +322,7 @@ The excution of the job's DDL changes in [runDDLJob](https://github.com/pingcap/
 
 Where each operation is handled separately, which is also one of the reasons TiDB has the limitation of only one DDL operation at a time (i.e. not possible to add one column and drop another column in the same DDL statement).
 
-Following the example of `CREATE TABLE` we see it will be handled by [onCreateTable](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/table.go#L47), which after some checks, will create a new Schema version and if table is not yet in `StatePublic` state, it will create the table in [CreatetableOrView](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/meta/meta.go#L358) which simply writes the TableInfo as a JSON into the meta database.
+Following the example of `CREATE TABLE` we see it will be handled by [onCreateTable](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/table.go#L47), which after some checks, will create a new Schema version and if table is not yet in `StatePublic` state, it will create the table in [CreateTableOrView](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/meta/meta.go#L358) which simply writes the TableInfo as a JSON into the meta database.
 
 Notice that it will take another loop in the handleDDLJobQueue above to finish the DDL Job by updating the Schema version and syncronising it with other TiDB nodes.
 
@@ -327,4 +336,4 @@ And more specifically for the DDL worker:
 
 ## References
 
-[Online DDL design doc](https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md)
+* [Online DDL design doc](https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md)
