@@ -169,10 +169,318 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="ddl"><a class="header" href="#ddl">DDL</a></h1>
-<p>Example:</p>
-<pre><code class="language-sql">create table t(a bigint, b bigint);
+                        <h1 id="ddl---data-definition-language--schema-change-handling"><a class="header" href="#ddl---data-definition-language--schema-change-handling">DDL - Data Definition Language / Schema change handling</a></h1>
+<h2 id="a-short-introduction-to-tidbs-ddl"><a class="header" href="#a-short-introduction-to-tidbs-ddl">A short introduction to TiDB's DDL</a></h2>
+<p>The design behind TiDB's DDL implementation can be read in the <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md">Online DDL design doc</a>.</p>
+<p>TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asyncronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be syncronised with the current state.</p>
+<p>The states used are defined in <a href="https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33">parser/model/model.go</a>:</p>
+<pre><code class="language-golang">        // StateNone means this schema element is absent and can't be used.
+        StateNone SchemaState = iota
+        // StateDeleteOnly means we can only delete items for this schema element.
+        StateDeleteOnly
+        // StateWriteOnly means we can use any write operation on this schema element,
+        // but outer can't read the changed data.
+        StateWriteOnly
+        // StateWriteReorganization means we are re-organizing whole data after write only state.
+        StateWriteReorganization
+        // StateDeleteReorganization means we are re-organizing whole data after delete only state.
+        StateDeleteReorganization
+        // StatePublic means this schema element is ok for all write and read operations.
+        StatePublic
 </code></pre>
+<p>Note: this is a very different implementation from MySQL, which uses Meta Data Locks (MDL) for keeping a single version of the MySQL instance schemas at a time. This results in MySQL replicas can have different version of the schemas, due to lag in asyncronous replication. TiDB has always a consistent view of all schemas in the cluster.</p>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>All DDL jobs goes through two cluster wide DDL Queues:</p>
+<ul>
+<li>Generic queue for non data changes, <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L687">DefaultJobListKey</a>.</li>
+<li>Add Index Queue for data changes/reorganizations, <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L689">AddIndexJobListKey</a>, to not block DDLs that does not require data reorganization/backfilling).</li>
+</ul>
+<p>The two base operations for these queue are:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L701">enqueue</a>, adding one DDL job to the end of the queue.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L722">dequeue</a>, pop the first DDL job from the queue (removing it from the queue and returning it).</li>
+</ul>
+<p>When a DDL job is completed it will be <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L883">moved to the DDL history</a>.</p>
+<p>There are two main execution parts handling DDLs:</p>
+<ul>
+<li>TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a>, and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.</li>
+<li>DDL background goroutines:
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257">limitDDLJobs</a> which takes tasks from the sessions and adds to the DDL queues in batches.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L154">workers</a> for processing DDLs:
+<ul>
+<li>General worker, handling the default DDL queue where only metadata changes are needed.</li>
+<li>Add Index worker, which updates/backfills data requested in the AddIndexJob queue.</li>
+</ul>
+</li>
+<li><a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/owner/manager.go#L226">DDL owner manager</a> managing that one and only one TiDB node in the cluster is the DDL manager.</li>
+</ul>
+</li>
+</ul>
+<h3 id="execution-in-the-tidb-session"><a class="header" href="#execution-in-the-tidb-session">Execution in the TiDB session</a></h3>
+<p>The execution of the DDL is started through the 'Next' iterator of the DDLExec class (just like normal query execution):</p>
+<pre><code> 0  0x0000000003cd6cd5 in github.com/pingcap/tidb/executor.(*DDLExec).Next
+    at ./executor/ddl.go:90
+ 1  0x0000000003cf3034 in github.com/pingcap/tidb/executor.Next
+    at ./executor/executor.go:286
+ 2  0x0000000003c1f085 in github.com/pingcap/tidb/executor.(*ExecStmt).handleNoDelayExecutor
+    at ./executor/adapter.go:584
+ 3  0x0000000003c1d890 in github.com/pingcap/tidb/executor.(*ExecStmt).handleNoDelay
+    at ./executor/adapter.go:465
+ 4  0x0000000003c1d11e in github.com/pingcap/tidb/executor.(*ExecStmt).Exec
+    at ./executor/adapter.go:414
+ 5  0x0000000003eedb56 in github.com/pingcap/tidb/session.runStmt
+    at ./session/session.go:1682
+ 6  0x0000000003eec639 in github.com/pingcap/tidb/session.(*session).ExecuteStmt
+    at ./session/session.go:1576
+ 7  0x0000000003fab0af in github.com/pingcap/tidb/server.(*TiDBContext).ExecuteStmt
+    at ./server/driver_tidb.go:219
+ 8  0x0000000003f9c785 in github.com/pingcap/tidb/server.(*clientConn).handleStmt
+    at ./server/conn.go:1841
+ 9  0x0000000003f9a5f2 in github.com/pingcap/tidb/server.(*clientConn).handleQuery
+    at ./server/conn.go:1710
+10  0x0000000003f94f9c in github.com/pingcap/tidb/server.(*clientConn).dispatch
+    at ./server/conn.go:1222
+11  0x0000000003f9133f in github.com/pingcap/tidb/server.(*clientConn).Run
+    at ./server/conn.go:979
+12  0x0000000003fd5798 in github.com/pingcap/tidb/server.(*Server).onConn
+    at ./server/server.go:536
+13  0x00000000012c4dc1 in runtime.goexit
+    at /usr/lib/go-1.16/src/runtime/asm_amd64.s:1371
+</code></pre>
+<p>Where the different DDL operations are executed as their own functions, like:</p>
+<pre><code class="language-golang">        switch x := e.stmt.(type) {
+        case *ast.AlterDatabaseStmt:
+                err = e.executeAlterDatabase(x)
+        case *ast.AlterTableStmt:
+                err = e.executeAlterTable(ctx, x)
+        case *ast.CreateIndexStmt:
+                err = e.executeCreateIndex(x)
+        case *ast.CreateDatabaseStmt:
+                err = e.executeCreateDatabase(x)
+        case *ast.CreateTableStmt:
+                err = e.executeCreateTable(x)
+        case *ast.CreateViewStmt:
+                err = e.executeCreateView(x)
+        case *ast.DropIndexStmt:
+                err = e.executeDropIndex(x)
+        case *ast.DropDatabaseStmt:
+                err = e.executeDropDatabase(x)
+</code></pre>
+<p>Let us use the simple CREATE TABLE as an example (which does not need any of the WriteOnly or DeleteOnly states):</p>
+<pre><code class="language-sql">CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255));
+</code></pre>
+<p>This statement has the CreateTableStmt Abstract Syntax Tree type and will be handled by <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/executor/ddl.go#L295">executeCreateTable</a>/<a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl_api.go#L1862">CreateTable</a> functions.</p>
+<p>It will fill in a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
+<p>DDL job encoded as JSON:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: 56,
+  &quot;type&quot;: 3,
+  &quot;schema_id&quot;: 1,
+  &quot;table_id&quot;: 55,
+  &quot;schema_name&quot;: &quot;test&quot;,
+  &quot;state&quot;: 0,
+  &quot;err&quot;: null,
+  &quot;err_count&quot;: 0,
+  &quot;row_count&quot;: 0,
+  &quot;raw_args&quot;: [
+    {
+      &quot;id&quot;: 55,
+      &quot;name&quot;: {
+        &quot;O&quot;: &quot;t&quot;,
+        &quot;L&quot;: &quot;t&quot;
+      },
+      &quot;charset&quot;: &quot;utf8mb4&quot;,
+      &quot;collate&quot;: &quot;utf8mb4_bin&quot;,
+      &quot;cols&quot;: [
+        {
+          &quot;id&quot;: 1,
+          &quot;name&quot;: {
+            &quot;O&quot;: &quot;id&quot;,
+            &quot;L&quot;: &quot;id&quot;
+          },
+          &quot;offset&quot;: 0,
+          &quot;origin_default&quot;: null,
+          &quot;origin_default_bit&quot;: null,
+          &quot;default&quot;: null,
+          &quot;default_bit&quot;: null,
+          &quot;default_is_expr&quot;: false,
+          &quot;generated_expr_string&quot;: &quot;&quot;,
+          &quot;generated_stored&quot;: false,
+          &quot;dependences&quot;: null,
+          &quot;type&quot;: {
+            &quot;Tp&quot;: 3,
+            &quot;Flag&quot;: 4131,
+            &quot;Flen&quot;: 10,
+            &quot;Decimal&quot;: 0,
+            &quot;Charset&quot;: &quot;binary&quot;,
+            &quot;Collate&quot;: &quot;binary&quot;,
+            &quot;Elems&quot;: null
+          },
+          &quot;state&quot;: 5,
+          &quot;comment&quot;: &quot;&quot;,
+          &quot;hidden&quot;: false,
+          &quot;change_state_info&quot;: null,
+          &quot;version&quot;: 2
+        },
+        {
+          &quot;id&quot;: 2,
+          &quot;name&quot;: {
+            &quot;O&quot;: &quot;notes&quot;,
+            &quot;L&quot;: &quot;notes&quot;
+          },
+          &quot;offset&quot;: 1,
+          &quot;origin_default&quot;: null,
+          &quot;origin_default_bit&quot;: null,
+          &quot;default&quot;: null,
+          &quot;default_bit&quot;: null,
+          &quot;default_is_expr&quot;: false,
+          &quot;generated_expr_string&quot;: &quot;&quot;,
+          &quot;generated_stored&quot;: false,
+          &quot;dependences&quot;: null,
+          &quot;type&quot;: {
+            &quot;Tp&quot;: 15,
+            &quot;Flag&quot;: 0,
+            &quot;Flen&quot;: 255,
+            &quot;Decimal&quot;: 0,
+            &quot;Charset&quot;: &quot;utf8mb4&quot;,
+            &quot;Collate&quot;: &quot;utf8mb4_bin&quot;,
+            &quot;Elems&quot;: null
+          },
+          &quot;state&quot;: 5,
+          &quot;comment&quot;: &quot;&quot;,
+          &quot;hidden&quot;: false,
+          &quot;change_state_info&quot;: null,
+          &quot;version&quot;: 2
+        }
+      ],
+      &quot;index_info&quot;: null,
+      &quot;constraint_info&quot;: null,
+      &quot;fk_info&quot;: null,
+      &quot;state&quot;: 0,
+      &quot;pk_is_handle&quot;: true,
+      &quot;is_common_handle&quot;: false,
+      &quot;common_handle_version&quot;: 0,
+      &quot;comment&quot;: &quot;&quot;,
+      &quot;auto_inc_id&quot;: 0,
+      &quot;auto_id_cache&quot;: 0,
+      &quot;auto_rand_id&quot;: 0,
+      &quot;max_col_id&quot;: 2,
+      &quot;max_idx_id&quot;: 0,
+      &quot;max_cst_id&quot;: 0,
+      &quot;update_timestamp&quot;: 0,
+      &quot;ShardRowIDBits&quot;: 0,
+      &quot;max_shard_row_id_bits&quot;: 0,
+      &quot;auto_random_bits&quot;: 0,
+      &quot;pre_split_regions&quot;: 0,
+      &quot;partition&quot;: null,
+      &quot;compression&quot;: &quot;&quot;,
+      &quot;view&quot;: null,
+      &quot;sequence&quot;: null,
+      &quot;Lock&quot;: null,
+      &quot;version&quot;: 4,
+      &quot;tiflash_replica&quot;: null,
+      &quot;is_columnar&quot;: false,
+      &quot;temp_table_type&quot;: 0,
+      &quot;policy_ref_info&quot;: null,
+      &quot;placement_settings&quot;: null
+    }
+  ],
+  &quot;schema_state&quot;: 0,
+  &quot;snapshot_ver&quot;: 0,
+  &quot;real_start_ts&quot;: 0,
+  &quot;start_ts&quot;: 428310284267159550,
+  &quot;dependency_id&quot;: 0,
+  &quot;query&quot;: &quot;CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255))&quot;,
+  &quot;binlog&quot;: {
+    &quot;SchemaVersion&quot;: 0,
+    &quot;DBInfo&quot;: null,
+    &quot;TableInfo&quot;: null,
+    &quot;FinishedTS&quot;: 0
+  },
+  &quot;version&quot;: 1,
+  &quot;reorg_meta&quot;: null,
+  &quot;multi_schema_info&quot;: null,
+  &quot;priority&quot;: 0
+}
+</code></pre>
+<h3 id="execution-in-the-tidb-ddl-owner"><a class="header" href="#execution-in-the-tidb-ddl-owner">Execution in the TiDB DDL Owner</a></h3>
+<p>When the tidb-server starts, it will initialize a <a href="https://github.com/pingcap/tidb/blob/463cc34410d8075f41e5a6151170dbe8a5ae4088/domain/domain.go#L676">domain</a> where it creates a DDL object and calls <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L346">ddl.Start()</a> which starts the limitDDLJobs goroutine and the two DDL workers. It also starts the <a href="https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L187">CampaignOwner</a>/<a href="https://github.com/pingcap/tidb/blob/d4580596ee4512861924d5028f2753439b860053/owner/manager.go#L226">campaignLoop</a> which monitor the owner election and makes sure to elect a new owner when needed.</p>
+<p>A ddl worker goes through this workflow in a loop (which may handle one job state per loop, leaving other work to a new loop):</p>
+<ol>
+<li>Wait for either a signal from local sessions, global changes through PD or a ticker (2 * lease time or max 1 second) and then calls <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/ddl/ddl_worker.go#L484">handleDDLJobQueue</a>.</li>
+<li>Start a transaction.</li>
+<li>Checks if it is the owner (and if not just returns).</li>
+<li>Picks the first job from its DDL queue.</li>
+<li>Waits for dependent jobs (like reorganizations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).</li>
+<li>Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. </li>
+<li>If the job is done (completed or rolled back):
+<ol>
+<li>Clean up old physical tables or indexes, not part of the new table.</li>
+<li>Remove the job from the ddl queue.</li>
+<li>Add the job to the DDL History.</li>
+<li>Return from handleDDLJobQueue, we are finished!</li>
+</ol>
+</li>
+<li>Otherwise, execute the actual DDL job, <a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709">runDDLJob</a> See more about this below!</li>
+<li>Update the DDL Job in the queue, for the next loop/transaction.</li>
+<li>Write to the binlog.</li>
+</ol>
+<p>The execution of the job's DDL changes in <a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709">runDDLJob</a> looks like this:</p>
+<pre><code class="language-golang">        // For every type, `schema/table` modification and `job` modification are conducted
+        // in the one kv transaction. The `schema/table` modification can be always discarded
+        // by kv reset when meets a unhandled error, but the `job` modification can't.
+        // So make sure job state and args change is after all other checks or make sure these
+        // change has no effect when retrying it.
+        switch job.Type {
+        case model.ActionCreateSchema:
+                ver, err = onCreateSchema(d, t, job)
+        case model.ActionModifySchemaCharsetAndCollate:
+                ver, err = onModifySchemaCharsetAndCollate(t, job)
+        case model.ActionDropSchema:
+                ver, err = onDropSchema(d, t, job)
+        case model.ActionCreateTable:
+                ver, err = onCreateTable(d, t, job)
+        case model.ActionCreateView:
+                ver, err = onCreateView(d, t, job)
+        case model.ActionDropTable, model.ActionDropView, model.ActionDropSequence:
+                ver, err = onDropTableOrView(d, t, job)
+        case model.ActionDropTablePartition:
+                ver, err = w.onDropTablePartition(d, t, job)
+        case model.ActionAddColumn:
+                ver, err = onAddColumn(d, t, job)
+        case model.ActionAddColumns:
+                ver, err = onAddColumns(d, t, job)
+        case model.ActionDropColumn:
+                ver, err = onDropColumn(t, job)
+        case model.ActionDropColumns:
+                ver, err = onDropColumns(t, job)
+        case model.ActionModifyColumn:
+                ver, err = w.onModifyColumn(d, t, job)
+        case model.ActionSetDefaultValue:
+                ver, err = onSetDefaultValue(t, job)
+        case model.ActionAddIndex:
+                ver, err = w.onCreateIndex(d, t, job, false)
+        case model.ActionDropIndex, model.ActionDropPrimaryKey:
+                ver, err = onDropIndex(t, job)
+        case model.ActionDropIndexes:
+                ver, err = onDropIndexes(t, job)
+        case model.ActionTruncateTable:
+                ver, err = onTruncateTable(d, t, job)
+        ...
+</code></pre>
+<p>Where each operation is handled separately, which is also one of the reasons TiDB has the limitation of only one DDL operation at a time (i.e. not possible to add one column and drop another column in the same DDL statement).</p>
+<p>Following the example of <code>CREATE TABLE</code> we see it will be handled by <a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/table.go#L47">onCreateTable</a>, which after some checks, will create a new Schema version and if table is not yet in <code>StatePublic</code> state, it will create the table in <a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/meta/meta.go#L358">CreateTableOrView</a> which simply writes the TableInfo as a JSON into the meta database.</p>
+<p>Notice that it will take another loop in the handleDDLJobQueue above to finish the DDL Job by updating the Schema version and syncronising it with other TiDB nodes.</p>
+<h3 id="graphs-over-ddl-life-cycle"><a class="header" href="#graphs-over-ddl-life-cycle">Graphs over DDL life cycle</a></h3>
+<p>An overview of the DDL execution flow in the TiDB cluster can be seen here:
+<img src="../img/ddl-structure-flow-chart.png" alt="DDL work flow in TiDB Cluster" /></p>
+<p>And more specifically for the DDL worker:
+<img src="../img/ddl-owner-detail-flow-chart.png" alt="DDL owner worker detailed flow chart" /></p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md">Online DDL design doc</a></li>
+</ul>
 
                     </main>
 
