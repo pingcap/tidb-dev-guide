@@ -22,7 +22,8 @@ type logicalOptRule interface {
 The overall logic of a rule is traversing the plan tree, matching a specific operator (or a pattern), and modifying the plan tree.
 
 The traversal logic is implemented mainly in two ways:
-1. Implement a method for the rule and recursively call itself in it. Logics for all kinds of operator are implemented in this method. Examples are [`(*decorrelateSolver).optimize()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L122) for decorrelation and [`(*aggregationEliminator).optimize()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_elimination.go#L182) for aggregation elimination.
+
+1. Implement a method for the rule and recursively call itself in it. Logics for all kinds of operator are implemented in this method, e.g., [`(*decorrelateSolver).optimize()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L122) for decorrelation and [`(*aggregationEliminator).optimize()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_elimination.go#L182) for aggregation elimination.
 2. Add a method into the [`LogicalPlan`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/plan.go#L229) interface and recursively call this method in it. Each operator has an implementation. Like [`PredicatePushDown()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/plan.go#L236-L239) for predicate pushdown and [`PruneColumns()`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/plan.go#L241-L242) for column pruning.
 
 ## Rules
@@ -31,7 +32,7 @@ The traversal logic is implemented mainly in two ways:
 
 This is a very fundamental optimization. It will prune unneeded columns for each operator. 
 
-This main logic is in `PruneColumns(parentUsedCols []*expression.Column) error` method of the `LogicalPlan` interface. It traverses the plan tree from top to bottom. Each operator receives which columns are used by the parent operator, then uses this information to prune unneeded columns from itself (different kinds of operator would have different behaviors), then collect and pass columns needed by itself to children operators.
+This main logic is in `PruneColumns(parentUsedCols []*expression.Column) error` method of the `LogicalPlan` interface. It traverses the plan tree from top to bottom. Each operator receives which columns are used by the parent operator, then uses this information to prune unneeded columns from itself (different kinds of operator would have different behaviors), then collect and pass columns needed by itself to its children.
 
 ### Decorrelation
 
@@ -65,7 +66,7 @@ EXPLAIN SELECT * FROM t1 WHERE t1.a IN (SELECT t2.a FROM t2 WHERE t2.b = t1.b);
 +------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------+
 ```
 
-[If the inner side is a `MaxOneRow`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L132) and its child can assure there will be one row at most, which means the `MaxOneRow` is unneeded, we can remove the `MaxOneRow`.
+[If the inner side is a `MaxOneRow`](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L143) and its child can assure there will be one row at most, which means the `MaxOneRow` is unneeded, we can remove the `MaxOneRow`.
 
 Example:
 ```sql
@@ -311,6 +312,7 @@ EXPLAIN SELECT * FROM t1 JOIN t ON t1.b = t.b WHERE (t1.a=1 AND t.a=1) OR (t1.a=
 This rule finds and tries to eliminate `Join`. Specifically, it removes the `Join` and its inner side sub-plan tree.
 
 We can do this only when the operators above `Join` only need columns from their outer side. But this is not enough. We also need at least one of the following requirements to be met:
+
 1. The join keys from the inner side are unique. This means the `LogicalJoin` has no effects on the rows from the outer side;
 2. Duplicated rows from the output of `Join` have no effect on the calculation results. Specifically, this is when there's a `Aggregation` above the `Join` and the aggregation functions in it have `DISTINCT` or are `max()`, `min()`, `firstrow()` or `approx_count_distinct()`.
 
