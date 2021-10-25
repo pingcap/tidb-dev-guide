@@ -266,10 +266,10 @@ A ddl worker goes through this workflow in a loop (which may handle one job stat
 5. Waits for dependent jobs (like reorganizations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).
 6. Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. 
 7. If the job is done (completed or rolled back):
-  a. Clean up old physical tables or indexes, not part of the new table.
-  b. Remove the job from the ddl queue.
-  c. Add the job to the DDL History.
-  d. Return from handleDDLJobQueue, we are finished!
+     a. Clean up old physical tables or indexes, not part of the new table.
+     b. Remove the job from the ddl queue.
+     c. Add the job to the DDL History.
+     d. Return from handleDDLJobQueue, we are finished!
 8. Otherwise, execute the actual DDL job, [runDDLJob](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L709) See more about this below!
 9. Update the DDL Job in the queue, for the next loop/transaction.
 10. Write to the binlog.
