@@ -5,7 +5,7 @@
 
 The design behind TiDB's DDL implementation can be read in the [Online DDL design doc](https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md).
 
-TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asyncronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be syncronised with the current state.
+TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asynchronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be synchronized with the current state.
 
 The states used are defined in [parser/model/model.go](https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33):
 
@@ -324,7 +324,7 @@ Where each operation is handled separately, which is also one of the reasons TiD
 
 Following the example of `CREATE TABLE` we see it will be handled by [onCreateTable](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/table.go#L47), which after some checks, will create a new Schema version and if table is not yet in `StatePublic` state, it will create the table in [CreateTableOrView](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/meta/meta.go#L358) which simply writes the TableInfo as a JSON into the meta database.
 
-Notice that it will take another loop in the handleDDLJobQueue above to finish the DDL Job by updating the Schema version and syncronising it with other TiDB nodes.
+Notice that it will take another loop in the handleDDLJobQueue above to finish the DDL Job by updating the Schema version and synchronizing it with other TiDB nodes.
 
 ### Graphs over DDL life cycle
 
