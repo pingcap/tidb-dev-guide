@@ -1,6 +1,6 @@
 # Rule-based Optimization
 
-As stated in the planner overview, rule-based optimization (usually used interchangeably with logical optimization in TiDB code) consists of logical optimization rules. These rules have predefined order to be iterated. Each rule has a responding flag, a rule will be applied only if it is flagged and not disabled. The flag is set according to the SQL in the plan building stage.
+As stated in the planner overview, rule-based optimization (usually used interchangeably with logical optimization in TiDB code) consists of logical optimization rules. These rules have predefined order to be iterated. Each rule has a responding flag, and a rule will be applied only if it is flagged and not disabled. The flag is set according to the SQL in the plan building stage.
 
 The rule-based optimization will produce a logical plan tree that is logically equal to the original one. Besides the original plan tree, it will also make use of table schema information to make optimizations, but it doesn't rely on the statistics to do optimization (join reorder is the only exception, we'll talk about it later).
 
@@ -412,7 +412,7 @@ explain select count(a) from (select * from t1 union all select * from t2);
 
 ### TopN Pushdown
 
-`TopN` is an operator not directly respond to any syntax in the SQL. Its semantic is equal to a `Limit` above a `Sort`. We can execute it more efficiently when they are together, so we create a new operator for this case.
+`TopN` is an operator not directly corresponding to any syntax in the SQL. Its semantic is equal to a `Limit` above a `Sort`. We can execute it more efficiently when they are together, so we create a new operator for this case.
 
 ```go
 type LogicalTopN struct {
