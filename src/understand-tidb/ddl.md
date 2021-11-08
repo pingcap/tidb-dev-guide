@@ -7,7 +7,7 @@ The design behind TiDB's DDL implementation can be read in the [Online DDL desig
 
 TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asynchronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be synchronized with the current state.
 
-The states used are defined in [parser/model/model.go](https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33):
+The states used are defined in [tidb/parser/model/model.go](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L33):
 
 ```golang
         // StateNone means this schema element is absent and can't be used.
@@ -43,7 +43,7 @@ When a DDL job is completed it will be [moved to the DDL history](https://github
 
 There are two main execution parts handling DDLs:
 
-* TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208), and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.
+* TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a [DDL job](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213), and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.
 * DDL background goroutines:
   * [limitDDLJobs](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257) which takes tasks from the sessions and adds to the DDL queues in batches.
   * [workers](https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L154) for processing DDLs:
@@ -116,7 +116,7 @@ CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255));
 
 This statement has the CreateTableStmt Abstract Syntax Tree type and will be handled by [executeCreateTable](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/executor/ddl.go#L295)/[CreateTable](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl_api.go#L1862) functions.
 
-It will fill in a [TableInfo](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269) struct according to the table definition in the statement and create a [DDL job](https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208) and call [doDDLJob](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541) which goes through the [limitDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257) goroutine and adds one or more jobs to the DDL job queue in [addBatchDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279)
+It will fill in a [TableInfo](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L269) struct according to the table definition in the statement and create a [DDL job](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213) and call [doDDLJob](https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541) which goes through the [limitDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257) goroutine and adds one or more jobs to the DDL job queue in [addBatchDDLJobs](https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279)
 
 DDL job encoded as JSON:
 
