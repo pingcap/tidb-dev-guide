@@ -2923,10 +2923,194 @@ if isolation_level == IsolationLevel::Si {
 <p>Due to limited space, some subtle problems such as non-unique timestamps and the compatibility with follower read are not involved.</p>
 <p>During the implementation of async commit, many problems blocking one-phase commit (1PC) are solved. So it becomes relatively easy to implement 1PC in TiDB. The next document will introduce the implementation details of 1PC.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="1pc"><a class="header" href="#1pc">1PC</a></h1>
+<p>Along with async commit, there is another optimization for transactions, namely 1PC. That is, for transactions that all keys can be prewritten in a single <em>prewrite</em> request to TiKV, we can commit it immediately while prewriting, skipping the second phase (the <em>commit</em> phase) completely. This reduces latency and improves throughput in scenarios where there are many small and simple transactions.</p>
+<p>Before working on development related to 1PC, it's recommended to understand how 1PC (as well as async commit) works, and how async commit is implemented (since 1PC is implemented based on async commit). It's recommended to read these two articles first, and this article assumes you already know about them:</p>
+<ul>
+<li><a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">This article</a> is a great material to learn about the overall idea of async commit and 1PC.</li>
+<li><a href="understand-tidb/async-commit.html">This article</a> explains the code related to async commit.</li>
+</ul>
+<h2 id="rpc-protocol"><a class="header" href="#rpc-protocol">RPC Protocol</a></h2>
+<p>A few additional fields to the <code>Prewrite</code> RPC messages are needed for 1PC.</p>
+<pre><code class="language-protobuf">message PrewriteRequest {
+    // ...
+    bool try_one_pc = 13;
+    uint64 max_commit_ts = 14;
+}
+
+message PrewriteResponse {
+    // ...
+    uint64 one_pc_commit_ts = 4;
+}
+</code></pre>
+<ul>
+<li>The <code>try_one_pc</code> field in the request is to tell TiKV that when handling the prewrite request, it needs to try to commit it directly in 1PC if possible.</li>
+<li>The <code>max_commit_ts</code> is used by 1PC and async commit in common. It limits the maximum allowed commit ts. It's related to a mechanism to avoid a transaction commits while schema changed between the transaction's start_ts and commit_ts. This is mechanism is already explained in the <a href="understand-tidb/async-commit.html#ddl-compatibility">article about async commit</a>.</li>
+<li>When TiKV successfully commits a transaction in 1PC, the <code>one_pc_commit_ts</code> field in the <code>PrewriteResponse</code> will be set to tell TiDB the final commit_ts. Sometimes TiKV may fail to commit the transaction by 1PC, but it's able to prewrite it in normal 2PC way. In this case, the <code>one_pc_commit_ts</code> will be zero to indicate that TiDB still needs to proceed on the 2PC procedure (i.e. the commit phase of 2PC).</li>
+</ul>
+<h2 id="tidb-part-1"><a class="header" href="#tidb-part-1">TiDB Part</a></h2>
+<p>Based on the implementation of normal 2PC and async commit, there isn't too much additional code to support 1PC, but the code changes are scattered.</p>
+<p>The core of 2PC logic is in <code>twoPhaseCommitter</code>, and the entry is the <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L1115"><code>execute</code> method</a>. You might already know about it from previous articles. But since the path from the <code>execute</code> function to sending RPC requests is quite complicated, let's see how the overall control flow looks like:</p>
+<ul>
+<li><code>execute</code>
+<ul>
+<li>⭐ <code>checkOnePC</code></li>
+<li><code>prewriteMutations</code>
+<ul>
+<li><code>doActionOnMutations</code>
+<ul>
+<li>⭐ <code>checkOnePCFallBack</code></li>
+<li><code>doActionOnGroupMutations</code>
+<ul>
+<li>Divide mutations into batches</li>
+<li>⭐ <code>checkOnePCFallBack</code> </li>
+<li><code>doActionOnBatches</code>
+<ul>
+<li><code>actionPrewrite</code>.<code>handleSingleBatch</code>
+<ul>
+<li><code>buildPrewriteRequest</code></li>
+<li><code>SendReq</code></li>
+<li>⭐ Error handling (maybe fallback, maybe retry <code>doActionOnMutations</code> recursively)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If not committed in 1PC, continue 2PC or async commit procedure.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The starred items are the ones we are interested in in this article.</p>
+<h3 id="checking-if-1pc-can-be-used"><a class="header" href="#checking-if-1pc-can-be-used">Checking if 1PC Can Be Used</a></h3>
+<p>In the <code>execute</code> method, it checks if 1PC can be used just after checking async commit, before performing any crucial part of the transaction procedure:</p>
+<pre><code class="language-go">func (c *twoPhaseCommitter) checkOnePC() bool {
+    // Disable 1PC in local transactions. This is about another feature that's not compatible with
+    // async and 1PC, where transactions have two different &quot;scopes&quot; namely Global and Local.
+    if c.txn.GetScope() != oracle.GlobalTxnScope {
+        return false
+    }
+
+    return !c.shouldWriteBinlog() &amp;&amp; c.txn.enable1PC // `txn` is the `KVTxn` object and the value of
+                                                     // `enable1PC` is passed from Session previously.
+}
+
+func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
+    // ...
+
+    // Check if 1PC is enabled.
+    if c.checkOnePC() {
+        commitTSMayBeCalculated = true
+        c.setOnePC(true)
+        c.hasTriedOnePC = true
+    }
+
+    // ...
+}
+</code></pre>
+<p>Same as async commit, 1PC can't be enabled when using TiDB-Binlog.</p>
+<p>Note that we still don't know how many prewrite requests this transaction needs. It will be checked later.</p>
+<p>Also note that the <code>checkOnePC</code> function doesn't check the transaction's size like how async commit does. Actually, the transaction size is implicitly limited when the keys are divided into batches during prewrite phase. </p>
+<p>The logic then goes to the <code>prewriteMutation</code> function from <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L1222">here</a>, which then calls <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L563">the <code>doActionOnMutations</code> function</a>:</p>
+<pre><code class="language-go">func (c *twoPhaseCommitter) doActionOnMutations(bo *retry.Backoffer, action twoPhaseCommitAction, mutations CommitterMutations) error {
+	if mutations.Len() == 0 {
+		return nil
+	}
+	groups, err := c.groupMutations(bo, mutations)
+	if err != nil {
+		return errors.Trace(err)
+	}
+
+	// This is redundant since `doActionOnGroupMutations` will still split groups into batches and
+	// check the number of batches. However we don't want the check fail after any code changes.
+	c.checkOnePCFallBack(action, len(groups))
+
+	return c.doActionOnGroupMutations(bo, action, groups)
+}
+</code></pre>
+<p>This function divides the mutations by regions, which means, mutations to keys that belong to the same region are grouped together. Then it calls <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L690">the <code>doActionOnGroupMutations</code> function</a>:</p>
+<pre><code class="language-go">func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action twoPhaseCommitAction, groups []groupedMutations) error {
+	// ...
+
+	batchBuilder := newBatched(c.primary())
+	for _, group := range groups {
+		batchBuilder.appendBatchMutationsBySize(group.region, group.mutations, sizeFunc, txnCommitBatchSize)
+	}
+	firstIsPrimary := batchBuilder.setPrimary()
+
+	// ...
+
+	c.checkOnePCFallBack(action, len(batchBuilder.allBatches()))
+
+    // ...
+</code></pre>
+<p><code>doActionOnGroupMutations</code> divides each group into multiple batches if the group has too many keys.</p>
+<p>Note that these two functions both call a function named <code>checkOnePCFallBack</code>. It's a helper to check if the transaction needs more than one request to finish prewrite. If so, the 1PC flag will be set to <code>false</code> and 1PC will be disabled for this transaction.</p>
+<h3 id="sending-rpc-requests"><a class="header" href="#sending-rpc-requests">Sending RPC Requests</a></h3>
+<p>After the procedure stated above, the control flow goes to <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/prewrite.go#L149">the <code>handleSingleBatch</code> method</a> of the <code>actionPrewrite</code> type. Then there's nothing complicated. It creates an RPC request for prewrite, and the <code>try_one_pc</code> field of the request will be set according to whether 1PC is still enabled after the previous procedure. For a 1PC transaction, once <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/prewrite.go#L208"><code>sender.Send</code></a> is invoked and nothing goes wrong, it means the transaction is successfully committed by 1PC. Finally, the <code>execute</code> function will <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L1273-L1284">return</a> without running the 2PC commit.</p>
+<h3 id="error-handling-and-falling-back"><a class="header" href="#error-handling-and-falling-back">Error Handling and Falling Back</a></h3>
+<p>However, there are chances that something goes wrong. There are multiple possible cases, some of which needs to be paid attention of:</p>
+<h4 id="region-error"><a class="header" href="#region-error">Region Error</a></h4>
+<p>A region error means the region may have been changed, including merging and splitting, therefore the request is invalid since it's using an outdated region information.</p>
+<p>Suppose we are trying to do prewrite for a 1PC transaction and encountered a region error. The keys in the transaction were located in a single region before, thus 1PC can be used. But the region's state has already changed, so the keys may be located in more than one new regions, if region splitting has happened.</p>
+<p>However, we don't need any extra code to handle it for 1PC in this case. That's because on region error, it will <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/prewrite.go#L248">retry recursively</a>, where <code>checkOnePCFallBack</code> will be invoked again. So in the stated above, the <code>checkOnePCFallBack</code> call will unset the 1PC flag while retrying.</p>
+<h4 id="fallen-back-by-tikv"><a class="header" href="#fallen-back-by-tikv">Fallen Back by TiKV</a></h4>
+<p>When TiKV receives a prewrite request with <code>try_one_pc</code> flag set, sometimes it's possible that TiKV cannot commit it directly in 1PC. In this case TiKV will perform a normal prewrite, and return a response with <code>one_pc_commit_ts = 0</code> to indicate that the transaction is not committed in 1PC way. Then, TiDB will continue normal 2PC procedure.</p>
+<p>Currently, the only possible case that this fallback happens is that the calculated <code>min_commit_ts</code> exceeds our <code>max_commit_ts</code>, therefore neither 1PC nor async commit can be used. The handling logic is <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/prewrite.go#L272-L280">here</a>.</p>
+<h4 id="rpc-error"><a class="header" href="#rpc-error">RPC Error</a></h4>
+<p>If we cannot receive an RPC response after a few retries, same as that in <a href="understand-tidb/async-commit.html#prewrite">async commit</a>, there will be an undetermined error that will close the client connection.</p>
+<h3 id="recovery"><a class="header" href="#recovery">Recovery</a></h3>
+<p>When a 2PC transaction crashes on the half way, we need some mechanism to know the transaction's final state (committed or rolled back). For a 1PC transaction, things are much simpler: since TiKV performs the 1PC writing atomically, so the transaction must be either not-prewritten state or fully committed state. In other words, a 1PC transaction won't leave any lock after a crash. Therefore, nothing about 1PC transactions needs recovery.</p>
+<h2 id="tikv-part-1"><a class="header" href="#tikv-part-1">TiKV Part</a></h2>
+<p>1PC and async commit face the same challenges: <code>commit_ts</code> calculation, follower read consistency, etc. Therefore, 1PC and async commit share many code, including the concurrency manager and many logic in the prewrite procedure.</p>
+<p>1PC transaction fetches the <code>max_ts</code> for <code>min_commit_ts</code> calculation and acquires the memory lock in the concurrency manager in the same way as how async commit does. The falling back logic is also using the same code as async commit. For details about them, please refer to <a href="understand-tidb/async-commit.html#tikv-part">the article of async commit</a>.</p>
+<p>The only notable difference from async commit is what data is being written after the prewrite request.</p>
+<p>First, <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L417">here</a> the <code>txn</code> object buffers data in a different way from non-1PC transaction:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// impl MvccTxn
+pub(crate) fn put_locks_for_1pc(&amp;mut self, key: Key, lock: Lock, remove_pessimstic_lock: bool) {
+    self.locks_for_1pc.push((key, lock, remove_pessimstic_lock));
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Different from the normal <code>put_locks</code> function, locks are not serialized into bytes at this time. Neither are them immediately converted to <code>Write</code> records. It's because we don't know how they should be serialized until all keys are processed. While we expect the keys will be committed by 1PC, it's also possible that we find they need to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L506-L507">fallback</a> to 2PC later, in which case the locks will be <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L751-L755">converted</a> to normal 2PC locks.</p>
+<p>Then, If we don't see any error after processing all keys, the locks recorded by the <code>put_locks_for_1pc</code> function will be converted into <code>Write</code> records, and the final <code>min_commit_ts</code> will be used as the <code>commit_ts</code> (<a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L547">here</a> and <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L719">here</a>):</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Commit and delete all 1pc locks in txn.
+fn handle_1pc_locks(txn: &amp;mut MvccTxn, commit_ts: TimeStamp) -&gt; ReleasedLocks {
+    let mut released_locks = ReleasedLocks::new(txn.start_ts, commit_ts);
+
+    for (key, lock, delete_pessimistic_lock) in std::mem::take(&amp;mut txn.locks_for_1pc) {
+        let write = Write::new(
+            WriteType::from_lock_type(lock.lock_type).unwrap(),
+            txn.start_ts,
+            lock.short_value,
+        );
+        // Transactions committed with 1PC should be impossible to overwrite rollback records.
+        txn.put_write(key.clone(), commit_ts, write.as_ref().to_bytes());
+        if delete_pessimistic_lock {
+            released_locks.push(txn.unlock_key(key, true));
+        }
+    }
+
+    released_locks
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note the special handling about <code>delete_pessimistic_lock</code>. If the transaction is a pessimistic transaction, there may already be pessimistic locks when we are performing <code>Prewrite</code>. Since we will write the <code>Write</code> record instead of overwriting the lock, if there's a pessimistic lock, it need to be deleted.</p>
+<h2 id="summary-5"><a class="header" href="#summary-5">Summary</a></h2>
+<p>Based on the work already done by async commit, there's not much code introduced by 1PC. 1PC faced a lot of tricky challenges that async commit meets too, and therefore the implementation of 1PC and async commit shares many common code. If you understand how async commit works, 1PC will not be too hard to understand.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="mvcc-garbage-collection"><a class="header" href="#mvcc-garbage-collection">MVCC Garbage Collection</a></h1>
 <p>TiDB is a database built on TiKV, a multi-version storage engine which supports <a href="https://en.wikipedia.org/wiki/Snapshot_isolation">Snapshot Isolation</a>(SI) based on the <a href="https://en.wikipedia.org/wiki/Multiversion_concurrency_control">MultiVersion Concurrency Control</a> (MVCC). Semantically, a multi-version system keeps multi copies of data. However, in the long-term running, there will be many garbage data that takes up a lot of disk space as well as has an impact on performance. A GC is responsible for cleaning up unused data and free the space while minimizing the impact on the system. This document talks about how MVCC GC works and implements in TiDB.</p>
 <p>This document refers to the code of <a href="https://github.com/pingcap/tidb/tree/v5.2.1">TiDB v5.2.1</a>, <a href="https://github.com/tikv/pd/tree/v5.2.1">PD v5.2.1</a>, and <a href="https://github.com/tikv/tikv/tree/v5.2.1">TiKV v5.2.1</a>.</p>
-<h2 id="tidb-part-1"><a class="header" href="#tidb-part-1">TiDB part</a></h2>
+<h2 id="tidb-part-2"><a class="header" href="#tidb-part-2">TiDB part</a></h2>
 <p>You probably already know that data is stored in TiKV instances in a TiDB cluster. However, the GC process should be triggered by TiDB because it's the coordinator of the cluster. There are several requirements for TiDB when triggering GC.</p>
 <ul>
 <li>Clean up as much garbage data as possible.</li>
@@ -3146,7 +3330,7 @@ func (s *Server) UpdateGCSafePoint(ctx context.Context, request *pdpb.UpdateGCSa
 <span class="boring">}
 </span></code></pre></pre>
 <p>By default, TiKV tries to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/server/gc_worker/gc_manager.rs#L301-L322">pull safepoint</a> from PD every 10 seconds. If the pulled safepoint is greater than the local one, the local one will be pushed up, and meanwhile, a GC job is trigger in TiKV locally.</p>
-<h2 id="summary-5"><a class="header" href="#summary-5">Summary</a></h2>
+<h2 id="summary-6"><a class="header" href="#summary-6">Summary</a></h2>
 <p>This document talked about how MVCC GC worked in TiDB system. The most basic requirement of GC is not to delete readable data. Due to the guarantee of GC, you don't need to care about that data is removed. The green GC, skips fetch snapshot when read locks, help to improve the performance of GC. There are some further performance-related topics of GC in TiKV which will be talked in TiKV Dev Guide.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="session"><a class="header" href="#session">Session</a></h1>
 <p>The <code>session</code> package (and related packages such as <code>sessionctx</code> and <code>sessionctx/variable</code>) are responsible for maintaining the state of both sessions and transactions.</p>
