@@ -21,7 +21,7 @@ The [dispatch](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc92615
 	}
 ```
 
-Where [mysql.ComQuery](https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/mysql/const.go#L102) is routed to [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633), which handles all different non-prepared statements (some commands like change database/schema or ping are handled directly in the dispatch function).
+Where [mysql.ComQuery](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/mysql/const.go#L102) is routed to [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633), which handles all different non-prepared statements (some commands like change database/schema or ping are handled directly in the dispatch function).
 
 TiDB keep the state between statements like sql_mode, transaction state etc. in the clientConn's [sessionctx.Context](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/sessionctx/context.go#L43) struct.
 
@@ -118,7 +118,7 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 
 ## Statement string to Abstract Syntax Tree
 
-In [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633) the statement string is [parsed](https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/yy_parser.go#L137) by [the parser, which is in its own repository](https://github.com/pingcap/parser), that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the [parser section](parser.md)
+In [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633) the statement string is [parsed](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/yy_parser.go#L172) by [the parser](https://github.com/pingcap/tidb/tree/master/parser), that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the [parser section](parser.md)
 
 Example of Abstract Syntax tree, the fragment of a `WHERE` clause `` `id` > 1 AND `value` = 'Second' `` looks like:
 ```golang
