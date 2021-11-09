@@ -1409,7 +1409,6 @@ git commit -m &quot;commit-message: update the xx&quot;
 <h3 id="module-structure"><a class="header" href="#module-structure">Module Structure</a></h3>
 <p>TiDB has a number of modules. Table below is an overview that shows what each module does, and if you want to see the code for the relevant function, you can find the corresponding module directly.</p>
 <table><thead><tr><th align="left">Package</th><th align="left">Description</th></tr></thead><tbody>
-<tr><td align="left"><a href="https://github.com/pingcap/parser">pingcap/parser</a></td><td align="left">A MySQL compatible SQL parser used by TiDB, also contains the data structure definition of abstract syntax tree (AST) and other metadata.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/bindinfo">pingcap/tidb/bindinfo</a></td><td align="left">Handles all global sql bind operations, and caches the sql bind info from storage.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/config">pingcap/tidb/config</a></td><td align="left">The configuration definition.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/ddl">pingcap/tidb/ddl</a></td><td align="left">The execution logic of data definition language (DDL).</td></tr>
@@ -1425,6 +1424,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/meta/autoid">pingcap/tidb/meta/autoid</a></td><td align="left">A module to generate the globally unique monotonically incremental IDs for each table, as well as the database ID and table ID.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/metrics">pingcap/tidb/metrics</a></td><td align="left">Store the metrics information of all modules.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/owner">pingcap/tidb/owner</a></td><td align="left">Some tasks in the TiDB cluster can be executed by only one instance, such as the asynchronous schema change. This owner module is used to coordinate and generate a task executor among multiple TiDB servers. Each task has its own executor.</td></tr>
+<tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/parser">pingcap/tidb/parser</a></td><td align="left">A MySQL compatible SQL parser used by TiDB, also contains the data structure definition of abstract syntax tree (AST) and other metadata.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/planner">pingcap/tidb/planner</a></td><td align="left">Queries optimization related code.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/plugin">pingcap/tidb/plugin</a></td><td align="left">The plugin framework of TiDB.</td></tr>
 <tr><td align="left"><a href="https://github.com/pingcap/tidb/tree/master/privilege">pingcap/tidb/privilege</a></td><td align="left">The management interface of user privileges.</td></tr>
@@ -1472,7 +1472,7 @@ go s.onConn(clientConn)
 <p>These processes locate at the following modules:</p>
 <table><thead><tr><th align="left">Package</th><th align="left">Usage</th></tr></thead><tbody>
 <tr><td align="left">pingcap/tidb/sever</td><td align="left">Interface between protocol layer and SQL layer</td></tr>
-<tr><td align="left">pingcap/parser</td><td align="left">SQL parsing and syntax analyze</td></tr>
+<tr><td align="left">pingcap/tidb/parser</td><td align="left">SQL parsing and syntax analyze</td></tr>
 <tr><td align="left">pingcap/tidb/planner</td><td align="left">Validation, query plan building, query plan optimizing</td></tr>
 <tr><td align="left">pingcap/tidb/executor</td><td align="left">Executor generation and execution</td></tr>
 <tr><td align="left">pingcap/tidb/distsql</td><td align="left">Send request to TiKV and aggregate return results from TiKV via TiKV Client</td></tr>
@@ -1518,7 +1518,7 @@ go s.onConn(clientConn)
 	// ...
 	}
 </code></pre>
-<p>Where <a href="https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/mysql/const.go#L102">mysql.ComQuery</a> is routed to <a href="https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633">handleQuery</a>, which handles all different non-prepared statements (some commands like change database/schema or ping are handled directly in the dispatch function).</p>
+<p>Where <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/mysql/const.go#L102">mysql.ComQuery</a> is routed to <a href="https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633">handleQuery</a>, which handles all different non-prepared statements (some commands like change database/schema or ping are handled directly in the dispatch function).</p>
 <p>TiDB keep the state between statements like sql_mode, transaction state etc. in the clientConn's <a href="https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/sessionctx/context.go#L43">sessionctx.Context</a> struct.</p>
 <p>The MySQL protocol is synchronous, and the typical execution flow revolves around a client sending a single query, and receiving an optional result set ending with an OK package containing the success flag and optional warnings/errors and possible metadata such as affected rows.</p>
 <p>As shown here; it is possible that a client might send multiple queries in one mysql.ComQuery call, in which case the cc.ctx.Parse will return multiple results. However; this is not a common occurrence. By default, multiple statements in one mysql.ComQuery call is disabled for security reasons, like making sql injections like <code>SELECT user FROM users WHERE id = ''/* sql injection */; INSERT INTO users VALUES (null, 'EvilUser'); -- '</code>. Clients must explicitly enable the ClientMultiStatements protocol feature.</p>
@@ -1605,7 +1605,7 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 }
 </code></pre>
 <h2 id="statement-string-to-abstract-syntax-tree"><a class="header" href="#statement-string-to-abstract-syntax-tree">Statement string to Abstract Syntax Tree</a></h2>
-<p>In <a href="https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633">handleQuery</a> the statement string is <a href="https://github.com/pingcap/parser/blob/d4a88481405f8c59d45fc0a9c38ee24d55b9bf49/yy_parser.go#L137">parsed</a> by <a href="https://github.com/pingcap/parser">the parser, which is in its own repository</a>, that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the <a href="understand-tidb/parser.html">parser section</a></p>
+<p>In <a href="https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633">handleQuery</a> the statement string is <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/yy_parser.go#L172">parsed</a> by <a href="https://github.com/pingcap/tidb/tree/master/parser">the parser</a>, that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the <a href="understand-tidb/parser.html">parser section</a></p>
 <p>Example of Abstract Syntax tree, the fragment of a <code>WHERE</code> clause <code>`id` &gt; 1 AND `value` = 'Second'</code> looks like:</p>
 <pre><code class="language-golang">ast.BinaryOperationExpr{
   Op: opcode.LogicAnd,
@@ -1667,7 +1667,7 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <h2 id="a-short-introduction-to-tidbs-ddl"><a class="header" href="#a-short-introduction-to-tidbs-ddl">A short introduction to TiDB's DDL</a></h2>
 <p>The design behind TiDB's DDL implementation can be read in the <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md">Online DDL design doc</a>.</p>
 <p>TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asynchronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be synchronized with the current state.</p>
-<p>The states used are defined in <a href="https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33">parser/model/model.go</a>:</p>
+<p>The states used are defined in <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L33">tidb/parser/model/model.go</a>:</p>
 <pre><code class="language-golang">        // StateNone means this schema element is absent and can't be used.
         StateNone SchemaState = iota
         // StateDeleteOnly means we can only delete items for this schema element.
@@ -1697,7 +1697,7 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <p>When a DDL job is completed it will be <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L883">moved to the DDL history</a>.</p>
 <p>There are two main execution parts handling DDLs:</p>
 <ul>
-<li>TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a>, and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.</li>
+<li>TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a>, and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.</li>
 <li>DDL background goroutines:
 <ul>
 <li><a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257">limitDDLJobs</a> which takes tasks from the sessions and adds to the DDL queues in batches.</li>
@@ -1765,7 +1765,7 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <pre><code class="language-sql">CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255));
 </code></pre>
 <p>This statement has the CreateTableStmt Abstract Syntax Tree type and will be handled by <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/executor/ddl.go#L295">executeCreateTable</a>/<a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl_api.go#L1862">CreateTable</a> functions.</p>
-<p>It will fill in a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
+<p>It will fill in a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
 <p>DDL job encoded as JSON:</p>
 <pre><code class="language-json">{
   &quot;id&quot;: 56,
@@ -2023,7 +2023,7 @@ if err = cc.dispatch(ctx, data)
 <h4 id="a-hrefunderstand-tidbsessionhtmlsessiona"><a class="header" href="#a-hrefunderstand-tidbsessionhtmlsessiona"><a href="understand-tidb/session.html">Session</a></a></h4>
 <p>The most important function in <code>Session</code> is <code>ExecuteStmt</code>. It wraps calls to other modules. The SQL execution will respect environment variables in <code>Session</code> like <code>AutoCommit</code> and timezone.</p>
 <h4 id="a-hrefunderstand-tidbparserhtmlparsera"><a class="header" href="#a-hrefunderstand-tidbparserhtmlparsera"><a href="understand-tidb/parser.html">Parser</a></a></h4>
-<p><a href="https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/parser/blob/10b704ade769e4eb0681b74c0c223c4291073308/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
+<p><a href="https://github.com/pingcap/tidb/blob/master/parser/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/tidb/blob/master/parser/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
 <pre><code class="language-go">p := parserPool.Get().(*parser.Parser)
 defer parserPool.Put(p)
 p.SetSQLMode(s.sessionVars.SQLMode)

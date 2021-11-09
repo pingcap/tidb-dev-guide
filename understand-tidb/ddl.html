@@ -173,7 +173,7 @@
 <h2 id="a-short-introduction-to-tidbs-ddl"><a class="header" href="#a-short-introduction-to-tidbs-ddl">A short introduction to TiDB's DDL</a></h2>
 <p>The design behind TiDB's DDL implementation can be read in the <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2018-10-08-online-DDL.md">Online DDL design doc</a>.</p>
 <p>TiDB is a distributed database which needs to have a consistent view of all schemas across the whole cluster. To achieve this in a more asynchronous way, the system uses internal states where each single stage transition is done so that the old/previous stage is compatible with the new/current state, allowing different TiDB Nodes having different versions of the schema definition. All TiDB servers in a cluster shares at most two schema versions/states at the same time, so before moving to the next state change, all currently available TiDB servers needs to be synchronized with the current state.</p>
-<p>The states used are defined in <a href="https://github.com/pingcap/parser/blob/ac711116bdff3327dd0acd1a86bd65a796076ef2/model/model.go#L33">parser/model/model.go</a>:</p>
+<p>The states used are defined in <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L33">tidb/parser/model/model.go</a>:</p>
 <pre><code class="language-golang">        // StateNone means this schema element is absent and can't be used.
         StateNone SchemaState = iota
         // StateDeleteOnly means we can only delete items for this schema element.
@@ -203,7 +203,7 @@
 <p>When a DDL job is completed it will be <a href="https://github.com/pingcap/tidb/blob/476027077e43902f69b6d4b4608ebd06fd831d12/meta/meta.go#L883">moved to the DDL history</a>.</p>
 <p>There are two main execution parts handling DDLs:</p>
 <ul>
-<li>TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a>, and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.</li>
+<li>TiDB session, which executes your statements. This will parse and validate the SQL DDL statement, create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a>, and enqueue it in the corresponding queue. It will then monitor the DDL History until the operation is complete (succeeded or failed) and return the result back to the MySQL client.</li>
 <li>DDL background goroutines:
 <ul>
 <li><a href="https://github.com/pingcap/tidb/blob/d53f9f55a0f92589ea18b642b700dbb1b3cfbbfd/ddl/ddl_worker.go#L257">limitDDLJobs</a> which takes tasks from the sessions and adds to the DDL queues in batches.</li>
@@ -271,7 +271,7 @@
 <pre><code class="language-sql">CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255));
 </code></pre>
 <p>This statement has the CreateTableStmt Abstract Syntax Tree type and will be handled by <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/executor/ddl.go#L295">executeCreateTable</a>/<a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl_api.go#L1862">CreateTable</a> functions.</p>
-<p>It will fill in a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/parser/blob/687005894c4edbc38a1bbf4e02c0c63127dfd209/model/ddl.go#L208">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
+<p>It will fill in a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
 <p>DDL job encoded as JSON:</p>
 <pre><code class="language-json">{
   &quot;id&quot;: 56,
