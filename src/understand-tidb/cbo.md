@@ -120,24 +120,24 @@ The introduction described in this section is based on the `baseLogicalPlan.enum
 
 ```go
 func (p *baseLogicalPlan) enumeratePhysicalPlans4Task(physicalPlans []PhysicalPlan) task {
-    bestTask = invalidTask 
-    
-    for _, pp := range physicalPlans {
-        for j, child := range p.children {
-            childReqProps = pp.GetChildReqProps(j)
-            // Get the best child tasks that can match the required property.
-            childTasks[j] = child.findBestTask(childReqProps) // Step1
-        }
-        
-        // Combine the best child tasks with parent physical plan.
-        curTask = pp.attach2Task(childTasks...) // Step2
-        
-        // Get the most efficient one.
-        if curTask.cost() < bestTask.cost() { // Step3
-            bestTask = curTask
-        }
-    }
-    return bestTask
+	bestTask = invalidTask 
+
+	for _, pp := range physicalPlans {
+		for j, child := range p.children {
+			childReqProps = pp.GetChildReqProps(j)
+			// Get the best child tasks that can match the required property.
+			childTasks[j] = child.findBestTask(childReqProps) // Step1
+		}
+		
+		// Combine the best child tasks with parent physical plan.
+		curTask = pp.attach2Task(childTasks...) // Step2
+		
+		// Get the most efficient one.
+		if curTask.cost() < bestTask.cost() { // Step3
+			bestTask = curTask
+		}
+	}
+	return bestTask
 }
 ```
 
