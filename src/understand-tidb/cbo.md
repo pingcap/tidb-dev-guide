@@ -54,7 +54,7 @@ We will illustrate with examples:
 select * from t join s on t.A = s.A and t.B = s.B
 ```
 
-The property of the join operator can be {A, B}, {B, A}. If we have n equality conditions, then we have n! possible properties. But if we do the function `preparePossibleProperties(logic)` first, we can only use the properties of the `t` table and the `s` table itself.
+The property of the join operator can be {A, B}, {B, A}. If we have n equality conditions, then we have n! possible properties. But if we do the function `preparePossibleProperties(logic)` first, we can only use the properties of the `t` table and the `s` table themselves.
 
 ### Find Best Task
 
