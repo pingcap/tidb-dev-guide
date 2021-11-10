@@ -153,7 +153,7 @@ The input of the`enumeratePhysicalPlans4Task` function is `[]PhysicalPlan`, whic
 
 ## Summary
 
-This chapter specifically introduces the `Volcano Optimizer` currently used by TiDB. We describe in detail how Cost-Based Optimization selects a physical plan with the least cost based on statistics and cost models.
+This chapter specifically introduces the `Volcano Optimizer` currently used by TiDB. We describe in detail how cost-based optimization selects a physical plan with the least cost based on statistics and cost models.
 
 But we still have some problems that the current framework can not handle. For example:
 
