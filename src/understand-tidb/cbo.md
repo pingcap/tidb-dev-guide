@@ -153,11 +153,11 @@ The input of the`enumeratePhysicalPlans4Task` function is `[]PhysicalPlan`, whic
 
 ## Summary
 
-This chapter specifically introduces the `Volcano Optimizer` currently used by TiDB. We describe in detail how cost-based optimization selects a physical plan with the least cost based on statistics and cost models.
+This chapter specifically introduces the `Volcano Optimizer` currently used by `TiDB`. We describe in detail how cost-based optimization selects a physical plan with the least cost based on statistics and cost models.
 
 But we still have some problems that the current framework can not handle. For example:
 
-* The operator push-down logic is too simple. Only one operator is allowed except Selection, and it is difficult to deal with new push-down operators added in the future (such as Projection, etc.).
+* The operator push-down logic is too simple. Only one operator is allowed except `Selection`, and it is difficult to deal with new push-down operators added in the future (such as `Projection`, etc.).
 * Poor scalability: it is difficult to expand to support other storage engines, and implement corresponding push-down operators, such as `TiFlash`.
 * For optimization rules that may not always get better, we currently do not support the selection of rules through cost. The search space of the optimizer is restricted.
 * ...
