@@ -69,12 +69,12 @@ func (p *baseLogicalPlan) findBestTask(prop *property.PhysicalProperty) (bestTas
 		return bestTask
 	}
     
-    plansFitsProp = p.self.exhaustPhysicalPlans(prop) // Step2
+	plansFitsProp = p.self.exhaustPhysicalPlans(prop) // Step2
     
-    bestTask = p.enumeratePhysicalPlans4Task(plansFitsProp, prop) // Step3
+	bestTask = p.enumeratePhysicalPlans4Task(plansFitsProp, prop) // Step3
     
-    p.storeTask(prop, bestTask) // Step4
-    return bestTask
+	p.storeTask(prop, bestTask) // Step4
+	return bestTask
 }
 ```
 
