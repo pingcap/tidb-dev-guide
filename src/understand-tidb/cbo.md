@@ -78,7 +78,7 @@ func (p *baseLogicalPlan) findBestTask(prop *property.PhysicalProperty) (bestTas
 }
 ```
 
-The input of the `baseLogicalPlan.findBestTask` function is the `property.PhysicalProperty` which requires the properties that the physical plan needs to meet. And the output is the `task` which encapsulates the physical plan. We will introduce this structure in detail laster. This function can be divided into some parts. We will briefly explain its effect first, and then make a detailed introduction.
+The input of the `baseLogicalPlan.findBestTask` function is the `property.PhysicalProperty` which requires the properties that the physical plan needs to meet. And the output is the `task` which encapsulates the physical plan. We will introduce this structure in detail later. This function can be divided into some parts. We will briefly explain its effect first, and then make a detailed introduction.
 
 1. The `getTask` and `storeTask` functions are used for memory search. The `getTask` function is used to find the optimal physical plan from the hash table when the corresponding path has been calculated.  And the `storeTask` function is used to store the best physical plan which meets the required properties.
 2. `p.self.exhaustPhysicalPlans(prop)`: Generates all possible plans that can match the required property. We will introduce this part in detail in the later `Exhaust Physical Plans` section.
