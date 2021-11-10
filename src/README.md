@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -67,6 +67,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/tangenta"><img src="https://avatars.githubusercontent.com/u/24713065?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tangenta</b></sub></a><br /><a href="#content-tangenta" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/wshwsh12"><img src="https://avatars.githubusercontent.com/u/14054293?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shenghui Wu</b></sub></a><br /><a href="#content-wshwsh12" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/winoros"><img src="https://avatars.githubusercontent.com/u/7846227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yiding Cui</b></sub></a><br /><a href="#content-winoros" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/MyonKeminta"><img src="https://avatars.githubusercontent.com/u/9948422?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MyonKeminta</b></sub></a><br /><a href="#content-MyonKeminta" title="Content">🖋</a></td>
   </tr>
 </table>
 
