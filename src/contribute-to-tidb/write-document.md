@@ -37,17 +37,18 @@ Before you contribute, let's take a quick look at some general information about
 
 ### Learn about docs versions
 
-Currently, we maintain seven versions of TiDB documentation, each with a separate branch:
+Currently, we maintain eight versions of TiDB documentation, each with a separate branch:
 
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
+| `release-5.2` branch | the 5.2 version |
 | `release-5.1` branch | the 5.1 version |
-| `release-5.0` branch | the 5.0 stable version |
-| `release-4.0` branch | the 4.0 stable version |
-| `release-3.1` branch | the 3.1 stable version |
-| `release-3.0` branch | the 3.0 stable version |
-| `release-2.1` branch | the 2.1 stable version |
+| `release-5.0` branch | the 5.0 version |
+| `release-4.0` branch | the 4.0 version |
+| `release-3.1` branch | the 3.1 version |
+| `release-3.0` branch | the 3.0 version |
+| `release-2.1` branch | the 2.1 version |
 
 Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.
 
@@ -56,6 +57,7 @@ Each docs version is updated very frequently and changes to one version often ap
 - If your changes apply to only one doc version, just submit a PR to the corresponding version branch.
 
 - If your changes apply to multiple doc versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.
+    - `needs-cherry-pick-release-5.2` label: ti-chi-bot will submit a PR to the `release-5.2` branch.
     - `needs-cherry-pick-release-5.1` label: ti-chi-bot will submit a PR to the `release-5.1` branch.
     - `needs-cherry-pick-release-5.0` label: ti-chi-bot will submit a PR to the `release-5.0` branch.
     - `needs-cherry-pick-release-4.0` label: ti-chi-bot will submit a PR to the `release-4.0` branch.
@@ -262,7 +264,7 @@ The following process describes how a docs-cn PR (Chinese content) is translated
 
 If you want to apply for a translation, check the following lists of merged docs-cn/docs PRs with the `translation/doing` label, pick one PR, assign yourself with your GitHub ID, and start the process from step 2 above.
 
-- The list of PR that can be translated in docs-cn: [Pull requests · pingcap/docs-cn](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amreged)
+- The list of PR that can be translated in docs-cn: [Pull requests · pingcap/docs-cn](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amerged)
 - The list of PR that can be translated in docs: [Pull requests · pingcap/docs](https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+)
 
 ## Contact
