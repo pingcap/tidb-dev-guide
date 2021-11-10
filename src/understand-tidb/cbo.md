@@ -36,7 +36,7 @@ The entry function of deriving statistics is the `baseLogicalPlan.recursiveDeriv
 
 For each operator, the logic for deriving statistics is in `DeriveStats(childStats []*property.StatsInfo, ...) (*property.StatsInfo, error)` method of the `LogicalPlan` interface. Their specific implementation is in the [`planner/core/stats.go`](https://github.com/pingcap/tidb/blob/master/planner/core/stats.go) file. 
 
-The function calculates its own statistics based on the statistics of the child nodes. And each operator needs to save statistics to the `property.StatsInfo` structure, which the main variables include `RowCount` (the number of rows), `ColNDVs`(the NDV of each columns), and `HistColl`(the histogram, only the `DataSource` can keep this). You can read the contents of the `Table Statistics` chapter to get more information about statistics.
+The function calculates its own statistics based on the statistics of the child nodes. And each operator needs to save statistics to the `property.StatsInfo` structure, which the main variables include `RowCount`(the number of rows), `ColNDVs`(the NDV of each columns), and `HistColl`(the histogram, only the `DataSource` can keep this). You can read the contents of the [Table Statistics chapter](table-statistics.md) to get more information about statistics.
 
 In addition, we need to pay more attention to the implementation of the `DataSource.DeriveStats` function. `DataSource.DeriveStats` shows where the plan's statistics originally came from. Other operators are some special implementations and you can read their implementation when you need it.
 
