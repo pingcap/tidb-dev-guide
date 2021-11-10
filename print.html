@@ -1166,15 +1166,16 @@ BenchmarkRangeStruct-12                    16171             77523 ns/op
 </li>
 </ul>
 <h3 id="learn-about-docs-versions"><a class="header" href="#learn-about-docs-versions">Learn about docs versions</a></h3>
-<p>Currently, we maintain seven versions of TiDB documentation, each with a separate branch:</p>
+<p>Currently, we maintain eight versions of TiDB documentation, each with a separate branch:</p>
 <table><thead><tr><th align="left">Docs branch name</th><th align="left">Version description</th></tr></thead><tbody>
 <tr><td align="left"><code>master</code> branch</td><td align="left">the latest development version</td></tr>
+<tr><td align="left"><code>release-5.2</code> branch</td><td align="left">the 5.2 version</td></tr>
 <tr><td align="left"><code>release-5.1</code> branch</td><td align="left">the 5.1 version</td></tr>
-<tr><td align="left"><code>release-5.0</code> branch</td><td align="left">the 5.0 stable version</td></tr>
-<tr><td align="left"><code>release-4.0</code> branch</td><td align="left">the 4.0 stable version</td></tr>
-<tr><td align="left"><code>release-3.1</code> branch</td><td align="left">the 3.1 stable version</td></tr>
-<tr><td align="left"><code>release-3.0</code> branch</td><td align="left">the 3.0 stable version</td></tr>
-<tr><td align="left"><code>release-2.1</code> branch</td><td align="left">the 2.1 stable version</td></tr>
+<tr><td align="left"><code>release-5.0</code> branch</td><td align="left">the 5.0 version</td></tr>
+<tr><td align="left"><code>release-4.0</code> branch</td><td align="left">the 4.0 version</td></tr>
+<tr><td align="left"><code>release-3.1</code> branch</td><td align="left">the 3.1 version</td></tr>
+<tr><td align="left"><code>release-3.0</code> branch</td><td align="left">the 3.0 version</td></tr>
+<tr><td align="left"><code>release-2.1</code> branch</td><td align="left">the 2.1 version</td></tr>
 </tbody></table>
 <p>Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.</p>
 <h3 id="use-cherry-pick-labels"><a class="header" href="#use-cherry-pick-labels">Use cherry-pick labels</a></h3>
@@ -1185,6 +1186,7 @@ BenchmarkRangeStruct-12                    16171             77523 ns/op
 <li>
 <p>If your changes apply to multiple doc versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.</p>
 <ul>
+<li><code>needs-cherry-pick-release-5.2</code> label: ti-chi-bot will submit a PR to the <code>release-5.2</code> branch.</li>
 <li><code>needs-cherry-pick-release-5.1</code> label: ti-chi-bot will submit a PR to the <code>release-5.1</code> branch.</li>
 <li><code>needs-cherry-pick-release-5.0</code> label: ti-chi-bot will submit a PR to the <code>release-5.0</code> branch.</li>
 <li><code>needs-cherry-pick-release-4.0</code> label: ti-chi-bot will submit a PR to the <code>release-4.0</code> branch.</li>
@@ -1370,7 +1372,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 </ol>
 <p>If you want to apply for a translation, check the following lists of merged docs-cn/docs PRs with the <code>translation/doing</code> label, pick one PR, assign yourself with your GitHub ID, and start the process from step 2 above.</p>
 <ul>
-<li>The list of PR that can be translated in docs-cn: <a href="https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amreged">Pull requests · pingcap/docs-cn</a></li>
+<li>The list of PR that can be translated in docs-cn: <a href="https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amerged">Pull requests · pingcap/docs-cn</a></li>
 <li>The list of PR that can be translated in docs: <a href="https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+">Pull requests · pingcap/docs</a></li>
 </ul>
 <h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
