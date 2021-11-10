@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -70,6 +70,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/MyonKeminta"><img src="https://avatars.githubusercontent.com/u/9948422?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MyonKeminta</b></sub></a><br /><a href="#content-MyonKeminta" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/mengxin9014"><img src="https://avatars.githubusercontent.com/u/22741979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Meng Xin</b></sub></a><br /><a href="#content-mengxin9014" title="Content">🖋</a></td>
   </tr>
 </table>
 
