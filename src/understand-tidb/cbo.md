@@ -102,7 +102,7 @@ In the figure, the black font operator is a logical operator(e.g, `Agg`, `Join` 
 
 1. `Step1`: The `getTask` function corresponds to the yellow arrow in the figure, which means that the calculated part can be used directly without repeated calculations.
 2. `Step2`: The `p.self.exhaustPhysicalPlans(prop)` function in the figure represents the process of logical operator generating physical operator. For example, logical operator `Agg` generates physical operators `Stream Agg` and `Hash Agg`. But some physical operators that do not satisfy the required property cannot be generated. For example, if the required property is `s.a` logical operator `DS`, only physical operator `Index Scan(a)` can be generated, but `TableScan` cannot be generated.
-3. `Step3`: After we generate all the possible physical plans, we should compare their cost and choose the lowest cost plan. For example, for the plan of `Stream Agg -> Sort Merge Join -> Index Scan(a)`, its cost is `Cost(Stream Agg) + Cost(Sort Merge Join) + Cost(Index Scan(a))`.
+3. `Step3`: After we generate all the possible physical plans, we should compare their costs and choose the lowest cost plan. For example, for the plan of `Stream Agg -> Sort Merge Join -> Index Scan(a)`, its cost is `Cost(Stream Agg) + Cost(Sort Merge Join) + Cost(Index Scan(a))`.
 
 ![find-best-plan](../img/cbo-explain-getBestTask.png)
 
