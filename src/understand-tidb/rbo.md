@@ -136,6 +136,13 @@ EXPLAIN SELECT a, (SELECT sum(t2.b) FROM t2 WHERE t2.a = t1.a) FROM t1;
 
 This rule will keep trying to decorrelate an `Apply` until it can't be decorrelated anymore. [If there are no correlated columns in its inner side now](https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L127), it is converted to a `Join`.
 
+#### Decorrelation can't guarantee a better plan
+
+It might be intuitive to think that a decorrelated `Join` is more efficient than the nested-loop style `Apply`. That's probably true in most cases. However, as we said above, decorrelation just enables us to make more optimizations that are only available for normal `Join`. This doesn't mean `Apply` is always a worse plan.
+
+The decorrelation involves some "pull-up" operation. This usually makes the execution of the inner sub-tree of the `Apply`/`Join` becomes less efficient.
+And in some cases, for example, when the outer side of the `Apply` only has one row of data, the nested-loop style `Apply` execution won't incur inefficiency compared with a normal `Join`. In such cases, the decorrelated plan is worse than the original one.
+
 ### Aggregation Elimination
 
 This rule finds `Aggregation`s and tries to remove useless `Aggregation` operator or useless `DISTINCT` of aggregate functions.
@@ -286,7 +293,7 @@ EXPLAIN SELECT * FROM t LEFT JOIN t1 ON t.a = t1.a WHERE t1.a IS NOT NULL;
 +------------------------------+----------+-----------+---------------+-----------------------------------------------+
 ```
 
-Second, we will also try to derive some extra conditions from the existing predicates or try to add `NOT NULL` when possible. This enables us to push more predicates down.
+Second, we will also try to derive some extra conditions that are the common conditions from the existing `OR` predicates or try to add `NOT NULL` when possible. This enables us to push more predicates down.
 
 Example:
 ```sql
@@ -309,7 +316,7 @@ EXPLAIN SELECT * FROM t1 JOIN t ON t1.b = t.b WHERE (t1.a=1 AND t.a=1) OR (t1.a=
 
 ### Outer Join Elimination
 
-This rule finds and tries to eliminate `Join`. Specifically, it removes the `Join` and its inner side sub-plan tree.
+This rule finds and tries to eliminate outer `Join`. Specifically, it removes the `Join` and its inner side sub-plan tree.
 
 We can do this only when the operators above `Join` only need columns from their outer side. But this is not enough. We also need at least one of the following requirements to be met:
 
@@ -390,6 +397,7 @@ Example:
 ```sql
 CREATE TABLE t1(a int, b int);
 CREATE TABLE t2(a int, b int);
+-- Note that we need to turn on this variable to enable this optimization. We will explain the reason later.
 set @@tidb_opt_agg_push_down=1;
 explain select count(a) from (select * from t1 union all select * from t2);
 ```
@@ -409,6 +417,12 @@ explain select count(a) from (select * from t1 union all select * from t2);
 |         └─TableFullScan_47       | 10000.00 | cop[tikv] | table:t2             | keep order:false, stats:pseudo     |
 +----------------------------------+----------+-----------+----------------------+------------------------------------+
 ```
+
+#### Aggregation Pushdown can't guarantee a better plan
+
+As we know, `Aggregation` usually involves heavy calculations. After aggregation pushdown, the original `Aggregation` operator will become two different `Aggregation` operators (except for the `Projection` case), so it's possible that the plan with `Aggregation` pushed down is worse than the original plan.
+
+In TiDB's current implementation, this kind of scenario mainly happens when we push an `Aggregation` across `Join`. Because there will be additional group by keys added into the pushed-down `Aggregation`. And the NDV (number of distinct values) of the new group by keys may be very high. That will make this `Aggregation` waste lots of calculation resources. So currently we use a system variable `tidb_opt_agg_push_down` to control this optimization, which is disabled by default.
 
 ### TopN Pushdown
 
