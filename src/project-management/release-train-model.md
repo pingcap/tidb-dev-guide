@@ -52,4 +52,4 @@ Different features have different complexities. Some features can be implemented
 
 2. Use feature branches. For a specific feature, the feature developers create a branch from the master branch and ensure that the branch is in sync with the master branch from time to time. Only when the feature developers and reviewers have a high level of confidence in the feature stability, the feature can be merged into master. This approach brings the additional overhead of branching and performing merges from time to time.
 
-In practice, the right approach can be a mix of both. The feature developers need to make the decesion depending on the complexity of the feature.
+In practice, the right approach can be a mix of both. The feature developers need to make the decision depending on the complexity of the feature.
