@@ -60,7 +60,7 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 ​       // set "in transaction" state and return
 ​       vars.SetInTxn(true)
 
-​       **return nil**
+​       return nil
 ​    }
 
 ​    /* If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the need to call NewTxn, which commits the existing transaction and begins a new one. If the last un-committed/un-rollback transaction is a time-bounded read-only transaction, we should always create a new transaction. */
@@ -133,15 +133,15 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 ​       for rowIdx := 0; rowIdx < chk.NumRows(); rowIdx++ {
 ​           // take one row from the batch above
 ​           chunkRow := chk.GetRow(rowIdx)
-​	      // convert the data from chunk.Row to types.DatumRow，stored by fields
+​	        // convert the data from chunk.Row to types.DatumRow，stored by fields
 ​           datumRow := chunkRow.GetDatumRow(fields)
-​          // generate handle which is  unique ID for every row
+​           // generate handle which is  unique ID for every row
 ​           e.prepare(datumRow)
 ​           // compose non-generated columns
 ​           newRow, err := composeFunc(globalRowIdx, datumRow, colsInfo)
-​          // merge non-generated columns
+​           // merge non-generated columns
 ​           e.merge(datumRow, newRow, false)
-​	       *// compose generated columns and merge generated columns*
+​	        // compose generated columns and merge generated columns
 ​           if e.virtualAssignmentsOffset < len(e.OrderedList) {          
 ​              newRow = e.composeGeneratedColumns(globalRowIdx, newRow, colsInfo)     
 ​              e.merge(datumRow, newRow, true)
@@ -173,9 +173,9 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 ​    c.prewriteStarted = true
 
 ​    start := time.Now()
-​    err = c.**prewriteMutations**(bo, c.mutations) 
+​    err = c.prewriteMutations(bo, c.mutations) 
 ​    if c.isOnePC() {
-​       *// If OnePC transaction, return immediately*
+​       // If OnePC transaction, return immediately
 ​       return nil
 ​    }  
 
@@ -219,7 +219,7 @@ func (batchExe *batchExecutor) process(batches []batchMutations) error {
 ​    // concurrently do the work for each batch.
 ​    ch := make(chan error, len(batches))
 ​    exitCh := make(chan struct{})
-​    go batchExe.startWorker(**exitCh**, **ch**, batches)
+​    go batchExe.startWorker(exitCh, ch, batches)
 ​    // check results of every batch prewrite synchronously, if one batch fails, 
 ​    // stops every prewrite worker routine immediately.
 ​    for i := 0; i < len(batches); i++ {
@@ -249,7 +249,7 @@ The important comment and simplified code are as followers. The completed code i
 
 ```go
 // startWork concurrently do the work for each batch considering rate limit
-func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan error, batches []batchMutations) {
+func (batchExe *batchExecutor) startWorker(exitCh chan struct{}, ch chan error, batches []batchMutations) {
 ​    for idx, batch1 := range batches {
 ​       waitStart := time.Now()
 ​       //  Limit the number of go routines by the buffer size of channel
@@ -259,7 +259,7 @@ func (batchExe *batchExecutor) **startWorker**(exitCh chan struct{}, ch chan err
 ​           //  call the function "handleSingleBatch" to prewrite every batch keys
 ​           go func() {
 ​              defer batchExe.rateLimiter.PutToken() //  release the chan buffer
-​              ch <- batchExe.action.**handleSingleBatch**(batchExe.committer, singleBatchBackoffer, batch)
+​              ch <- batchExe.action.handleSingleBatch(batchExe.committer, singleBatchBackoffer, batch)
 ​           }()
 
 ​       } else {
@@ -365,7 +365,7 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 ​    if firstIsPrimary &&
 ​       (actionIsCommit && !c.isAsyncCommit()) {
 ​         // primary should be committed(not async commit)/cleanup/pessimistically locked first
-​       err = c.**doActionOnBatches**(bo, action, batchBuilder.primaryBatch())    
+​       err = c.doActionOnBatches(bo, action, batchBuilder.primaryBatch())    
 ​       batchBuilder.forgetPrimary()
 ​    }
 ​  // If the first time to commit, spawn a goroutine to commit secondary batches asynchronously
@@ -375,11 +375,11 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 ​       c.store.WaitGroup().Add(1)
 ​       go func() {
 ​           defer c.store.WaitGroup().Done()
-​           e := c.**doActionOnBatches**(secondaryBo, action, batchBuilder.allBatches())
+​           e := c.doActionOnBatches(secondaryBo, action, batchBuilder.allBatches())
 ​       }
 ​    }
 ​    else {
-​       err = c.**doActionOnBatches**(bo, action, batchBuilder.allBatches())
+​       err = c.doActionOnBatches(bo, action, batchBuilder.allBatches())
 ​    }
 
 ​    return errors.Trace(err)
@@ -411,7 +411,7 @@ Other errors happened, return error immediately.
 No error happened, exit the for loop and return success.
 */
 
-func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backoffer, batch batchMutations) error {
+func (actionCommit) handleSingleBatch(c *twoPhaseCommitter, bo *retry.Backoffer, batch batchMutations) error {
 ​    // create a commit request and commit sender
 ​    keys := batch.mutations.GetKeys()
 ​    req := tikvrpc.NewRequest(tikvrpc.CmdCommit, &kvrpcpb.CommitRequest{
