@@ -19,7 +19,7 @@ The main function stack to start an optimistic transaction is as followers.
 ​                    (e *SimpleExec) executeBegin
 ```
 
-The function "(e *SimpleExec) executeBegin" do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571) .
+The function `(e *SimpleExec) executeBegin` do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571) .
 
 ```go
 /*
@@ -29,8 +29,8 @@ If stale read timestamp was set,  creates a new stale read transaction and sets 
 create a new transaction and set some properties like snapshot, startTS etc
 */
 
-func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) error {
-​    if s.**ReadOnly** {
+func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
+​    if s.ReadOnly {
 ​       // the statement "start transaction read only" must be used with tidb_enable_noop_functions is true
 ​       //  the statement "start transaction read only  as of timestamp" can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
 ​       //  the statement "start transaction read only  as of timestamp" must ensure the timestamp is in the legal safe point range        
@@ -63,14 +63,14 @@ func (e *SimpleExec) **executeBegin**(ctx context.Context, s *ast.BeginStmt) err
 ​       **return nil**
 ​    }
 
-​    */* *If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the need to call NewTxn, which commits the existing transaction and begins a new one. If the last un-committed/un-rollback transaction is a time-bounded read-only transaction, we should always create a new transaction. */
+​    /* If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the need to call NewTxn, which commits the existing transaction and begins a new one. If the last un-committed/un-rollback transaction is a time-bounded read-only transaction, we should always create a new transaction. */
     
 ​    txnCtx := e.ctx.GetSessionVars().TxnCtx
 ​    if txnCtx.History != nil || txnCtx.IsStaleness {
 ​       err := e.ctx.NewTxn(ctx)
 ​    }
 
-​    // set "in transaction" state
+​  // set "in transaction" state
    e.ctx.GetSessionVars().SetInTxn(true)
 
    // create a new transaction and set some properties like snapshot, startTS etc.
@@ -105,7 +105,7 @@ The main function stack to execute an update statement such as "update t1 set id
 
 ### (e *UpdateExec) updateRows
 
-The function "(e *UpdateExec) updateRows" does the main work for update statement. he important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/update.go#L229) .
+The function `(e *UpdateExec) updateRows` does the main work for update statement. he important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/update.go#L229) .
 
 ```go
 /*
@@ -158,7 +158,7 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 
 ## Commit Optimistic Transaction
 
-Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function "(c *twoPhaseCommitter) execute" does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112) .
+Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function `(c *twoPhaseCommitter) execute` does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112) .
 
 ```go
 /*
@@ -168,7 +168,7 @@ if AsyncCommit transaction, commit the transaction Asynchronously and return
 if not OnePC and AsyncCommit transaction, commit the transaction synchronously.
 */
 
-func **(c *twoPhaseCommitter) execute**(ctx context.Context) (err error) {
+func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 ​    // do the "prewrite" operation
 ​    c.prewriteStarted = true
 
@@ -188,7 +188,7 @@ func **(c *twoPhaseCommitter) execute**(ctx context.Context) (err error) {
 ​       return nil
 ​    } else {  
 ​        // do the "commit" phase 
-​        return c.**commitTxn**(ctx, commitDetail)
+​        return c.commitTxn(ctx, commitDetail)
 ​    } 
 }
 ```
@@ -197,7 +197,7 @@ func **(c *twoPhaseCommitter) execute**(ctx context.Context) (err error) {
 
 ### prewrite
 
-The entry function to prewrite a transaction is "(c *twoPhaseCommitter) prewriteMutations" which calls the function "(batchExe *batchExecutor) process" to do it. the function "(batchExe *batchExecutor) process" calls "(batchExe *batchExecutor) startWorker" to prewrite evenry batch parallelly. The function  "(batchExe *batchExecutor) startWorker" calls "(action actionPrewrite) handleSingleBatch" to prewrite a single batch.
+The entry function to prewrite a transaction is `(c *twoPhaseCommitter) prewriteMutations` which calls the function `(batchExe *batchExecutor) process` to do it. the function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to prewrite evenry batch parallelly. The function  `(batchExe *batchExecutor) startWorker` calls `(action actionPrewrite) handleSingleBatch` to prewrite a single batch.
 
 #### (batchExe *batchExecutor) process
 
@@ -289,7 +289,7 @@ create a prewrite request and a region request sender that sends the prewrite re
 */
 
 func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.Backoffer, batch batchMutations) (err error) {
-​    *// create a prewrite request and a region request sender that sends the prewrite request to tikv.*
+​    // create a prewrite request and a region request sender that sends the prewrite request to tikv.
 ​    txnSize := uint64(c.regionTxnSize[batch.region.GetID()])
 ​    req := c.buildPrewriteRequest(batch, txnSize)
 ​    sender := locate.NewRegionRequestSender(c.store.GetRegionCache(), c.store.GetTiKVClient())
@@ -298,17 +298,17 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​       resp, err := sender.SendReq(bo, req, batch.region, client.ReadTimeoutShort)
 ​       regionErr, err := resp.GetRegionError()  
 
-​       *// get Prewrite Response coming from tikv*
+​       // get Prewrite Response coming from tikv
 ​       prewriteResp := resp.Resp.(*kvrpcpb.PrewriteResponse)
 ​       keyErrs := prewriteResp.GetErrors()
 ​       if len(keyErrs) == 0 {  
-​           *// If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return*
+​           // If no error happened and it is OnePC transaction, update onePCCommitTS by prewriteResp and return
 ​           if c.isOnePC() {
 ​                c.onePCCommitTS = prewriteResp.OnePcCommitTs
 ​                return nil
 ​          } 
 
-​          *// if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return*
+​          // if no error happened and it is AsyncCommit transaction, update minCommitTS  if need and return
 ​          if c.isAsyncCommit() {
 ​                  if prewriteResp.MinCommitTs > c.minCommitTS {
 ​                       c.minCommitTS = prewriteResp.MinCommitTs
@@ -317,7 +317,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​           return nil
 ​       }// if len(keyErrs) == 0
 
-​       *// If errors hanpped beacause of lock confilict, extract the locks from the error responsed*
+​       // If errors hanpped beacause of lock confilict, extract the locks from the error responsed
 ​       var locks []*txnlock.Lock
 ​       for _, keyErr := range keyErrs {
 ​           // Extract lock from key error
@@ -327,13 +327,13 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​           }
 ​           locks = append(locks, lock)
 ​       }// for _, keyErr := range keyErrs
-​       *// resolve conflict locks expired, do the backoff for prewrite*
+​       // resolve conflict locks expired, do the backoff for prewrite
 ​       start := time.Now()
-​       msBeforeExpired, err := c.store.GetLockResolver().**ResolveLocksForWrite**(bo, c.startTS, c.forUpdateTS, locks)
+​       msBeforeExpired, err := c.store.GetLockResolver().ResolveLocksForWrite(bo, c.startTS, c.forUpdateTS, locks)
 ​       if msBeforeExpired > 0 {
 ​           err = bo.BackoffWithCfgAndMaxSleep(retry.BoTxnLock, int(msBeforeExpired), errors.Errorf("2PC prewrite lockedKeys: %d", len(locks)))
 ​           if err != nil {
-​              return errors.Trace(err) *// backoff exceeded maxtime, returns error*
+​              return errors.Trace(err) // backoff exceeded maxtime, returns error
 ​           }
 ​       }
 ​    }// for loop
@@ -342,7 +342,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ### commit
 
-The entry function to commit a transaction is "(c *twoPhaseCommitter) commitMutations" which calls the function "(c *twoPhaseCommitter) doActionOnGroupMutations" to do it. the function "(batchExe *batchExecutor) process" calls "(batchExe *batchExecutor) startWorker" to prewrite evenry batch parallelly. The function  "(batchExe *batchExecutor) startWorker" calls "(actionCommit) handleSingleBatch" to commit a single batch.
+The entry function to commit a transaction is `(c *twoPhaseCommitter) commitMutations` which calls the function `(c *twoPhaseCommitter) doActionOnGroupMutations` to do it. the function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to prewrite evenry batch parallelly. The function  `(batchExe *batchExecutor) startWorker` calls `(actionCommit) handleSingleBatch` to commit a single batch.
 
 #### (c *twoPhaseCommitter) doActionOnGroupMutations
 
@@ -390,15 +390,15 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 
 #### (batchExe *batchExecutor) process
 
-The function "(c *twoPhaseCommitter) doActionOnGroupMutations" calls "(c *twoPhaseCommitter) doActionOnBatches" to do the second phase of commit. The function "(c *twoPhaseCommitter) doActionOnBatches" calls "(batchExe *batchExecutor) process" to do the main work.
+The function `(c *twoPhaseCommitter) doActionOnGroupMutations` calls `(c *twoPhaseCommitter) doActionOnBatches` to do the second phase of commit. The function `(c *twoPhaseCommitter) doActionOnBatches` calls `(batchExe *batchExecutor) process` to do the main work.
 
-The important comment and simplified code of function "(batchExe *batchExecutor) process"  are as mentioned above in prewrite part . The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
+The important comment and simplified code of function `(batchExe *batchExecutor) process`  are as mentioned above in prewrite part . The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
 
 
 
 #### (actionCommit) handleSingleBatch
 
-The function "(batchExe *batchExecutor) process" calls the function "(actionCommit) handleSingleBatch" to send commit request to all tikv nodes.
+The function `(batchExe *batchExecutor) process` calls the function `(actionCommit) handleSingleBatch` to send commit request to all tikv nodes.
 
 The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
 
@@ -465,7 +465,7 @@ func (actionCommit) **handleSingleBatch**(c *twoPhaseCommitter, bo *retry.Backof
 ​              c.mu.Unlock()
 ​              // Update the commitTS of the request and retry.
 ​              req.Commit().CommitVersion = commitTS
-​              **continue**
+​              continue
 ​           }
 
 ​           if c.mu.committed {
