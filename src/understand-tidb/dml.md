@@ -37,7 +37,7 @@ func (b *executorBuilder) build(p plannercore.Plan) Executor {
 
 After the execution, the input SQL statements will be converted into delta changes and stored in MemDB, we'll talk about it later.
 
-Like DQLs, DMLs are also rely on the schema. When a SQL is compiled, the schema is assigned. Manipulating data should base on the corresponding schema. Tables in the schema offer [`Table`](https://github.com/pingcap/tidb/blob/v5.2.1/table/table.go#L164-L197) interface, which is a medium of data manipulation.
+Like DQLs, DMLs also rely on the schema. When a SQL is compiled, the schema is assigned. Manipulating data should base on the corresponding schema. Tables in the schema offer [`Table`](https://github.com/pingcap/tidb/blob/v5.2.1/table/table.go#L164-L197) interface, which is a medium of data manipulation.
 
 ## Conflict
 
