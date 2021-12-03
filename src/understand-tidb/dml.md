@@ -129,7 +129,7 @@ type MemBuffer interface {
 }
 ```
 
-The [`KeyFlags`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/kv/keyflags.go#L35-L48) are the metadata of keys, they mark the keys with states. You can learn the meaning from their names. e.g., if `flagPresumeKNE` is set, the key is presumed as not existing in TiKV, which means this is an inserted key, otherwise, it's an updated key.
+The [`KeyFlags`](https://github.com/tikv/client-go/blob/daddf73a0706d78c9e980c91c97cc9ed100f1919/kv/keyflags.go#L35-L48) are the metadata of keys, they mark the keys with states. You can learn the meaning from their names, e.g. if `flagPresumeKNE` is set, the key is presumed as not existing in TiKV, which means this is an inserted key, otherwise, it's an updated key.
 
 ## Summary
 
