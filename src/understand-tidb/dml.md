@@ -21,7 +21,7 @@ func (b *executorBuilder) build(p plannercore.Plan) Executor {
 	switch v := p.(type) {
 	case nil:
 		return nil
-  ...
+	...
 	case *plannercore.Delete:
 		return b.buildDelete(v)
 	...
@@ -50,7 +50,7 @@ TiDB can check the conflict for optimistic transactions whether during execution
 ```go
 // AddRecord implements table.Table AddRecord interface.
 func (t *TableCommon) AddRecord(sctx sessionctx.Context, r []types.Datum, opts ...table.AddRecordOption) (recordID kv.Handle, err error) {
-...
+		...
 		} else if sctx.GetSessionVars().LazyCheckKeyNotExists() {
 			var v []byte
 			v, err = txn.GetMemBuffer().Get(ctx, key)
@@ -63,7 +63,7 @@ func (t *TableCommon) AddRecord(sctx sessionctx.Context, r []types.Datum, opts .
 		} else {
 			_, err = txn.Get(ctx, key)
 		}
-...
+		...
 }
 
 // Create creates a new entry in the kvIndex data.
@@ -99,9 +99,11 @@ The pessimistic transaction lock key is in two steps, e.g. `UPDATE t SET v = v +
 - Read the required data from TiKV, it's like `SELECT row_id FROM t WHERE id < 10` got (1, 1), (2, 4).
 - Now TiDB knows which key exists, then based on the read data, lock keys.
 
-However, there is a specific way to add a pessimistic, aka. read and lock. It's an atomic operation, read keys from TiKV and the result is returned with keys locked. Luckily, this way is not widely used, only in [point_get](https://github.com/pingcap/tidb/blob/v5.2.1/executor/point_get.go) and [batch_point_get](https://github.com/pingcap/tidb/blob/v5.2.1/executor/batch_point_get.go). This operation will lock the not-exist keys, which allows the client to lock keys first and write some values later.
+However, there is a specific way to add a pessimistic, aka. lock and read in the same time. It's an atomic operation, read keys from TiKV and the result is returned with keys locked. Luckily, this way is not widely used, only in [point_get](https://github.com/pingcap/tidb/blob/v5.2.1/executor/point_get.go#L351-L371) and [batch_point_get](https://github.com/pingcap/tidb/blob/v5.2.1/executor/batch_point_get.go#L516-L537). This operation will lock the not-exist keys, which allows the client to lock keys first and write some values later. TiDB handles this case by adding the KVs to a pessimistic lock cache after pessimistic lock is done.
 
-There is a special read which is various from snapshot read, which read the data from the latest snapshot. We can call it current read or for-update read. In [snapshot isolation](https://en.wikipedia.org/wiki/Snapshot_isolation), all statements in a transaction are executed in the same snapshot, so there are no non-repeatable or non-phantom reads. However, write operations in pessimistic transactions should affect the latest version of data, which means that they use the different snapshot from the read snapshot.
+
+
+There is a special read which is different from snapshot read, which read the data from the latest snapshot. We can call it current read or for-update read. In [snapshot isolation](https://en.wikipedia.org/wiki/Snapshot_isolation), all statements in a transaction are executed in the same snapshot, so there are no non-repeatable or non-phantom reads. However, write operations in pessimistic transactions should affect the latest version of data, which means that they use the different snapshot from the read snapshot.
 
 ## MemDB
 
