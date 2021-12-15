@@ -23,6 +23,32 @@ After a consensus is reached in issues, it's time to start the code contributing
 
 Clear and kind communication is key to this process.
 
+## Referring to an issue
+
+Code repositories in TiDB community require **ALL** the pull requests referring to its corresponding issues. In the pull request body, there **MUST** be one line starting with `Issue Number: ` and linking the relevant issues via the [keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword), for example:
+
+If the pull request resolves the relevant issues, and you want GitHub to close these issues automatically after it merged into the default branch, you can use the syntax (`KEYWORD #ISSUE-NUMBER`) like this:
+
+```
+Issue Number: close #123
+```
+
+If the pull request links an issue but does not close it, you can use the keyword `ref` like this:
+
+```
+Issue Number: ref #456
+```
+
+Multiple issues should use full syntax for each issue and separate by a comma, like:
+
+```
+Issue Number: close #123, ref #456
+```
+
+For pull requests trying to close issues in a different repository, contributors need to first create an issue in the same repository and use this issue to track.
+
+If the pull request body does not provide the required content, the bot will add the `do-not-merge/needs-linked-issue` label to the pull request to prevent it from being merged.
+
 ## Writing tests
 
 One important thing when you make code contributions to TiDB is tests. Tests should be always considered as a part of your change. Any code changes that cause semantic changes or new function additions to TiDB should have corresponding test cases. And of course you can not break any existing test cases if they are still valid. It's recommended to [run tests](../get-started/write-and-run-unit-tests.md) on your local environment first to find obvious problems and fix them before opening the pull request.
