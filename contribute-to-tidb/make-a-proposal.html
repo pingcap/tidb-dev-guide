@@ -183,11 +183,14 @@
 <p>The most common preparations for writing and submitting a draft of design document is on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
 <h2 id="what-is-the-process"><a class="header" href="#what-is-the-process">What is the process?</a></h2>
 <ol>
+<li>Create an issue describing the problem, goal and solution.</li>
+<li>Get responses from other contributors to see if the proposal is generally acceptable.</li>
 <li>Create a pull request with a design document based on the <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/TEMPLATE.md">template</a> as <code>YYYY-MM-DD-my-feature.md</code>.</li>
 <li>Discussion takes place, and the text is revised in response.</li>
 <li>The design document is accepted or rejected when at least two committers reach consensus and no objection from the committer.</li>
 <li>If accepted, create a <a href="https://github.com/pingcap/tidb/issues/new?assignees=&amp;labels=type%2Fenhancement&amp;template=development-task.md">tracking issue</a> for the design document or convert one from a previous discuss issue. The tracking issue basically tracks subtasks and progress. And refer the tracking issue in the design document replacing placeholder in the template.</li>
 <li>Merge the pull request of design.</li>
+<li>Start the implementation.</li>
 </ol>
 <p>Please refer to the tracking issue from subtasks to track the progress.</p>
 <p>An example that almost fits into this model is the proposal &quot;Support global index for partition table&quot;, without following the latest template.</p>

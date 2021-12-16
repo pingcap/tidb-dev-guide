@@ -929,6 +929,19 @@ git rebase --continue
 <li>Handle regressions introduced by your change. Although committers bear the main responsibility to fix regressions, it's quite nice for you to handle it (reverting the change or sending fixes).</li>
 </ol>
 <p>Clear and kind communication is key to this process.</p>
+<h2 id="referring-to-an-issue"><a class="header" href="#referring-to-an-issue">Referring to an issue</a></h2>
+<p>Code repositories in TiDB community require <strong>ALL</strong> the pull requests referring to its corresponding issues. In the pull request body, there <strong>MUST</strong> be one line starting with <code>Issue Number: </code> and linking the relevant issues via the <a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword">keyword</a>, for example:</p>
+<p>If the pull request resolves the relevant issues, and you want GitHub to close these issues automatically after it merged into the default branch, you can use the syntax (<code>KEYWORD #ISSUE-NUMBER</code>) like this:</p>
+<pre><code>Issue Number: close #123
+</code></pre>
+<p>If the pull request links an issue but does not close it, you can use the keyword <code>ref</code> like this:</p>
+<pre><code>Issue Number: ref #456
+</code></pre>
+<p>Multiple issues should use full syntax for each issue and separate by a comma, like:</p>
+<pre><code>Issue Number: close #123, ref #456
+</code></pre>
+<p>For pull requests trying to close issues in a different repository, contributors need to first create an issue in the same repository and use this issue to track.</p>
+<p>If the pull request body does not provide the required content, the bot will add the <code>do-not-merge/needs-linked-issue</code> label to the pull request to prevent it from being merged.</p>
 <h2 id="writing-tests"><a class="header" href="#writing-tests">Writing tests</a></h2>
 <p>One important thing when you make code contributions to TiDB is tests. Tests should be always considered as a part of your change. Any code changes that cause semantic changes or new function additions to TiDB should have corresponding test cases. And of course you can not break any existing test cases if they are still valid. It's recommended to <a href="contribute-to-tidb/../get-started/write-and-run-unit-tests.html">run tests</a> on your local environment first to find obvious problems and fix them before opening the pull request.</p>
 <p>It's also highly appreciated if your pull request only contains test cases to increase test coverage of TiDB. Supplement test cases for existing modules is a good and easy way to become acquainted with existing code.</p>
@@ -1001,11 +1014,14 @@ git rebase --continue
 <p>The most common preparations for writing and submitting a draft of design document is on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
 <h2 id="what-is-the-process"><a class="header" href="#what-is-the-process">What is the process?</a></h2>
 <ol>
+<li>Create an issue describing the problem, goal and solution.</li>
+<li>Get responses from other contributors to see if the proposal is generally acceptable.</li>
 <li>Create a pull request with a design document based on the <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/TEMPLATE.md">template</a> as <code>YYYY-MM-DD-my-feature.md</code>.</li>
 <li>Discussion takes place, and the text is revised in response.</li>
 <li>The design document is accepted or rejected when at least two committers reach consensus and no objection from the committer.</li>
 <li>If accepted, create a <a href="https://github.com/pingcap/tidb/issues/new?assignees=&amp;labels=type%2Fenhancement&amp;template=development-task.md">tracking issue</a> for the design document or convert one from a previous discuss issue. The tracking issue basically tracks subtasks and progress. And refer the tracking issue in the design document replacing placeholder in the template.</li>
 <li>Merge the pull request of design.</li>
+<li>Start the implementation.</li>
 </ol>
 <p>Please refer to the tracking issue from subtasks to track the progress.</p>
 <p>An example that almost fits into this model is the proposal &quot;Support global index for partition table&quot;, without following the latest template.</p>
