@@ -299,6 +299,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "Mini256",
+      "name": "Mini256",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5086433?v=4",
+      "profile": "https://github.com/Mini256",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 5,
