@@ -44,20 +44,24 @@ For the release train model, we strictly ensure that a release happens on the pl
 
 Ideally, we would have started stabilization once we create the new release branch. After the code-freeze date, only pull requests of blocker bugs can be merged to the new release branch. In a rare scenario, it is possible that few features pass the code freeze bar but still fail to be completed on time. Such features will also be dropped from the release train in the end to meet the release deadline.
 
+Developers who want to contribute features to TiDB could follow the procedure described in [Make a Proposal](../contribute-to-tidb/make-a-proposal.md). Once all the requirements are met and all the codes are merged into the master branch, the feature will be boxed into the nearest release.
+
+Except for feature releases, there also exists bugfix releases. Bugfix releases are scheduled when needed, there is no fixed calendar for such releases. When a bugfix release is scheduled, there are two rounds of triage. A bug fix could only be boxed into a release when it occurs before triage.
+
 ## What is TiDB version mechanism under release train model?
 
 Under release train model, every sprint we produce one new release. The version of the release is vx.x.0, short as vx.x. Such version carries all the new features and bug fixes. Versions like vx.x.1 are bugfix versions, they won't accept any new features and are scheduled only when needed. The current maintained versions are:
 
-| version             | branch             | status            | triage label            | lastest release          | issue 
+| version             | branch             | status            | triage label            | latest release           | issue 
 |:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
-| v5.4                | master             | in sprint         |                         |                          | https://github.com/pingcap/tidb/issues/30336
-| v5.0                | release-5.0        | bugfix            | affect-5.0              | v5.0.5                   | https://github.com/pingcap/tidb/issues/30228
-| v5.1                | release-5.1        | bugfix            | affect-5.1              | v5.1.3                   | https://github.com/pingcap/tidb/issues/30227
-| v5.2                | release-5.2        | bugfix            | affect-5.2              | v5.2.3                   | https://github.com/pingcap/tidb/issues/30226
-| v5.3                | release-5.3        | bugfix            | affect-5.3              | v5.3.0                   | https://github.com/pingcap/tidb/issues/28378
-| v4.0                | release-4.0        | bugfix            | affect-4.0              | v4.0.15                  | https://github.com/pingcap/tidb/issues/27800
+| v5.4                | master             | in sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/30336>
+| v5.0                | release-5.0        | bugfix            | affect-5.0              | v5.0.5                   | <https://github.com/pingcap/tidb/issues/30228>
+| v5.1                | release-5.1        | bugfix            | affect-5.1              | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
+| v5.2                | release-5.2        | bugfix            | affect-5.2              | v5.2.3                   | <https://github.com/pingcap/tidb/issues/30226>
+| v5.3                | release-5.3        | bugfix            | affect-5.3              | v5.3.0                   | <https://github.com/pingcap/tidb/issues/28378>
+| v4.0                | release-4.0        | bugfix            | affect-4.0              | v4.0.15                  | <https://github.com/pingcap/tidb/issues/27800>
 
-For more versions' information, please check https://github.com/pingcap/tidb/projects/63.
+For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
 
 ## What happens if features are not completed?
 
