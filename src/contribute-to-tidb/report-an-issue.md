@@ -21,7 +21,7 @@ As previous section shows, duplicated issues should be reduced. To help others w
 
 ## Making good issues
 
-Except for a good title and detailed issue message, you can also add suitable labels to your issue via [/label](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#type), especially which component the issue belongs to. Many committers and contributors only focus on certain subsystems of TiDB. Setting the appropriate component is important for getting their attention.
+Except for a good title and detailed issue message, you can also add suitable labels to your issue via [/label](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#type), especially which component the issue belongs to and which versions the issue affects. Many committers and contributors only focus on certain subsystems of TiDB. Setting the appropriate component is important for getting their attention. You can query the [maintained version list](https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model) to figure out which verions to check.
 
 If you are able to, you should take more considerations on your issue:
 
