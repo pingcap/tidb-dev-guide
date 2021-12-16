@@ -24,11 +24,14 @@ The most common preparations for writing and submitting a draft of design docume
 
 ## What is the process?
 
-1. Create a pull request with a design document based on the [template](https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/TEMPLATE.md) as `YYYY-MM-DD-my-feature.md`.
-2. Discussion takes place, and the text is revised in response.
-3. The design document is accepted or rejected when at least two committers reach consensus and no objection from the committer.
-4. If accepted, create a [tracking issue](https://github.com/pingcap/tidb/issues/new?assignees=&labels=type%2Fenhancement&template=development-task.md) for the design document or convert one from a previous discuss issue. The tracking issue basically tracks subtasks and progress. And refer the tracking issue in the design document replacing placeholder in the template.
-5. Merge the pull request of design.
+1. Create an issue describing the problem, goal and solution.
+2. Get responses from other contributors to see if the proposal is generally acceptable.
+3. Create a pull request with a design document based on the [template](https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/TEMPLATE.md) as `YYYY-MM-DD-my-feature.md`.
+4. Discussion takes place, and the text is revised in response.
+5. The design document is accepted or rejected when at least two committers reach consensus and no objection from the committer.
+6. If accepted, create a [tracking issue](https://github.com/pingcap/tidb/issues/new?assignees=&labels=type%2Fenhancement&template=development-task.md) for the design document or convert one from a previous discuss issue. The tracking issue basically tracks subtasks and progress. And refer the tracking issue in the design document replacing placeholder in the template.
+7. Merge the pull request of design.
+8. Start the implementation.
 
 Please refer to the tracking issue from subtasks to track the progress.
 
