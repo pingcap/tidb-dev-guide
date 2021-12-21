@@ -55,11 +55,11 @@ Under release train model, every sprint we produce one new release. The version 
 | version             | branch             | status            | triage label            | latest release           | issue 
 |:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
 | v5.4                | master             | in sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/30336>
-| v5.0                | release-5.0        | bugfix            | affect-5.0              | v5.0.5                   | <https://github.com/pingcap/tidb/issues/30228>
-| v5.1                | release-5.1        | bugfix            | affect-5.1              | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
-| v5.2                | release-5.2        | bugfix            | affect-5.2              | v5.2.3                   | <https://github.com/pingcap/tidb/issues/30226>
-| v5.3                | release-5.3        | bugfix            | affect-5.3              | v5.3.0                   | <https://github.com/pingcap/tidb/issues/28378>
-| v4.0                | release-4.0        | bugfix            | affect-4.0              | v4.0.15                  | <https://github.com/pingcap/tidb/issues/27800>
+| v5.0                | release-5.0        | bugfix            | affects-5.0             | v5.0.5                   | <https://github.com/pingcap/tidb/issues/30228>
+| v5.1                | release-5.1        | bugfix            | affects-5.1             | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
+| v5.2                | release-5.2        | bugfix            | affects-5.2             | v5.2.3                   | <https://github.com/pingcap/tidb/issues/30226>
+| v5.3                | release-5.3        | bugfix            | affects-5.3             | v5.3.0                   | <https://github.com/pingcap/tidb/issues/28378>
+| v4.0                | release-4.0        | bugfix            | affects-4.0             | v4.0.16                  | <https://github.com/pingcap/tidb/issues/29856>
 
 For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
 
