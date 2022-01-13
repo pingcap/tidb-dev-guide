@@ -1,6 +1,6 @@
 # Optimistic Transaction
 
-Under the optimistic transaction model, modification conflicts are regarded as part of the transaction commit. TiDB cluster uses the pessimistic transaction model by default before version 3.0.8, uses pessimistic transaction model after version 3.0.8. System variable tidb_txn_mode controls TiDB uses optimistic transaction mode or pessimistic transaction mode.
+Under the optimistic transaction model, modification conflicts are regarded as part of the transaction commit. TiDB cluster uses the optimistic transaction model by default before version 3.0.8, uses pessimistic transaction model after version 3.0.8. System variable `tidb_txn_mode` controls TiDB uses optimistic transaction mode or pessimistic transaction mode.
 
 This document talks about the implementation of optimistic transaction in TiDB. It is recommended that you have learned about the [principles of optimistic transaction](https://docs.pingcap.com/tidb/stable/optimistic-transaction).
 
@@ -197,7 +197,7 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 
 ### prewrite
 
-The entry function to prewrite a transaction is `(c *twoPhaseCommitter) prewriteMutations` which calls the function `(batchExe *batchExecutor) process` to do it. the function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to prewrite evenry batch parallelly. The function  `(batchExe *batchExecutor) startWorker` calls `(action actionPrewrite) handleSingleBatch` to prewrite a single batch.
+The entry function to prewrite a transaction is `(c *twoPhaseCommitter) prewriteMutations` which calls the function `(batchExe *batchExecutor) process` to do it. The function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to prewrite evenry batch parallelly. The function  `(batchExe *batchExecutor) startWorker` calls `(action actionPrewrite) handleSingleBatch` to prewrite a single batch.
 
 #### (batchExe *batchExecutor) process
 
@@ -342,7 +342,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 
 ### commit
 
-The entry function to commit a transaction is `(c *twoPhaseCommitter) commitMutations` which calls the function `(c *twoPhaseCommitter) doActionOnGroupMutations` to do it. the function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to prewrite evenry batch parallelly. The function  `(batchExe *batchExecutor) startWorker` calls `(actionCommit) handleSingleBatch` to commit a single batch.
+The entry function of commiting a transaction is `(c *twoPhaseCommitter) commitMutations` which calls the function `(c *twoPhaseCommitter) doActionOnGroupMutations` to do it. The batch of primary key will be committed first, then the function `(batchExe *batchExecutor) process` calls `(batchExe *batchExecutor) startWorker` to commit the rest batches parallelly and asynchronously. The function  `(batchExe *batchExecutor) startWorker` calls `(actionCommit) handleSingleBatch` to commit a single batch.
 
 #### (c *twoPhaseCommitter) doActionOnGroupMutations
 
@@ -400,7 +400,7 @@ The important comment and simplified code of function `(batchExe *batchExecutor)
 
 The function `(batchExe *batchExecutor) process` calls the function `(actionCommit) handleSingleBatch` to send commit request to all tikv nodes.
 
-The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
+The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/commit.go#L67) .
 
 ```go
 /*
