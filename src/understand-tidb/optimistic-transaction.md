@@ -105,7 +105,7 @@ The main function stack to execute an update statement such as "update t1 set id
 
 ### (e *UpdateExec) updateRows
 
-The function `(e *UpdateExec) updateRows` does the main work for update statement. he important comment and simplified code is as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/update.go#L229) .
+The function `(e *UpdateExec) updateRows` does the main work for update statement. The important comment and simplified code are as followers. The completed code is [here](https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/update.go#L229) .
 
 ```go
 /*
