@@ -15,6 +15,7 @@
     * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Report an Issue](contribute-to-tidb/report-an-issue.md)
     * [Contribute Code](contribute-to-tidb/contribute-code.md)
+    * [Cherry-pick a Pull Request](contribute-to-tidb/cherrypick-a-pr.md)
     * [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
     * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)

@@ -17,6 +17,7 @@ Here are guidelines for contributing to various aspect of the project:
 * [Committer Guide](committer-guide.md)
 * [Report an Issue](report-an-issue.md)
 * [Contribute Code](contribute-code.md)
+* [Cherry-pick a Pull Request](cherrypick-a-pr.md)
 * [Review a Pull Request](review-a-pr.md)
 * [Make a Proposal](make-a-proposal.md)
 * [Code Style and Quality Guide](code-style-and-quality-guide.md)
