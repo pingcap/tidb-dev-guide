@@ -21,7 +21,9 @@ The status of the affection of a certain issue can be then determined by the com
 
 For pull requests, `check-issue-triage-complete` checker will first check whether the [corresponding issue](https://pingcap.github.io/tidb-dev-guide/contribute-to-tidb/contribute-code.html#referring-to-an-issue) has any `type/xx` label, if not, the checker fails. Then for issues with `type/bug` label, there must also exist a `severity/xx` label, otherwise, the checker fails. For `type/bug` issue with `severity/critical` or `severity/major` label, the checker checks if there is any `may-affect-x.y` label, which means the issue has not been diagnosed on all needed versions. If there is, the pull request is blocked and not able to be merged. So in order to merge a bugfix pull request into the target branch, every other effective version needs to first be diagnosed.
 
-The bot will automatically trigger the checker to run on the associated PR by listening to the labeled / unlabeled event of `may-affects-x.y` labels on bug issue, contributors also could comment `/run-check-issue-triage-complete` like other checkers to rerun the checker manually and update the status. In addition, if the checker fails, the robot will add the `do-not-merge/needs-triage-completed` label to the PR at the same time, which will be used by other plugins like [tars](https://book.prow.tidb.io/#/en/plugins/tars).
+The bot will automatically trigger the checker to run on the associated PR by listening to the labeled / unlabeled event of `may-affects-x.y` labels on bug issue, contributors also could comment `/check-issue-triage-complete` or `/run-check-issue-triage-complete` like other checkers to rerun the checker manually and update the status. 
+
+In addition, if the checker fails, the robot will add the `do-not-merge/needs-triage-completed` label to the PR at the same time, which will be used by other plugins like [tars](https://book.prow.tidb.io/#/en/plugins/tars).
 
 ## Create Cherry-pick Pull Requests
 
