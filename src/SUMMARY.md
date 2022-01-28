@@ -14,6 +14,7 @@
     * [Community Guideline](contribute-to-tidb/community-guideline.md)
     * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Report an Issue](contribute-to-tidb/report-an-issue.md)
+    * [Issue Triage](contribute-to-tidb/issue-triage.md)
     * [Contribute Code](contribute-to-tidb/contribute-code.md)
     * [Cherry-pick a Pull Request](contribute-to-tidb/cherrypick-a-pr.md)
     * [Review a Pull Request](contribute-to-tidb/review-a-pr.md)
