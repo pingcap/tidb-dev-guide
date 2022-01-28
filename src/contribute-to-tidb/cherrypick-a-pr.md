@@ -25,6 +25,6 @@ The bot will automatically trigger the checker to run on the associated PR by li
 
 ## Create Cherry-pick Pull Requests
 
-ti-chi-bot will add `needs-cherry-pick-x.y` labels to pull requests according to the `affects-x.y` labels on the corresponding issues when the `check-issue-triage-complete` checker passes. Then ti-srebot will automatically create cherry-pick pull requests according to the `needs-cherry-pick-x.y` labels for you. The cherry-pick pull requests will be created even if it conflicts with the target branch. You need to manually resolve the conflicts.
+ti-chi-bot will add `needs-cherry-pick-x.y` labels to pull requests according to the `affects-x.y` labels on the corresponding issues when the `check-issue-triage-complete` checker passes. Then the bot will automatically create cherry-pick pull requests according to the `needs-cherry-pick-x.y` labels for you. The cherry-pick pull requests will be created even if it conflicts with the target branch. You need to manually resolve the conflicts.
 
 Besides the merge requirements as normal pull requests, cherry-pick pull requests are added `do-not-merge/cherry-pick-not-approved` label initially. To get it merged, it needs an additional `cherry-pick-approved` label.
