@@ -33,7 +33,7 @@ In addition, if the checker fails, the robot will add the `do-not-merge/needs-tr
 
 ## Review cherry-pick pull requests
 
-Cherry-pick pull requests obey the [same review rules](review-a-pr.md) as other pull requests. Besides the merge requirements as normal pull requests, cherry-pick pull requests are added `do-not-merge/cherry-pick-not-approved` label initially. To get it merged, it needs an additional `cherry-pick-approved` label from team [qa-release-merge](https://github.com/orgs/pingcap/teams/qa-release-merge/members).
+Cherry-pick pull requests obey the [same review rules](review-a-pr.md) as other pull requests. Besides the merge requirements as normal pull requests, cherry-pick pull requests are added `do-not-merge/cherry-pick-not-approved` label initially. To get it merged, it needs an additional `cherry-pick-approved` label from team *qa-release-merge*.
 
 ## Troubleshoot cherry-pick
 
