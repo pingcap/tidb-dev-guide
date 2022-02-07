@@ -111,15 +111,15 @@ The following issues look like bugs but actually not. They should not be labeled
 
 ## Identify issue affected releases
 
-For `type/bug` issues, when they are created and identified as `severity/critical` or `severity/major`, the ti-chi-bot will assign a list of `may-affect-x.y` labels to the issue. For example, currently if we have version 5.0, 5.1, 5.2, 5.3, 4.0 and the in-sprint 5.4, when a `type/bug` issue is created and added label `severity/critical` or `severity/major`, the ti-chi-bot will add label `may-affect-4.0`, `may-affect-5.0`, `may-affect-5.1`, `may-affect-5.2`, and `may-affect-5.3`. These labels mean that whether the bug affects these release versions are not yet determined, and is awaiting being triaged. You could check [currently maintained releases list](https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model) for all releases.
+For `type/bug` issues, when they are created and identified as `severity/critical` or `severity/major`, the ti-chi-bot will assign a list of `may-affects-x.y` labels to the issue. For example, currently if we have version 5.0, 5.1, 5.2, 5.3, 4.0 and the in-sprint 5.4, when a `type/bug` issue is created and added label `severity/critical` or `severity/major`, the ti-chi-bot will add label `may-affects-4.0`, `may-affects-5.0`, `may-affects-5.1`, `may-affects-5.2`, and `may-affects-5.3`. These labels mean that whether the bug affects these release versions are not yet determined, and is awaiting being triaged. You could check [currently maintained releases list](https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model) for all releases.
 
-When a version is triaged, the triager needs to remove the corresponding `may-affect-x.y` label. If the version is affected, the triager needs to add a corresponding `affects-x.y` label to the issue and in the meanwhile the `may-affect-x.y` label can be automatically removed by the ti-chi-bot, otherwise the triager can simply remove the `may-affect-x.y` label. So when a issue has a label `may-affect-x.y`, this means the issue has not been diagnosed on version x.y. When a issue has a label `affects-x.y`, this means the issue has been diagnosed on version x.y and identified affected. When both the two labels are missing, this means the issue has been diagnosed on version x.y but the version is not affected.
+When a version is triaged, the triager needs to remove the corresponding `may-affects-x.y` label. If the version is affected, the triager needs to add a corresponding `affects-x.y` label to the issue and in the meanwhile the `may-affects-x.y` label can be automatically removed by the ti-chi-bot, otherwise the triager can simply remove the `may-affects-x.y` label. So when a issue has a label `may-affects-x.y`, this means the issue has not been diagnosed on version x.y. When a issue has a label `affects-x.y`, this means the issue has been diagnosed on version x.y and identified affected. When both the two labels are missing, this means the issue has been diagnosed on version x.y but the version is not affected.
 
-The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding `may-affect-x.y` and `affects-x.y` labels on the issue, see the table below for a clearer illustration.
+The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding `may-affects-x.y` and `affects-x.y` labels on the issue, see the table below for a clearer illustration.
 
-| may-affect-x.y | affects-x.y |                         status                                |
-|:--------------:|:-----------:|:-------------------------------------------------------------:|
-|     YES        |    NO       | version x.y has not been diagnosed                            |
-|     NO         |    NO       | version x.y has been diagnosed and identified as not affected |
-|     NO         |    YES      | version x.y has been diagnosed and identified as affected     |
-|     YES        |    YES      | invalid status                                                |
+| may-affects-x.y | affects-x.y |                         status                                |
+|:--0------------:|:-----------:|:-------------------------------------------------------------:|
+|     YES         |    NO       | version x.y has not been diagnosed                            |
+|     NO          |    NO       | version x.y has been diagnosed and identified as not affected |
+|     NO          |    YES      | version x.y has been diagnosed and identified as affected     |
+|     YES         |    YES      | invalid status                                                |

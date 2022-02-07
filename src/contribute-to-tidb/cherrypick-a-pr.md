@@ -16,7 +16,7 @@ ti-chi-bot creates corresponding cherry-pick pull requests according to the `nee
 
 ### ti-srebot
 
-ti-srebot creates corresponding cherry-pick pull requests according to the `needs-cherry-pick-<release-version>` on the original pull request once it's merged. If there is any failure or omission, contributors could run `/run-cherry-picker` to re-run the cherry-pick process. It would fail for already created branches. In addition, ti-srebot will copy the approval status from the original pull request and invites the pull request author to its forked repo.
+ti-srebot creates corresponding cherry-pick pull requests according to the `needs-cherry-pick-<release-version>` on the original pull request once it's merged. If there is any failure or omission, contributors could run `/run-cherry-picker` to re-run the cherry-pick process. It would fail for already created branches. In addition, ti-srebot will re-request the reviewers and assign the new pull request to the author of the original pull request. ti-srebot will also invite the pull request author to its forked repo.
 
 ## Create cherry-pick pull requests manually
 
@@ -24,7 +24,7 @@ Contributors could also create cherry-pick pull requests manually if they want. 
 
 ## Pass triage complete check
 
-For pull requests, `check-issue-triage-complete` checker will first check whether the [corresponding issue](https://pingcap.github.io/tidb-dev-guide/contribute-to-tidb/contribute-code.html#referring-to-an-issue) has any `type/xx` label, if not, the checker fails. Then for issues with `type/bug` label, there must also exist a `severity/xx` label, otherwise, the checker fails. For `type/bug` issue with `severity/critical` or `severity/major` label, the checker checks if there is any `may-affect-x.y` label, which means the issue has not been diagnosed on all needed versions. If there is, the pull request is blocked and not able to be merged. So in order to merge a bugfix pull request into the target branch, every other effective version needs to first be diagnosed.
+For pull requests, `check-issue-triage-complete` checker will first check whether the [corresponding issue](https://pingcap.github.io/tidb-dev-guide/contribute-to-tidb/contribute-code.html#referring-to-an-issue) has any `type/xx` label, if not, the checker fails. Then for issues with `type/bug` label, there must also exist a `severity/xx` label, otherwise, the checker fails. For `type/bug` issue with `severity/critical` or `severity/major` label, the checker checks if there is any `may-affects-x.y` label, which means the issue has not been diagnosed on all needed versions. If there is, the pull request is blocked and not able to be merged. So in order to merge a bugfix pull request into the target branch, every other effective version needs to first be diagnosed.
 
 ti-chi-bot will automatically trigger the checker to run on the associated PR by listening to the labeled/unlabeled event of `may-affects-x.y` labels on bug issues, contributors also could comment `/check-issue-triage-complete` or `/run-check-issue-triage-complete` like other checkers to rerun the checker manually and update the status. Once `check-issue-triage-complete` checker passes, ti-chi-bot will add `needs-cherry-pick-<release-version>`/`needs-cherry-pick-<release-branch-name>`  labels to pull requests according to the `affects-x.y` labels on the corresponding issues.
 
@@ -38,4 +38,4 @@ Cherry-pick pull requests obey the [same review rules](review-a-pr.md) as other 
 ## Troubleshoot cherry-pick
 
 * If there is any error in the cherry-pick process, for example, the bot fails to create some cherry-pick pull requests. You could ask reviewers/committers/maintainers for help.
-* If there are conflicts in the cherry-pick pull requests. You must [resolve the conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) to get pull requests merged. For repos using ti-srebot, you are granted privileges to the forked repo, you could directly push to the pull request branch. For ti-chi-bot, you have to ask committers/maintainers to do that for you.
+* If there are conflicts in the cherry-pick pull requests. You must [resolve the conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) to get pull requests merged. For repos using ti-srebot, you are granted privileges to the forked repo, you could directly push to the pull request branch. For ti-chi-bot, you have to ask committers/maintainers to do that for you or manually create a new cherry-pick pull request for the branch.
