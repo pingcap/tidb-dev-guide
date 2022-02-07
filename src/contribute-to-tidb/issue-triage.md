@@ -115,7 +115,7 @@ For `type/bug` issues, when they are created and identified as `severity/critica
 
 When a version is triaged, the triager needs to remove the corresponding `may-affect-x.y` label. If the version is affected, the triager needs to add a corresponding `affects-x.y` label to the issue and in the meanwhile the `may-affect-x.y` label can be automatically removed by the ti-chi-bot, otherwise the triager can simply remove the `may-affect-x.y` label. So when a issue has a label `may-affect-x.y`, this means the issue has not been diagnosed on version x.y. When a issue has a label `affects-x.y`, this means the issue has been diagnosed on version x.y and identified affected. When both the two labels are missing, this means the issue has been diagnosed on version x.y but the version is not affected.
 
-The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding `may-affect-x.y` and `affect-x.y` labels on the issue, see the table bellow for a clearer illustration.
+The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding `may-affect-x.y` and `affects-x.y` labels on the issue, see the table below for a clearer illustration.
 
 | may-affect-x.y | affects-x.y |                         status                                |
 |:--------------:|:-----------:|:-------------------------------------------------------------:|
