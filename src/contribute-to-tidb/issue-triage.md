@@ -104,7 +104,7 @@ The bug does not affect functionality or data. It does not even need a workaroun
 
 ### Not a bug
 
-The following issues look like bugs but actually not. They should not be tagged "type/bug" and instead be only tagged "type/compatibility":
+The following issues look like bugs but actually not. They should not be labeled `type/bug` and instead be only labeled `type/compatibility`:
 
 * Behavior is different from MySQL, but could be argued as correct.
 * Behavior is different from MySQL, but MySQL behavior differs between 5.7 and 8.0.
