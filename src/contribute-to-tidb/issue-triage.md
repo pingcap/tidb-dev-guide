@@ -1,6 +1,6 @@
 # Issue Triage
 
-TiDB uses a issue-centric workflow for development. Every problem, enhancement and feature starts with a issue. For bug issues, you need to perform some more triage operations on the issues.
+TiDB uses an issue-centric workflow for development. Every problem, enhancement and feature starts with an issue. For bug issues, you need to perform some more triage operations on the issues.
 
 ## Diagnose issue severity
 
