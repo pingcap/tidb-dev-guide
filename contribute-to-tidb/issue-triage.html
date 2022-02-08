@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Issue Triage - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.5.</strong> Debug and profile</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.6.</strong> Commit code and submit a pull request</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.2.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-an-issue.html"><strong aria-hidden="true">2.3.</strong> Report an Issue</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/issue-triage.html" class="active"><strong aria-hidden="true">2.4.</strong> Issue Triage</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.5.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/cherrypick-a-pr.html"><strong aria-hidden="true">2.6.</strong> Cherry-pick a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.7.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.8.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.9.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.10.</strong> Write Document</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/miscellaneous-topics.html"><strong aria-hidden="true">2.11.</strong> Miscellaneous Topics</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-statement.html"><strong aria-hidden="true">3.1.</strong> The Lifecycle of a Statement</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.1.1.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.1.2.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dql.html"><strong aria-hidden="true">3.1.3.</strong> DQL</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/parser.html"><strong aria-hidden="true">3.2.</strong> Parser</a></li><li class="chapter-item expanded "><a href="../understand-tidb/planner.html"><strong aria-hidden="true">3.3.</strong> Planner</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.3.1.</strong> Table Statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/rbo.html"><strong aria-hidden="true">3.3.2.</strong> Rule-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/cbo.html"><strong aria-hidden="true">3.3.3.</strong> Cost-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.3.4.</strong> Plan Cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.3.5.</strong> SQL Plan Management</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/execution.html"><strong aria-hidden="true">3.4.</strong> Execution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/parallel-execution-framework.html"><strong aria-hidden="true">3.4.1.</strong> Parallel Execution Framework</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-vectorized-execution.html"><strong aria-hidden="true">3.4.2.</strong> Implementation of Vectorized Execution</a></li><li class="chapter-item expanded "><a href="../understand-tidb/memory-management-mechanism.html"><strong aria-hidden="true">3.4.3.</strong> Memory Management Mechanism</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-typical-operators.html"><strong aria-hidden="true">3.4.4.</strong> Implementation of Typical Operators</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction.html"><strong aria-hidden="true">3.5.</strong> Transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/transaction-on-tikv.html"><strong aria-hidden="true">3.5.1.</strong> Transaction on TiKV</a></li><li class="chapter-item expanded "><a href="../understand-tidb/optimistic-transaction.html"><strong aria-hidden="true">3.5.2.</strong> Optimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/lock-resolver.html"><strong aria-hidden="true">3.5.3.</strong> Lock Resolver</a></li><li class="chapter-item expanded "><a href="../understand-tidb/pessimistic-transaction.html"><strong aria-hidden="true">3.5.4.</strong> Pessimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/async-commit.html"><strong aria-hidden="true">3.5.5.</strong> Async Commit</a></li><li class="chapter-item expanded "><a href="../understand-tidb/1pc.html"><strong aria-hidden="true">3.5.6.</strong> 1PC</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.5.7.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/session.html"><strong aria-hidden="true">3.6.</strong> Session</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege.html"><strong aria-hidden="true">3.7.</strong> Privilege</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plugin.html"><strong aria-hidden="true">3.8.</strong> Plugin</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/release-train-model.html"><strong aria-hidden="true">4.1.</strong> Releases Train Model</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="issue-triage"><a class="header" href="#issue-triage">Issue Triage</a></h1>
+<p>TiDB uses an issue-centric workflow for development. Every problem, enhancement and feature starts with an issue. For bug issues, you need to perform some more triage operations on the issues.</p>
+<h2 id="diagnose-issue-severity"><a class="header" href="#diagnose-issue-severity">Diagnose issue severity</a></h2>
+<p>The severity of a bug reflects the level of impact that the bug has on users when they use TiDB. The greater the impact, the higher severity the bug is. For higher severity bugs, we need to fix them faster. Although the impact of bugs can not be exhausted, they can be divided into four levels.</p>
+<h3 id="critical"><a class="header" href="#critical">Critical</a></h3>
+<p>The bug affects critical functionality or critical data. It might cause huge losses to users and does not have a workaround. Some typical critical bugs are as follows:</p>
+<ul>
+<li>Invalid query result (correctness issues)
+<ul>
+<li>TiDB returns incorrect results or results that are in the wrong order for a typical user-written query.</li>
+<li>Bugs caused by type casts.</li>
+<li>The parameters are not boundary value or invalid value, but the query result is not correct(except for overflow scenes).</li>
+</ul>
+</li>
+<li>Incorrect DDL and DML result
+<ul>
+<li>The data is not written to the disk, or wrong data is written.</li>
+<li>Data and index are inconsistent.</li>
+</ul>
+</li>
+<li>Invalid features
+<ul>
+<li>Due to a regression, the feature can not work in its main workflow
+<ul>
+<li>Follower can not read follower.</li>
+<li>SQL hint does not work.</li>
+</ul>
+</li>
+<li>SQL Plan
+<ul>
+<li>Cannot choose the best index. The difference between best plan and chosen plan is bigger than 200%.</li>
+</ul>
+</li>
+<li>DDL design
+<ul>
+<li>DDL process causes data accuracy issue.</li>
+</ul>
+</li>
+<li>Experimental feature
+<ul>
+<li>If the issue leads to another stable feature’s main workflow not work, and may occur on released version, the severity is critical.</li>
+<li>If the issue leads to data loss, the severity is critical.</li>
+</ul>
+</li>
+<li>Exceptions
+<ul>
+<li>If the feature is clearly labeled as experimental, when it doesn’t work but doesn’t impact another stable feature’s main workflow or only impacts stable feature’s main workflow on master, the issue severity is major.</li>
+<li>The feature has been deprecated and a viable workaround is available(at most major).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>System stability
+<ul>
+<li>The system is unavailable for more than 5 minutes(if there are some system errors, the timing starts from failure recovery).</li>
+<li>Tools cannot perform replication between upstream and downstream for more than 1 minute if there are no system errors.</li>
+<li>TiDB cannot perform the upgrade operation.</li>
+<li>TPS/QPS dropped 25% without system errors or rolling upgrades.</li>
+<li>Unexpected TiKV core dump or TiDB panic(process crashed).</li>
+<li>System resource leak, include but not limit to memory leak and goroutine leak.</li>
+<li>System fails to recover from crash.</li>
+</ul>
+</li>
+<li>Security and compliance issues
+<ul>
+<li>CVSS score &gt;= 9.0.</li>
+<li>TiDB leaks secure information to log files, or prints customer data when set to be desensitized.</li>
+</ul>
+</li>
+<li>Backup or Recovery Issues
+<ul>
+<li>Failure to either backup or restore is always considered critical.</li>
+</ul>
+</li>
+<li>Incompatible Issues
+<ul>
+<li>Syntax/compatibility issue affecting default install of tier 1 application(i.e. Wordpress).</li>
+<li>The DML result is incompatible with MySQL.</li>
+</ul>
+</li>
+<li>CI test case fail
+<ul>
+<li>Test cases which lead to CI failure and could always be reproduced.</li>
+</ul>
+</li>
+<li>Bug location information
+<ul>
+<li>Key information is missing in ERROR level log.</li>
+<li>No data is reported in monitor.</li>
+</ul>
+</li>
+</ul>
+<h3 id="major"><a class="header" href="#major">Major</a></h3>
+<p>The bug affects major functionality. Some typical critical bugs are as follow:</p>
+<ul>
+<li>Invalid query result
+<ul>
+<li>The query gets the wrong result caused by overflow.</li>
+<li>The query gets the wrong result in the corner case.
+<ul>
+<li>For boundary value, the processing logic in TiDB is inconsistent with MySQL.</li>
+</ul>
+</li>
+<li>Inconsistent data precision.</li>
+</ul>
+</li>
+<li>Incorrect DML or DDL result
+<ul>
+<li>Extra or wrong data is written to TiDB with a DML in a corner case.</li>
+</ul>
+</li>
+<li>Invalid features
+<ul>
+<li>The corner case of the main workflow of the feature does not work.</li>
+<li>The feature is experimental, but a main workflow does not work.</li>
+<li>Incompatible issue of view functionality.</li>
+<li>SQL Plan
+<ul>
+<li>Choose sub-optimal plan. The difference between best plan and chosen plan is bigger than 100% and less than 200%</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>System stability
+<ul>
+<li>TiDB panics but process does not exit.</li>
+</ul>
+</li>
+<li>Less important security and compliance issues
+<ul>
+<li>CVSS score &gt;= 7.0</li>
+</ul>
+</li>
+<li>Issues that affects critical functionality or critical data but rare to reproduce(can’t be reproduced in one week, and have no clear reproduce steps)</li>
+<li>CI test cases fail
+<ul>
+<li>Test case is not stable.</li>
+</ul>
+</li>
+<li>Bug location information
+<ul>
+<li>Key information is missing in WARN level log.</li>
+<li>Data is not accurate in monitor.</li>
+</ul>
+</li>
+</ul>
+<h3 id="moderate"><a class="header" href="#moderate">Moderate</a></h3>
+<ul>
+<li>SQL Plan
+<ul>
+<li>Cannot get the best plan due to invalid statistics.</li>
+</ul>
+</li>
+<li>Documentation issues</li>
+<li>The bugs were caused by invalid parameters which rarely occurred in the product environment.</li>
+<li>Security issues
+<ul>
+<li>CVSS score &gt;= 4.0</li>
+</ul>
+</li>
+<li>Incompatible issues occurred on boundary value</li>
+<li>Bug location information
+<ul>
+<li>Key information is missing in DEBUG/INFO level log.</li>
+</ul>
+</li>
+</ul>
+<h3 id="minor"><a class="header" href="#minor">Minor</a></h3>
+<p>The bug does not affect functionality or data. It does not even need a workaround. It does not impact productivity or efficiency. It is merely an inconvenience. For example:</p>
+<ul>
+<li>Invalid notification</li>
+<li>Minor compatibility issues
+<ul>
+<li>Error message or error code does not match MySQL.</li>
+<li>Issues caused by invalid parameters or abnormal cases.</li>
+</ul>
+</li>
+</ul>
+<h3 id="not-a-bug"><a class="header" href="#not-a-bug">Not a bug</a></h3>
+<p>The following issues look like bugs but actually not. They should not be labeled <code>type/bug</code> and instead be only labeled <code>type/compatibility</code>:</p>
+<ul>
+<li>Behavior is different from MySQL, but could be argued as correct.</li>
+<li>Behavior is different from MySQL, but MySQL behavior differs between 5.7 and 8.0.</li>
+</ul>
+<h2 id="identify-issue-affected-releases"><a class="header" href="#identify-issue-affected-releases">Identify issue affected releases</a></h2>
+<p>For <code>type/bug</code> issues, when they are created and identified as <code>severity/critical</code> or <code>severity/major</code>, the ti-chi-bot will assign a list of <code>may-affects-x.y</code> labels to the issue. For example, currently if we have version 5.0, 5.1, 5.2, 5.3, 4.0 and the in-sprint 5.4, when a <code>type/bug</code> issue is created and added label <code>severity/critical</code> or <code>severity/major</code>, the ti-chi-bot will add label <code>may-affects-4.0</code>, <code>may-affects-5.0</code>, <code>may-affects-5.1</code>, <code>may-affects-5.2</code>, and <code>may-affects-5.3</code>. These labels mean that whether the bug affects these release versions are not yet determined, and is awaiting being triaged. You could check <a href="https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model">currently maintained releases list</a> for all releases.</p>
+<p>When a version is triaged, the triager needs to remove the corresponding <code>may-affects-x.y</code> label. If the version is affected, the triager needs to add a corresponding <code>affects-x.y</code> label to the issue and in the meanwhile the <code>may-affects-x.y</code> label can be automatically removed by the ti-chi-bot, otherwise the triager can simply remove the <code>may-affects-x.y</code> label. So when a issue has a label <code>may-affects-x.y</code>, this means the issue has not been diagnosed on version x.y. When a issue has a label <code>affects-x.y</code>, this means the issue has been diagnosed on version x.y and identified affected. When both the two labels are missing, this means the issue has been diagnosed on version x.y but the version is not affected.</p>
+<p>The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding <code>may-affects-x.y</code> and <code>affects-x.y</code> labels on the issue, see the table below for a clearer illustration.</p>
+<table><thead><tr><th align="center">may-affects-x.y</th><th align="center">affects-x.y</th><th align="center">status</th></tr></thead><tbody>
+<tr><td align="center">YES</td><td align="center">NO</td><td align="center">version x.y has not been diagnosed</td></tr>
+<tr><td align="center">NO</td><td align="center">NO</td><td align="center">version x.y has been diagnosed and identified as not affected</td></tr>
+<tr><td align="center">NO</td><td align="center">YES</td><td align="center">version x.y has been diagnosed and identified as affected</td></tr>
+<tr><td align="center">YES</td><td align="center">YES</td><td align="center">invalid status</td></tr>
+</tbody></table>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../contribute-to-tidb/report-an-issue.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../contribute-to-tidb/contribute-code.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../contribute-to-tidb/report-an-issue.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../contribute-to-tidb/contribute-code.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
