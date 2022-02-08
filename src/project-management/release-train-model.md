@@ -50,7 +50,7 @@ Except for feature releases, there also exists bugfix releases. Bugfix releases 
 
 ## What is TiDB version mechanism under release train model?
 
-Under release train model, every sprint we produce one new release. The version of the release is vx.x.0, short as vx.x. Such version carries all the new features and bug fixes. Versions like vx.x.1 are bugfix versions, they won't accept any new features and are scheduled only when needed. The current maintained versions are:
+Under release train model, every sprint we produce one new release. The version of the release is vx.y.0, short as vx.y. Such version carries all the new features and bug fixes. Versions like vx.y.1 are bugfix versions, they won't accept any new features and are scheduled only when needed. The current maintained versions are:
 
 | version             | branch             | status            | triage label            | latest release           | issue 
 |:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
