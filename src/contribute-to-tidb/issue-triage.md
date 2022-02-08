@@ -118,7 +118,7 @@ When a version is triaged, the triager needs to remove the corresponding `may-af
 The status of the affection of a certain issue can be then determined by the combination of the existence of the corresponding `may-affects-x.y` and `affects-x.y` labels on the issue, see the table below for a clearer illustration.
 
 | may-affects-x.y | affects-x.y |                         status                                |
-|:--0------------:|:-----------:|:-------------------------------------------------------------:|
+|:--------------:|:-----------:|:-------------------------------------------------------------:|
 |     YES         |    NO       | version x.y has not been diagnosed                            |
 |     NO          |    NO       | version x.y has been diagnosed and identified as not affected |
 |     NO          |    YES      | version x.y has been diagnosed and identified as affected     |
