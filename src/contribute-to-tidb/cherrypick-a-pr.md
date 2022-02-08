@@ -1,6 +1,6 @@
 # Cherry-pick a Pull Request
 
-TiDB uses [release train model](../project-management/release-train-model.md) and has multiple releases. Each release matches one git branch. For `type/bug` issues with `severity/critical` and `severity/major`, it is anticipated to be fixed on any [currently maintained releases](https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model) if affected. Contributors and reviewers are responsible to settle the affected versions once the bug is identified as `severity/critical` or `severity/major`.
+TiDB uses [release train model](../project-management/release-train-model.md) and has multiple releases. Each release matches one git branch. For `type/bug` issues with `severity/critical` and `severity/major`, it is anticipated to be fixed on any [currently maintained releases](https://pingcap.github.io/tidb-dev-guide/project-management/release-train-model.html#what-is-tidb-version-mechanism-under-release-train-model) if affected. Contributors and reviewers are responsible to settle the affected versions once the bug is identified as `severity/critical` or `severity/major`. Cherry-pick pull requests shall be created to port the fix to affected branches after the original pull request merged. While creating cherry-pick pull requests, bots in TiDB community could help lighten your workload.
 
 ## What kind of pull requests need to cherry-pick?
 
