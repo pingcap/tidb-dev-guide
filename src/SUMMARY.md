@@ -12,7 +12,6 @@
 
 * [Contribute to TiDB](contribute-to-tidb/introduction.md)
     * [Community Guideline](contribute-to-tidb/community-guideline.md)
-    * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Report an Issue](contribute-to-tidb/report-an-issue.md)
     * [Issue Triage](contribute-to-tidb/issue-triage.md)
     * [Contribute Code](contribute-to-tidb/contribute-code.md)
@@ -21,6 +20,7 @@
     * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
     * [Write Document](contribute-to-tidb/write-document.md)
+    * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Miscellaneous Topics](contribute-to-tidb/miscellaneous-topics.md)
 
 * [Understand TiDB](understand-tidb/introduction.md)

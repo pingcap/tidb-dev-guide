@@ -14,7 +14,6 @@ TiDB is developed by an open and friendly community. Everybody is cordially welc
 Here are guidelines for contributing to various aspect of the project:
 
 * [Community Guideline](community-guideline.md)
-* [Committer Guide](committer-guide.md)
 * [Report an Issue](report-an-issue.md)
 * [Issue Triage](issue-triage.md)
 * [Contribute Code](contribute-code.md)
@@ -23,6 +22,7 @@ Here are guidelines for contributing to various aspect of the project:
 * [Make a Proposal](make-a-proposal.md)
 * [Code Style and Quality Guide](code-style-and-quality-guide.md)
 * [Write Document](write-document.md)
+* [Committer Guide](committer-guide.md)
 * [Miscellaneous Topics](miscellaneous-topics.md)
 
 Any other question? Reach out to the [TiDB Internals forum](https://internals.tidb.io/) to get help!
