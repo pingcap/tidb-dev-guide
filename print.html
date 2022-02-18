@@ -512,6 +512,13 @@ go test -v -run TestSchemaValidator # or with any other test flags
 cd ..
 make failpoint-disable
 </code></pre>
+<p>or if it is an older test not using testify</p>
+<pre><code>make failpoint-enable
+(cd planner/core ; go test -v -run &quot;^TestT$&quot; -check.f TestBinaryOpFunction )
+make failpoint-disable
+</code></pre>
+<p>If one want to compile the test into a debug binary for running in a debugger, one can also use <code>go test -gcflags=&quot;all=-N -l&quot; -o ./t</code>, which removes any optimisations and outputs a <code>t</code> binary file ready to be used, like <code>dlv exec ./t</code> or combine it with the above to only debug a single test <code>dlv exec ./t -- -test.run &quot;^TestT$&quot; -check.f TestBinaryOpFunction</code>.</p>
+<p>Notice there is also an <code>ut</code> utility for running tests, see <code>Makefile</code> and <code>tools/bin/ut</code>.</p>
 <p>To display information on all the test flags, enter <code>go help testflag</code>.</p>
 <p>If you develop with GoLand, you can also run a test from the IDE with manually enabled and disabled fail points. See the <a href="https://www.jetbrains.com/help/go/performing-tests.html">documentation</a> for details.</p>
 <p><img src="get-started/../img/goland-run-tests.png" alt="GoLand Run Tests" /></p>
