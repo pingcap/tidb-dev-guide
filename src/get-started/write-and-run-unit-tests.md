@@ -157,9 +157,9 @@ make failpoint-enable
 make failpoint-disable
 ```
 
-If one want to compile the test into a debug binary for running in a debugger, one can also use `go test -gcflags="all=-N -l" -o ./t`, which removes any optimisations and outputs a `t` binary file ready to be used, like `dlv exec ./t` or combine it with the above to only debug a single test `dlv exec ./t -- -test.run "^TestT$" -check.f TestBinaryOpFunction`
+If one want to compile the test into a debug binary for running in a debugger, one can also use `go test -gcflags="all=-N -l" -o ./t`, which removes any optimisations and outputs a `t` binary file ready to be used, like `dlv exec ./t` or combine it with the above to only debug a single test `dlv exec ./t -- -test.run "^TestT$" -check.f TestBinaryOpFunction`.
 
-Notice there are also an `ut` utility for running tests, see `Makefile` and `tools/bin/ut`.
+Notice there is also an `ut` utility for running tests, see `Makefile` and `tools/bin/ut`.
 
 To display information on all the test flags, enter `go help testflag`.
 
