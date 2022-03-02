@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Release Notes Language Style Guide - TiDB Development Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">TiDB Development Guide</a></li><li class="chapter-item expanded "><a href="../get-started/introduction.html"><strong aria-hidden="true">1.</strong> Get Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../get-started/install-golang.html"><strong aria-hidden="true">1.1.</strong> Install Golang</a></li><li class="chapter-item expanded "><a href="../get-started/build-tidb-from-source.html"><strong aria-hidden="true">1.2.</strong> Get the code, build and run</a></li><li class="chapter-item expanded "><a href="../get-started/setup-an-ide.html"><strong aria-hidden="true">1.3.</strong> Setup an IDE</a></li><li class="chapter-item expanded "><a href="../get-started/write-and-run-unit-tests.html"><strong aria-hidden="true">1.4.</strong> Write and run unit tests</a></li><li class="chapter-item expanded "><a href="../get-started/debug-and-profile.html"><strong aria-hidden="true">1.5.</strong> Debug and profile</a></li><li class="chapter-item expanded "><a href="../get-started/commit-code-and-submit-a-pull-request.html"><strong aria-hidden="true">1.6.</strong> Commit code and submit a pull request</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/introduction.html"><strong aria-hidden="true">2.</strong> Contribute to TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribute-to-tidb/community-guideline.html"><strong aria-hidden="true">2.1.</strong> Community Guideline</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/report-an-issue.html"><strong aria-hidden="true">2.2.</strong> Report an Issue</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/issue-triage.html"><strong aria-hidden="true">2.3.</strong> Issue Triage</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/contribute-code.html"><strong aria-hidden="true">2.4.</strong> Contribute Code</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/cherrypick-a-pr.html"><strong aria-hidden="true">2.5.</strong> Cherry-pick a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/review-a-pr.html"><strong aria-hidden="true">2.6.</strong> Review a Pull Request</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/make-a-proposal.html"><strong aria-hidden="true">2.7.</strong> Make a Proposal</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/code-style-and-quality-guide.html"><strong aria-hidden="true">2.8.</strong> Code Style and Quality Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/write-document.html"><strong aria-hidden="true">2.9.</strong> Write Document</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/release-notes-style-guide.html" class="active"><strong aria-hidden="true">2.10.</strong> Release Notes Language Style Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/committer-guide.html"><strong aria-hidden="true">2.11.</strong> Committer Guide</a></li><li class="chapter-item expanded "><a href="../contribute-to-tidb/miscellaneous-topics.html"><strong aria-hidden="true">2.12.</strong> Miscellaneous Topics</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/introduction.html"><strong aria-hidden="true">3.</strong> Understand TiDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/the-lifecycle-of-a-statement.html"><strong aria-hidden="true">3.1.</strong> The Lifecycle of a Statement</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/ddl.html"><strong aria-hidden="true">3.1.1.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dml.html"><strong aria-hidden="true">3.1.2.</strong> DML</a></li><li class="chapter-item expanded "><a href="../understand-tidb/dql.html"><strong aria-hidden="true">3.1.3.</strong> DQL</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/parser.html"><strong aria-hidden="true">3.2.</strong> Parser</a></li><li class="chapter-item expanded "><a href="../understand-tidb/planner.html"><strong aria-hidden="true">3.3.</strong> Planner</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/table-statistics.html"><strong aria-hidden="true">3.3.1.</strong> Table Statistics</a></li><li class="chapter-item expanded "><a href="../understand-tidb/rbo.html"><strong aria-hidden="true">3.3.2.</strong> Rule-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/cbo.html"><strong aria-hidden="true">3.3.3.</strong> Cost-based Optimization</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plan-cache.html"><strong aria-hidden="true">3.3.4.</strong> Plan Cache</a></li><li class="chapter-item expanded "><a href="../understand-tidb/sql-plan-management.html"><strong aria-hidden="true">3.3.5.</strong> SQL Plan Management</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/execution.html"><strong aria-hidden="true">3.4.</strong> Execution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/parallel-execution-framework.html"><strong aria-hidden="true">3.4.1.</strong> Parallel Execution Framework</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-vectorized-execution.html"><strong aria-hidden="true">3.4.2.</strong> Implementation of Vectorized Execution</a></li><li class="chapter-item expanded "><a href="../understand-tidb/memory-management-mechanism.html"><strong aria-hidden="true">3.4.3.</strong> Memory Management Mechanism</a></li><li class="chapter-item expanded "><a href="../understand-tidb/implementation-of-typical-operators.html"><strong aria-hidden="true">3.4.4.</strong> Implementation of Typical Operators</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/transaction.html"><strong aria-hidden="true">3.5.</strong> Transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../understand-tidb/transaction-on-tikv.html"><strong aria-hidden="true">3.5.1.</strong> Transaction on TiKV</a></li><li class="chapter-item expanded "><a href="../understand-tidb/optimistic-transaction.html"><strong aria-hidden="true">3.5.2.</strong> Optimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/lock-resolver.html"><strong aria-hidden="true">3.5.3.</strong> Lock Resolver</a></li><li class="chapter-item expanded "><a href="../understand-tidb/pessimistic-transaction.html"><strong aria-hidden="true">3.5.4.</strong> Pessimistic Transaction</a></li><li class="chapter-item expanded "><a href="../understand-tidb/async-commit.html"><strong aria-hidden="true">3.5.5.</strong> Async Commit</a></li><li class="chapter-item expanded "><a href="../understand-tidb/1pc.html"><strong aria-hidden="true">3.5.6.</strong> 1PC</a></li><li class="chapter-item expanded "><a href="../understand-tidb/mvcc-garbage-collection.html"><strong aria-hidden="true">3.5.7.</strong> MVCC garbage collection</a></li></ol></li><li class="chapter-item expanded "><a href="../understand-tidb/session.html"><strong aria-hidden="true">3.6.</strong> Session</a></li><li class="chapter-item expanded "><a href="../understand-tidb/privilege.html"><strong aria-hidden="true">3.7.</strong> Privilege</a></li><li class="chapter-item expanded "><a href="../understand-tidb/plugin.html"><strong aria-hidden="true">3.8.</strong> Plugin</a></li></ol></li><li class="chapter-item expanded "><a href="../project-management/introduction.html"><strong aria-hidden="true">4.</strong> Project Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../project-management/release-train-model.html"><strong aria-hidden="true">4.1.</strong> Releases Train Model</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiDB Development Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="release-notes-language-style-guide"><a class="header" href="#release-notes-language-style-guide">Release Notes Language Style Guide</a></h1>
+<p>A concise release note can clearly and accurately deliver to users how your PR can make a difference. Your release note written in a PR will be presented in <a href="https://docs.pingcap.com/tidb/stable/release-notes">docs.pingcap.com</a> as a part of the TiDB documentation.</p>
+<p>This release notes language style guide that briefly explains what a quality release note looks like, provides examples, and aims to help you write quality release notes.</p>
+<h2 id="what-a-quality-release-note-looks-like"><a class="header" href="#what-a-quality-release-note-looks-like">What a quality release note looks like</a></h2>
+<p>A high-quality release note has the following merits:</p>
+<ul>
+<li>Clear in type</li>
+<li>Adequate and clear in meaning</li>
+<li>User perspective</li>
+</ul>
+<p>A release note with a distinguishable type can help users quickly identify the nature or goal of your PR change. Other teams will also benefit from it.</p>
+<p>Depending on what your PR changes, you can refer to one of the following release note types:</p>
+<ul>
+<li>Compatibility change</li>
+<li>Bug fix</li>
+<li>Improvement or Feature enhancement</li>
+</ul>
+<h2 id="compatibility-change"><a class="header" href="#compatibility-change">Compatibility change</a></h2>
+<p>A compatibility change note means:</p>
+<ul>
+<li>Your PR adds, removes, or modifies one or more configuration items or system variables.</li>
+<li>Your PR modifies the default value of a configuration item or system variable.</li>
+</ul>
+<p>For this type of note, you should clearly and adequately state the following aspects:</p>
+<ul>
+<li>The previous code behavior, configuration item, or default value.</li>
+<li>The new code behavior, configuration item, or default value since the new version.</li>
+</ul>
+<p>Note that the object of the change should be user-perceivable. If the changed configuration item or system variable is not supposed to be exposed to users, do not include it in your release notes.</p>
+<p><strong>Examples:</strong></p>
+<table><thead><tr><th><strong>Not recommended</strong></th><th><strong>Clear in type</strong></th><th><strong>Adequate and clear in meaning</strong></th><th><strong>User perspective</strong></th><th>Recommended</th></tr></thead><tbody>
+<tr><td>copr: cast invalid utf8 string to real bug fix</td><td>❌</td><td>❌</td><td>❌</td><td>Previously, when TiDB converts an illegal UTF-8 string to a Real type, an error is reported directly. From now on, TiDB will process the conversion according to the legal UTF-8 prefix in the string.</td></tr>
+<tr><td>sink: fix kafka max message size inaccurate issue</td><td>❌</td><td>❌</td><td>❌</td><td>Change the default value of Kafka Sink max-message-bytes from 512 MB to 1 MB to prevent TiCDC from sending too large messages to Kafka clusters</td></tr>
+<tr><td>cdc/sink: adjust kafka initialization logic</td><td>❌</td><td>❌</td><td>❌</td><td>Change the default value of Kafka Sink partition-num to 3 so that TiCDC distributes messages across Kafka partitions more evenly</td></tr>
+<tr><td>cmd: hide --sort-dir in changefeed command. (deprecated warning exists)</td><td>✅</td><td>❌</td><td>❌</td><td>Deprecate <code>--sort-dir</code> in the <code>cdc cli changefeed</code> command. Instead, users can set <code>--sort-dir</code> in the <code>cdc server</code> command.</td></tr>
+</tbody></table>
+<h2 id="bug-fix"><a class="header" href="#bug-fix">Bug fix</a></h2>
+<p>A bug fix note means that your PR fixes an existing bug or issue. This type of notes start with &quot;Fix&quot; followed by &quot;the issue/bug&quot;.</p>
+<p>Write your note clearly and adequately so that your target readers can get the main point of your bug fix. The bug or issue must be directly perceivable to the users, and you can refer to the associated GitHub issues.</p>
+<p>In addition, it is recommended to highlight the bug trigger condition or the workaround if there is any.</p>
+<p><strong>Examples:</strong></p>
+<table><thead><tr><th><strong>Not recommended</strong></th><th><strong>Clear in type</strong></th><th><strong>Adequate and clear in meaning</strong></th><th><strong>User perspective</strong></th><th>Recommended</th></tr></thead><tbody>
+<tr><td>lock_resolver: avoid pessimistic transactions using resolveLocksForWrite</td><td>❌</td><td>✅</td><td>❌</td><td>Fix the issue that committing pessimistic transactions might cause write conflict</td></tr>
+<tr><td>retry when meeting stablish conn fails</td><td>❌</td><td>❌</td><td>❌</td><td>Fix the issue of unexpected results when TiFlash fails to establish MPP connections</td></tr>
+<tr><td>Fix the issue that greatest(datetime) union null returns empty string</td><td>✅</td><td>❌</td><td>✅</td><td>Fix the issue that the query result might be wrong when NULL is in the UNION subquery</td></tr>
+<tr><td>copr: make CM Sketch built with the same encoding as what TiDB assumes</td><td>❌</td><td>❌</td><td>❌</td><td>Fix the issue of potential wrong analyzed statistics when <code>tidb_analyze_version</code> is set to <code>1</code></td></tr>
+</tbody></table>
+<h2 id="improvement"><a class="header" href="#improvement">Improvement</a></h2>
+<p>An improvement note means that your PR improves stability or performance of the product, or enhances an existing feature. In addition to describing what your PR has changed, you should also mention how users can benefit from it.</p>
+<p>This type of release note consists of two parts: what you have changed + the benefit of your change. This type of release notes often starts with &quot;support&quot;, &quot;increase&quot;, &quot;improve&quot;, &quot;optimize&quot;, etc.</p>
+<p><strong>Examples:</strong></p>
+<table><thead><tr><th><strong>Not recommended</strong></th><th><strong>Clear in type</strong></th><th><strong>Adequate and clear in meaning</strong></th><th><strong>User perspective</strong></th><th>Recommended</th></tr></thead><tbody>
+<tr><td>Not use the stale read request's <code>start_ts</code> to update <code>max_ts</code> to avoid commit request keep retrying</td><td>✅</td><td>✅</td><td>❌</td><td>Improve commit performance in some edge cases</td></tr>
+<tr><td>Restore many small tables would be faster.</td><td>✅</td><td>❌</td><td>❌</td><td>Split and scatter Regions concurrently to improve restore speed</td></tr>
+<tr><td>server: stop status server early when gracefully shutdown</td><td>✅</td><td>❌</td><td>❌</td><td>Shut down the status server first to make sure that the client can correctly check the shutdown status</td></tr>
+<tr><td>Better err msg when PD endpoint missing certificate</td><td>✅</td><td>❌</td><td>✅</td><td>Improve the error message when connecting to a TLS protected PD endpoint without a certificate</td></tr>
+</tbody></table>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../contribute-to-tidb/write-document.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../contribute-to-tidb/committer-guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../contribute-to-tidb/write-document.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../contribute-to-tidb/committer-guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
