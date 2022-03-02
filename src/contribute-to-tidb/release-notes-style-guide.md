@@ -2,7 +2,7 @@
 
 A concise release note can clearly and accurately deliver to users how your PR can make a difference. Your release note written in a PR will be presented in [docs.pingcap.com](https://docs.pingcap.com/tidb/stable/release-notes) as a part of the TiDB documentation.
 
-This release notes language style guide that briefly explains what a quality release note looks like, provides examples, and aims to help you write quality release notes.
+This release notes language style guide briefly explains what a quality release note looks like, provides examples, and aims to help you write quality release notes.
 
 ## What a quality release note looks like
 
