@@ -20,6 +20,7 @@
     * [Make a Proposal](contribute-to-tidb/make-a-proposal.md)
     * [Code Style and Quality Guide](contribute-to-tidb/code-style-and-quality-guide.md)
     * [Write Document](contribute-to-tidb/write-document.md)
+    * [Release Notes Language Style Guide](contribute-to-tidb/release-notes-style-guide.md)
     * [Committer Guide](contribute-to-tidb/committer-guide.md)
     * [Miscellaneous Topics](contribute-to-tidb/miscellaneous-topics.md)
 
