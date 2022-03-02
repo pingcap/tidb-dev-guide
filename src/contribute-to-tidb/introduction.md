@@ -22,6 +22,7 @@ Here are guidelines for contributing to various aspect of the project:
 * [Make a Proposal](make-a-proposal.md)
 * [Code Style and Quality Guide](code-style-and-quality-guide.md)
 * [Write Document](write-document.md)
+* [Release Notes Language Style Guide](contribute-to-tidb/release-notes-style-guide.md)
 * [Committer Guide](committer-guide.md)
 * [Miscellaneous Topics](miscellaneous-topics.md)
 
