@@ -66,10 +66,10 @@ For more versions' information, please check <https://github.com/pingcap/tidb/pr
 
 ## What happens if features are not completed?
 
-Different features have different complexities. Some features can be implemented within a single release while some features span multiple releases. With the release train model, to ensure that ongoing features do not affect the stability of the release, we have two approaches as follows:
+Different features have different complexities. Some features can be implemented within a single release while some features span multiple releases. There are two conventional development strategies:
 
 1. Ensure that each feature is split into testable units and only testable units get merged. This means that a good set of unit tests and system tests are written for sub-tasks before they are merged. This approach ensures that the master branch is in a relatively stable state and can be released at any time.
 
 2. Use feature branches. For a specific feature, the feature developers create a branch from the master branch and ensure that the branch is in sync with the master branch from time to time. Only when the feature developers and reviewers have a high level of confidence in the feature stability, the feature can be merged into master. This approach brings the additional overhead of branching and performing merges from time to time.
 
-In practice, the right approach can be a mix of both. The feature developers need to make the decision depending on the complexity of the feature.
+With the release train model, to ensure that ongoing features do not affect the stability of the release, TiDB chooses feature branches strategy.
