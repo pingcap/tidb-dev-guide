@@ -481,10 +481,3 @@ func (actionCommit) handleSingleBatch(c *twoPhaseCommitter, bo *retry.Backoffer,
 ​    }// for loop
 }
 ```
-
-
-
-
-
-
-
