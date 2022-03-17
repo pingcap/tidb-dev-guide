@@ -37,7 +37,7 @@ The entry function of handling `Execute` statement is `clientConn.handleStmtExec
 
 # The Paramater Maker
 
-This section explain how TiDB handle parameters and propagate them into the execution plan when processing.
+This section explain how TiDB handles parameters and propagate them into the execution plan when processing.
 
 ![plan-cache-param-maker](../img/plan-cache-param-maker.png)
 
