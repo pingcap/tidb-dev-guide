@@ -11,9 +11,9 @@ There still are some limitations about TiDB plan cache, and please see [the TiDB
 # The flow of handling Prepare statement 
 
 The flow of handling `Prepare` statement is not complex, and the main work are below:
-1. parse all parameter placeholders, 
-2. parse the query into an AST,
-3. store them into current session's `PrepareStmtCache`.
+1. Parse all parameter placeholders.
+2. Parse the query into an AST.
+3. Store them into current session's `PrepareStmtCache`.
 
 The entry function is `clientConn.handleStmtPrepare`, and most work is done in `PrepareExec.Next`.
 
