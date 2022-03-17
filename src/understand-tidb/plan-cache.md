@@ -16,7 +16,7 @@ The process of handling a `prepare` statement is below:
 2. Encapsulate the AST with some other necessary information(like `current-db`, `statement-text`, ...) to `CachedPrepareStmt`;
 3. Store the `CachedPrepareStmt` into this session's `PreparedStmtMap`;
 
-The process of handling an `execute` is below:
+The process of handling an `execute` statement is below:
 1. Parse all parameters and store their values into this session's `PreparedParamMap`;
 2. Get the corresponding `CachedPrepareStmt` from this session's `PreparedStmtMap`;
 3. Construct the plan-cache key with information in `CachedPrepareStmt`;
@@ -32,15 +32,17 @@ The process of handling an `execute` is below:
 
 ![plan-cache-execute](../img/plan-cache-execute.png)
 
+The main function of handling `execute` is `common_plans.go:Execute.getPhysicalPlan()`.
+
 ## Plan Rebuilding
 
-A cached plan cannot be reused directly until it is rebuilt. The main goal of rebuilding is to re-calculate the access range. 
+A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range. 
 
-For example, if the query is `select * from t where a<?` and its plan is `TableScan`, then when you first `execute` it with `1`, a `TableScan` with range `(-INF, 1)` will be cached, but when you later `execute` it with `2`, the range has to be re-calculated to `(-INF, 2)`, and that is what plan rebuilding does.
+For example, if the query is `select * from t where a<?`, when you first `execute` it with `1`, then a `TableScan` with range `(-INF, 1)` could be generated and cached, and then you later `execute` it with `2`, the range has to be re-calculated to `(-INF, 2)` so that it can read correct data this time, and that is what plan rebuilding does.
 
 ![plan-cache-rebuilding](../img/plan-cache-rebuilding.png)
 
-The entry function of plan rebuilding is `common_plans.go:Execute.RebuildPlan`.
+The entry function of plan rebuilding is `common_plans.go:Execute.RebuildPlan()`.
 
 ## The Parameter Maker
 
