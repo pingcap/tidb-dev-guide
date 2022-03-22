@@ -54,7 +54,7 @@ For example, if the query is `select * from t where a+?>1`, then the filter `a+?
 
 The parameter placeholder(`?`) is converted to a `ParamMaker` in `Constant`. 
 
-You can regard it as a special kind of pointer, and when the plan is processed and the paramter's value is needed, we can use it to get the corresponding value of this parameter.
+You can regard it as a special kind of pointer, and when the plan is processed and the parameter's value is needed, we can use it to get the corresponding value of this parameter.
 
 ```
 type Constant struct {
