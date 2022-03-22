@@ -170,6 +170,72 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="plan-cache"><a class="header" href="#plan-cache">Plan Cache</a></h1>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>TiDB supports <code>PlanCache</code> for <code>prepare</code> and <code>execute</code> statements. By using <code>PlanCache</code>, TiDB can skip the optimization phase to gain some performance benefits.</p>
+<p>There are several limitations to current <code>PlanCache</code>:</p>
+<ol>
+<li>Only support <code>prepare</code> and <code>execute</code> statements, not support general queries;</li>
+<li>Only session-level <code>PlanCache</code> is supported, cached plans cannot be reused across sessions;</li>
+<li>Some complex plans cannot be cached, and you can see <a href="https://docs.pingcap.com/tidb/stable/sql-prepare-plan-cache">this document</a> for more details;</li>
+</ol>
+<h2 id="handling-prepareexecute-statement"><a class="header" href="#handling-prepareexecute-statement">Handling Prepare/Execute Statement</a></h2>
+<p>The process of handling a <code>prepare</code> statement is below:</p>
+<ol>
+<li>Parse the original SQL to an AST;</li>
+<li>Encapsulate the AST with some other necessary information(like <code>current-db</code>, <code>statement-text</code>, ...) to <code>CachedPrepareStmt</code>;</li>
+<li>Store the <code>CachedPrepareStmt</code> into this session's <code>PreparedStmtMap</code>;</li>
+</ol>
+<p>The process of handling an <code>execute</code> statement is below:</p>
+<ol>
+<li>Parse all parameters and store their values into this session's <code>PreparedParamMap</code>;</li>
+<li>Get the corresponding <code>CachedPrepareStmt</code> from this session's <code>PreparedStmtMap</code>;</li>
+<li>Construct the plan-cache key with information in <code>CachedPrepareStmt</code>;</li>
+<li>Fetch a plan from the session's <code>PlanCache</code> by using this key, and:
+<ol>
+<li>if it succeeds, then
+<ol>
+<li>check whether this plan is valid for current parameters, if it is, then</li>
+<li>rebuild the plan, and</li>
+<li>run the rebuilt plan;</li>
+</ol>
+</li>
+<li>else, then
+<ol>
+<li>optimize the AST in <code>CachedPrepareStmt</code> with current parameters to get a new plan, </li>
+<li>store the new plan into current session's <code>PlanCache</code>, and</li>
+<li>run the new plan.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="../img/plan-cache-execute.png" alt="plan-cache-execute" /></p>
+<p>The main function of handling <code>execute</code> is <code>common_plans.go:Execute.getPhysicalPlan()</code>.</p>
+<h2 id="plan-rebuilding"><a class="header" href="#plan-rebuilding">Plan Rebuilding</a></h2>
+<p>A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range. </p>
+<p>For example, if the query is <code>select * from t where a&lt;?</code>, when you first <code>execute</code> it with <code>1</code>, then a <code>TableScan</code> with range <code>(-INF, 1)</code> could be generated and cached, and then you later <code>execute</code> it with <code>2</code>, the range has to be re-calculated to <code>(-INF, 2)</code> so that it can read correct data this time, and that is what plan rebuilding does.</p>
+<p><img src="../img/plan-cache-rebuilding.png" alt="plan-cache-rebuilding" /></p>
+<p>The entry function of plan rebuilding is <code>common_plans.go:Execute.RebuildPlan()</code>.</p>
+<h2 id="the-parameter-maker"><a class="header" href="#the-parameter-maker">The Parameter Maker</a></h2>
+<p>Parameter Makers are used to propagate current parameter values to executors(operators).</p>
+<p>For example, if the query is <code>select * from t where a+?&gt;1</code>, then the filter <code>a+?&gt;1</code> will be converted to a <code>Selection</code> operator with an expression-tree <code>a+?&gt;1</code>:</p>
+<p><img src="../img/plan-cache-parameter.png" alt="plan-cache-parameter" /></p>
+<p>The parameter placeholder(<code>?</code>) is converted to a <code>ParamMaker</code> in <code>Constant</code>. </p>
+<p>You can regard it as a special kind of pointer, and when the plan is processed and the parameter's value is needed, we can use it to get the corresponding value of this parameter.</p>
+<pre><code>type Constant struct {
+    ...
+    ParamMaker *ParamMaker
+}
+
+func (c *Constant) Eval(row) Datum {
+    if c.ParamMaker != nil {return c.ParamMaker.GetUserVal()}
+    ...
+}
+
+func (d *ParamMaker) GetUserVal() Datum {
+    return d.ctx.GetSessionVars().PreparedParams[d.order]
+}
+</code></pre>
 
                     </main>
 
