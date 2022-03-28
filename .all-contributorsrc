@@ -308,6 +308,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "yahonda",
+      "name": "Yasuo Honda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73684?v=4",
+      "profile": "https://github.com/yahonda",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 5,
