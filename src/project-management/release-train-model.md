@@ -52,9 +52,10 @@ Except for feature releases, there also exists bugfix releases. Bugfix releases 
 
 Under release train model, every sprint we produce one new release. The version of the release is vx.y.0, short as vx.y. Such version carries all the new features and bug fixes. Versions like vx.y.1 are bugfix versions, they won't accept any new features and are scheduled only when needed. The current maintained versions are:
 
-| version             | branch             | status            | triage label            | latest release           | issue 
+| version             | branch             | status            | triage label            | latest release           | issue
 |:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
-| v6.0                | master             | in-sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/32381>
+| v6.1                | master             | in-sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/34048>
+| v6.0                | release-6.0        | bugfix            | affects-6.0             | v6.0.0                   | <https://github.com/pingcap/tidb/issues/32381>
 | v5.0                | release-5.0        | bugfix            | affects-5.0             | v5.0.6                   | <https://github.com/pingcap/tidb/issues/30609>
 | v5.1                | release-5.1        | bugfix            | affects-5.1             | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
 | v5.2                | release-5.2        | bugfix            | affects-5.2             | v5.2.3                   | <https://github.com/pingcap/tidb/issues/30226>
