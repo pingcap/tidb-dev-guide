@@ -42,6 +42,9 @@ Currently, we maintain eight versions of TiDB documentation, each with a separat
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
+| `release-6.0` branch | the 6.0 version |
+| `release-5.4` branch | the 5.4 version |
+| `release-5.3` branch | the 5.3 version |
 | `release-5.2` branch | the 5.2 version |
 | `release-5.1` branch | the 5.1 version |
 | `release-5.0` branch | the 5.0 version |
