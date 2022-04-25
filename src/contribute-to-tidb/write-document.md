@@ -269,7 +269,3 @@ If you want to apply for a translation, check the following lists of merged docs
 
 - The list of PR that can be translated in docs-cn: [Pull requests · pingcap/docs-cn](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fdoing+is%3Amerged)
 - The list of PR that can be translated in docs: [Pull requests · pingcap/docs](https://github.com/pingcap/docs/pulls?q=is%3Apr+is%3Amerged+label%3Atranslation%2Fdoing+)
-
-## Contact
-
-Join the Slack channel: [#sig-docs](https://slack.tidb.io/invite?team=tidb-community&channel=sig-docs&ref=pingcap-docs)
