@@ -46,24 +46,7 @@ Ideally, we would have started stabilization once we create the new release bran
 
 Developers who want to contribute features to TiDB could follow the procedure described in [Make a Proposal](../contribute-to-tidb/make-a-proposal.md). Once all the requirements are met and all the codes are merged into the master branch, the feature will be boxed into the nearest release.
 
-Except for feature releases, there also exists bugfix releases. Bugfix releases are scheduled when needed, there is no fixed calendar for such releases. When a bugfix release is scheduled, there are two rounds of triage. A bug fix could only be boxed into a release when it occurs before triage.
-
-## What is TiDB version mechanism under release train model?
-
-Under release train model, every sprint we produce one new release. The version of the release is vx.y.0, short as vx.y. Such version carries all the new features and bug fixes. Versions like vx.y.1 are bugfix versions, they won't accept any new features and are scheduled only when needed. The current maintained versions are:
-
-| version             | branch             | status            | triage label            | latest release           | issue
-|:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
-| v6.1                | master             | in-sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/34048>
-| v6.0                | release-6.0        | bugfix            | affects-6.0             | v6.0.0                   | <https://github.com/pingcap/tidb/issues/32381>
-| v5.0                | release-5.0        | bugfix            | affects-5.0             | v5.0.6                   | <https://github.com/pingcap/tidb/issues/30609>
-| v5.1                | release-5.1        | bugfix            | affects-5.1             | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
-| v5.2                | release-5.2        | bugfix            | affects-5.2             | v5.2.4                   | <https://github.com/pingcap/tidb/issues/30608>
-| v5.3                | release-5.3        | bugfix            | affects-5.3             | v5.3.1                   | <https://github.com/pingcap/tidb/issues/30611>
-| v5.4                | release-5.4        | bugfix            | affects-5.4             | v5.4.0                   | <https://github.com/pingcap/tidb/issues/30336>
-| v4.0                | release-4.0        | bugfix            | affects-4.0             | v4.0.16                  | <https://github.com/pingcap/tidb/issues/29856>
-
-For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
+Except for feature releases, there also exists patch releases. Patch releases are scheduled when needed, there is no fixed calendar for such releases. When a patch release is scheduled, there are two rounds of triage. A bug fix could only be boxed into a release when it occurs before triage. Get more information about TiDB releases and versions in [TiDB versioning](tidb-versioning.md).
 
 ## What happens if features are not completed?
 
@@ -74,3 +57,18 @@ Different features have different complexities. Some features can be implemented
 2. Use feature branches. For a specific feature, the feature developers create a branch from the master branch and ensure that the branch is in sync with the master branch from time to time. Only when the feature developers and reviewers have a high level of confidence in the feature stability, the feature can be merged into master. This approach brings the additional overhead of branching and performing merges from time to time.
 
 With the release train model, to ensure that ongoing features do not affect the stability of the release, TiDB chooses feature branches strategy.
+
+## Current Maintained Releases
+
+| version             | branch             | status            | triage label            | latest release           | issue
+|:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
+| v6.1                | master             | in-sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/34048>
+| v6.0                | release-6.0        | DMR               | affects-6.0             | v6.0.0                   | <https://github.com/pingcap/tidb/issues/32381>
+| v5.0                | release-5.0        | LTS               | affects-5.0             | v5.0.6                   | <https://github.com/pingcap/tidb/issues/30609>
+| v5.1                | release-5.1        | LTS               | affects-5.1             | v5.1.3                   | <https://github.com/pingcap/tidb/issues/30227>
+| v5.2                | release-5.2        | LTS               | affects-5.2             | v5.2.4                   | <https://github.com/pingcap/tidb/issues/30608>
+| v5.3                | release-5.3        | LTS               | affects-5.3             | v5.3.1                   | <https://github.com/pingcap/tidb/issues/30611>
+| v5.4                | release-5.4        | LTS               | affects-5.4             | v5.4.0                   | <https://github.com/pingcap/tidb/issues/30336>
+| v4.0                | release-4.0        | LTS               | affects-4.0             | v4.0.16                  | <https://github.com/pingcap/tidb/issues/29856>
+
+For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
