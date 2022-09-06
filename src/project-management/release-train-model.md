@@ -62,9 +62,9 @@ With the release train model, to ensure that ongoing features do not affect the 
 
 | version             | branch             | status            | triage label            | latest release           | issue
 |:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
-| v6.3                | master             | in-sprint         |                         |                          | 
+| v6.3                | master             | in-sprint         |                         |                          | <https://github.com/pingcap/tidb/issues/37368>
 | v6.2                | release-6.2        | DMR               | affects-6.2             | v6.2.0-DMR               | <https://github.com/pingcap/tidb/issues/35452>
-| v6.1                | release-6.1        | LTS               | affects-6.1             | v6.1.0                   | <https://github.com/pingcap/tidb/issues/34048>
+| v6.1                | release-6.1        | LTS               | affects-6.1             | v6.1.1                   | <https://github.com/pingcap/tidb/issues/36076>
 | v6.0                | release-6.0        | DMR               | affects-6.0             | v6.0.0-DMR               | <https://github.com/pingcap/tidb/issues/32381>
 | v5.0                | release-5.0        | LTS               | affects-5.0             | v5.0.6                   | <https://github.com/pingcap/tidb/issues/30609>
 | v5.1                | release-5.1        | LTS               | affects-5.1             | v5.1.4                   | <https://github.com/pingcap/tidb/issues/30610>
