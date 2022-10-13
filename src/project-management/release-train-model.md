@@ -70,7 +70,7 @@ With the release train model, to ensure that ongoing features do not affect the 
 | v5.1                | release-5.1        | LTS               | affects-5.1             | v5.1.4                   | <https://github.com/pingcap/tidb/issues/30610>
 | v5.2                | release-5.2        | LTS               | affects-5.2             | v5.2.4                   | <https://github.com/pingcap/tidb/issues/30608>
 | v5.3                | release-5.3        | LTS               | affects-5.3             | v5.3.3                   | <https://github.com/pingcap/tidb/issues/36074>
-| v5.4                | release-5.4        | LTS               | affects-5.4             | v5.4.2                   | <https://github.com/pingcap/tidb/issues/35219>
+| v5.4                | release-5.4        | LTS               | affects-5.4             | v5.4.3                   | <https://github.com/pingcap/tidb/issues/37748>
 | v4.0                | release-4.0        | LTS               | affects-4.0             | v4.0.16                  | <https://github.com/pingcap/tidb/issues/29856>
 
 For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
