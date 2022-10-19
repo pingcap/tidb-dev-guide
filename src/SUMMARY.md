@@ -56,3 +56,6 @@
 * [Project Management](project-management/introduction.md)
     * [Releases Train Model](project-management/release-train-model.md)
     * [TiDB Versioning](project-management/tidb-versioning.md)
+
+* [Extending TiDB](extending-tidb/introduction.md)
+    * [Add a function](extending-tidb/add-a-function.md)
