@@ -2,7 +2,7 @@
 
 To add a builtin function to TiDB the best practice is to look at MySQL first and try to implement the function in such a way that it is commpatible. Avoid adding functions that are already deprecated in MySQL or that might soon be deprecrated.
 
-Here we will implement a `HELLO()` function that has one argument that is a string.
+Here we will implement a `HELLO()` function that has one argument that is a string. For this you need [a clone of the pingcap/tidb repository](../get-started/build-tidb-from-source.md#clone)
 
 ```
 sql> SELECT HELLO("world");
@@ -80,6 +80,8 @@ The `getFunction()` method can return different functions depending on the type 
 
 Here `evalString()` gets called for every row. If the function returns an integer you have to use `evalInt` and there are also functions for Decimal, Real, Time and JSON.
 
+Now you need to [build TiDB](../get-started/build-tidb-from-source.md#build) again and try the newly added function.
+
 The final result:
 
 ```
@@ -107,4 +109,4 @@ sql> WITH names AS (SELECT "Europe" AS "name" UNION ALL SELECT "America" UNION A
 3 rows in set (0.0008 sec)
 ```
 
-For testing have a look at `expression/builtin_string_test.go`
+For [testing](../get-started/write-and-run-unit-tests.md) have a look at `expression/builtin_string_test.go`.
