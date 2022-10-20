@@ -80,7 +80,6 @@ The `getFunction()` method can return different functions depending on the type 
 
 Here `evalString()` gets called for every row. If the function returns an integer you have to use `evalInt` and there are also functions for Decimal, Real, Time and JSON.
 
-
 The final result:
 
 ```
