@@ -4,6 +4,7 @@
 
 * `git`: The TiDB source code is hosted on GitHub as a git repository. To work with the git repository, please [install `git`](https://git-scm.com/downloads).
 * `go`: TiDB is a Go project. Therefore, you need a working Go environment to build it. See the previous [Install Golang](install-golang.md) section to prepare the environment.
+* `gcc`: `gcc` command is required to use `cgo` while building. To install `gcc`, search for appropriate install guide for your OS.
 * `mysql` client (optional): After building TiDB from source, you can use the official [MySQL client](https://dev.mysql.com/downloads/mysql/) to connect to TiDB. It is not required if you want to build TiDB only.
 
 > **Note:**
