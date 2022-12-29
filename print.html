@@ -530,26 +530,28 @@ make failpoint-disable
 <p><img src="get-started/../img/vscode-run-tests.png" alt="VS Code Run Tests" /></p>
 <p>As shown above, you can run tests of the whole package, of a test, or of a file.</p>
 <h3 id="running-tests-for-a-pull-request"><a class="header" href="#running-tests-for-a-pull-request">Running tests for a pull request</a></h3>
+<blockquote>
+<p>If you haven't joined the organization, you should wait for a member to comment with <code>/ok-to-test</code> to your pull request.</p>
+</blockquote>
 <p>Before you merge a pull request, it must pass all tests.</p>
-<p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that.</p>
-<h4 id="rebuild"><a class="header" href="#rebuild"><code>/rebuild</code></a></h4>
-<p>Build the binary based on the PR for testing. It also reruns all the CI test cases.</p>
-<h4 id="run-all-tests"><a class="header" href="#run-all-tests"><code>/run-all-tests</code></a></h4>
-<p>Rerun all the CI test cases. This command accepts the following parameters:</p>
+<p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the the rerun guide comment will be sent when the CI tests failed.</p>
+<h4 id="retest"><a class="header" href="#retest"><code>/retest</code></a></h4>
+<p>Rerun all failed CI test cases. </p>
+<h4 id="test-test1-testn"><a class="header" href="#test-test1-testn"><code>/test {{test1}} {{testN}}</code></a></h4>
+<p>Run given CI failed tests.</p>
+<h4 id="ci-parameters"><a class="header" href="#ci-parameters">CI parameters</a></h4>
+<p>CI jobs accepts the following parameters passed from <strong>pull request title</strong>:</p>
+<p>format: <code>&lt;origin pr title&gt; | &lt;the CI args pairs&gt;</code></p>
+<p>CI args pairs:</p>
 <ul>
-<li><code>tidb=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb to use.</li>
 <li><code>tikv=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tikv to use.</li>
 <li><code>pd=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which pd to use.</li>
 <li><code>tidb-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-test to use.</li>
-<li><code>tidb-private-test=&lt;branch&gt;|&lt;pr/$num&gt;</code> specifies which tidb-private-test to use.</li>
 </ul>
 <p>For example:</p>
-<pre><code>/run-all-tests tidb-test=pr/666
-/run-all-tests tidb-test=release-2.1
-/run-all-tests tikv=pr/999
+<pre><code>pkg1: support xxx feature | tidb-test=pr/1234
+pkg2: support yyy feature | tidb-test=release-6.5 tikv=pr/999
 </code></pre>
-<h4 id="run-test"><a class="header" href="#run-test"><code>/run-{{test}}</code></a></h4>
-<p>Run a single CI test. This command accepts the same parameters as <code>/run-all-tests</code>.</p>
 <h2 id="how-to-find-failed-tests"><a class="header" href="#how-to-find-failed-tests">How to find failed tests</a></h2>
 <p>There are several common causes of failed tests.</p>
 <h3 id="assertion-failed"><a class="header" href="#assertion-failed">Assertion failed</a></h3>
@@ -746,6 +748,9 @@ git pull master
 <li>
 <p>Make some changes to the repo and test them.</p>
 </li>
+</ol>
+<p>If the repo is buiding with <a href="https://bazel.build/">Bazel</a> tool, you should update the bazel files(*.bazel, DEPS.bzl) also.</p>
+<ol start="4">
 <li>
 <p>Commit your changes and push them to your <code>dev</code> remote repository:</p>
 <pre><code class="language-bash"># stage files you created/changed/deleted
