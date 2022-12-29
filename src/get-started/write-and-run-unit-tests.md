@@ -177,7 +177,7 @@ As shown above, you can run tests of the whole package, of a test, or of a file.
 
 ### Running tests for a pull request
 
-> If you are not joined the organization, you should wait for a memmber to comment with `/ok-to-test` to your pull request.
+> If you haven't joined the organization, you should wait for a member to comment with `/ok-to-test` to your pull request.
 
 Before you merge a pull request, it must pass all tests.
 
