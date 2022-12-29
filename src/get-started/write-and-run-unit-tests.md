@@ -177,35 +177,36 @@ As shown above, you can run tests of the whole package, of a test, or of a file.
 
 ### Running tests for a pull request
 
+> If you are not joined the organization, you should wait for a memmber to comment with `/ok-to-test` to your pull request.
+
 Before you merge a pull request, it must pass all tests.
 
-Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that.
+Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the the rerun guide comment will be sent when the CI tests failed.
 
-#### `/rebuild`
+#### `/retest`
 
-Build the binary based on the PR for testing. It also reruns all the CI test cases.
+Rerun all failed CI test cases. 
 
-#### `/run-all-tests`
+#### `/test {{test1}} {{testN}}`
 
-Rerun all the CI test cases. This command accepts the following parameters:
+Run given CI failed tests.
 
-* `tidb=<branch>|<pr/$num>` specifies which tidb to use.
+#### CI parameters
+CI jobs accepts the following parameters passed from **pull request title**:
+
+format: `<origin pr title> | <the CI args pairs>`
+
+CI args pairs:
 * `tikv=<branch>|<pr/$num>` specifies which tikv to use.
 * `pd=<branch>|<pr/$num>` specifies which pd to use.
 * `tidb-test=<branch>|<pr/$num>` specifies which tidb-test to use.
-* `tidb-private-test=<branch>|<pr/$num>` specifies which tidb-private-test to use.
 
 For example:
 
 ```
-/run-all-tests tidb-test=pr/666
-/run-all-tests tidb-test=release-2.1
-/run-all-tests tikv=pr/999
+pkg1: support xxx feature | tidb-test=pr/1234
+pkg2: support yyy feature | tidb-test=release-6.5 tikv=pr/999
 ```
-
-#### `/run-{{test}}`
-
-Run a single CI test. This command accepts the same parameters as `/run-all-tests`.
 
 ## How to find failed tests
 
