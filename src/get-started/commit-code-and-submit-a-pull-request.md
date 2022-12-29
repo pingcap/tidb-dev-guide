@@ -46,6 +46,9 @@ The following is a normal procedure that you're likely to use for the most commo
    ```
 
 3. Make some changes to the repo and test them.
+
+if the repo is buiding with [Bazel](https://bazel.build/) tool, you should update the bazel files(*.bazel, DEPS.bzl) also.
+
 4. Commit your changes and push them to your `dev` remote repository:
 
    ```bash
