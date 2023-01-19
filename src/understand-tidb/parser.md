@@ -61,7 +61,7 @@ Except for `parser.y`, other sub-package/files should be easy to understand, fee
 
 To get started with the parser development, please also take a look at [quickstart.md](https://github.com/pingcap/tidb/blob/master/parser/docs/quickstart.md). It shows the basic usage of the parser and it explains some concepts like parser_driver.
 
-Run `make parser` in the project root directory to generate a new `parser.go`. If you want to try your new parser patches on TiDB, follow [this procedure](https://github.com/pingcap/tidb/blob/master/parser/docs/update-parser-for-tidb.md) to have TiDB use your copy of the parser. This allows you to make changes to both the parser and TiDB and test them together.
+Run `make parser` in the project root directory to generate a new `parser.go`.
 
 ## FAQ
 
