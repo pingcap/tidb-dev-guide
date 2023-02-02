@@ -273,6 +273,14 @@ EOF
 <h3 id="work-with-tidb-code-in-vs-code"><a class="header" href="#work-with-tidb-code-in-vs-code">Work with TiDB code in VS Code</a></h3>
 <p>Open the folder containing TiDB code via <code>File→Open Folder</code>. See the <a href="https://code.visualstudio.com/docs">VS Code docs</a> for how to edit and commit code.</p>
 <p>There is <a href="https://github.com/tidb-incubator/tide/blob/HEAD/doc/guide.md">detailed guide</a> explaining how to use the TiDE extension.</p>
+<h3 id="populate-run-configurations-1"><a class="header" href="#populate-run-configurations-1">Populate run configurations</a></h3>
+<p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
+<pre><code>mkdir -p .vscode
+
+echo &quot;{
+    \&quot;go.testTags\&quot;: \&quot;intest,deadlock\&quot;
+}&quot; &gt; .vscode/settings.json
+</code></pre>
 
                     </main>
 

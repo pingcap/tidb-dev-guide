@@ -422,6 +422,14 @@ EOF
 <h3 id="work-with-tidb-code-in-vs-code"><a class="header" href="#work-with-tidb-code-in-vs-code">Work with TiDB code in VS Code</a></h3>
 <p>Open the folder containing TiDB code via <code>File→Open Folder</code>. See the <a href="https://code.visualstudio.com/docs">VS Code docs</a> for how to edit and commit code.</p>
 <p>There is <a href="https://github.com/tidb-incubator/tide/blob/HEAD/doc/guide.md">detailed guide</a> explaining how to use the TiDE extension.</p>
+<h3 id="populate-run-configurations-1"><a class="header" href="#populate-run-configurations-1">Populate run configurations</a></h3>
+<p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
+<pre><code>mkdir -p .vscode
+
+echo &quot;{
+    \&quot;go.testTags\&quot;: \&quot;intest,deadlock\&quot;
+}&quot; &gt; .vscode/settings.json
+</code></pre>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="write-and-run-unit-tests"><a class="header" href="#write-and-run-unit-tests">Write and run unit tests</a></h1>
 <p>The TiDB project runs unit tests using <a href="https://github.com/stretchr/testify">testify</a>.</p>
 <p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a>, but since that framework is poorly maintained, we are migrating to testify.</p>
