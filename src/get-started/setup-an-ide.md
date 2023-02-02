@@ -62,7 +62,7 @@ cat <<EOF > unit_test.xml
   <configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test">
     <module name="tidb" />
     <working_directory value="\$PROJECT_DIR\$" />
-    <go_parameters value="-i" />
+    <go_parameters value="-race -i --tags=intest,deadlock" />
     <framework value="gocheck" />
     <kind value="DIRECTORY" />
     <package value="github.com/pingcap/tidb" />
