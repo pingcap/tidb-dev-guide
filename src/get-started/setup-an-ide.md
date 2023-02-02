@@ -137,3 +137,15 @@ Now install these extensions:
 Open the folder containing TiDB code via `File→Open Folder`. See the [VS Code docs](https://code.visualstudio.com/docs) for how to edit and commit code.
 
 There is [detailed guide](https://github.com/tidb-incubator/tide/blob/HEAD/doc/guide.md) explaining how to use the TiDE extension.
+
+### Populate run configurations
+
+Under the root directory of the TiDB source code, execute the following commands to add config files:
+
+```
+mkdir -p .vscode
+
+echo "{
+    \"go.testTags\": \"intest,deadlock\"
+}" > .vscode/settings.json
+```
