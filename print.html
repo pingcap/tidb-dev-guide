@@ -370,7 +370,7 @@ cat &lt;&lt;EOF &gt; unit_test.xml
   &lt;configuration default=&quot;false&quot; name=&quot;unit test&quot; type=&quot;GoTestRunConfiguration&quot; factoryName=&quot;Go Test&quot;&gt;
     &lt;module name=&quot;tidb&quot; /&gt;
     &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;go_parameters value=&quot;-i&quot; /&gt;
+    &lt;go_parameters value=&quot;-race -i --tags=intest,deadlock&quot; /&gt;
     &lt;framework value=&quot;gocheck&quot; /&gt;
     &lt;kind value=&quot;DIRECTORY&quot; /&gt;
     &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
