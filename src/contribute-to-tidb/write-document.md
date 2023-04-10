@@ -6,7 +6,7 @@ Good documentation is crucial for any kind of software. This is especially true 
 
 The TiDB community provides bilingual documentation. The English documentation is maintained in the [pingcap/docs](https://github.com/pingcap/docs) repository (docs repo) and the Chinese documentation is maintained in the [pingcap/docs-cn](https://github.com/pingcap/docs-cn) repository (docs-cn repo). You are welcome to contribute to either of the repositories.
 
-In a addition, you are also welcome to contribute to the [TiDB Operator documentation](https://github.com/pingcap/docs-tidb-operator) and the [TiDB Data Migration documentation](https://github.com/pingcap/docs-dm).
+In addition, you are also welcome to contribute to the [TiDB Operator documentation](https://github.com/pingcap/docs-tidb-operator).
 
 This guide walks you through what and how you can contribute to the TiDB bilingual documentation in docs-cn and docs repos.
 
@@ -16,7 +16,7 @@ You can start from any one of the following items to help improve TiDB Docs at t
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
-- Add missing content (sentence, paragraph, or a new document)
+- Add missing content (sentence, paragraph, or new document)
 - Translate docs changes from English to Chinese, or from Chinese to English. See [How we implement bilingual documentation](#how-we-implement-bilingual-documentation)
 - Submit, reply to, and resolve [docs issues](https://github.com/pingcap/docs/issues) or [docs-cn issues](https://github.com/pingcap/docs-cn/issues)
 - (Advanced) Review Pull Requests created by others
@@ -37,51 +37,29 @@ Before you contribute, let's take a quick look at some general information about
 
 ### Learn about docs versions
 
-Currently, we maintain eight versions of TiDB documentation, each with a separate branch:
-
-| Docs branch name | Version description |
-| :--- | :--- |
-| `master` branch | the latest development version |
-| `release-6.0` branch | the 6.0 version |
-| `release-5.4` branch | the 5.4 version |
-| `release-5.3` branch | the 5.3 version |
-| `release-5.2` branch | the 5.2 version |
-| `release-5.1` branch | the 5.1 version |
-| `release-5.0` branch | the 5.0 version |
-| `release-4.0` branch | the 4.0 version |
-| `release-3.1` branch | the 3.1 version |
-| `release-3.0` branch | the 3.0 version |
-| `release-2.1` branch | the 2.1 version |
+Currently, we maintain versions of TiDB documentation using branches, each major or minor version with a separate branch:
 
 Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.
 
 ### Use cherry-pick labels
 
-- If your changes apply to only one doc version, just submit a PR to the corresponding version branch.
+- If your changes apply to only one doc version, just create a PR based on the branch of the doc version.
 
-- If your changes apply to multiple doc versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.
-    - `needs-cherry-pick-release-5.2` label: ti-chi-bot will submit a PR to the `release-5.2` branch.
-    - `needs-cherry-pick-release-5.1` label: ti-chi-bot will submit a PR to the `release-5.1` branch.
-    - `needs-cherry-pick-release-5.0` label: ti-chi-bot will submit a PR to the `release-5.0` branch.
-    - `needs-cherry-pick-release-4.0` label: ti-chi-bot will submit a PR to the `release-4.0` branch.
-    - `needs-cherry-pick-release-3.1` label: ti-chi-bot will submit a PR to the `release-3.1` branch.
-    - `needs-cherry-pick-release-3.0` label: ti-chi-bot will submit a PR to the `release-3.0` branch.
-    - `needs-cherry-pick-release-2.1` label: ti-chi-bot will submit a PR to the `release-2.1` branch.
-    - `needs-cherry-pick-master` label: ti-chi-bot will submit a PR to the `master` branch.
+- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based the branches of the specified branches.
 
-- If most of your changes apply to multiple doc versions but some differences exist among versions, you still can use cherry-pick labels to let ti-chi-bot create PRs to other versions. In this situation, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After the PR to another version is successfully submitted by ti-chi-bot, you can make changes to that PR.
+- If most of your changes apply to multiple doc versions but some differences exist among versions, besides adding cherry-pick labels to all the needed versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
 
 ## How to contribute
 
 Your contribution journey is in two stages:
 
-1. In [stage 1](#stage-1-create-and-submit-your-pr), create and submit your Pull Request to the [docs-cn](https://github.com/pingcap/docs-cn) or [docs](https://github.com/pingcap/docs) repository.
+1. In [stage 1](#stage-1-create-and-submit-your-pr), create your Pull Request for the [docs-cn](https://github.com/pingcap/docs-cn) or [docs](https://github.com/pingcap/docs) repository.
 
-2. In [stage 2](#stage-2-get-notified-and-address-review-comments), get notified of any review comments and address the comments until the PR gets approved and merged.
+2. In [stage 2](#stage-2-get-notified-and-address-review-comments), address comments from reviewers until the PR gets approved and merged.
 
-### Stage 1: Create and submit your PR
+### Stage 1: Create your PR
 
-Perform the following steps to create your Pull Request to the [docs](https://github.com/pingcap/docs) repository. If don't like to use commands, you can also use [GitHub Desktop](https://desktop.github.com/), which is easier to get started.
+Perform the following steps to create your Pull Request for the [docs](https://github.com/pingcap/docs) repository. If don't like to use commands, you can also use [GitHub Desktop](https://desktop.github.com/), which is easier to get started.
 
 > **Note:**
 >
@@ -124,7 +102,7 @@ git remote -v # Confirms that your remote makes sense
     git checkout -b new-branch-name
     ```
 
-#### Step 4: Do something
+#### Step 4: Make doc changes
 
 Edit some file(s) on the `new-branch-name` branch and save your changes. You can use editors like Visual Studio Code to open and edit `.md` files.
 
@@ -159,17 +137,15 @@ git push -u origin new-branch-name # "-u" is used to track the remote branch fro
 
 Now, your PR is successfully submitted.
 
-### Stage 2: Get notified and address review comments
+### Stage 2: Address review comments
 
-After your PR is submitted, addressing review comments is just as important as creating the PR. Please perform the following steps to complete your contribution journey.
+After your PR is created, addressing review comments is just as important as creating the PR. Please perform the following steps to complete your contribution journey.
 
 #### Step 1: Get notified of review comments
 
-After your PR is created, the repository administrator will add labels to your PR for PR management. Review comments will also be submitted to your PR, which requires you to modify the PR content.
+After your PR is created, the repository maintainers will add labels to your PR for PR management and the documentation reviewers will add comments to the PR.
 
-Once the review comments are submitted, you will receive a notification in your registered email box. Check your email box and get notified.
-
-Once you receive the email, click the PR link in the mail to open the PR page in your browser, and you will see the comments.
+Once the review comments are submitted, you will receive a notification mail in your registered email box. You can click the PR link in the mail to open the PR page and see the comments.
 
 #### Step 2: Address review comments
 
@@ -225,17 +201,17 @@ If multiple review comments are in the suggestion mode, it is recommended to acc
 
 #### Step 3: Handle cherry-picked PRs
 
-Once your PR gets approved, the repo administrator will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.
+Once your PR gets approved, the repo committers will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.
 
 You need to perform the following steps on each one of the cherry-picked PRs:
 
-- Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository administrator will merge it soon.
+- Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository committers will merge it soon.
 
-- If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository administrator will commit to the PR according to your comment before you approve it.
+- If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.
 
 - (Advanced) If any conflicts exist in the cherry-picked PR, resolve the conflicts. This is only for those who have the write permission in the repository.
 
-After the steps above are completed, the administrator will merge the cherry-picked PRs. At this point, your contribution journey is completed! 🎉
+After the steps above are completed, the committers will merge the cherry-picked PRs. At this point, your contribution journey is completed! 🎉
 
 ## How we implement bilingual documentation
 
