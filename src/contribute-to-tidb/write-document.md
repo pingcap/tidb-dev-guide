@@ -39,13 +39,13 @@ Before you contribute, let's take a quick look at some general information about
 
 Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
 
-- The [documentation under development](https://docs.pingcap.com/zh/tidb/dev) is maintained in the `master` branch.
+- The [documentation under development](https://docs.pingcap.com/tidb/dev) is maintained in the `master` branch.
 - The [published documentation](https://docs.pingcap.com/tidb/stable/) is maintained in the corresponding `release-<verion>` branch.
 - The [archived documentation](https://docs-archive.pingcap.com/) is no longer maintained and does not receive any further updates.
 
 ### Use cherry-pick labels
 
-As changes to one doc version often apply to other doc versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process.
+As changes to one doc version often apply to other doc versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process based on cherry-pick labels.
 
 - If your changes apply to only one doc version, just create a PR based on the branch of the doc version. There is no need to add any cherry-pick labels.
 
