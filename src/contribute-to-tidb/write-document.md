@@ -4,7 +4,7 @@ Good documentation is crucial for any kind of software. This is especially true 
 
 ## Where you can contribute
 
-The TiDB community provides bilingual documentation. The English documentation is maintained in the [pingcap/docs](https://github.com/pingcap/docs) repository (docs repo) and the Chinese documentation is maintained in the [pingcap/docs-cn](https://github.com/pingcap/docs-cn) repository (docs-cn repo). You are welcome to contribute to either of the repositories.
+The TiDB community provides bilingual documentation. The [English documentation](https://docs.pingcap.com/) is maintained in the [pingcap/docs](https://github.com/pingcap/docs) repository (docs repo) and the [Chinese documentation](https://docs.pingcap.com/zh/) is maintained in the [pingcap/docs-cn](https://github.com/pingcap/docs-cn) repository (docs-cn repo). You are welcome to contribute to either of the repositories.
 
 In addition, you are also welcome to contribute to the [TiDB Operator documentation](https://github.com/pingcap/docs-tidb-operator).
 
@@ -12,7 +12,7 @@ This guide walks you through what and how you can contribute to the TiDB bilingu
 
 ## What you can contribute
 
-You can start from any one of the following items to help improve TiDB Docs at the PingCAP website ([en](https://docs.pingcap.com/tidb/stable) and [zh](https://docs.pingcap.com/zh/tidb/stable)):
+You can start from any one of the following items to help improve the TiDB [English documentation](https://docs.pingcap.com/) or [Chinese documentation](https://docs.pingcap.com/zh/).
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
@@ -37,17 +37,17 @@ Before you contribute, let's take a quick look at some general information about
 
 ### Learn about docs versions
 
-Currently, we maintain versions of TiDB documentation using branches, each major or minor version with a separate branch:
-
-Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.
+Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
 
 ### Use cherry-pick labels
 
-- If your changes apply to only one doc version, just create a PR based on the branch of the doc version.
+As changes to one doc version often apply to other doc versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process.
 
-- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based the branches of the specified branches.
+- If your changes apply to only one doc version, just create a PR based on the branch of the doc version. There is no need to add any cherry-pick labels.
 
-- If most of your changes apply to multiple doc versions but some differences exist among versions, besides adding cherry-pick labels to all the needed versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
+- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable doc versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based the branches of the specified branches.
+
+- If most of your changes apply to multiple doc versions but some differences exist among versions, besides adding the cherry-pick labels to all the target versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
 
 ## How to contribute
 
