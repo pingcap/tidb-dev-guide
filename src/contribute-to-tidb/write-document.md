@@ -49,7 +49,7 @@ As changes to one doc version often apply to other doc versions as well, we intr
 
 - If your changes apply to only one doc version, just create a PR based on the branch of the doc version. There is no need to add any cherry-pick labels.
 
-- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable doc versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based the branches of the specified branches.
+- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable doc versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based on the branches of the specified versions.
 
 - If most of your changes apply to multiple doc versions but some differences exist among versions, besides adding the cherry-pick labels to all the target versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
 
