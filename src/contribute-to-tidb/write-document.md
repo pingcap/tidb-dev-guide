@@ -37,7 +37,10 @@ Before you contribute, let's take a quick look at some general information about
 
 ### Learn about docs versions
 
-Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
+Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch. 
+
+- The documentation under development is maintained in the `master` branch.
+- The published documentation is maintained in the corresponding `release-<verion>` branch.
 
 ### Use cherry-pick labels
 
