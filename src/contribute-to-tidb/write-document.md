@@ -37,10 +37,11 @@ Before you contribute, let's take a quick look at some general information about
 
 ### Learn about docs versions
 
-Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch. 
+Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
 
-- The documentation under development is maintained in the `master` branch.
-- The published documentation is maintained in the corresponding `release-<verion>` branch.
+- The [documentation under development](https://docs.pingcap.com/zh/tidb/dev) is maintained in the `master` branch.
+- The [published documentation](https://docs.pingcap.com/tidb/stable/) is maintained in the corresponding `release-<verion>` branch.
+- The [archived documentation](https://docs-archive.pingcap.com/) is no longer maintained and does not receive any further updates.
 
 ### Use cherry-pick labels
 
