@@ -16,7 +16,7 @@ You can start from any one of the following items to help improve the TiDB [Engl
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
-- Add missing content (sentence, paragraph, or new document)
+- Add missing content (sentence, paragraph, or a new document)
 - Translate docs changes from English to Chinese, or from Chinese to English. See [How we implement bilingual documentation](#how-we-implement-bilingual-documentation)
 - Submit, reply to, and resolve [docs issues](https://github.com/pingcap/docs/issues) or [docs-cn issues](https://github.com/pingcap/docs-cn/issues)
 - (Advanced) Review Pull Requests created by others
@@ -35,7 +35,7 @@ Before you contribute, let's take a quick look at some general information about
 
     To keep a consistent style for diagrams, we recommend using [Figma](https://www.figma.com/) to draw or design diagrams. If you need to draw a diagram, refer to the guide and use shapes or colors provided in the template.
 
-### Learn about docs versions
+### Learn about doc versions
 
 Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
 
