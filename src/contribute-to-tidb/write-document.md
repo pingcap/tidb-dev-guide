@@ -45,13 +45,13 @@ We use separate branches to maintain different versions of TiDB documentation.
 
 ### Use cherry-pick labels
 
-As changes to one doc version often apply to other doc versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process based on cherry-pick labels.
+As changes to one documentation version often apply to other documentation versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process based on cherry-pick labels.
 
-- If your changes apply to only one doc version, just create a PR based on the branch of the doc version. There is no need to add any cherry-pick labels.
+- If your changes apply to only one documentation version, just create a PR based on the branch of the documentation version. There is no need to add any cherry-pick labels.
 
-- If your changes apply to multiple doc versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable doc versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based on the branches of the specified versions.
+- If your changes apply to multiple documentation versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several `needs-cherry-pick-release-<version>` labels to the PR according to the applicable documentation versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based on the branches of the specified versions.
 
-- If most of your changes apply to multiple doc versions but some differences exist among versions, besides adding the cherry-pick labels to all the target versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
+- If most of your changes apply to multiple documentation versions but some differences exist among versions, besides adding the cherry-pick labels to all the target versions, you also need to add the `requires-version-specific-change` label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.
 
 ## How to contribute
 
@@ -106,7 +106,7 @@ git remote -v # Confirms that your remote makes sense
     git checkout -b new-branch-name
     ```
 
-#### Step 4: Make doc changes
+#### Step 4: Make documentation changes
 
 Edit some file(s) on the `new-branch-name` branch and save your changes. You can use editors like Visual Studio Code to open and edit `.md` files.
 
@@ -211,7 +211,7 @@ You need to perform the following steps on each one of the cherry-picked PRs:
 
 - Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository committers will merge it soon.
 
-- If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.
+- If most of your changes apply to multiple documentation versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.
 
 - (Advanced) If any conflicts exist in the cherry-picked PR, resolve the conflicts. This is only for those who have the write permission in the repository.
 
