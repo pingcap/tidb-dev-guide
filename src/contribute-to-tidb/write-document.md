@@ -35,9 +35,9 @@ Before you contribute, let's take a quick look at some general information about
 
     To keep a consistent style for diagrams, we recommend using [Figma](https://www.figma.com/) to draw or design diagrams. If you need to draw a diagram, refer to the guide and use shapes or colors provided in the template.
 
-### Learn about doc versions
+### Learn about documentation versions
 
-Currently, we maintain versions of TiDB documentation using branches, each doc version with a separate branch.
+We use separate branches to maintain different versions of TiDB documentation.
 
 - The [documentation under development](https://docs.pingcap.com/tidb/dev) is maintained in the `master` branch.
 - The [published documentation](https://docs.pingcap.com/tidb/stable/) is maintained in the corresponding `release-<verion>` branch.
