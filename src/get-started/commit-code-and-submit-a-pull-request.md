@@ -138,3 +138,17 @@ git rebase --continue
 Squashing commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.
 
 You also may want to squash together just the last few commits, possibly because they only represent "fixups" and not real changes. For example, `git rebase --interactive HEAD~2` allows you to edit the two commits only.
+
+## Setting pre-commit
+
+We use [pre-commit](https://pre-commit.com/) to check the code style before committing. To install pre-commit, run:
+
+```bash  
+# Using pip:
+pip install pre-commit
+
+# Using homebrew:
+brew install pre-commit
+```
+
+After the installation is successful, run ```pre-commit install``` in the project root directory.
