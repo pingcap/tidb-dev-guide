@@ -151,4 +151,4 @@ pip install pre-commit
 brew install pre-commit
 ```
 
-After the installation is successful, run ```pre-commit install``` in the project root directory.
+After the installation is successful, run ```pre-commit install``` in the project root directory to enable git's pre-commit.
