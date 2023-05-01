@@ -84,8 +84,6 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 }
 ```
 
-
-
 ## DML Executed In Optimistic Transaction
 
 There are three kinds of DML operations, such as update, delete and insert. For simplicity, This article only describes the update statement execution process. DML mutations are not sended to tikv directly, but buffered in TiDB temporarily, commit operation make the mutations effective at last.
@@ -100,8 +98,6 @@ The main function stack to execute an update statement such as "update t1 set id
 ​                 Next
 ​                   (e *PointGetExecutor) Next
 ```
-
-
 
 ### (e *UpdateExec) updateRows
 
@@ -154,8 +150,6 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 }
 ```
 
-
-
 ## Commit Optimistic Transaction
 
 Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function `(c *twoPhaseCommitter) execute` does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112) .
@@ -192,8 +186,6 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 ​    } 
 }
 ```
-
-
 
 ### prewrite
 
@@ -241,8 +233,6 @@ func (batchExe *batchExecutor) process(batches []batchMutations) error {
 }
 ```
 
-
-
 #### (batchExe *batchExecutor) startWorker
 
 The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1770) .
@@ -269,13 +259,9 @@ func (batchExe *batchExecutor) startWorker(exitCh chan struct{}, ch chan error, 
 }
 ```
 
-
-
 #### (action actionPrewrite) handleSingleBatch
 
 The important comment and simplified code are as followers. The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/prewrite.go#L149) .
-
-
 
 ```go
 /*
@@ -386,15 +372,11 @@ func (c *twoPhaseCommitter) doActionOnGroupMutations(bo *retry.Backoffer, action
 }
 ```
 
-
-
 #### (batchExe *batchExecutor) process
 
 The function `(c *twoPhaseCommitter) doActionOnGroupMutations` calls `(c *twoPhaseCommitter) doActionOnBatches` to do the second phase of commit. The function `(c *twoPhaseCommitter) doActionOnBatches` calls `(batchExe *batchExecutor) process` to do the main work.
 
 The important comment and simplified code of function `(batchExe *batchExecutor) process`  are as mentioned above in prewrite part . The completed code is [here](https://github.com/tikv/client-go/blob/843a5378aa9101c0e2aba61e0c2c11b3f122f08f/txnkv/transaction/2pc.go) .
-
-
 
 #### (actionCommit) handleSingleBatch
 
