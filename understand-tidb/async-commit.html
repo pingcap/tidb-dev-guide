@@ -4,37 +4,24 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Async Commit - TiDB Development Guide</title>
-        
-        
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
@@ -42,19 +29,18 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -70,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -82,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -103,8 +91,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -114,38 +101,30 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">TiDB Development Guide</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -156,10 +135,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -288,54 +266,45 @@ status.commitTS = resolveData.commitTs
 <p>For simplicity, we use a global component to implement it. We call it the &quot;concurrency manager&quot;.</p>
 <p>The methods provided by the concurrency manager can be found in <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lib.rs">this file</a>.</p>
 <p>It is very easy to update the max TS. It's just an atomic operation:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn update_max_ts(&amp;self, new_ts: TimeStamp) {
     if new_ts != TimeStamp::max() {
         self.max_ts.fetch_max(new_ts.into_inner(), Ordering::SeqCst);
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>It is a bit complex for memory locks.</p>
 <p>The memory locks can have multiple accessors. Of course, the first one is the prewrite process. And because all readers need to check the memory locks, they are accessors of the memory locks, too. The locks can be removed from the table when there are no accessors.</p>
 <p>So the memory table just owns a weak reference to the lock. We define the table like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct LockTable(pub Arc&lt;SkipMap&lt;Key, Weak&lt;KeyHandle&gt;&gt;&gt;);
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>To add a memory lock and be able to write lock information, the <code>lock_key</code> method needs to be called to get a lock guard. The locking process is a bit tricky to handle various possiblities in the multi-thread environment. If interested, you can refer to <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lock_table.rs#L22">the code</a> for details.</p>
 <h3 id="prewrite-1"><a class="header" href="#prewrite-1">Prewrite</a></h3>
 <p>The code of prewrite can be found <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L405">here</a>. We will talk about some key points in the code about async commit.</p>
 <p>In TiKV, <code>secondary_keys</code> and <code>try_one_pc</code> in the prewrite request are used to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L411-L415">determine the type</a> of the prewrite:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let commit_kind = match (&amp;self.secondary_keys, self.try_one_pc) {
     (_, true) =&gt; CommitKind::OnePc(self.max_commit_ts),
     (&amp;Some(_), false) =&gt; CommitKind::Async(self.max_commit_ts),
     (&amp;None, false) =&gt; CommitKind::TwoPc,
 };
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>Only when prewriting the primary lock, secondary locks need to be written in the lock:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let mut secondaries = &amp;self.secondary_keys.as_ref().map(|_| vec![]);
 if Some(m.key()) == async_commit_pk {
     secondaries = &amp;self.secondary_keys;
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>In the prewrite action, async commit does not change the checks. What is different is in the <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L367"><code>write_lock</code> function</a>.</p>
 <p>Besides setting secondary keys in the primary lock, it calls <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L367"><code>async_commit_timestamps</code></a> to set <code>min_commit_ts</code> in the lock.</p>
 <p>Here is the simplified code:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let final_min_commit_ts = key_guard.with_lock(|l| {
     let max_ts = txn.concurrency_manager.max_ts();
@@ -358,26 +327,22 @@ if Some(m.key()) == async_commit_pk {
 })?;
 
 txn.guards.push(key_guard);
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>The final <code>min_commit_ts</code> is set to the maximum of (max TS + 1) and the original <code>min_commit_ts</code>. And if the <code>min_commit_ts</code> is greater than <code>max_commit_ts</code>, a <code>CommitTsTooLarge</code> is returned and triggers a fallback to non-async commit.</p>
 <p>The operation is done while locked to guarantee the atomicity of getting the max TS and setting the <code>min_commit_ts</code> in the lock.</p>
 <p>The key guard is saved until the lock is successfully written into RocksDB. Before that, readers are able to check the locks in order not to break any constraint. We can release the guard to remove the lock in the memory table after the readers can read the lock from the RocksDB.</p>
 <h4 id="fallback-to-non-async-commit"><a class="header" href="#fallback-to-non-async-commit">Fallback to non-async commit</a></h4>
 <p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit. </p>
 <p>When the <code>CommitTsTooLarge</code> error happens, the lock will still be written, but in the lock <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L406">there will be no <code>use_async_commit</code> flag</a> and no secondary keys will be recorded:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>if let Err(Error(box ErrorInner::CommitTsTooLarge { .. })) = &amp;res {
     lock.use_async_commit = false;
     lock.secondaries = Vec::new();
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>After any key encounters this error, we <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L501">don't need to do async commit prewrite</a> for later keys:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span> Err(MvccError(box MvccErrorInner::CommitTsTooLarge { .. })) | Ok((..)) =&gt; {
     // fallback to not using async commit or 1pc
@@ -388,14 +353,12 @@ txn.guards.push(key_guard);
     txn.guards = Vec::new();
     final_min_commit_ts = TimeStamp::zero();
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>When any key in a transaction fallbacks to non-async commit mode, the transaction will be considered as a non-async commit transaction.</p>
 <h3 id="memory-lock-checking"><a class="header" href="#memory-lock-checking">Memory lock checking</a></h3>
 <p>All transactional reading requests need to update max TS and check memory locks. If the <code>min_commit_ts</code> of the lock is not larger than the snapshot timestamp of the reading, it is not safe to proceed this read. Then, an error will be returned and the client needs to retry later.</p>
 <p>Here is <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/mod.rs#L1808">an example</a> in the storage module:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Update max_ts and check the in-memory lock table before getting the snapshot
 if !pb_ctx.get_stale_read() {
@@ -411,13 +374,11 @@ if isolation_level == IsolationLevel::Si {
             .map_err(|e| txn::Error::from_mvcc(e))?;
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h3 id="check-transaction-status"><a class="header" href="#check-transaction-status">Check transaction status</a></h3>
 <p>We use <code>CheckTxnStatus</code> to get the status of the primary lock and use <code>CheckSecondaryLocks</code> for secondary locks.</p>
 <p>In <code>CheckTxnStatus</code>, we cannot remove the primary lock simply because it is expired because the transaction may have prewritten all the locks. So we always just return the lock information for async commit locks:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>if lock.use_async_commit {
     if force_sync_commit {
@@ -426,8 +387,7 @@ if isolation_level == IsolationLevel::Si {
         return Ok((TxnStatus::uncommitted(lock, false), None));
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>The idea of <code>CheckSecondaryLocks</code> is simple. If any lock in the list of secondary keys does not exist, remove the lock and write rollback if necessary. And if any lock has been committed, the transaction is committed. You can refer to <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/check_secondary_locks.rs#L54">its implementation</a> for details.</p>
 <h3 id="update-max-ts-on-region-changes"><a class="header" href="#update-max-ts-on-region-changes">Update max TS on region changes</a></h3>
 <p>In TiKV, we must guarantee that when a key is prewritten using the async-commit protocol, all readings at this key have updated the max TS. Now we update the max TS on the local TiKV. But there are some other cases we missed. If the reading happens on other TiKVs, then the region leader is transfered to the current TiKV or the region is merged into a region whose leader is on this TiKV, the max TS can be incorrect.</p>
@@ -442,17 +402,13 @@ if isolation_level == IsolationLevel::Si {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../understand-tidb/pessimistic-transaction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
 
-                        
                             <a rel="next" href="../understand-tidb/1pc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -460,49 +416,36 @@ if isolation_level == IsolationLevel::Si {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../understand-tidb/pessimistic-transaction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
 
-                
                     <a rel="next" href="../understand-tidb/1pc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
 
+    </div>
     </body>
 </html>

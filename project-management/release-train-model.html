@@ -4,37 +4,24 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Releases Train Model - TiDB Development Guide</title>
-        
-        
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
@@ -42,19 +29,18 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -70,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -82,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -103,8 +91,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -114,38 +101,30 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">TiDB Development Guide</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -156,10 +135,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -220,38 +198,36 @@
 </ol>
 <p>With the release train model, to ensure that ongoing features do not affect the stability of the release, TiDB chooses feature branches strategy.</p>
 <h2 id="current-maintained-releases"><a class="header" href="#current-maintained-releases">Current Maintained Releases</a></h2>
-<table><thead><tr><th align="left">version</th><th align="left">branch</th><th align="left">status</th><th align="left">triage label</th><th align="left">latest release</th><th align="left">issue</th></tr></thead><tbody>
-<tr><td align="left">v6.6</td><td align="left">release-6.6</td><td align="left">DMR</td><td align="left">affects-6.6</td><td align="left">v6.6.0-DMR</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/39326">https://github.com/pingcap/tidb/issues/39326</a></td></tr>
-<tr><td align="left">v6.5</td><td align="left">release-6.5</td><td align="left">LTS</td><td align="left">affects-6.5</td><td align="left">v6.5.1</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/40349">https://github.com/pingcap/tidb/issues/40349</a></td></tr>
-<tr><td align="left">v6.4</td><td align="left">release-6.4</td><td align="left">DMR</td><td align="left">affects-6.4</td><td align="left">v6.4.0-DMR</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/38364">https://github.com/pingcap/tidb/issues/38364</a></td></tr>
-<tr><td align="left">v6.3</td><td align="left">release-6.3</td><td align="left">DMR</td><td align="left">affects-6.3</td><td align="left">v6.3.0-DMR</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/37368">https://github.com/pingcap/tidb/issues/37368</a></td></tr>
-<tr><td align="left">v6.2</td><td align="left">release-6.2</td><td align="left">DMR</td><td align="left">affects-6.2</td><td align="left">v6.2.0-DMR</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/35452">https://github.com/pingcap/tidb/issues/35452</a></td></tr>
-<tr><td align="left">v6.1</td><td align="left">release-6.1</td><td align="left">LTS</td><td align="left">affects-6.1</td><td align="left">v6.1.5</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/41190">https://github.com/pingcap/tidb/issues/41190</a></td></tr>
-<tr><td align="left">v6.0</td><td align="left">release-6.0</td><td align="left">DMR</td><td align="left">affects-6.0</td><td align="left">v6.0.0-DMR</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/32381">https://github.com/pingcap/tidb/issues/32381</a></td></tr>
-<tr><td align="left">v5.0</td><td align="left">release-5.0</td><td align="left">LTS</td><td align="left">affects-5.0</td><td align="left">v5.0.6</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/30609">https://github.com/pingcap/tidb/issues/30609</a></td></tr>
-<tr><td align="left">v5.1</td><td align="left">release-5.1</td><td align="left">LTS</td><td align="left">affects-5.1</td><td align="left">v5.1.5</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/32148">https://github.com/pingcap/tidb/issues/32148</a></td></tr>
-<tr><td align="left">v5.2</td><td align="left">release-5.2</td><td align="left">LTS</td><td align="left">affects-5.2</td><td align="left">v5.2.4</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/30608">https://github.com/pingcap/tidb/issues/30608</a></td></tr>
-<tr><td align="left">v5.3</td><td align="left">release-5.3</td><td align="left">LTS</td><td align="left">affects-5.3</td><td align="left">v5.3.4</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/39077">https://github.com/pingcap/tidb/issues/39077</a></td></tr>
-<tr><td align="left">v5.4</td><td align="left">release-5.4</td><td align="left">LTS</td><td align="left">affects-5.4</td><td align="left">v5.4.3</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/37748">https://github.com/pingcap/tidb/issues/37748</a></td></tr>
-<tr><td align="left">v4.0</td><td align="left">release-4.0</td><td align="left">LTS</td><td align="left">affects-4.0</td><td align="left">v4.0.16</td><td align="left"><a href="https://github.com/pingcap/tidb/issues/29856">https://github.com/pingcap/tidb/issues/29856</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">version</th><th style="text-align: left">branch</th><th style="text-align: left">status</th><th style="text-align: left">triage label</th><th style="text-align: left">latest release</th><th style="text-align: left">issue</th></tr></thead><tbody>
+<tr><td style="text-align: left">v7.0</td><td style="text-align: left">release-7.0</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-7.0</td><td style="text-align: left">v7.0.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/41567">https://github.com/pingcap/tidb/issues/41567</a></td></tr>
+<tr><td style="text-align: left">v6.6</td><td style="text-align: left">release-6.6</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.6</td><td style="text-align: left">v6.6.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/39326">https://github.com/pingcap/tidb/issues/39326</a></td></tr>
+<tr><td style="text-align: left">v6.5</td><td style="text-align: left">release-6.5</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-6.5</td><td style="text-align: left">v6.5.2</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/41191">https://github.com/pingcap/tidb/issues/41191</a></td></tr>
+<tr><td style="text-align: left">v6.4</td><td style="text-align: left">release-6.4</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.4</td><td style="text-align: left">v6.4.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/38364">https://github.com/pingcap/tidb/issues/38364</a></td></tr>
+<tr><td style="text-align: left">v6.3</td><td style="text-align: left">release-6.3</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.3</td><td style="text-align: left">v6.3.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/37368">https://github.com/pingcap/tidb/issues/37368</a></td></tr>
+<tr><td style="text-align: left">v6.2</td><td style="text-align: left">release-6.2</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.2</td><td style="text-align: left">v6.2.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/35452">https://github.com/pingcap/tidb/issues/35452</a></td></tr>
+<tr><td style="text-align: left">v6.1</td><td style="text-align: left">release-6.1</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-6.1</td><td style="text-align: left">v6.1.6</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/42039">https://github.com/pingcap/tidb/issues/42039</a></td></tr>
+<tr><td style="text-align: left">v6.0</td><td style="text-align: left">release-6.0</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.0</td><td style="text-align: left">v6.0.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/32381">https://github.com/pingcap/tidb/issues/32381</a></td></tr>
+<tr><td style="text-align: left">v5.0</td><td style="text-align: left">release-5.0</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-5.0</td><td style="text-align: left">v5.0.6</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/30609">https://github.com/pingcap/tidb/issues/30609</a></td></tr>
+<tr><td style="text-align: left">v5.1</td><td style="text-align: left">release-5.1</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-5.1</td><td style="text-align: left">v5.1.5</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/32148">https://github.com/pingcap/tidb/issues/32148</a></td></tr>
+<tr><td style="text-align: left">v5.2</td><td style="text-align: left">release-5.2</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-5.2</td><td style="text-align: left">v5.2.4</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/30608">https://github.com/pingcap/tidb/issues/30608</a></td></tr>
+<tr><td style="text-align: left">v5.3</td><td style="text-align: left">release-5.3</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-5.3</td><td style="text-align: left">v5.3.4</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/39077">https://github.com/pingcap/tidb/issues/39077</a></td></tr>
+<tr><td style="text-align: left">v5.4</td><td style="text-align: left">release-5.4</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-5.4</td><td style="text-align: left">v5.4.3</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/37748">https://github.com/pingcap/tidb/issues/37748</a></td></tr>
+<tr><td style="text-align: left">v4.0</td><td style="text-align: left">release-4.0</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-4.0</td><td style="text-align: left">v4.0.16</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/29856">https://github.com/pingcap/tidb/issues/29856</a></td></tr>
 </tbody></table>
+</div>
 <p>For more versions' information, please check <a href="https://github.com/pingcap/tidb/projects/63">https://github.com/pingcap/tidb/projects/63</a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../project-management/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
 
-                        
                             <a rel="next" href="../project-management/tidb-versioning.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -259,49 +235,36 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../project-management/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
 
-                
                     <a rel="next" href="../project-management/tidb-versioning.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
 
+    </div>
     </body>
 </html>

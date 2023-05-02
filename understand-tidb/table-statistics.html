@@ -4,37 +4,24 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Table Statistics - TiDB Development Guide</title>
-        
-        
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
@@ -42,19 +29,18 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -70,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -82,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -103,8 +91,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -114,38 +101,30 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">TiDB Development Guide</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -156,10 +135,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -179,7 +157,7 @@
 <p>Among two commonly used histogram strategies, equal-depth and equal-width, we choose the equal-depth histogram for it has a better guarantee of worst case error rate compared to that of the equal-width histogram. You can refer to the paper <a href="https://dl.acm.org/citation.cfm?id=602294">Accurate estimation of the number of tuples satisfying a condition</a> for more information. With the equal-depth histogram, the number of values in each bucket is to be as equal as possible. For example, to split the given record set of <code>1.6, 1.9, 1.9, 2.0, 2.4, 2.6, 2.7, 2.7, 2.8, 2.9, 3.4, 3.5</code> into 4 buckets, the final buckets would look like <code>[1.6, 1.9], [2.0, 2.6], [2.7, 2.8], [2.9, 3.5]</code>.	Thus the depth, (a.k.a. the number of records) of each bucket is 3, as shown in the following graph.</p>
 <p><img src="../img/stats-histogram.png" alt="equal-depth histogram" /></p>
 <h3 id="count-min-sketch"><a class="header" href="#count-min-sketch">Count-Min Sketch</a></h3>
-<p>The Count-Min Sketch (CM sketch) is a data structure used for query cardinality estimation for the equal predicate, or join, etc., and provides strong accuracy guarantees. Since its introduction in 2003 in the paper <a href="http://dimacs.rutgers.edu/%7Egraham/pubs/papers/cm-full.pdf">An improved data stream summary: The count-min sketch and its applications</a>, it has gained widespread use given its simplicity of construction and use.</p>
+<p>The Count-Min Sketch (CM sketch) is a data structure used for query cardinality estimation for the equal predicate, or join, etc., and provides strong accuracy guarantees. Since its introduction in 2003 in the paper <a href="http://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf">An improved data stream summary: The count-min sketch and its applications</a>, it has gained widespread use given its simplicity of construction and use.</p>
 <p>CM sketch maintains an array of <code>d*w</code> counts, and for each value, maps it to a column in each row using <code>d</code> separate hash functions and modifies the count value at those <code>d</code> positions. This is shown in the following figure.</p>
 <p><img src="../img/stats-cmsketch.png" alt="count-min sketch" /></p>
 <p>This way, when querying how many times a value appears, the d hash functions are still used to find the position mapped to in each row, and the minimum of these d values is used as the estimate. </p>
@@ -223,7 +201,7 @@
 <p>Another question to ask here when applying the interpolation ratio to estimate is what about other data types, say string types, as the previous example uses numerical type which is easy? One way is to map strings to numbers and then calculate the ratio, see <a href="https://github.com/pingcap/tidb/blob/master/statistics/scalar.go">statistics/scalar.go</a> for details. We can see that this mapping is not suitable for multi-column cases.</p>
 <h4 id="point-estimation"><a class="header" href="#point-estimation">Point estimation</a></h4>
 <p>For a query with equal predicate on a column, the histogram may not work well to estimate the cardinality on a certain value. The common way to estimate is to assume uniform distribution of all values that each value appears an equal number of times, so that <code>(total number of rows/number of distinct values)</code> can be used to estimate. If it exists, CM sketch is used for the estimation of equal-value queries.</p>
-<p>Since the result of Count-Min Sketch estimation is not always smaller than the actual value, we choose the Count-Mean-Min Sketch proposed in the paper <a href="http://webdocs.cs.ualberta.ca/%7Edrafiei/papers/cmm.pdf">New estimation algorithms for streaming data: Count-min can do more</a>, which is the same as Count-Min Sketch in the update time, but the difference is with the query time: for each row <code>i</code>, if the hash function maps to value <code>j</code>, then <code>(N - CM[i, j]) / (w-1) (N is the total number of inserted values)</code> is used as the noise generated by other values, so <code>CM[i,j] - (N - CM[i, j]) / (w-1)</code> is used as the estimation value for this row. And then, the median of the estimated values for all rows is used as the final estimate.</p>
+<p>Since the result of Count-Min Sketch estimation is not always smaller than the actual value, we choose the Count-Mean-Min Sketch proposed in the paper <a href="http://webdocs.cs.ualberta.ca/~drafiei/papers/cmm.pdf">New estimation algorithms for streaming data: Count-min can do more</a>, which is the same as Count-Min Sketch in the update time, but the difference is with the query time: for each row <code>i</code>, if the hash function maps to value <code>j</code>, then <code>(N - CM[i, j]) / (w-1) (N is the total number of inserted values)</code> is used as the noise generated by other values, so <code>CM[i,j] - (N - CM[i, j]) / (w-1)</code> is used as the estimation value for this row. And then, the median of the estimated values for all rows is used as the final estimate.</p>
 <p>After the CM sketch is stopped to use from version 5.1, we extract the top-n values out of the histogram. So we <a href="https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L1105">first</a> check whether the value is in the top-n for the point estimation and return the accurate estimate if it's in the top-n. Otherwise, we use <code>the number of rows in the histogram / the NDV in the histogram</code> as the estimation result. Since the top-n values are extracted and applied, the accuracy of this case is improved.</p>
 <p>It is relatively simple to estimate cardinality on a single column of a query, so we will not go into details here. The code is basically implemented according to the principle of statistics as introduced above. Please refer to <a href="https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L488">histogram.go/lessRowCount</a> and <a href="https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/cmsketch.go#L256">cmsketch.go/queryValue</a> for more information.</p>
 <h4 id="multi-column-estimation"><a class="header" href="#multi-column-estimation">Multi-column estimation</a></h4>
@@ -329,17 +307,13 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../understand-tidb/planner.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
 
-                        
                             <a rel="next" href="../understand-tidb/rbo.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -347,49 +321,36 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../understand-tidb/planner.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
 
-                
                     <a rel="next" href="../understand-tidb/rbo.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
 
+    </div>
     </body>
 </html>

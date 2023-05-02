@@ -4,37 +4,24 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Write Document - TiDB Development Guide</title>
-        
-        
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
@@ -42,19 +29,18 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -70,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -82,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -103,8 +91,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -114,38 +101,30 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">TiDB Development Guide</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -156,10 +135,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -172,11 +150,11 @@
                         <h1 id="write-document"><a class="header" href="#write-document">Write Document</a></h1>
 <p>Good documentation is crucial for any kind of software. This is especially true for sophisticated software systems such as distributed database like TiDB. The TiDB community aims to provide concise, precise, and complete documentation and welcomes any contribution to improve TiDB's documentation.</p>
 <h2 id="where-you-can-contribute"><a class="header" href="#where-you-can-contribute">Where you can contribute</a></h2>
-<p>The TiDB community provides bilingual documentation. The English documentation is maintained in the <a href="https://github.com/pingcap/docs">pingcap/docs</a> repository (docs repo) and the Chinese documentation is maintained in the <a href="https://github.com/pingcap/docs-cn">pingcap/docs-cn</a> repository (docs-cn repo). You are welcome to contribute to either of the repositories.</p>
-<p>In a addition, you are also welcome to contribute to the <a href="https://github.com/pingcap/docs-tidb-operator">TiDB Operator documentation</a> and the <a href="https://github.com/pingcap/docs-dm">TiDB Data Migration documentation</a>.</p>
+<p>The TiDB community provides bilingual documentation. The <a href="https://docs.pingcap.com/">English documentation</a> is maintained in the <a href="https://github.com/pingcap/docs">pingcap/docs</a> repository (docs repo) and the <a href="https://docs.pingcap.com/zh/">Chinese documentation</a> is maintained in the <a href="https://github.com/pingcap/docs-cn">pingcap/docs-cn</a> repository (docs-cn repo). You are welcome to contribute to either of the repositories.</p>
+<p>In addition, you are also welcome to contribute to the <a href="https://github.com/pingcap/docs-tidb-operator">TiDB Operator documentation</a>.</p>
 <p>This guide walks you through what and how you can contribute to the TiDB bilingual documentation in docs-cn and docs repos.</p>
 <h2 id="what-you-can-contribute"><a class="header" href="#what-you-can-contribute">What you can contribute</a></h2>
-<p>You can start from any one of the following items to help improve TiDB Docs at the PingCAP website (<a href="https://docs.pingcap.com/tidb/stable">en</a> and <a href="https://docs.pingcap.com/zh/tidb/stable">zh</a>):</p>
+<p>You can start from any one of the following items to help improve the TiDB <a href="https://docs.pingcap.com/">English documentation</a> or <a href="https://docs.pingcap.com/zh/">Chinese documentation</a>.</p>
 <ul>
 <li>Fix typos or format (punctuation, space, indentation, code block, etc.)</li>
 <li>Fix or update inappropriate or outdated descriptions</li>
@@ -206,56 +184,38 @@
 <p>To keep a consistent style for diagrams, we recommend using <a href="https://www.figma.com/">Figma</a> to draw or design diagrams. If you need to draw a diagram, refer to the guide and use shapes or colors provided in the template.</p>
 </li>
 </ul>
-<h3 id="learn-about-docs-versions"><a class="header" href="#learn-about-docs-versions">Learn about docs versions</a></h3>
-<p>Currently, we maintain eight versions of TiDB documentation, each with a separate branch:</p>
-<table><thead><tr><th align="left">Docs branch name</th><th align="left">Version description</th></tr></thead><tbody>
-<tr><td align="left"><code>master</code> branch</td><td align="left">the latest development version</td></tr>
-<tr><td align="left"><code>release-6.0</code> branch</td><td align="left">the 6.0 version</td></tr>
-<tr><td align="left"><code>release-5.4</code> branch</td><td align="left">the 5.4 version</td></tr>
-<tr><td align="left"><code>release-5.3</code> branch</td><td align="left">the 5.3 version</td></tr>
-<tr><td align="left"><code>release-5.2</code> branch</td><td align="left">the 5.2 version</td></tr>
-<tr><td align="left"><code>release-5.1</code> branch</td><td align="left">the 5.1 version</td></tr>
-<tr><td align="left"><code>release-5.0</code> branch</td><td align="left">the 5.0 version</td></tr>
-<tr><td align="left"><code>release-4.0</code> branch</td><td align="left">the 4.0 version</td></tr>
-<tr><td align="left"><code>release-3.1</code> branch</td><td align="left">the 3.1 version</td></tr>
-<tr><td align="left"><code>release-3.0</code> branch</td><td align="left">the 3.0 version</td></tr>
-<tr><td align="left"><code>release-2.1</code> branch</td><td align="left">the 2.1 version</td></tr>
-</tbody></table>
-<p>Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well. We introduce ti-chi-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.</p>
-<h3 id="use-cherry-pick-labels"><a class="header" href="#use-cherry-pick-labels">Use cherry-pick labels</a></h3>
+<h3 id="learn-about-documentation-versions"><a class="header" href="#learn-about-documentation-versions">Learn about documentation versions</a></h3>
+<p>We use separate branches to maintain different versions of TiDB documentation.</p>
 <ul>
-<li>
-<p>If your changes apply to only one doc version, just submit a PR to the corresponding version branch.</p>
-</li>
-<li>
-<p>If your changes apply to multiple doc versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.</p>
-<ul>
-<li><code>needs-cherry-pick-release-5.2</code> label: ti-chi-bot will submit a PR to the <code>release-5.2</code> branch.</li>
-<li><code>needs-cherry-pick-release-5.1</code> label: ti-chi-bot will submit a PR to the <code>release-5.1</code> branch.</li>
-<li><code>needs-cherry-pick-release-5.0</code> label: ti-chi-bot will submit a PR to the <code>release-5.0</code> branch.</li>
-<li><code>needs-cherry-pick-release-4.0</code> label: ti-chi-bot will submit a PR to the <code>release-4.0</code> branch.</li>
-<li><code>needs-cherry-pick-release-3.1</code> label: ti-chi-bot will submit a PR to the <code>release-3.1</code> branch.</li>
-<li><code>needs-cherry-pick-release-3.0</code> label: ti-chi-bot will submit a PR to the <code>release-3.0</code> branch.</li>
-<li><code>needs-cherry-pick-release-2.1</code> label: ti-chi-bot will submit a PR to the <code>release-2.1</code> branch.</li>
-<li><code>needs-cherry-pick-master</code> label: ti-chi-bot will submit a PR to the <code>master</code> branch.</li>
+<li>The <a href="https://docs.pingcap.com/tidb/dev">documentation under development</a> is maintained in the <code>master</code> branch.</li>
+<li>The <a href="https://docs.pingcap.com/tidb/stable/">published documentation</a> is maintained in the corresponding <code>release-&lt;verion&gt;</code> branch.</li>
+<li>The <a href="https://docs-archive.pingcap.com/">archived documentation</a> is no longer maintained and does not receive any further updates.</li>
 </ul>
+<h3 id="use-cherry-pick-labels"><a class="header" href="#use-cherry-pick-labels">Use cherry-pick labels</a></h3>
+<p>As changes to one documentation version often apply to other documentation versions as well, we introduce ti-chi-bot to automate the PR cherry-pick process based on cherry-pick labels.</p>
+<ul>
+<li>
+<p>If your changes apply to only one documentation version, just create a PR based on the branch of the documentation version. There is no need to add any cherry-pick labels.</p>
 </li>
 <li>
-<p>If most of your changes apply to multiple doc versions but some differences exist among versions, you still can use cherry-pick labels to let ti-chi-bot create PRs to other versions. In this situation, you also need to add the <code>requires-version-specific-change</code> label as a reminder to the PR reviewer. After the PR to another version is successfully submitted by ti-chi-bot, you can make changes to that PR.</p>
+<p>If your changes apply to multiple documentation versions, instead of creating multiple PRs, you can just create one PR based on the latest applicable branch, and then add one or several <code>needs-cherry-pick-release-&lt;version&gt;</code> labels to the PR according to the applicable documentation versions. Then, after the PR is merged, ti-chi-bot will automatically create the corresponding cherry-pick PRs based on the branches of the specified versions.</p>
+</li>
+<li>
+<p>If most of your changes apply to multiple documentation versions but some differences exist among versions, besides adding the cherry-pick labels to all the target versions, you also need to add the <code>requires-version-specific-change</code> label as a reminder to the PR reviewer. After your PR is merged and ti-chi-bot creates the corresponding cherry-pick PRs, you can still make changes to these cherry-pick PRs.</p>
 </li>
 </ul>
 <h2 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to contribute</a></h2>
 <p>Your contribution journey is in two stages:</p>
 <ol>
 <li>
-<p>In <a href="#stage-1-create-and-submit-your-pr">stage 1</a>, create and submit your Pull Request to the <a href="https://github.com/pingcap/docs-cn">docs-cn</a> or <a href="https://github.com/pingcap/docs">docs</a> repository.</p>
+<p>In <a href="#stage-1-create-and-submit-your-pr">stage 1</a>, create your Pull Request for the <a href="https://github.com/pingcap/docs-cn">docs-cn</a> or <a href="https://github.com/pingcap/docs">docs</a> repository.</p>
 </li>
 <li>
-<p>In <a href="#stage-2-get-notified-and-address-review-comments">stage 2</a>, get notified of any review comments and address the comments until the PR gets approved and merged.</p>
+<p>In <a href="#stage-2-get-notified-and-address-review-comments">stage 2</a>, address comments from reviewers until the PR gets approved and merged.</p>
 </li>
 </ol>
-<h3 id="stage-1-create-and-submit-your-pr"><a class="header" href="#stage-1-create-and-submit-your-pr">Stage 1: Create and submit your PR</a></h3>
-<p>Perform the following steps to create your Pull Request to the <a href="https://github.com/pingcap/docs">docs</a> repository. If don't like to use commands, you can also use <a href="https://desktop.github.com/">GitHub Desktop</a>, which is easier to get started.</p>
+<h3 id="stage-1-create-your-pr"><a class="header" href="#stage-1-create-your-pr">Stage 1: Create your PR</a></h3>
+<p>Perform the following steps to create your Pull Request for the <a href="https://github.com/pingcap/docs">docs</a> repository. If don't like to use commands, you can also use <a href="https://desktop.github.com/">GitHub Desktop</a>, which is easier to get started.</p>
 <blockquote>
 <p><strong>Note:</strong></p>
 <p>This section takes creating a PR to the <code>master</code> branch in the docs repository as an example. Steps of creating PRs to other branches or to the docs-cn repository are similar.</p>
@@ -291,7 +251,7 @@ git rebase upstream/master
 </code></pre>
 </li>
 </ol>
-<h4 id="step-4-do-something"><a class="header" href="#step-4-do-something">Step 4: Do something</a></h4>
+<h4 id="step-4-make-documentation-changes"><a class="header" href="#step-4-make-documentation-changes">Step 4: Make documentation changes</a></h4>
 <p>Edit some file(s) on the <code>new-branch-name</code> branch and save your changes. You can use editors like Visual Studio Code to open and edit <code>.md</code> files.</p>
 <h4 id="step-5-commit-your-changes"><a class="header" href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h4>
 <pre><code>git status # Checks the local status
@@ -313,12 +273,11 @@ git rebase upstream/master
 <li>Click the <code>Compare &amp; pull request</code> button next to your <code>new-branch-name</code> branch to create your PR. See <a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style">Pull Request Title Style</a>.</li>
 </ol>
 <p>Now, your PR is successfully submitted.</p>
-<h3 id="stage-2-get-notified-and-address-review-comments"><a class="header" href="#stage-2-get-notified-and-address-review-comments">Stage 2: Get notified and address review comments</a></h3>
-<p>After your PR is submitted, addressing review comments is just as important as creating the PR. Please perform the following steps to complete your contribution journey.</p>
+<h3 id="stage-2-address-review-comments"><a class="header" href="#stage-2-address-review-comments">Stage 2: Address review comments</a></h3>
+<p>After your PR is created, addressing review comments is just as important as creating the PR. Please perform the following steps to complete your contribution journey.</p>
 <h4 id="step-1-get-notified-of-review-comments"><a class="header" href="#step-1-get-notified-of-review-comments">Step 1: Get notified of review comments</a></h4>
-<p>After your PR is created, the repository administrator will add labels to your PR for PR management. Review comments will also be submitted to your PR, which requires you to modify the PR content.</p>
-<p>Once the review comments are submitted, you will receive a notification in your registered email box. Check your email box and get notified.</p>
-<p>Once you receive the email, click the PR link in the mail to open the PR page in your browser, and you will see the comments.</p>
+<p>After your PR is created, the repository maintainers will add labels to your PR for PR management and the documentation reviewers will add comments to the PR.</p>
+<p>Once the review comments are submitted, you will receive a notification mail in your registered email box. You can click the PR link in the mail to open the PR page and see the comments.</p>
 <h4 id="step-2-address-review-comments"><a class="header" href="#step-2-address-review-comments">Step 2: Address review comments</a></h4>
 <p>The review comments require you to change your submitted PR content. You can either accept a suggestion and make the change, or decline the suggestion and submit your reply right under the comment stating your reason.</p>
 <h5 id="accept-comments-in-your-local-editor"><a class="header" href="#accept-comments-in-your-local-editor">Accept comments in your local editor</a></h5>
@@ -370,20 +329,20 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>After you have addressed review comments, reviewers might also submit new comments. You need to repeat this step 2 and make sure all comments are addressed until the reviewers approve your PR and have it merged.</p>
 </blockquote>
 <h4 id="step-3-handle-cherry-picked-prs"><a class="header" href="#step-3-handle-cherry-picked-prs">Step 3: Handle cherry-picked PRs</a></h4>
-<p>Once your PR gets approved, the repo administrator will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.</p>
+<p>Once your PR gets approved, the repo committers will have your PR merged into the docs upstream/master. After a few minutes, ti-chi-bot automatically creates PRs to other versions as you have specified by adding cherry-pick labels.</p>
 <p>You need to perform the following steps on each one of the cherry-picked PRs:</p>
 <ul>
 <li>
-<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment &quot;LGTM&quot;, which means &quot;Looks good to me&quot;. The repository administrator will merge it soon.</p>
+<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment &quot;LGTM&quot;, which means &quot;Looks good to me&quot;. The repository committers will merge it soon.</p>
 </li>
 <li>
-<p>If most of your changes apply to multiple doc versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository administrator will commit to the PR according to your comment before you approve it.</p>
+<p>If most of your changes apply to multiple documentation versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.</p>
 </li>
 <li>
 <p>(Advanced) If any conflicts exist in the cherry-picked PR, resolve the conflicts. This is only for those who have the write permission in the repository.</p>
 </li>
 </ul>
-<p>After the steps above are completed, the administrator will merge the cherry-picked PRs. At this point, your contribution journey is completed! 🎉</p>
+<p>After the steps above are completed, the committers will merge the cherry-picked PRs. At this point, your contribution journey is completed! 🎉</p>
 <h2 id="how-we-implement-bilingual-documentation"><a class="header" href="#how-we-implement-bilingual-documentation">How we implement bilingual documentation</a></h2>
 <p>TiDB documentation is usually written in one language and then translated to another. We use GitHub labels in docs-cn and docs repos (as well as in docs-tidb-operator and docs-dm repos) to track the entire translation or alignment process.</p>
 <p>The following labels are used:</p>
@@ -424,17 +383,13 @@ git commit -m &quot;commit-message: update the xx&quot;
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../contribute-to-tidb/code-style-and-quality-guide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
 
-                        
                             <a rel="next" href="../contribute-to-tidb/release-notes-style-guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -442,49 +397,36 @@ git commit -m &quot;commit-message: update the xx&quot;
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../contribute-to-tidb/code-style-and-quality-guide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
 
-                
                     <a rel="next" href="../contribute-to-tidb/release-notes-style-guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
 
+    </div>
     </body>
 </html>
