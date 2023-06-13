@@ -181,7 +181,7 @@ As shown above, you can run tests of the whole package, of a test, or of a file.
 
 Before you merge a pull request, it must pass all tests.
 
-Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the the rerun guide comment will be sent when the CI tests failed.
+Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the rerun guide comment will be sent when the CI tests failed.
 
 #### `/retest`
 
