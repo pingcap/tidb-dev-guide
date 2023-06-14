@@ -127,15 +127,17 @@ When you write complex unit tests, you may take a look at what test kits we have
 
 ### Running all tests
 
-You can always run all tests by executing the `gotest` target in Makefile:
+We have two ways to run all tests. The first one is to use `go test` directly:
 
 ```
-make gotest
+make ut
 ```
 
-This is almost equivalent to `go test ./...` but it enables and disables fail points before and after running tests.
+The second one is to use bazel to run tests. The bazel will cache the test results and it is faster than the first one. But it need more storage space to save the cache. it is recommended to use the first one in the CI.
 
-[pingcap/failpoint](https://github.com/pingcap/failpoint) is an implementation of [failpoints](https://www.freebsd.org/cgi/man.cgi?query=fail) for Golang. A fail point is used to add code points where you can inject errors. Fail point is a code snippet that is only executed when the corresponding fail point is active.
+```
+CI=0 make bazel_coverage_test
+```
 
 ### Running a single test
 
@@ -242,6 +244,31 @@ Golang testing supports detecting data race by running tests with the `-race` fl
 [2021-06-21T15:36:38.766Z]   [failed to restore the stack]
 ```
 
+If you want to run tests with the `-race` flag with bazel, you can set ```race``` to ```on``` in the ```go_test``` rule. it looks like:
+
+```
+go_test(
+    name = "kvtest_test",
+    timeout = "short",
+    srcs = [
+        "kv_test.go",
+        "main_test.go",
+    ],
+    flaky = True,
+    race = "on",
+    deps = [
+        "//config",
+        "//meta/autoid",
+        "//testkit",
+        "@com_github_stretchr_testify//require",
+        "@com_github_tikv_client_go_v2//tikv",
+        "@org_uber_go_goleak//:goleak",
+    ],
+)
+```
+
+
+
 ### Goroutine leak
 
 We use goleak to detect goroutine leak for tests. Its failure report looks like:
@@ -269,4 +296,33 @@ If a test case takes longer, its failure report looks like:
 [2021-08-09T03:33:57.661Z] The following test cases take too long to finish:
 [2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS  7.388s
 [2021-08-09T03:33:57.661Z] --- PASS: TestCluster (5.20s)
+```
+
+### DeadLock
+
+We have introduced the [go-deadlock](https://github.com/sasha-s/go-deadlock) to find the deadlock in the code.  If you want to use ```go-deadlock``` to find the deadlock, you should use ```syncutil.Mutex```, ```syncutil.RWMutex``` instead of ```sync.Mutex```, ```sync.RWMutex```.
+
+``` 
+
+```
+
+```
+POTENTIAL DEADLOCK:
+
+Previous place where the lock was grabbed
+goroutine 273418 lock 0xc005e863b0
+domain/sysvar_cache.go:121 domain.(*Domain).rebuildSysVarCache ??? <<<<<
+domain/sysvar_cache.go:51 domain.(*Domain).rebuildSysVarCacheIfNeeded ???
+domain/sysvar_cache.go:75 domain.(*Domain).GetGlobalVar ???
+domain/domain.go:1541 domain.(*Domain).globalBindHandleWorkerLoop.func1 ???
+
+
+Have been trying to lock it again for more than 20s
+
+goroutine 261135 lock 0xc005e863b0
+
+domain/sysvar_cache.go:121 domain.(*Domain).rebuildSysVarCache ??? <<<<<
+domain/domain.go:2199 domain.(*Domain).NotifyUpdateSysVarCache ???
+session/session.go:1450 session.(*session).replaceGlobalVariablesTableValue ???
+session/session.go:1528 session.(*session).SetGlobalSysVarOnly ???
 ```
