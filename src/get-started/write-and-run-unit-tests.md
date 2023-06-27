@@ -127,10 +127,10 @@ When you write complex unit tests, you may take a look at what test kits we have
 
 ### Running all tests
 
-You can always run all tests by executing the `gotest` target in Makefile:
+You can always run all tests by executing the `ut` (stands for **unit test**) target in Makefile:
 
-```
-make gotest
+```sh
+make ut
 ```
 
 This is almost equivalent to `go test ./...` but it enables and disables fail points before and after running tests.
@@ -139,9 +139,9 @@ This is almost equivalent to `go test ./...` but it enables and disables fail po
 
 ### Running a single test
 
-To run a single test, you can manually repeat what `make gotest` does and narrow the scope in one test or one package:
+To run a single test, you can manually repeat what `make ut` does and narrow the scope in one test or one package:
 
-```
+```sh
 make failpoint-enable
 cd domain
 go test -v -run TestSchemaValidator # or with any other test flags
@@ -151,7 +151,7 @@ make failpoint-disable
 
 or if it is an older test not using testify
 
-```
+```sh
 make failpoint-enable
 (cd planner/core ; go test -v -run "^TestT$" -check.f TestBinaryOpFunction )
 make failpoint-disable
@@ -181,7 +181,7 @@ As shown above, you can run tests of the whole package, of a test, or of a file.
 
 Before you merge a pull request, it must pass all tests.
 
-Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the the rerun guide comment will be sent when the CI tests failed.
+Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the rerun guide comment will be sent when the CI tests failed.
 
 #### `/retest`
 
