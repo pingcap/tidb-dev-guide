@@ -487,21 +487,21 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
 <p>When you write complex unit tests, you may take a look at what test kits we have now and try to leverage them. If we don’t have a test kit for your issue and your issue is considered common, add one.</p>
 <h2 id="how-to-run-unit-tests"><a class="header" href="#how-to-run-unit-tests">How to run unit tests</a></h2>
 <h3 id="running-all-tests"><a class="header" href="#running-all-tests">Running all tests</a></h3>
-<p>You can always run all tests by executing the <code>gotest</code> target in Makefile:</p>
-<pre><code>make gotest
+<p>You can always run all tests by executing the <code>ut</code> (stands for <strong>unit test</strong>) target in Makefile:</p>
+<pre><code class="language-sh">make ut
 </code></pre>
 <p>This is almost equivalent to <code>go test ./...</code> but it enables and disables fail points before and after running tests.</p>
 <p><a href="https://github.com/pingcap/failpoint">pingcap/failpoint</a> is an implementation of <a href="https://www.freebsd.org/cgi/man.cgi?query=fail">failpoints</a> for Golang. A fail point is used to add code points where you can inject errors. Fail point is a code snippet that is only executed when the corresponding fail point is active.</p>
 <h3 id="running-a-single-test"><a class="header" href="#running-a-single-test">Running a single test</a></h3>
-<p>To run a single test, you can manually repeat what <code>make gotest</code> does and narrow the scope in one test or one package:</p>
-<pre><code>make failpoint-enable
+<p>To run a single test, you can manually repeat what <code>make ut</code> does and narrow the scope in one test or one package:</p>
+<pre><code class="language-sh">make failpoint-enable
 cd domain
 go test -v -run TestSchemaValidator # or with any other test flags
 cd ..
 make failpoint-disable
 </code></pre>
 <p>or if it is an older test not using testify</p>
-<pre><code>make failpoint-enable
+<pre><code class="language-sh">make failpoint-enable
 (cd planner/core ; go test -v -run &quot;^TestT$&quot; -check.f TestBinaryOpFunction )
 make failpoint-disable
 </code></pre>
@@ -519,7 +519,7 @@ make failpoint-disable
 <p>If you haven't joined the organization, you should wait for a member to comment with <code>/ok-to-test</code> to your pull request.</p>
 </blockquote>
 <p>Before you merge a pull request, it must pass all tests.</p>
-<p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the the rerun guide comment will be sent when the CI tests failed.</p>
+<p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the rerun guide comment will be sent when the CI tests failed.</p>
 <h4 id="retest"><a class="header" href="#retest"><code>/retest</code></a></h4>
 <p>Rerun all failed CI test cases. </p>
 <h4 id="test-test1-testn"><a class="header" href="#test-test1-testn"><code>/test {{test1}} {{testN}}</code></a></h4>
