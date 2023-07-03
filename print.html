@@ -89,11 +89,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -5158,6 +5180,7 @@ export = [
 <p>With the release train model, to ensure that ongoing features do not affect the stability of the release, TiDB chooses feature branches strategy.</p>
 <h2 id="current-maintained-releases"><a class="header" href="#current-maintained-releases">Current Maintained Releases</a></h2>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">version</th><th style="text-align: left">branch</th><th style="text-align: left">status</th><th style="text-align: left">triage label</th><th style="text-align: left">latest release</th><th style="text-align: left">issue</th></tr></thead><tbody>
+<tr><td style="text-align: left">v7.2</td><td style="text-align: left">release-7.2</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-7.2</td><td style="text-align: left">v7.2.0</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/44287">https://github.com/pingcap/tidb/issues/44287</a></td></tr>
 <tr><td style="text-align: left">v7.1</td><td style="text-align: left">release-7.1</td><td style="text-align: left">LTS</td><td style="text-align: left">affects-7.1</td><td style="text-align: left">v7.1.0</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/42709">https://github.com/pingcap/tidb/issues/42709</a></td></tr>
 <tr><td style="text-align: left">v7.0</td><td style="text-align: left">release-7.0</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-7.0</td><td style="text-align: left">v7.0.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/41567">https://github.com/pingcap/tidb/issues/41567</a></td></tr>
 <tr><td style="text-align: left">v6.6</td><td style="text-align: left">release-6.6</td><td style="text-align: left">DMR</td><td style="text-align: left">affects-6.6</td><td style="text-align: left">v6.6.0-DMR</td><td style="text-align: left"><a href="https://github.com/pingcap/tidb/issues/39326">https://github.com/pingcap/tidb/issues/39326</a></td></tr>
