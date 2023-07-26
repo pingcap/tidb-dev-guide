@@ -430,9 +430,11 @@ echo &quot;{
 }&quot; &gt; .vscode/settings.json
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="write-and-run-unit-tests"><a class="header" href="#write-and-run-unit-tests">Write and run unit tests</a></h1>
-<p>The TiDB project runs unit tests using <a href="https://github.com/stretchr/testify">testify</a>.</p>
-<p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a>, but since that framework is poorly maintained, we are migrating to testify.</p>
-<p>You can check the background and progress on the migration <a href="https://github.com/pingcap/tidb/issues/26022">tracking issue</a>.</p>
+<p>The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the <a href="https://github.com/stretchr/testify"><code>testify</code></a> library. </p>
+<blockquote>
+<p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a> in release branches before <code>release-6.1</code>, but since that framework is poorly maintained, we are migrated to testify from <code>release-6.1</code>.
+You can check the background and progress on the migration <a href="https://github.com/pingcap/tidb/issues/26022">tracking issue</a>.</p>
+</blockquote>
 <h2 id="how-to-write-unit-tests"><a class="header" href="#how-to-write-unit-tests">How to write unit tests</a></h2>
 <p>We use testify to write unit tests. Basically, it is out-of-the-box <a href="https://pkg.go.dev/testing">testing</a> with testify assertions.</p>
 <h3 id="testmain"><a class="header" href="#testmain">TestMain</a></h3>
