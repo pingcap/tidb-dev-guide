@@ -1,10 +1,9 @@
 # Write and run unit tests
 
-The TiDB project runs unit tests using [testify](https://github.com/stretchr/testify).
+The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the [`testify`](https://github.com/stretchr/testify) library. 
 
-You may find tests using [pingcap/check](http://github.com/pingcap/check) which is a fork of [go-check/check](https://github.com/go-check/check), but since that framework is poorly maintained, we are migrating to testify.
-
-You can check the background and progress on the migration [tracking issue](https://github.com/pingcap/tidb/issues/26022).
+> You may find tests using [pingcap/check](http://github.com/pingcap/check) which is a fork of [go-check/check](https://github.com/go-check/check) in release branches before `release-6.1`, but since that framework is poorly maintained, we are migrated to testify from `release-6.1`.
+> You can check the background and progress on the migration [tracking issue](https://github.com/pingcap/tidb/issues/26022).
 
 ## How to write unit tests
 
