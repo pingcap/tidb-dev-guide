@@ -8,15 +8,9 @@ Because there are more and more releases of TiDB and limits of developer time, w
 
 ## Create cherry-pick pull requests automatically
 
-Typically, TiDB repos use ti-chi-bot or ti-srebot to help contributors create cherry-pick pull requests automatically. They are basically same but still have some differences.
+Typically, TiDB repos use ti-chi-bot to help contributors create cherry-pick pull requests automatically.
 
-### ti-chi-bot
-
-ti-chi-bot creates corresponding cherry-pick pull requests according to the `needs-cherry-pick-<release-branch-name>` on the original pull request once it's merged. If there is any failure or omission, contributors could run `/cherry-pick <release-branch-name>` to trigger cherry-pick for a specific release.
-
-### ti-srebot
-
-ti-srebot creates corresponding cherry-pick pull requests according to the `needs-cherry-pick-<release-version>` on the original pull request once it's merged. If there is any failure or omission, contributors could run `/run-cherry-picker` to re-run the cherry-pick process. It would fail for already created branches. In addition, ti-srebot will re-request the reviewers and assign the new pull request to the author of the original pull request. ti-srebot will also invite the pull request author to its forked repo.
+`ti-chi-bot` creates corresponding cherry-pick pull requests according to the `needs-cherry-pick-<release-branch-name>` on the original pull request once it's merged. If there is any failure or omission, contributors could run `/cherry-pick <release-branch-name>` to trigger cherry-pick for a specific release.
 
 ## Create cherry-pick pull requests manually
 
@@ -38,4 +32,7 @@ Cherry-pick pull requests obey the [same review rules](review-a-pr.md) as other 
 ## Troubleshoot cherry-pick
 
 * If there is any error in the cherry-pick process, for example, the bot fails to create some cherry-pick pull requests. You could ask reviewers/committers/maintainers for help.
-* If there are conflicts in the cherry-pick pull requests. You must [resolve the conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) to get pull requests merged. For repos using ti-srebot, you are granted privileges to the forked repo, you could directly push to the pull request branch. For ti-chi-bot, you have to ask committers/maintainers to do that for you or manually create a new cherry-pick pull request for the branch.
+* If there are conflicts in the cherry-pick pull requests. You must [resolve the conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) to get pull requests merged. Some ways can solve it:
+  - Request privileges to the forked repo by sending `/cherry-pick-invite` comment in the cherry-pick pull request if you are a member of the orgnization. When you accepted the invitaion, you could directly push to the pull request branch.
+  - Ask committers/maintainers to do that for you if you are not a member of the orgnization.
+  - Manually create a new cherry-pick pull request for the branch.
