@@ -42,6 +42,7 @@ When you review a pull request, there are several rules and suggestions you shou
 
 ## Accepting pull requests
 
-Once you think the pull request is ready, you can [approve](https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews) it. 
+Once you think the pull request is ready, you can [approve](https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews) it, commenting with `/lgtm` is also valid.
 
-In the TiDB community, most repositories require two approvals before a pull request can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. After the required approval number is met, a committer can [/merge](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#merge) the pull request.
+In the TiDB community, most repositories require two approvals before a pull request can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. After the required `lgtm` count is met, `lgtm` label will be added.
+Finally committer can [/approve](https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#merge) the pull request, some special scopes need `/approve` by the scope approvers(define in `OWNERS` files).
