@@ -35,4 +35,4 @@ Cherry-pick pull requests obey the [same review rules](review-a-pr.md) as other 
 * If there are conflicts in the cherry-pick pull requests. You must [resolve the conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) to get pull requests merged. Some ways to do this():
   - Request privileges to the forked repo by sending `/cherry-pick-invite` comment in the cherry-pick pull request if you are a member of the orgnization. When you accepted the invitaion, you could directly push to the pull request branch.
   - Ask committers/maintainers to do that for you if you are not a member of the orgnization.
-  - Manually create a new cherry-pick pull request for the branch .
+  - Manually create a new cherry-pick pull request for the branch.
