@@ -1224,8 +1224,9 @@ brew install pre-commit
 <li><strong>Provide additional details and context of your review process</strong>. Instead of simply &quot;approving&quot; the pull request. If your test the pull request, report the result and your test environment details. If you request changes, try to suggest how.</li>
 </ul>
 <h2 id="accepting-pull-requests"><a class="header" href="#accepting-pull-requests">Accepting pull requests</a></h2>
-<p>Once you think the pull request is ready, you can <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews">approve</a> it. </p>
-<p>In the TiDB community, most repositories require two approvals before a pull request can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. After the required approval number is met, a committer can <a href="https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#merge">/merge</a> the pull request.</p>
+<p>Once you think the pull request is ready, you can <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews">approve</a> it, commenting with <code>/lgtm</code> is also valid.</p>
+<p>In the TiDB community, most repositories require two approvals before a pull request can be accepted. A few repositories require a different number of approvals, but two approvals are the default setting. After the required <code>lgtm</code> count is met, <code>lgtm</code> label will be added.
+Finally committer can <a href="https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#merge">/approve</a> the pull request, some special scopes need <code>/approve</code> by the scope approvers(define in <code>OWNERS</code> files).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="make-a-proposal"><a class="header" href="#make-a-proposal">Make a Proposal</a></h1>
 <p>This page defines the best practices procedure for making a proposal in TiDB projects. This text is based on the content of <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/README.md">TiDB Design Document</a>.</p>
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
