@@ -9,7 +9,7 @@ TiDB values any [code review](https://en.wikipedia.org/wiki/Code_review). One of
 
 Everyone comes from different technical backgrounds with different knowledge. They have their own personal preferences. It is important that the code review is not based on biased opinions.
 
-Sometimes, making choices of accepting or rejecting a pull request can be tricky as in the following situations: 
+Sometimes, making choices of accepting or rejecting a pull request can be tricky as in the following situations:
 
 * Suppose that a pull request contains special optimization that can improve the overall performance by 30%. However, the pull request introduces a totally different code path, and every subsequent feature must consider it.
 * Suppose that a pull request is to fix a critical bug, but the change in the pull request is risky to introduce other bugs.
@@ -38,7 +38,7 @@ When you review a pull request, there are several rules and suggestions you shou
 * **Be respectful to pull request authors and other reviewers**. Code review is a part of your community activities. You should follow the community requirements.
 * **Asking questions instead of making statements**. The wording of the review comments is very important. To provide review comments that are constructive rather than critical, you can try asking questions rather than making statements.
 * **Offer sincere praise**. Good reviewers focus not only on what is wrong with the code but also on good practices in the code. As a reviewer, you are recommended to offer your encouragement and appreciation to the authors for their good practices in the code. In terms of mentoring, telling the authors what they did is right is even more valuable than telling them what they did is wrong.
-* **Provide additional details and context of your review process**. Instead of simply "approving" the pull request. If your test the pull request, report the result and your test environment details. If you request changes, try to suggest how.
+* **Provide additional details and context of your review process**. Instead of simply "approving" the pull request. If you test the pull request, report the result and your test environment details. If you request changes, try to suggest how.
 
 ## Accepting pull requests
 
