@@ -1,6 +1,6 @@
 # Report an Issue
 
-If you think you have found an issue in TiDB, you can report it to the [issue tracker](https://github.com/pingcap/tidb/issues). If you would to like to report issues to TiDB documents or this development guide, they are in separate GitHub repositories, so you need to file issues to corresponding issue tracker, [TiDB document issue tracker](https://github.com/pingcap/docs/issues) and [TiDB Development Guide issue tracker](https://github.com/pingcap/tidb-dev-guide/issues). Read [Write Document](write-document.md) for more details.
+If you think you have found an issue in TiDB, you can report it to the [issue tracker](https://github.com/pingcap/tidb/issues). If you would like to report issues to TiDB documents or this development guide, they are in separate GitHub repositories, so you need to file issues to corresponding issue tracker, [TiDB document issue tracker](https://github.com/pingcap/docs/issues) and [TiDB Development Guide issue tracker](https://github.com/pingcap/tidb-dev-guide/issues). Read [Write Document](write-document.md) for more details.
 
 ## Checking if an issue already exists
 
