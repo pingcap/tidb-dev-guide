@@ -259,21 +259,29 @@
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="install-golang"><a class="header" href="#install-golang">Install Golang</a></h1>
 <p>To build TiDB from source code, you need to install Go in your development environment first. If Go is not installed yet, you can follow the instructions in this document for installation.</p>
-<h2 id="install-go-120"><a class="header" href="#install-go-120">Install Go 1.20</a></h2>
-<p>Currently, TiDB uses Go 1.20 to compile the code. To install Go 1.20, go to <a href="https://golang.org/dl/">Go's download page</a>, choose version 1.20, and then follow the <a href="https://golang.org/doc/install">installation instructions</a>.</p>
+<h2 id="install-go"><a class="header" href="#install-go">Install Go</a></h2>
+<p>TiDB periodically upgrades its Go version to keep up with Golang. Currently, upgrade plans are announced on <a href="https://internals.tidb.io/tags/c/general/announcement">TiDB Internals forum</a>.</p>
+<p>To get the right version of Go, take a look at the <a href="https://github.com/pingcap/tidb/blob/master/go.mod"><code>go.mod</code> file in TiDB's repository</a>. You should see that there is a line like <code>go 1.21</code> (the number may be different) in the first few lines of this file. You can also run the following command to get the Go version:</p>
+<pre><code class="language-bash">curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot;
+</code></pre>
+<p>Now that you've got the version number, go to <a href="https://golang.org/dl/">Go's download page</a>, choose the corresponding version, and then follow the <a href="https://golang.org/doc/install">installation instructions</a>.</p>
 <h2 id="manage-the-go-toolchain-using-gvm"><a class="header" href="#manage-the-go-toolchain-using-gvm">Manage the Go toolchain using gvm</a></h2>
 <p>If you are using Linux or MacOS, you can manage Go versions with <a href="https://github.com/moovweb/gvm">Go Version Manager (gvm)</a> easily.</p>
 <p>To install gvm, run the following command:</p>
 <pre><code class="language-bash">curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sh
 </code></pre>
-<p>Once you have gvm installed, you can use it to manage multiple different Go compilers with different versions. Let's install Go 1.20 and set it as default:</p>
-<pre><code class="language-bash">gvm install go1.20
-gvm use go1.20 --default
+<p>Once you have gvm installed, you can use it to manage multiple different Go compilers with different versions. Let's install the corresponding Go version and set it as default:</p>
+<pre><code class="language-bash">TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot; | grep -Eo &quot;[[:digit:]]+.[[:digit:]]+&quot;)
+gvm install go${TIDB_GOVERSION}
+gvm use go${TIDB_GOVERSION} --default
 </code></pre>
 <p>Now, you can type <code>go version</code> in the shell to verify the installation:</p>
 <pre><code class="language-bash">go version
+# Note: In your case, the version number might not be '1.21', it should be the
+#   same as the value of ${TIDB_GOVERSION}.
+#
 # OUTPUT:
-# go version go1.20 linux/amd64
+# go version go1.21 linux/amd64
 </code></pre>
 <p>In the next chapter, you will learn how to obtain the TiDB source code and how to build it.</p>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
