@@ -135,3 +135,16 @@ Each `probeWorker` holds a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.
 * [`nullAwareAntiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L450) used for left outer join
 * [`nullAwareAntiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L648) used for left outer join
 
+`joiner` has 3 basic interfaces that need to be implemented by each implementation
+
+* [`tryToMatchInners`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75): for each of the row from outer(probe) side, try to match the rows from the inner(build) side, return true if matches, and also need to set `isNull` for `AntiSemiJoin/LeftOuterSemiJoin/AntiLeftOuterSemiJoin`
+* [`tryToMatchOuters`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80): only used in outer join when outer side is used to build hash table, for each of row from inner(probe) side, try to match the rows from the outer(build) side
+* [`onMissMatch`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107): used for semi join family to handle the case that no rows are matched for the probe row.
+
+In `probeWorker`, it reads data from the probe side, and for each probe row, tries to match the hash table and save the result into result chunk. For most of the case, it uses [`join2Chunk`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L977) to do the probe, and for outer join that uses outer side as the build side, it need use [`join2ChunkForOuterHashJoin`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1076) to do the probe.
+
+Inside `join2Chunk/join2ChunkForOuterHashJoin`, for each probe row, the probe work contains three steps
+
+* Use some quick path to find if the probe row will not match before looking into the hash table. An example is for inner join, if the join key contains null, it can skip probe hash table stage, since null never matches any value. For the rows that can not match, call `onMissMatch`
+* Look up hash table, to find potential match rows from hash table
+* If there is no potential match rows, call `onMissMatch`, otherwise, call `tryToMatch` and generate result based on the match results
