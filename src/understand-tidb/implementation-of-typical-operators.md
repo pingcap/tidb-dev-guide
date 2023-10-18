@@ -1,18 +1,18 @@
 # Implementation of Typical Operators
 
-This section will introduce the implementation details of 3 typical TiDB operators: HashJoin, HashAgg and Sort
+This section will introduce the implementation details of 3 typical TiDB operators: Sort, HashAgg and HashJoin.
+
+First of all, all the operator should implement 3 basic interface of `Executor`
+
+* [Open](https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L50) initialize the operator, setup memory tracker/disk tracker and other meta info for current operator
+* [Next](https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L51) each call of `Next` will return a chunk of data, return an empty chunk means the execution is done for current executor. Note `Next` is not thread safe, it is by design that `Next` is not called concurrently for all the operators 
+* [Close](https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L52) is responsible for release all the resource hold by the executor
 
 ### Sort
 
-Sort operator is used to arrange the result set of a query in a specific order. In TiDB the operator implement sort is [`SortExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L36). `SortExec` implement three basic interfaces of `Executor`
+Sort operator is used to arrange the result set of a query in a specific order. In TiDB the operator implement sort is [`SortExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L36). The basic idea in `SortExec` is to read all the data from its child executor, then sort the whole data set. 
 
-* [Open](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L89) initialize the operator, setup memory tracker/disk tracker and other meta info for sort
-* [Next](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L112) each call of `Next` will return a chunk of data, return an empty chunk means the execution is done for current executor
-* [Close](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L65) is responsible for release all the resource hold by the executor
-
-The basic idea in `SortExec` is the read all the data from its child executor, then sort the whole data set. 
-
-In `Next`, it calls [`fetchRowChunks`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L179)  to read all the data from its child executor. `fetchRowChunks` tries to save all the data in one [`SortedRowContainer`](https://github.com/pingcap/tidb/blob/v7.4.0/util/chunk/row_container.go#L460), the memory usage could be very high, in order to control the memory usage, `SortExec` also support spill to disk. The details of spill to disk is hidden inside `SortedRowContainer`, each time when insert a chunk into current `SortedRowContainer` returns `ErrCannotAddBecauseSorted`, it means current `SortedRowContainer` is spilled, `SortExec` will generate a new `SortedRowContainer` and insert the chunk to the new one. When there is no data from its child executor, `SortExec`  will [sort](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L241) current `SortedRowContainer`.
+In `Next`, it calls [`fetchRowChunks`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L179)  to read all the data from its child executor. `fetchRowChunks` tries to save all the data in one [`SortedRowContainer`](https://github.com/pingcap/tidb/blob/v7.4.0/util/chunk/row_container.go#L460), the memory usage increases as the amount of input data increases. In order to control the memory usage, `SortExec` supports spill to disk. The details of spill to disk is hidden inside `SortedRowContainer`, each time when insert a chunk into current `SortedRowContainer` returns `ErrCannotAddBecauseSorted`, it means current `SortedRowContainer` is spilled, `SortExec` will generate a new `SortedRowContainer` and insert the chunk to the new one. When there is no data from its child executor, `SortExec`  will [sort](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L241) current `SortedRowContainer`.
 
 After `fetchRowChunks` finishes, `Next` will begin to generate sorted results, depends weather spill to disk is triggered or not, there is two ways to generate the final sorted results
 
@@ -21,28 +21,24 @@ After `fetchRowChunks` finishes, `Next` will begin to generate sorted results, d
 
 ### HashAgg
 
-`HashAgg` operator uses hash table to perform grouping and aggregation. In TiDB the operator implement hash aggregation is [`HashAggExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L91).  `HashAggExec` implement three basic interfaces of `Executor`
-
-* [Open](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L201) initialize the operator, setup memory tracker/disk tracker and other meta info for aggregation
-* [Next](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L112) each call of `Next` will return a chunk of data, return an empty chunk means the execution is done for current executor
-* [Close](https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L65) is responsible for release all the resource hold by the executor
+`HashAgg` operator uses hash table to perform grouping and aggregation. In TiDB the operator implement hash aggregation is [`HashAggExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L91). 
 
 `HashAgg` has two execution mode: parallel execution and un-parallel execution. During build stage, the planner is responsible to decide the execution mode for a `HashAgg`, a `HashAgg` will be in un-parallel execution mode if one of these conditions is true
 
 * The aggregation function contains `distinct`
-* The aggregation function contains `order by`(in `GROUP_CONCAT`)
+* The aggregation function(`GROUP_CONCAT`) contains `order by`
 * User explicitly set both `hashAggPartialConcurrency` and `hashAggFinalConcurrency` to 1
 
 #### Un-parallel execution
 
-Un-parallel execution mode executes aggregation in one thread/goroutine, [`unparallelExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L493) is the core function for un-parallel execution. In `unparallelExec`, it first read all the data from its child executor, aggregate the data using [execute](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L548), after `execute` is done, `unparallelExec` begin to generate result by traverse all the group by key, and generate one row for each key by [AppendFinalResult2Chunk](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L505)
+Un-parallel execution mode executes aggregation in one thread, [`unparallelExec`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L493) is the core function for un-parallel execution. In `unparallelExec`, it first reads all the data from its child executor, aggregate the data using [execute](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L548), after `execute` is done, `unparallelExec` begin to generate result by traverse all the group by key, and generate one row for each key by calling [AppendFinalResult2Chunk](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L505) for each aggregation function
 
 #### Parallel execution
 
-Parallel execution mode executes aggregation using multiple threads/goroutines, it divides the aggregation into two stage
+Parallel execution mode executes aggregation using multiple threads, it divides the aggregation into two stages
 
-* Partial stage: each threads aggregate part of the input data into partial results
-* Final stage: each threads aggregate partial results into final results
+* Partial stage: each thread aggregates part of the input data into partial results
+* Final stage: each thread aggregates partial results into final results
 
 The parallel execution flow is as the following graph shows
 
@@ -88,31 +84,27 @@ The parallel execution flow is as the following graph shows
 
 There are 3 types of threads to read data and execute the aggregation
 
-* [`fetchChildData`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L343): the concurrency of `fetchChildData` is 1, it reads data from the child executor, and put it into `inputCh` as the input of each partial worker
-* [`HashAggPartialWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_partial_worker.go#L38): the concurrency of `HashAggPartialWorker` is `hashAggPartialConcurrency`, it reads input data and executes partial aggregation on the data, generates partial result and send it to final worker
-* [`HashAggFinalWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_final_worker.go#L40): the concurrency of `HashAggFinalWorker` is `hashAggFinalConcurrency`, it reads partial results and generate final results and send it to `finalOutputCh`
+* [`fetchChildData`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L343) the concurrency of `fetchChildData` is 1, it reads data from the child executor, and put it into `inputCh` as the input of each partial worker
+* [`HashAggPartialWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_partial_worker.go#L38) the concurrency of `HashAggPartialWorker` is `hashAggPartialConcurrency`, it reads input data and executes partial aggregation on the data, generates partial result and send it to final worker
+* [`HashAggFinalWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_final_worker.go#L40) the concurrency of `HashAggFinalWorker` is `hashAggFinalConcurrency`, it reads partial results and generate final results and send it to `finalOutputCh`
 
-Like `Sort`, `HashAgg` is also a memory intensive operator. When `HashAgg` is running in un-parallel execution mode, it also support spill to disk(spill to disk in parallel execution mode is under [development](https://github.com/pingcap/tidb/issues/46631)). Unlike `Sort`, which will spill all data into disk, in current implementation,  the main idea in `HashAgg` spill is that once a `HashAgg` is marked to spill, for all the subsequent input, if the group by key of a row is already in current hash map, then this row will be inserted into the hash map, otherwise, this row will be spilled to the disk. The details of `HashAgg` spill can be found [here](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L587). 
+Like `Sort`, `HashAgg` is also a memory intensive operator. When `HashAgg` is running in un-parallel execution mode, it also supports spill to disk(spill to disk in parallel execution mode is under [development](https://github.com/pingcap/tidb/issues/46631)). Unlike `Sort`, which will spill all data into disk, in current implementation,  the main idea in `HashAgg` spill is that once a `HashAgg` is marked to spill, for all the subsequent input, if the group by key of a row is already in current hash map, then this row will be inserted into the hash map, otherwise, this row will be spilled to the disk. The details of `HashAgg` spill can be found [here](https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L587). 
 
 ### HashJoin
 
-`HashJoin` operator uses hash table to perform join. In TiDB the operator implement hash join is [HashJoinExec](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L121). `HashJoinExec` implements three basic interfaces of `Executor`
+`HashJoin` operator uses hash table to perform join. In TiDB the operator implement hash join is [HashJoinExec](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L121).
 
-* [Open](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L203) initialize the operator, setup memory tracker/disk tracker and other meta info for hash join
-* [Next](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1116) each call of `Next` will return a chunk of data, return an empty chunk means the execution is done for current executor
-* [Close](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L154) is responsible for release all the resource hold by the executor
-
-HashJoin constructs the results in two stage
+HashJoin constructs the results in two stages
 
 1. fetch data from build side child and build a hash table
-2. fetch data from probe side child and probe the hash table in multiple join workers
+2. fetch data from probe side child and probe the hash table using multiple join workers
 
 #### Build stage
 
-[fetchAndBuildHashTable](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1168) is the function where build stage is executed. It uses two threads/goroutines to do the work
+[fetchAndBuildHashTable](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1168) is the function where build stage is executed. It uses two threads to do the work
 
-* [fetchBuildSideRows](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1182), read data from build side child, and put it to `buildSideResultCh`
-* [buildHashTableForList](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1193), get input data from `buildSideResultCh`, and bulid hash table based on input data
+* [fetchBuildSideRows](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1182) reads data from build side child, and puts it to `buildSideResultCh`
+* [buildHashTableForList](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1193) gets input data from `buildSideResultCh`, and builds hash table based on input data
 
 The details of build hash table is hidden in [`hashRowContainer`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/hash_table.go#L102), note that currently, TiDB does not support parallel build hash table.
 
@@ -120,10 +112,10 @@ The details of build hash table is hidden in [`hashRowContainer`](https://github
 
 [`fetchAndProbeHashTable`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L390) is the function where probe stage is executed. There are two types of threads to do the probe
 
-* [`fetchProbeSideChunks`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L235) : the concurrency of `fetchProbeSideChunks` is 1. It reads data from probe child, and send them to multiple probe workers
-* [`probeWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L88): multiple `probeWorker` will read data from `fetchProbeSideChunks` and probe concurrently, the concurrency is decided by `ExecutorConcurrency`
+* [`fetchProbeSideChunks`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L235) the concurrency of `fetchProbeSideChunks` is 1. It reads data from probe child, and send them to multiple probe workers
+* [`probeWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L88) multiple `probeWorker` will read data from `fetchProbeSideChunks` and probe concurrently, the concurrency is decided by `ExecutorConcurrency`
 
-Each `probeWorker` holds a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L62) , `joiner` is an interface that each kind of join should implement its own joiner. Currently, TiDB support the following joiners
+Each `probeWorker` holds a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L62) , `joiner` is the core data structure that implements different join semantics. Each kind of join should implements its own joiner. Currently, TiDB support the following joiners
 
 * [`innerJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L959) used for inner join
 * [`leftOuterJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L805) used for left outer join
@@ -135,16 +127,16 @@ Each `probeWorker` holds a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.
 * [`nullAwareAntiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L450) used for left outer join
 * [`nullAwareAntiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L648) used for left outer join
 
-`joiner` has 3 basic interfaces that need to be implemented by each implementation
+`joiner` has 3 basic interfaces
 
-* [`tryToMatchInners`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75): for each of the row from outer(probe) side, try to match the rows from the inner(build) side, return true if matches, and also need to set `isNull` for `AntiSemiJoin/LeftOuterSemiJoin/AntiLeftOuterSemiJoin`
-* [`tryToMatchOuters`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80): only used in outer join when outer side is used to build hash table, for each of row from inner(probe) side, try to match the rows from the outer(build) side
-* [`onMissMatch`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107): used for semi join family to handle the case that no rows are matched for the probe row.
+* [`tryToMatchInners`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75) for each of the row from probe side, try to match the rows from the build side, return true if matches, and also need to set `isNull` for `AntiSemiJoin/LeftOuterSemiJoin/AntiLeftOuterSemiJoin`
+* [`tryToMatchOuters`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80) only used in outer join when outer side is used to build hash table, for each of row from probe(inner) side, try to match the rows from the build(outer) side
+* [`onMissMatch`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107) used for semi join family to handle the case that no rows are matched for the probe row.
 
 In `probeWorker`, it reads data from the probe side, and for each probe row, tries to match the hash table and save the result into result chunk. For most of the case, it uses [`join2Chunk`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L977) to do the probe, and for outer join that uses outer side as the build side, it need use [`join2ChunkForOuterHashJoin`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1076) to do the probe.
 
 Inside `join2Chunk/join2ChunkForOuterHashJoin`, for each probe row, the probe work contains three steps
 
-* Use some quick path to find if the probe row will not match before looking into the hash table. An example is for inner join, if the join key contains null, it can skip probe hash table stage, since null never matches any value. For the rows that can not match, call `onMissMatch`
+* Before look up the hash table, use some quick tests to find if probe row will not match. An example is for inner join, if the join key contains null, it can skip probe hash table stage, since null never matches any value. For the rows that can not match, call `onMissMatch`
 * Look up hash table, to find potential match rows from hash table
-* If there is no potential match rows, call `onMissMatch`, otherwise, call `tryToMatch` and generate result based on the match results
+* If there is no potential match rows, call `onMissMatch`, otherwise, call `tryToMatch`
