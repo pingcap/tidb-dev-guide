@@ -33,9 +33,9 @@ cat <<EOF > unistore_4000.xml
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
     <working_directory value="\$PROJECT_DIR\$" />
-    <kind value="PACKAGE" />
-    <filePath value="\$PROJECT_DIR\$" />
-    <package value="github.com/pingcap/tidb/tidb-server" />
+    <kind value="FILE" />
+    <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" />
+    <package value="github.com/pingcap/tidb" />
     <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
@@ -48,9 +48,9 @@ cat <<EOF > playground_attach_4001.xml
     <module name="tidb" />
     <working_directory value="\$PROJECT_DIR\$" />
     <parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " />
-    <kind value="PACKAGE" />
-    <filePath value="\$PROJECT_DIR\$/tidb-server/main.go" />
-    <package value="github.com/pingcap/tidb/tidb-server" />
+    <kind value="FILE" />
+    <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" />
+    <package value="github.com/pingcap/tidb" />
     <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
@@ -66,7 +66,7 @@ cat <<EOF > unit_test.xml
     <framework value="gocheck" />
     <kind value="DIRECTORY" />
     <package value="github.com/pingcap/tidb" />
-    <directory value="\$PROJECT_DIR\$/planner/core" />
+    <directory value="\$PROJECT_DIR\$/pkg/planner/core" />
     <filePath value="\$PROJECT_DIR\$" />
     <pattern value="TestEnforceMPP" />
     <method v="2" />
