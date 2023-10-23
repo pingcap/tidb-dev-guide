@@ -142,9 +142,9 @@ To run a single test, you can manually repeat what `make ut` does and narrow the
 
 ```sh
 make failpoint-enable
-cd domain
+cd pkg/domain
 go test -v -run TestSchemaValidator # or with any other test flags
-cd ..
+cd ../..
 make failpoint-disable
 ```
 
@@ -152,7 +152,7 @@ or if it is an older test not using testify
 
 ```sh
 make failpoint-enable
-(cd planner/core ; go test -v -run "^TestT$" -check.f TestBinaryOpFunction )
+(cd pkg/planner/core ; go test -v -run "^TestT$" -check.f TestBinaryOpFunction )
 make failpoint-disable
 ```
 
