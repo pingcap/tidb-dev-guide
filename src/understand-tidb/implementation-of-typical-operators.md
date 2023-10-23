@@ -115,28 +115,28 @@ The [`fetchAndProbeHashTable`](https://github.com/pingcap/tidb/blob/v7.4.0/execu
 * [`fetchProbeSideChunks`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L235) operates with a concurrency of 1. It reads data from the probe child and dispatches them to various probe workers.
 * [`probeWorker`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L88) instances read data from `fetchProbeSideChunks` and probe concurrently. The concurrency level is determined by `ExecutorConcurrency`.
 
-Each `probeWorker` holds a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L62) , `joiner` is the core data structure that implements different join semantics. Each kind of join should implements its own joiner. Currently, TiDB support the following joiners
+Each `probeWorker` contains a [`joiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L62), a core data structure implementing various join semantics. Every type of join in TiDB has its specialized joiner. The currently supported joiners include:
 
-* [`innerJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L959) used for inner join
-* [`leftOuterJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L805) used for left outer join
-* [`rightOuterJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L884) used for right outer join
-* [`semiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L364) used for left outer join
-* [`antiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L497) used for anti semi join
-* [`antiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L720) used for anti left outer semi join
-* [`leftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L566) used for left outer semi join
-* [`nullAwareAntiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L450) used for left outer join
-* [`nullAwareAntiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L648) used for left outer join
+* [`innerJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L959) - For inner join
+* [`leftOuterJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L805) - For left outer join
+* [`rightOuterJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L884) - For right outer join
+* [`semiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L364) - For semi join
+* [`antiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L497) - For anti semi join
+* [`antiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L720) - For anti left outer semi join
+* [`leftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L566) - For left outer semi join
+* [`nullAwareAntiSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L450) - For null aware anti semi join
+* [`nullAwareAntiLeftOuterSemiJoiner`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L648) - For null aware anti left outer semi join
 
-`joiner` has 3 basic interfaces
+The `joiner` offers three foundational interfaces:
 
-* [`tryToMatchInners`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75) for each of the row from probe side, try to match the rows from the build side, return true if matches, and also need to set `isNull` for `AntiSemiJoin/LeftOuterSemiJoin/AntiLeftOuterSemiJoin`
-* [`tryToMatchOuters`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80) only used in outer join when outer side is used to build hash table, for each of row from probe(inner) side, try to match the rows from the build(outer) side
-* [`onMissMatch`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107) used for semi join family to handle the case that no rows are matched for the probe row.
+* [`tryToMatchInners`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75) - For each row from the probe side, it attempts to match the rows from the build side. Returns true if a match occurs and sets `isNull` for the special join types: `AntiSemiJoin`, `LeftOuterSemiJoin`, and `AntiLeftOuterSemiJoin`.
+* [`tryToMatchOuters`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80) - Exclusive to outer join scenarios where the outer side acts as the build hash table. For each row from the probe (inner) side, it attempts to match the rows from the build (outer) side.
+* [`onMissMatch`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107) - Used in semi join scenarios to manage cases where no rows from the build side match the probe row.
 
-In `probeWorker`, it reads data from the probe side, and for each probe row, tries to match the hash table and save the result into result chunk. For most of the case, it uses [`join2Chunk`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L977) to do the probe, and for outer join that uses outer side as the build side, it need use [`join2ChunkForOuterHashJoin`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1076) to do the probe.
+During the `probeWorker` operation, it reads data from the probe side. For every probe row, it attempts to match against the hash table and saves the result into a result chunk. Most of these operations utilize the [`join2Chunk`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L977) function for probing. However, for outer joins that use the outer side as the build side, the function [`join2ChunkForOuterHashJoin`](https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1076) is called upon.
 
-Inside `join2Chunk/join2ChunkForOuterHashJoin`, for each probe row, the probe work contains three steps
+Within `join2Chunk/join2ChunkForOuterHashJoin`, the probe work consists of three steps for each probe row:
 
-* Before look up the hash table, use some quick tests to find if probe row will not match. An example is for inner join, if the join key contains null, it can skip probe hash table stage, since null never matches any value. For the rows that can not match, call `onMissMatch`
-* Look up hash table, to find potential match rows from hash table
-* If there is no potential match rows, call `onMissMatch`, otherwise, call `tryToMatch`
+1. Quick tests are conducted before accessing the hash table to determine if a probe row won't find a match. For instance, in an inner join, if the join key contains null, the probe can bypass the hash table probing since null will never match any value. For rows that are non-matching, the `onMissMatch` function is invoked.
+2. The hash table is looked up to identify potential matching rows.
+3. In the absence of potential matching rows, the `onMissMatch` function is invoked. Otherwise, the `tryToMatch` function is executed.
