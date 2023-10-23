@@ -335,6 +335,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "zanmato1984",
+      "name": "ruoxi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1061004?v=4",
+      "profile": "https://github.com/zanmato1984",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 5,
