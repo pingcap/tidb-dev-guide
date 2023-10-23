@@ -1,17 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>TiDB Development Guide</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -32,7 +32,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -62,24 +62,29 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -117,9 +122,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -3504,6 +3509,128 @@ b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
 <h3 id="logcancel"><a class="header" href="#logcancel">Log/Cancel</a></h3>
 <p>When the above methods cannot control the memory within the threshold, we will try to use <code>PanicOnExceed</code> to cancel the SQL or use <code>LogOnExceed</code> to log the SQL info.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="implementation-of-typical-operators"><a class="header" href="#implementation-of-typical-operators">Implementation of Typical Operators</a></h1>
+<p>This section introduces the implementation details of three typical TiDB operators: Sort, HashAgg, and HashJoin.</p>
+<p>Firstly, every operator should implement three basic interfaces of <code>Executor</code>:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L50">Open</a> - Initializes the operator, sets up the memory tracker/disk tracker, and other meta-info for the current operator.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L51">Next</a> - Each call to <code>Next</code> returns a chunk of data. Returning an empty chunk indicates that the execution is complete for the current executor. Note that <code>Next</code> is not thread-safe. It's by design that <code>Next</code> is not called concurrently for all operators.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/internal/exec/executor.go#L52">Close</a> - Responsible for releasing all resources held by the executor.</li>
+</ul>
+<h3 id="sort"><a class="header" href="#sort">Sort</a></h3>
+<p>The Sort operator is used to arrange the result set of a query in a specific order. In TiDB, the operator implementing sort is <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L36"><code>SortExec</code></a>. The fundamental concept behind <code>SortExec</code> is to read all the data from its child executor and then sort the entire data set.</p>
+<p>In <code>Next</code>, it invokes <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L179"><code>fetchRowChunks</code></a> to read all the data from its child executor. <code>fetchRowChunks</code> aims to store all the data in one <a href="https://github.com/pingcap/tidb/blob/v7.4.0/util/chunk/row_container.go#L460"><code>SortedRowContainer</code></a>. The memory usage grows as the input data volume increases. To manage the memory usage, <code>SortExec</code> has spill-to-disk support. The details of this spilling are encapsulated within <code>SortedRowContainer</code>. Every time the insertion of a chunk into the current <code>SortedRowContainer</code> returns <code>ErrCannotAddBecauseSorted</code>, it indicates that the current <code>SortedRowContainer</code> has been spilled. <code>SortExec</code> will then create a new <code>SortedRowContainer</code> and insert the chunk into this new container. Once there's no data coming from its child executor, <code>SortExec</code> will <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L241">sort</a> the current <code>SortedRowContainer</code>.</p>
+<p>After <code>fetchRowChunks</code> completes, <code>Next</code> starts producing sorted results. Depending on whether a spill to disk was initiated, there are two methods to produce the final sorted outcomes:</p>
+<ul>
+<li>Spill not initiated: In this straightforward scenario, if there's no spill, since the entire <code>SortedRowContainer</code> gets sorted at the end of <code>fetchRowChunks</code>, during <code>Next</code>, it simply invokes <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L133"><code>GetSortedRowAndAlwaysAppendToChunk</code></a> to fetch the sorted data from <code>SortedRowContainer</code>.</li>
+<li>Spill initiated: When a spill occurs, each spilling round produces an independent <code>SortedRowContainer</code>, stored in <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L55"><code>partitionList</code></a>. In <code>Next</code>, an <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/sort.go#L143">external multi-way merge sort</a> merges all partially sorted data streams into one final sorted data stream.</li>
+</ul>
+<h3 id="hashagg"><a class="header" href="#hashagg">HashAgg</a></h3>
+<p>The <code>HashAgg</code> operator uses a hash table to perform grouping and aggregation. In TiDB, the operator implementing hash aggregation is <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L91"><code>HashAggExec</code></a>.</p>
+<p><code>HashAgg</code> has two execution modes: parallel and non-parallel execution. During the build stage, the planner is responsible for deciding the execution mode for a <code>HashAgg</code>. A <code>HashAgg</code> will operate in non-parallel execution mode if one of the following conditions is true:</p>
+<ul>
+<li>The aggregation function contains <code>distinct</code>.</li>
+<li>The aggregation function (<code>GROUP_CONCAT</code>) contains <code>order by</code>.</li>
+<li>The user explicitly sets both <code>hashAggPartialConcurrency</code> and <code>hashAggFinalConcurrency</code> to 1.</li>
+</ul>
+<h4 id="non-parallel-execution"><a class="header" href="#non-parallel-execution">Non-parallel Execution</a></h4>
+<p>Non-parallel execution mode performs aggregation in a single thread. <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L493"><code>unparallelExec</code></a> is the core function for non-parallel execution. In <code>unparallelExec</code>, it first reads all the data from its child executor, then aggregates the data using <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L548">execute</a>. After <code>execute</code> completes, <code>unparallelExec</code> starts to generate results by traversing all the group-by keys, generating one row for each key by calling <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L505">AppendFinalResult2Chunk</a> for each aggregation function.</p>
+<h4 id="parallel-execution"><a class="header" href="#parallel-execution">Parallel Execution</a></h4>
+<p>Parallel execution mode performs aggregation using multiple threads, dividing the aggregation into two stages:</p>
+<ul>
+<li>Partial stage: each thread aggregates a portion of the input data into partial results.</li>
+<li>Final stage: each thread aggregates the partial results into final results.</li>
+</ul>
+<p>The flow of parallel execution is illustrated in the following graph:</p>
+<pre><code>                            +-------------+
+                            | Main Thread |
+                            +------+------+
+                                   ^
+                                   |
+                                   +
+                              +-+-            +-+
+                              | |    ......   | |  finalOutputCh
+                              +++-            +-+
+                               ^
+                               |
+                               +---------------+
+                               |               |
+                 +--------------+             +--------------+
+                 | final worker |     ......  | final worker |
+                 +------------+-+             +-+------------+
+                              ^                 ^
+                              |                 |
+                             +-+  +-+  ......  +-+
+                             | |  | |          | |
+                             ...  ...          ...    partialOutputChs
+                             | |  | |          | |
+                             +++  +++          +++
+                              ^    ^            ^
+          +-+                 |    |            |
+          | |        +--------o----+            |
+ inputCh  +-+        |        +-----------------+---+
+          | |        |                              |
+          ...    +---+------------+            +----+-----------+
+          | |    | partial worker |   ......   | partial worker |
+          +++    +--------------+-+            +-+--------------+
+           |                     ^                ^
+           |                     |                |
+      +----v---------+          +++ +-+          +++
+      | data fetcher | +------&gt; | | | |  ......  | |   partialInputChs
+      +--------------+          +-+ +-+          +-+
+
+</code></pre>
+<p>There are three types of threads that read data and execute the aggregation:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L343"><code>fetchChildData</code></a>: This thread's concurrency level is set to 1. It reads data from the child executor and places it into <code>inputCh</code>, serving as the input for each partial worker.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_partial_worker.go#L38"><code>HashAggPartialWorker</code></a>: The concurrency of <code>HashAggPartialWorker</code> is determined by <code>hashAggPartialConcurrency</code>. This worker reads the input data, executes partial aggregation on the data, produces partial results, and sends them to the final worker.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_final_worker.go#L40"><code>HashAggFinalWorker</code></a>: The concurrency of <code>HashAggFinalWorker</code> is set by <code>hashAggFinalConcurrency</code>. This worker reads partial results, produces final results, and sends them to <code>finalOutputCh</code>.</li>
+</ul>
+<p>Similar to <code>Sort</code>, <code>HashAgg</code> is also a memory-intensive operator. When <code>HashAgg</code> runs in non-parallel execution mode, it supports spill-to-disk functionality (spill-to-disk in parallel execution mode is currently <a href="https://github.com/pingcap/tidb/issues/46631">under development</a>). Unlike <code>Sort</code>, which spills all data to disk, the <code>HashAgg</code> approach is different. In the current implementation, once a <code>HashAgg</code> is flagged for spilling, for all subsequent inputs, if the group-by key of a row already exists in the current hash map, the row will be inserted into the hash map. If not, the row gets spilled to disk. Detailed workings of the <code>HashAgg</code> spill can be explored <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/aggregate/agg_hash_executor.go#L587">here</a>.</p>
+<h3 id="hashjoin"><a class="header" href="#hashjoin">HashJoin</a></h3>
+<p>The <code>HashJoin</code> operator uses a hash table to perform the join operation. In TiDB, the operator that implements hash join is <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L121"><code>HashJoinExec</code></a>.</p>
+<p><code>HashJoin</code> constructs the results in two distinct stages:</p>
+<ol>
+<li>Fetch data from the build side child and build a hash table.</li>
+<li>Fetch data from the probe side child and probe the hash table using multiple join workers.</li>
+</ol>
+<h4 id="build-stage"><a class="header" href="#build-stage">Build stage</a></h4>
+<p>The <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1168">fetchAndBuildHashTable</a> function orchestrates the build stage. Two threads are engaged in this work:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1182">fetchBuildSideRows</a> reads data from the build side child and funnels it into the <code>buildSideResultCh</code>.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1193">buildHashTableForList</a> retrieves input data from <code>buildSideResultCh</code> and subsequently constructs the hash table based on this input.</li>
+</ul>
+<p>Detailed mechanics of building the hash table are encapsulated within the <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/hash_table.go#L102"><code>hashRowContainer</code></a>. It's worth noting that, as of now, TiDB does not support the parallel building of hash tables.</p>
+<h4 id="probe-stage"><a class="header" href="#probe-stage">Probe stage</a></h4>
+<p>The <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L390"><code>fetchAndProbeHashTable</code></a> function executes the probe stage. This stage engages two types of threads:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L235"><code>fetchProbeSideChunks</code></a> operates with a concurrency of 1. It reads data from the probe child and dispatches them to various probe workers.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L88"><code>probeWorker</code></a> instances read data from <code>fetchProbeSideChunks</code> and probe concurrently. The concurrency level is determined by <code>ExecutorConcurrency</code>.</li>
+</ul>
+<p>Each <code>probeWorker</code> contains a <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L62"><code>joiner</code></a>, a core data structure implementing various join semantics. Every type of join in TiDB has its specialized joiner. The currently supported joiners include:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L959"><code>innerJoiner</code></a> - For inner join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L805"><code>leftOuterJoiner</code></a> - For left outer join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L884"><code>rightOuterJoiner</code></a> - For right outer join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L364"><code>semiJoiner</code></a> - For semi join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L497"><code>antiSemiJoiner</code></a> - For anti semi join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L720"><code>antiLeftOuterSemiJoiner</code></a> - For anti left outer semi join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L566"><code>leftOuterSemiJoiner</code></a> - For left outer semi join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L450"><code>nullAwareAntiSemiJoiner</code></a> - For null aware anti semi join</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L648"><code>nullAwareAntiLeftOuterSemiJoiner</code></a> - For null aware anti left outer semi join</li>
+</ul>
+<p>The <code>joiner</code> offers three foundational interfaces:</p>
+<ul>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L75"><code>tryToMatchInners</code></a> - For each row from the probe side, it attempts to match the rows from the build side. Returns true if a match occurs and sets <code>isNull</code> for the special join types: <code>AntiSemiJoin</code>, <code>LeftOuterSemiJoin</code>, and <code>AntiLeftOuterSemiJoin</code>.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L80"><code>tryToMatchOuters</code></a> - Exclusive to outer join scenarios where the outer side acts as the build hash table. For each row from the probe (inner) side, it attempts to match the rows from the build (outer) side.</li>
+<li><a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/joiner.go#L107"><code>onMissMatch</code></a> - Used in semi join scenarios to manage cases where no rows from the build side match the probe row.</li>
+</ul>
+<p>During the <code>probeWorker</code> operation, it reads data from the probe side. For every probe row, it attempts to match against the hash table and saves the result into a result chunk. Most of these operations utilize the <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L977"><code>join2Chunk</code></a> function for probing. However, for outer joins that use the outer side as the build side, the function <a href="https://github.com/pingcap/tidb/blob/v7.4.0/executor/join.go#L1076"><code>join2ChunkForOuterHashJoin</code></a> is called upon.</p>
+<p>Within <code>join2Chunk/join2ChunkForOuterHashJoin</code>, the probe work consists of three steps for each probe row:</p>
+<ol>
+<li>Quick tests are conducted before accessing the hash table to determine if a probe row won't find a match. For instance, in an inner join, if the join key contains null, the probe can bypass the hash table probing since null will never match any value. For rows that are non-matching, the <code>onMissMatch</code> function is invoked.</li>
+<li>The hash table is looked up to identify potential matching rows.</li>
+<li>In the absence of potential matching rows, the <code>onMissMatch</code> function is invoked. Otherwise, the <code>tryToMatch</code> function is executed.</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transaction"><a class="header" href="#transaction">Transaction</a></h1>
 <p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository. </p>
 <p>This document is mainly about the TiDB part.</p>
