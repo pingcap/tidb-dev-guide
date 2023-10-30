@@ -6,7 +6,7 @@ Vectorized execution, also known as batch processing, is a method of processing 
 1. **Improved CPU Utilization**: Processing data in batches minimizes the overhead associated with instruction fetchin and decoding, leading to better CPU utilization and improved performance.
 2. **Reduced Memory Access**: Data processed in vectors is more likely to be present in the CPU cache, reducing the need for memory access, which is often a performance bottleneck.
 3. **Reduced Branching**: Traditional row-based processing often involves conditional statements and branching, which can hinder performance. Vectorized execution minimizes branching, leading to more predictable and faster execution.
-## Implementing Vectirized Execution in TiDB
+## Implementing Vectorized Execution in TiDB
 TiDB leverages a memory layout similar to Apache Arrow to enable the execution of a batch of data at a time. This approach allows for efficient data processing, reducing overhead and improving performance. 
 ### Columnar Memory Layout Implementation in TiDB 
 In TiDB, the columnar memory layout is defined as a `Column`, and a batch of these `Columns` is referred to as a `Chunk`. The implementation of `Column` draws inspiration from Apache Arrow, ensuring efficient data processing. Depending on the data type they store, TiDB employs two types of `Columns`:
@@ -65,61 +65,110 @@ TiDB supports various data manipulation operations on `Column` and `Chunk`:
 - The concept of a `Row` is useful because, during the operation of operators, data is often accessed and processed on a per-row basis. For example, operations like aggregation, sorting, and similar tasks work with data at the row level.
 - You can retrieve a row from a `Chunk` using the [GetRow(rowIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/chunk.go#L356-L368) function. Once you have a `Row` object, you can further access the data in specific columns within that row using functions like [Row::GetInt64(colIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/row.go#L51-L53), which allows you to retrieve the data corresponding to the specified column index for that row.
 
-### Example: How to execute `select a+1, b-10 from t where a%2=0` using vectorized execution
-To execute the SQL query `SELECT a+1, b-10 FROM t WHERE a%2=0` using vectorized execution, we can follow a series of operations, including TableReader, Selection, and Projection. Let's break down the process step by step:
+### Examples
+#### How expression is evaluated
+In this section, we’ll use the TiDB expression `colA * 0.8 + colB` to demonstrate how expression evaluation works using vectorized execution and to highlight the performance gap between row-based execution and vectorized execution.
 
-Suppose we have a table `t` with the following data:
+**Expression Tree Representation**
+The TiDB expression `colA * 0.8 + colB` is parsed into an expression evaluation tree, where each non-leaf node represents an arithmetic operator, and the leaf nodes represent the data source. Each non-leaf node can be either a constant (like `0.8`) or a field (like `colA`) in the table. The parent-child relationship between nodes indicates a computationally dependent relationship: the evaluation result of the child node is the input data for the parent node.
 
 ```
-+------+------+
-|  a   |  b   |
-+------+------+
-|  1   |  10  |
-|  2   |  20  |
-|  3   |  30  |
-|  4   |  40  |
-+------+------+
+                             ┌─┐
+                         ┌───┤+├───┐
+                         │   └─┘   │
+                        ┌┴┐       ┌┴┐
+  colA*0.8+colB───►  ┌──┤*├───┐   │B│
+                     │  └─┘   │   └─┘
+                    ┌┴┐     ┌─┴─┐
+                    │A│     │0.8│
+                    └─┘     └───┘
 ```
+**Non-Vectorized Execution**
 
-1. **TableReader Operation**:
-   - The TableReader reads the data from the table and [decodes](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/codec.go#L259-L270) it into a `Chunk`. The `Chunk` contains two columns, as shown below:
-   
-   ```
-   | 1 | 10 |
-   | 2 | 20 |
-   | 3 | 30 |
-   | 4 | 40 |
-   ```
+In a non-vectorized execution model, the computing logic of each node can be abstracted using the following evaluation interface:
+```
+type Node interface {
+    evalReal(row Row) (val float64, isNull bool)
+}
+```
+Taking `*`, `0.8`, and `col` nodes as examples, all three nodes implement the interface above. Their pseudocode is as follows:
+```
+func (node *multiplyRealNode) evalReal(row Row) (float64, bool) {
+    v1, null1 := node.leftChild.evalReal(row)
+    v2, null2 := node.rightChild.evalReal(row)
+    return v1 * v2, null1 || null2
+}
 
-2. **Selection Operation**:
-   - The Selection operation applies a condition to the data in the `Chunk`. In this case, the condition is `a%2=0`, which filters rows where the remainder of `a` divided by 2 is equal to 0. The Selection operation marks rows that do not satisfy the condition as invalid, but the length of the columns remains unchanged. The result looks like this:
-   
-   ```
-   | N/A | N/A |
-   | 2   | 20  |
-   | N/A | N/A |
-   | 4   | 40  |
-   ```
+func (node *constantNode) evalReal(row Row) (float64, bool) {
+    return node.someConstantValue, node.isNull  // 0.8 in this case
+}
 
-3. **Projection Operation**:
-   - The Projection operation calculates the expressions `a+1` and `b-10` on the valid rows. The invalid rows remain unchanged. The result of the projection is as follows:
+func (node *columnNode) evalReal(row Row) (float64, bool) {
+    return row.GetReal(node.colIdx)
+}
+```
+In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the "real" multiplication compared to the number of assembly instructions required to perform the function.
 
-   ```
-   | N/A | N/A |
-   | 3   | 10  |
-   | N/A | N/A |
-   | 5   | 30  |
-   ```
+**Vectorized Execution**
+In vectorized execution, the interface to evaluate an expression in a batch manner in TiDB looks like this:
+```
+type VecNode interface {
+  vecEvalReal(input *Chunk, result *Column)
+}
+```
+Taking `multiplyRealNode` as an example:
+```
+func (node *multiplyRealNode) vecEvalReal(input *Chunk, result *Column) {
+  buf := pool.AllocColumnBuffer(TypeReal, input.NumRows())
+  defer pool.ReleaseColumnBuffer(buf)
+  node.leftChild.vecEvalReal(input, result)
+  node.rightChild.vecEvalReal(input, buf)
 
-4. **Output to Client**:
-   - Finally, the valid rows are copied to a new `Chunk` to ensure memory continuity, and the result is returned to the client. The client receives the final result, which looks like this:
+  f64s1 := result.Float64s()
+  f64s2 := buf.Float64s()
+  result.MergeNulls(buf)
+  for i := range i64s1 {
+     if result.IsNull(i) {
+        continue
+     }
+     i64s1[i] *= i64s2[i]
+  }
+}
+```
+This implementation reduces the interpretation overhead by batch processing, which is more beneficial for modern CPUs:
 
-   ```
-   | 3 | 10 |
-   | 5 | 30 |
-   ```
+- A vector of data is sequentially accessed. This reduces CPU cache misses.
+- Most of the computational work is within a simple loop. This facilitates CPU branch prediction and instruction pipelining.
 
-The SQL query is executed efficiently through vectorized operations, which allow for filtering, transformation, and projection of data in a batch-oriented manner, reducing the need for row-by-row processing.
+We use the same dataset (1024 rows formed by two columns of floating-point numbers) to compute `colA * 0.8 + colB` in two ways: row-based execution and vectorized execution. The results are as follows:
+```
+BenchmarkVec-12           152166              7056 ns/op               0 B/op          0 allocs/op
+BenchmarkRow-12            28944             38461 ns/op               0 B/op          0 allocs/op
+```
+The results above show vectorized execution is four times faster than row-based execution. 
+For more details about the vectorized expression evaluation, you can refer to [this link](https://www.pingcap.com/blog/10x-performance-improvement-for-expression-evaluation-made-possible-by-vectorized-execution/). 
+
+#### How operators are evaluated
+In this section, we'll dive deeper into the evaluation of operators with a focus on HashJoin as an example. 
+HashJoin in vectorized execution consists of the following steps:
+
+**Hashing Phase**
+
+Let's consider the table to be used for constructing the hash table as 't'. The data involved in table 't' is read into `Chunk` in batches. First, the data in the Chunk is filtered by columns according to the predicates on table 't'. The filtered results for these columns are then combined into a `selected` array. In the `selected` array, true values indicate valid rows. You can find the relevant code in the [VectorizedFilter](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L1252) section.
+Subsequently, the hash values for the remaining valid data in the Chunk are calculated column-wise, and these hash values are concatenated to form the final hash key if a row. You can refer to the code in [HashChunkSelected](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/hash_table.go#L467) for further details.
+Finally, the `selected` array is used for filtering, and the hash key for valid rows, along with their corresponding row pointers, is used to construct the hash table.
+
+**Probe Phase**
+
+The probe phase in HashJoin is similar to the build phase. Initially, data from the probe table is read in batches. Predicates are applied to the data to filter it by columns, and a `selected` array is created to identify valid rows. The hash keys are then computed for each of the valid rows.
+
+Subsequently, for the valid rows, the hash value is used to perform lookups in the hash table constructed during the build phase. This lookup operation aims to find matching rows in the hash table based on the calculated hash values. You can refer to the code in [join2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L987) for implementation details.
+
+**Matching and Output**
+
+When matching rows are found in the hash table, the results are output as joined rows and are stored in a new `Chunk`. You can refer to the code in [joinMatchedProbeSideRow2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L925).
+
+Vectorized computation in HashJoin offers significant advantages over row-based computation, primarily in terms of performance. Vectorized computation allows for batch processing of data, reducing instruction fetch and decode overhead, leading to better CPU utilization, reduced memory access, fewer conditional branches, and improved parallelism. These advantages make vectorized HashJoin significantly more efficient and performant when dealing with large datasets.
 
 ## Conlusion
-In conclusion, TiDB's efficient data processing, inspired by the Apache Arrow memory layout with columns and chunks, offers a powerful tool for modern data professionals. Through vectorized execution, TiDB optimizes CPU utilization, reduces memory access overhead, and minimizes branching, resulting in significantly faster and more efficient query performance.g
+In conclusion, TiDB's efficient data processing, inspired by the Apache Arrow memory layout with columns and chunks, offers a powerful tool for modern data professionals. Through vectorized execution, TiDB optimizes CPU utilization, reduces memory access overhead, and minimizes branching, resulting in significantly faster and more efficient query performance.
