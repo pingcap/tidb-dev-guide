@@ -162,7 +162,7 @@ Finally, the `selected` array is used for filtering, and the hash key for valid 
 
 The probe phase in HashJoin is similar to the build phase. Initially, data from the probe table is read into Chunk in batches. Predicates are applied to the Chunk to filter it by columns, and a `selected` array is created to identify valid rows. The hash keys are then computed for each of the valid rows in the Chunk.
 
-Subsequently, for the valid rows, the hash value is used to perform lookups in the hash table constructed during the build phase. This lookup operation aims to find matching rows in the hash table based on the calculated hash values. You can refer to the code in [join2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L987) for implementation details.
+Subsequently, for the valid rows in the Chunk, the hash value is used to perform lookups in the hash table constructed during the build phase. This lookup operation aims to find matching rows in the hash table based on the calculated hash values. You can refer to the code in [join2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L987) for implementation details.
 
 **Matching and Output**
 
