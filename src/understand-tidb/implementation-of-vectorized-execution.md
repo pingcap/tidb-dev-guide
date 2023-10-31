@@ -120,7 +120,9 @@ type VecNode interface {
   vecEvalReal(input *Chunk, result *Column)
 }
 ```
+
 Taking `multiplyRealNode` as an example:
+
 ```
 func (node *multiplyRealNode) vecEvalReal(input *Chunk, result *Column) {
   buf := pool.AllocColumnBuffer(TypeReal, input.NumRows())
