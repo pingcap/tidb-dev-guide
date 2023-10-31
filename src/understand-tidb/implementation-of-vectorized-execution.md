@@ -107,10 +107,14 @@ func (node *columnNode) evalReal(row Row) (float64, bool) {
     return row.GetReal(node.colIdx)
 }
 ```
+
 In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the "real" multiplication compared to the number of assembly instructions required to perform the function.
 
 **Vectorized Execution**
+
 In vectorized execution, the interface to evaluate an expression in a batch manner in TiDB looks like this:
+
+
 ```
 type VecNode interface {
   vecEvalReal(input *Chunk, result *Column)
