@@ -87,7 +87,9 @@ type Node interface {
     evalReal(row Row) (val float64, isNull bool)
 }
 ```
+
 Taking `*`, `0.8`, and `col` nodes as examples, all three nodes implement the interface above. Their pseudocode is as follows:
+
 ```
 func (node *multiplyRealNode) evalReal(row Row) (float64, bool) {
     v1, null1 := node.leftChild.evalReal(row)
