@@ -1,14 +1,14 @@
 # Implementation of Vectorized Execution
-This section introduces the implementation details of the TiDB vectorized execution model. 
+This section introduces the implementation details of the TiDB vectorized execution model.
 ## Understanding Vectorized Execution
-Vectorized execution, also known as batch processing, is a method of processing data in batches, rather than row by row. Traditional row-based processing handles one row at a time, which can lead to significant overhead and reduced efficiency, especially when dealing with large datasets. Vectorized execution, on the other hand, processes data in chunks or vectors, which allows for better utilization of CPU and memory resources.
+Vectorized execution, also known as batch processing, is a method of processing data in batches, rather than row by row. Traditional row-based processing handles one row at a time, which can lead to significant overhead and reduced efficiency, especially when dealing with large datasets. Vectorized execution, on the other hand, processes data in chunks or vectors, allowing for better utilization of CPU and memory resources.
 ## Key Benefits of Vectorized Execution
-1. **Improved CPU Utilization**: Processing data in batches minimizes the overhead associated with instruction fetchin and decoding, leading to better CPU utilization and improved performance.
+1. **Improved CPU Utilization**: Processing data in batches minimizes the overhead associated with instruction fetching and decoding, leading to better CPU utilization and improved performance.
 2. **Reduced Memory Access**: Data processed in vectors is more likely to be present in the CPU cache, reducing the need for memory access, which is often a performance bottleneck.
 3. **Reduced Branching**: Traditional row-based processing often involves conditional statements and branching, which can hinder performance. Vectorized execution minimizes branching, leading to more predictable and faster execution.
 ## Implementing Vectorized Execution in TiDB
-TiDB leverages a memory layout similar to Apache Arrow to enable the execution of a batch of data at a time. This approach allows for efficient data processing, reducing overhead and improving performance. 
-### Columnar Memory Layout Implementation in TiDB 
+TiDB leverages a memory layout similar to Apache Arrow to enable the execution of a batch of data at a time. This approach allows for efficient data processing, reducing overhead and improving performance.
+### Columnar Memory Layout Implementation in TiDB
 In TiDB, the columnar memory layout is defined as a `Column`, and a batch of these `Columns` is referred to as a `Chunk`. The implementation of `Column` draws inspiration from Apache Arrow, ensuring efficient data processing. Depending on the data type they store, TiDB employs two types of `Columns`:
 - **Column with Fixed Length**: These Columns store data of a fixed length, such as Double, Bigint, Decimal, and similar data types. This structure is optimized for predictable and consistent data sizes, facilitating efficient processing.
 - **Column with Variable Length**: These Columns accommodate variable-length data types, including Char, Varchar, and others. Variable-length data types can hold a range of character lengths, and the Column structure adapts to handle such variability.
