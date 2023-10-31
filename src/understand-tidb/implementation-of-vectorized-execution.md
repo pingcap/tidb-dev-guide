@@ -152,8 +152,10 @@ We use the same dataset (1024 rows formed by two columns of floating-point numbe
 BenchmarkVec-12           152166              7056 ns/op               0 B/op          0 allocs/op
 BenchmarkRow-12            28944             38461 ns/op               0 B/op          0 allocs/op
 ```
+
 The results above show vectorized execution is four times faster than row-based execution. 
-For more details about the vectorized expression evaluation, you can refer to [this link](https://www.pingcap.com/blog/10x-performance-improvement-for-expression-evaluation-made-possible-by-vectorized-execution/). 
+For more details about the vectorized expression evaluation, you can refer to [this link](https://www.pingcap.com/blog/10x-performance-improvement-for-expression-evaluation-made-possible-by-vectorized-execution/).
+
 
 #### How operators are evaluated
 In this section, we'll dive deeper into the evaluation of operators with a focus on HashJoin as an example. 
