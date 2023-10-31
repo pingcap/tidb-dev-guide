@@ -139,12 +139,15 @@ func (node *multiplyRealNode) vecEvalReal(input *Chunk, result *Column) {
   }
 }
 ```
+
 This implementation reduces the interpretation overhead by batch processing, which is more beneficial for modern CPUs:
 
 - A vector of data is sequentially accessed. This reduces CPU cache misses.
 - Most of the computational work is within a simple loop. This facilitates CPU branch prediction and instruction pipelining.
 
 We use the same dataset (1024 rows formed by two columns of floating-point numbers) to compute `colA * 0.8 + colB` in two ways: row-based execution and vectorized execution. The results are as follows:
+
+
 ```
 BenchmarkVec-12           152166              7056 ns/op               0 B/op          0 allocs/op
 BenchmarkRow-12            28944             38461 ns/op               0 B/op          0 allocs/op
