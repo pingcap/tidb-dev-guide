@@ -160,26 +160,29 @@ For more details about the vectorized expression evaluation, you can refer to [t
 
 
 #### How operators are evaluated
-In this section, we'll dive deeper into the evaluation of operators with a focus on HashJoin as an example. 
+
+In this section, we'll dive deeper into the evaluation of operators, focusing on HashJoin as an example. 
+
 HashJoin in vectorized execution consists of the following steps:
 
 **Hashing Phase**
 
-Let's consider the table to be used for constructing the hash table as 't'. The data involved in table 't' is read into `Chunk` in batches. First, the data in the Chunk is filtered by columns according to the predicates on table 't'. The filtered results for these columns are then combined into a `selected` array. In the `selected` array, true values indicate valid rows. You can find the relevant code in the [VectorizedFilter](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L1252) section.
-Subsequently, the hash values for the remaining valid data in the Chunk are calculated column-wise, and these hash values are concatenated to form the final hash key if a row. You can refer to the code in [HashChunkSelected](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/hash_table.go#L467) for further details.
-Finally, the `selected` array is used for filtering, and the hash key for valid rows, along with their corresponding row pointers, is used to construct the hash table.
+Let's consider the table used for constructing the hash table as 't'. The data from table 't' is read into `Chunk` in batches. First, the data in the Chunk is filtered by columns based on the predicates on table 't'. The filtered results for these columns are then combined into a `selected` array. In the `selected` array, true values indicate valid rows. The relevant code is available in the [VectorizedFilter](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L1252) section.
+Subsequently, the hash values for the remaining valid data in the Chunk are calculated column-wise. If multiple columns are used in the hash, their values are concatenated to form the final hash key for a row. Further details can be found in the [HashChunkSelected](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/hash_table.go#L467) code section.
+Finally, the `selected` array is used for filtering. The hash key for valid rows, along with their corresponding row pointers, is used to construct the hash table.
 
 **Probe Phase**
 
-The probe phase in HashJoin is similar to the build phase. Initially, data from the probe table is read into Chunk in batches. Predicates are applied to the Chunk to filter it by columns, and a `selected` array is created to identify valid rows. The hash keys are then computed for each of the valid rows in the Chunk.
+The probe phase in HashJoin mirrors the build phase. Initially, data from the probe table is read into `Chunk` in batches. Predicates are applied to filter the Chunk by columns, and a `selected` array is generated to mark valid rows. The hash keys are then calculated for each of the valid rows.
 
-Subsequently, for the valid rows in the Chunk, the hash value is used to perform lookups in the hash table constructed during the build phase. This lookup operation aims to find matching rows in the hash table based on the calculated hash values. You can refer to the code in [join2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L987) for implementation details.
+For the valid rows in the Chunk, the calculated hash value is employed to probe the hash table constructed during the build phase. This lookup aims to identify matching rows in the hash table using the hash values. The implementation can be explored in [join2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L987).
 
 **Matching and Output**
 
-When matching rows are found in the hash table, the results are output as joined rows and are stored in a new `Chunk`. You can refer to the code in [joinMatchedProbeSideRow2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L925).
+Upon discovering matching rows in the hash table, the outcomes are output as joined rows and saved in a new `Chunk`. For deeper insights, see the code in [joinMatchedProbeSideRow2Chunk](https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L925).
 
-Vectorized computation in HashJoin offers significant advantages over row-based computation, primarily in terms of performance. Vectorized computation allows for batch processing of data, reducing instruction fetch and decode overhead, leading to better CPU utilization, reduced memory access, fewer conditional branches, and improved parallelism. These advantages make vectorized HashJoin significantly more efficient and performant when dealing with large datasets.
+Vectorized computation in HashJoin offers considerable advantages over row-based computation, primarily concerning performance. By allowing for batch processing of data, vectorized computation minimizes instruction fetch and decode overhead, enhancing CPU utilization, trimming memory access, reducing conditional branches, and augmenting parallelism. These benefits render vectorized HashJoin exceptionally efficient and performant when processing large datasets.
 
-## Conlusion
-In conclusion, TiDB's efficient data processing, inspired by the Apache Arrow memory layout with columns and chunks, offers a powerful tool for modern data professionals. Through vectorized execution, TiDB optimizes CPU utilization, reduces memory access overhead, and minimizes branching, resulting in significantly faster and more efficient query performance.
+## Conclusion
+
+In conclusion, TiDB's adept data processing, drawing inspiration from the Apache Arrow memory layout with its columns and chunks, emerges as an invaluable asset for contemporary data professionals. With its vectorized execution, TiDB heightens CPU utilization, curtails memory access overhead, and curbs branching, culminating in substantially accelerated and more streamlined query performance.
