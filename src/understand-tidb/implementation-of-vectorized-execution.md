@@ -32,6 +32,7 @@ type Chunk struct {
 ```
 
 ### Column and Chunk Data Manipulation
+
 TiDB supports various data manipulation operations on `Column` and `Chunk`:
 
 **Appending a Fixed-Length Non-NULL Value to a Column**:
@@ -46,19 +47,13 @@ TiDB supports various data manipulation operations on `Column` and `Chunk`:
 - The starting point of the newly appended data in the `data` is recorded in the `offsets`.
 
 **Appending a NULL Value to a Column**:
-- To append a NULL value, [AppendNull](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L229-L237) function is used.
-- A `0` is appended to the `nullBitmap`.
-- If it's a fixed-length column, a placeholder data of the same size as `elemBuf` is appended to the `data`.
-- If it's a variable-length column, no data is appended to the `data`, but the starting point of the next element is recorded in the `offsets`.
-
-**Appending a NULL Value to a Column**:
 - To append a NULL value, the [AppendNull](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L229-L237) function is used.
 - A `0` is appended to the `nullBitmap`.
 - If it's a fixed-length column, a placeholder data of the same size as `elemBuf` is appended to the `data`.
 - If it's a variable-length column, no data is appended to the `data`, but the starting point of the next element is recorded in the `offsets`.
 
 **Reading a Value from a Column**:
-- Values in a `Column` can be read using functions like [GetInt64(rowIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L551-L553) and [GetString(rowIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L576-L578). The reading principle can be deduced from the earlier-described appending mechanism. Here, we retrieve the specified element in the `Column` based on the rowID. The details of reading from a `Column` are consistent with the principles discussed for appending.
+- Values in a `Column` can be read using functions like [GetInt64(rowIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L551-L553) and [GetString(rowIdx)](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/column.go#L576-L578). The reading principle can be deduced from the previously described appending mechanism. Here, we retrieve the specified element in the `Column` based on the rowID. The details of reading from a `Column` are consistent with the principles discussed for appending.
 
 **Reading a Row from a Chunk**:
 - Within a `Chunk`, the concept of a [Row](https://github.com/pingcap/tidb/blob/ecaa1c518cc9367844ebb5206f2e970461c8bf28/pkg/util/chunk/row.go#L25-L28) is logical. The data for a row is stored across different `Columns` in the `Chunk`. The data for the same row in various columns is not necessarily stored consecutively in memory. When obtaining a `Row` object, there is no need to perform data copying, as the data for the same row is already stored in the corresponding `Columns`.
@@ -67,6 +62,7 @@ TiDB supports various data manipulation operations on `Column` and `Chunk`:
 
 ### Examples
 #### How expression is evaluated
+
 In this section, we’ll use the TiDB expression `colA * 0.8 + colB` to demonstrate how expression evaluation works using vectorized execution and to highlight the performance gap between row-based execution and vectorized execution.
 
 **Expression Tree Representation**
