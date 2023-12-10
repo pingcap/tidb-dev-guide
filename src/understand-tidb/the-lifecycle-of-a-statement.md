@@ -118,7 +118,7 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 
 ## Statement string to Abstract Syntax Tree
 
-In [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633) the statement string is [parsed](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/yy_parser.go#L172) by [the parser](https://github.com/pingcap/tidb/tree/master/parser), that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the [parser section](parser.md)
+In [handleQuery](https://github.com/pingcap/tidb/blob/30cf15a59db11c34ffe05fc926152a43327eaa61/server/conn.go#L1633) the statement string is [parsed](https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/yy_parser.go#L172) by [the parser](https://github.com/pingcap/tidb/tree/master/pkg/parser), that is a MySQL compatible parser parsing statements and returns an Abstract Syntax Tree (AST) representing the statement. See more in the [parser section](parser.md)
 
 Example of Abstract Syntax tree, the fragment of a `WHERE` clause `` `id` > 1 AND `value` = 'Second' `` looks like:
 ```golang

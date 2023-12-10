@@ -2,7 +2,7 @@
 
 Parser is responsible for interpreting a SQL string into an abstract syntax tree (AST), which is more structural and easier to process. AST can be used for preprocessing, syntactic analysis, and so on.
 
-The code lives in the [pingcap/tidb repo, parser directory](https://github.com/pingcap/tidb/tree/master/parser).
+The code lives in the [pingcap/tidb repo, parser directory](https://github.com/pingcap/tidb/tree/master/pkg/parser).
 
 ## Understand Parser
 
