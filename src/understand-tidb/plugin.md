@@ -2,7 +2,7 @@
 
 The plugin API allows TiDB to be extended with new features such as audit logging or IP allow/deny listing.
 
-Sample code is provided for a basic audit logging plugin at [`plugin/conn_ip_example/`](https://github.com/pingcap/tidb/tree/master/plugin/conn_ip_example). For an example on compiling TiDB and this plugin:
+Sample code is provided for a basic audit logging plugin at [`plugin/conn_ip_example/`](https://github.com/pingcap/tidb/tree/master/pkg/plugin/conn_ip_example). For an example on compiling TiDB and this plugin:
 
 ```bash
 plugin="conn_ip_example"
