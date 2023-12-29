@@ -1795,7 +1795,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>This is a detailed SQL layer architecture graph. You can read it from left to right.</p>
 <h3 id="protocol-layer"><a class="header" href="#protocol-layer">Protocol Layer</a></h3>
 <p>The leftmost is the Protocol Layer of TiDB, this is the interface to interact with Client, currently TiDB only supports MySQL protocol, the related code is in the <code>server</code> package.</p>
-<p>The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to <a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html">MySQL Client/Server Protocol document</a>. If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.</p>
+<p>The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to <a href="https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html">MySQL Client/Server Protocol document</a>. If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.</p>
 <p>The logic for connection establishment is in the <code>Run()</code> method of <code>server.go</code>, mainly in the following two lines.</p>
 <pre><code class="language-go">conn, err := s.listener.Accept()
 clientConn := s.newConn(conn)
@@ -2449,13 +2449,13 @@ type MemBuffer interface {
 <pre><code class="language-go">data, err := cc.readPacket()
 if err = cc.dispatch(ctx, data)
 </code></pre>
-<p><code>dispatch</code> handles the raw data array. The first byte of the array represents command type. Among the types, <code>COM_QUERY</code> represents data query statement. You can refer to <a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html">MySQL protocol</a> for more information about the data array. For <code>COM_QUERY</code>, its content is SQL statement. <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1633">clientConn.handleQuery()</a> handles the SQL statement. It calls <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/driver_tidb.go#L217">TiDBContext.ExecuteStmt()</a> in <code>server/driver_tidb.go</code>:</p>
+<p><code>dispatch</code> handles the raw data array. The first byte of the array represents command type. Among the types, <code>COM_QUERY</code> represents data query statement. You can refer to <a href="https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html">MySQL protocol</a> for more information about the data array. For <code>COM_QUERY</code>, its content is SQL statement. <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1633">clientConn.handleQuery()</a> handles the SQL statement. It calls <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/driver_tidb.go#L217">TiDBContext.ExecuteStmt()</a> in <code>server/driver_tidb.go</code>:</p>
 <pre><code class="language-go">func (tc *TiDBContext) ExecuteStmt(ctx context.Context, stmt ast.StmtNode) (ResultSet, error) {
 	rs, err := tc.Session.ExecuteStmt(ctx, stmt)
 </code></pre>
 <p><a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/session/session.go#L1620">session.ExecuteStmt()</a> is the entry of the SQL layer kernel and returns the result of the SQL execution.</p>
 <h4 id="exit"><a class="header" href="#exit">Exit</a></h4>
-<p>After a series of operations described above, the execution results will be returned to the client in <a href="https://dev.mysql.com/doc/internals/en/com-query-response.html">COM_QUERY response</a> format by <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1943">clientConn.writeResultSet()</a>.</p>
+<p>After a series of operations described above, the execution results will be returned to the client in <a href="https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_com_query_response.html">COM_QUERY response</a> format by <a href="https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1943">clientConn.writeResultSet()</a>.</p>
 <h3 id="sql-layer-1"><a class="header" href="#sql-layer-1">SQL Layer</a></h3>
 <p>In SQL layer, there are multiple concepts and interfaces we need to pay close attention to:</p>
 <ul>
