@@ -33,7 +33,7 @@ data, err := cc.readPacket()
 if err = cc.dispatch(ctx, data)
 ```
 
-`dispatch` handles the raw data array. The first byte of the array represents command type. Among the types, `COM_QUERY` represents data query statement. You can refer to [MySQL protocol](https://dev.mysql.com/doc/internals/en/client-server-protocol.html) for more information about the data array. For `COM_QUERY`, its content is SQL statement. [clientConn.handleQuery()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1633) handles the SQL statement. It calls [TiDBContext.ExecuteStmt()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/driver_tidb.go#L217) in `server/driver_tidb.go`:
+`dispatch` handles the raw data array. The first byte of the array represents command type. Among the types, `COM_QUERY` represents data query statement. You can refer to [MySQL protocol](https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html) for more information about the data array. For `COM_QUERY`, its content is SQL statement. [clientConn.handleQuery()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1633) handles the SQL statement. It calls [TiDBContext.ExecuteStmt()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/driver_tidb.go#L217) in `server/driver_tidb.go`:
 
 ```go
 func (tc *TiDBContext) ExecuteStmt(ctx context.Context, stmt ast.StmtNode) (ResultSet, error) {
@@ -44,7 +44,7 @@ func (tc *TiDBContext) ExecuteStmt(ctx context.Context, stmt ast.StmtNode) (Resu
 
 #### Exit
 
-After a series of operations described above, the execution results will be returned to the client in [COM_QUERY response](https://dev.mysql.com/doc/internals/en/com-query-response.html) format by [clientConn.writeResultSet()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1943).
+After a series of operations described above, the execution results will be returned to the client in [COM_QUERY response](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_com_query_response.html) format by [clientConn.writeResultSet()](https://github.com/pingcap/tidb/blob/05d2210647d6a1503a8d772477e43b14a024f609/server/conn.go#L1943).
 
 ### SQL Layer
 

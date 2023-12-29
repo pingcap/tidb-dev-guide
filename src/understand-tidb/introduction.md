@@ -89,7 +89,7 @@ This is a detailed SQL layer architecture graph. You can read it from left to ri
 
 The leftmost is the Protocol Layer of TiDB, this is the interface to interact with Client, currently TiDB only supports MySQL protocol, the related code is in the `server` package.
 
-The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to [MySQL Client/Server Protocol document](https://dev.mysql.com/doc/internals/en/client-server-protocol.html). If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.
+The purpose of this layer is to manage the client connection, parse MySQL commands and return the execution result. The specific implementation is according to MySQL protocol, you can refer to [MySQL Client/Server Protocol document](https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html). If you need to use MySQL protocol parsing and processing functions in your project, you can refer to this module.
 
 The logic for connection establishment is in the `Run()` method of `server.go`, mainly in the following two lines.
 
