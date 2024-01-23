@@ -33,9 +33,9 @@ cat <<EOF > unistore_4000.xml
   <configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="tidb" />
     <working_directory value="\$PROJECT_DIR\$" />
-    <kind value="FILE" />
-    <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" />
-    <package value="github.com/pingcap/tidb" />
+    <kind value="PACKAGE" />
+    <filePath value="\$PROJECT_DIR\$" />
+    <package value="github.com/pingcap/tidb/cmd/tidb-server" />
     <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
@@ -48,9 +48,9 @@ cat <<EOF > playground_attach_4001.xml
     <module name="tidb" />
     <working_directory value="\$PROJECT_DIR\$" />
     <parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " />
-    <kind value="FILE" />
+    <kind value="PACKAGE" />
     <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" />
-    <package value="github.com/pingcap/tidb" />
+    <package value="github.com/pingcap/tidb/cmd/tidb-server" />
     <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
   </configuration>
