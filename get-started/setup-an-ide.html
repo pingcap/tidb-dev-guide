@@ -199,9 +199,9 @@ cat &lt;&lt;EOF &gt; unistore_4000.xml
   &lt;configuration default=&quot;false&quot; name=&quot;unistore 4000&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
     &lt;module name=&quot;tidb&quot; /&gt;
     &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;kind value=&quot;FILE&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$/cmd/tidb-server/main.go&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
+    &lt;kind value=&quot;PACKAGE&quot; /&gt;
+    &lt;filePath value=&quot;\$PROJECT_DIR\$&quot; /&gt;
+    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
     &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
     &lt;method v=&quot;2&quot; /&gt;
   &lt;/configuration&gt;
@@ -214,9 +214,9 @@ cat &lt;&lt;EOF &gt; playground_attach_4001.xml
     &lt;module name=&quot;tidb&quot; /&gt;
     &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
     &lt;parameters value=&quot;--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 &quot; /&gt;
-    &lt;kind value=&quot;FILE&quot; /&gt;
+    &lt;kind value=&quot;PACKAGE&quot; /&gt;
     &lt;filePath value=&quot;\$PROJECT_DIR\$/cmd/tidb-server/main.go&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
+    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
     &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
     &lt;method v=&quot;2&quot; /&gt;
   &lt;/configuration&gt;
