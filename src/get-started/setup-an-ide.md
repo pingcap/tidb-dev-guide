@@ -49,7 +49,7 @@ cat <<EOF > playground_attach_4001.xml
     <working_directory value="\$PROJECT_DIR\$" />
     <parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " />
     <kind value="PACKAGE" />
-    <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.g" />
+    <filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" />
     <package value="github.com/pingcap/tidb/cmd/tidb-server" />
     <directory value="\$PROJECT_DIR\$" />
     <method v="2" />
