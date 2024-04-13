@@ -307,7 +307,7 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 | id                       | estRows | task      | access object | operator info                    |
 +--------------------------+---------+-----------+---------------+----------------------------------+
 | TableReader_7            | 0.00    | root      |               | data:Selection_6                 |
-| └─Selection_6            | 0.00    | cop[tikv] |               | eq(test.t.value, &quot;Second&quot;)       |
+| └─Selection_6            | 0.00    | cop[tikv] |               | eq(test.t.value, "Second")       |
 |   └─TableRangeScan_5     | 1.00    | cop[tikv] | table:t       | range:(1,+inf], keep order:false |
 +--------------------------+---------+-----------+---------------+----------------------------------+
 </code></pre>

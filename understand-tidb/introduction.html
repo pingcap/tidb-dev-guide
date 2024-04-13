@@ -251,11 +251,11 @@ go s.onConn(clientConn)
 </code></pre>
 <p>The entry method for a single session processing command is to call the <code>dispatch</code> method of the <code>clientConn</code> class, where the protocol is parsed and passed to a different handler.</p>
 <h3 id="sql-layer"><a class="header" href="#sql-layer">SQL Layer</a></h3>
-<p>Generally speaking, a SQL statement needs to go through a series of processes: </p>
+<p>Generally speaking, a SQL statement needs to go through a series of processes:</p>
 <ol>
 <li>syntax parsing</li>
 <li>validity verification</li>
-<li>building query plan </li>
+<li>building query plan</li>
 <li>optimizing query plan</li>
 <li>generating executor according to plan</li>
 <li>executing and returning results</li>
@@ -273,7 +273,7 @@ go s.onConn(clientConn)
 </div>
 <h3 id="kv-api-layer"><a class="header" href="#kv-api-layer">KV API Layer</a></h3>
 <p>TiDB relies on the underlying storage engine to store and load data. It does not rely on a specific storage engine (such as TiKV), but has some requirements for the storage engine, and any engine that meets these requirements can be used (TiKV is the most suitable one).</p>
-<p>The most basic requirement is &quot;Key-Value engine with transactions and Golang driver&quot;. The more advanced requirement is &quot;support for distributed computation interface&quot;, so that TiDB can push some computation requests down to the storage engine.</p>
+<p>The most basic requirement is "Key-Value engine with transactions and Golang driver". The more advanced requirement is "support for distributed computation interface", so that TiDB can push some computation requests down to the storage engine.</p>
 <p>These requirements can be found in the interfaces of the <code>kv</code> package, and the storage engine needs to provide a Golang driver that implements these interfaces, which TiDB then uses to manipulate the underlying data.</p>
 <p>As for the most basic requirement, these interfaces are related:</p>
 <ul>

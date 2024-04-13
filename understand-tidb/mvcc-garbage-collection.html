@@ -187,7 +187,7 @@
 <li>GC should not be frequently triggered.</li>
 </ul>
 <p>There is an inner table named <code>mysql.tidb</code> in TiDB which stores many runtime information. Actually, these variables are stored in TiKV as common KV variables. We'll talk about the usage of these variables in the GC workflow later.</p>
-<pre><code>MySQL [test]&gt; select * from mysql.tidb where variable_name like &quot;tikv_gc_%&quot;;
+<pre><code>MySQL [test]&gt; select * from mysql.tidb where variable_name like "tikv_gc_%";
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                         | COMMENT                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
@@ -200,8 +200,8 @@
 | tikv_gc_last_run_time    | 20210929-17:03:35 +0800                                                                | The time when last GC starts. (DO NOT EDIT)                                                 |
 | tikv_gc_safe_point       | 20210929-16:53:35 +0800                                                                | All versions after safe point can be accessed. (DO NOT EDIT)                                |
 | tikv_gc_auto_concurrency | true                                                                                   | Let TiDB pick the concurrency automatically. If set false, tikv_gc_concurrency will be used |
-| tikv_gc_scan_lock_mode   | legacy                                                                                 | Mode of scanning locks, &quot;physical&quot; or &quot;legacy&quot;                                              |
-| tikv_gc_mode             | distributed                                                                            | Mode of GC, &quot;central&quot; or &quot;distributed&quot;                                                      |
+| tikv_gc_scan_lock_mode   | legacy                                                                                 | Mode of scanning locks, "physical" or "legacy"                                              |
+| tikv_gc_mode             | distributed                                                                            | Mode of GC, "central" or "distributed"                                                      |
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
 11 rows in set (0.003 sec)
 </code></pre>
@@ -281,7 +281,7 @@ func (w *GCWorker) Start() {
 	for _, v := range kvs {
 		minStartTS, err := strconv.ParseUint(string(v.Value), 10, 64)
 		if err != nil {
-			logutil.Logger(ctx).Warn(&quot;parse minStartTS failed&quot;, zap.Error(err))
+			logutil.Logger(ctx).Warn("parse minStartTS failed", zap.Error(err))
 			continue
 		}
 		if minStartTS &lt; globalMinStartTS {
@@ -357,12 +357,12 @@ func (s *Server) UpdateGCSafePoint(ctx context.Context, request *pdpb.UpdateGCSa
 		if err := s.storage.SaveGCSafePoint(newSafePoint); err != nil {
 			return nil, err
 		}
-		log.Info(&quot;updated gc safe point&quot;,
-			zap.Uint64(&quot;safe-point&quot;, newSafePoint))
+		log.Info("updated gc safe point",
+			zap.Uint64("safe-point", newSafePoint))
 	} else if newSafePoint &lt; oldSafePoint {
-		log.Warn(&quot;trying to update gc safe point&quot;,
-			zap.Uint64(&quot;old-safe-point&quot;, oldSafePoint),
-			zap.Uint64(&quot;new-safe-point&quot;, newSafePoint))
+		log.Warn("trying to update gc safe point",
+			zap.Uint64("old-safe-point", oldSafePoint),
+			zap.Uint64("new-safe-point", newSafePoint))
 		newSafePoint = oldSafePoint
 	}
 

@@ -257,8 +257,8 @@
 <li>Click the <strong>Fork</strong> button on the top right and wait it to finish.</li>
 </ol>
 <h4 id="step-2-clone-the-forked-repository-to-local-storage"><a class="header" href="#step-2-clone-the-forked-repository-to-local-storage">Step 2: Clone the forked repository to local storage</a></h4>
-<pre><code>cd $working_dir # Comes to the directory that you want put the fork in, for example, &quot;cd ~/Documents/GitHub&quot;
-git clone git@github.com:$user/docs.git # Replace &quot;$user&quot; with your GitHub ID
+<pre><code>cd $working_dir # Comes to the directory that you want put the fork in, for example, "cd ~/Documents/GitHub"
+git clone git@github.com:$user/docs.git # Replace "$user" with your GitHub ID
 
 cd $working_dir/docs
 git remote add upstream git@github.com:pingcap/docs.git # Adds the upstream repo
@@ -285,7 +285,7 @@ git rebase upstream/master
 <h4 id="step-5-commit-your-changes"><a class="header" href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h4>
 <pre><code>git status # Checks the local status
 git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
-git commit -m &quot;commit-message: update the xx&quot;
+git commit -m "commit-message: update the xx"
 </code></pre>
 <p>See <a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message">Commit Message Style</a>.</p>
 <h4 id="step-6-keep-your-branch-in-sync-with-upstreammaster"><a class="header" href="#step-6-keep-your-branch-in-sync-with-upstreammaster">Step 6: Keep your branch in sync with upstream/master</a></h4>
@@ -294,7 +294,7 @@ git fetch upstream
 git rebase upstream/master
 </code></pre>
 <h4 id="step-7-push-your-changes-to-the-remote"><a class="header" href="#step-7-push-your-changes-to-the-remote">Step 7: Push your changes to the remote</a></h4>
-<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+<pre><code>git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
 </code></pre>
 <h4 id="step-8-create-a-pull-request"><a class="header" href="#step-8-create-a-pull-request">Step 8: Create a pull request</a></h4>
 <ol>
@@ -326,31 +326,31 @@ git fetch origin
 <p>Commit your changes. This step is the same as <a href="#step-5-commit-your-changes">Step 5: Commit your changes</a> in stage 1.</p>
 <pre><code>git status # Checks the local status
 git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
-git commit -m &quot;commit-message: update the xx&quot;
+git commit -m "commit-message: update the xx"
 </code></pre>
 </li>
 <li>
 <p>Push your changes to the remote origin:</p>
-<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+<pre><code>git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
 </code></pre>
 </li>
 <li>
-<p>After all comments are addressed, reply on the PR page: &quot;All comments are addressed. PTAL.&quot;</p>
-<p>&quot;PTAL&quot; is short for &quot;Please take a look&quot;.</p>
+<p>After all comments are addressed, reply on the PR page: "All comments are addressed. PTAL."</p>
+<p>"PTAL" is short for "Please take a look".</p>
 </li>
 </ol>
 <h5 id="accept-comments-on-the-pr-page"><a class="header" href="#accept-comments-on-the-pr-page">Accept comments on the PR page</a></h5>
-<p>If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the &quot;Commit suggestion&quot; button. Then the suggested change is automatically committed to your PR.</p>
+<p>If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the "Commit suggestion" button. Then the suggested change is automatically committed to your PR.</p>
 <p>If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps on the PR page:</p>
 <ol>
 <li>
-<p>Click the &quot;Files changed&quot; tab and see the file changes. You can see multiple review comments in suggestion mode.</p>
+<p>Click the "Files changed" tab and see the file changes. You can see multiple review comments in suggestion mode.</p>
 </li>
 <li>
-<p>Choose the suggestions you want to commit by clicking the &quot;Add suggestion to batch&quot; button on each suggestion.</p>
+<p>Choose the suggestions you want to commit by clicking the "Add suggestion to batch" button on each suggestion.</p>
 </li>
 <li>
-<p>After all suggestions to be committed are chosen, click the &quot;Commit suggestions&quot; button on the upper right corner of the PR page. Then, you have successfully committed all suggested changes.</p>
+<p>After all suggestions to be committed are chosen, click the "Commit suggestions" button on the upper right corner of the PR page. Then, you have successfully committed all suggested changes.</p>
 </li>
 </ol>
 <blockquote>
@@ -362,7 +362,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>You need to perform the following steps on each one of the cherry-picked PRs:</p>
 <ul>
 <li>
-<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment &quot;LGTM&quot;, which means &quot;Looks good to me&quot;. The repository committers will merge it soon.</p>
+<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository committers will merge it soon.</p>
 </li>
 <li>
 <p>If most of your changes apply to multiple documentation versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.</p>
@@ -396,7 +396,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>Once the assignee submits the translated content in a docs PR, he or she adds the <code>translation/from-docs-cn</code> label to the docs PR, removes the <code>translation/doing</code> label from the docs-cn PR, and adds the <code>translation/done</code> label to the docs-cn PR.</p>
 </li>
 <li>
-<p>The assignee provides the docs-cn PR link in the PR description section of the docs PR (&quot;This PR is translated from&quot;). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.</p>
+<p>The assignee provides the docs-cn PR link in the PR description section of the docs PR ("This PR is translated from"). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.</p>
 </li>
 <li>
 <p>After the docs PR is merged. The translation tracking process is finished. The updates in Chinese documentation are synchronized to the English documentation.</p>

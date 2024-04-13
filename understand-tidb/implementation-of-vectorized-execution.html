@@ -279,7 +279,7 @@ func (node *columnNode) evalReal(row Row) (float64, bool) {
     return row.GetReal(node.colIdx)
 }
 </code></pre>
-<p>In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the &quot;real&quot; multiplication compared to the number of assembly instructions required to perform the function.</p>
+<p>In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the "real" multiplication compared to the number of assembly instructions required to perform the function.</p>
 <p><strong>Vectorized Execution</strong></p>
 <p>In vectorized execution, the interface to evaluate an expression in a batch manner in TiDB looks like this:</p>
 <pre><code>type VecNode interface {
@@ -313,10 +313,10 @@ func (node *columnNode) evalReal(row Row) (float64, bool) {
 <pre><code>BenchmarkVec-12           152166              7056 ns/op               0 B/op          0 allocs/op
 BenchmarkRow-12            28944             38461 ns/op               0 B/op          0 allocs/op
 </code></pre>
-<p>The results above show vectorized execution is four times faster than row-based execution. 
+<p>The results above show vectorized execution is four times faster than row-based execution.
 For more details about the vectorized expression evaluation, you can refer to <a href="https://www.pingcap.com/blog/10x-performance-improvement-for-expression-evaluation-made-possible-by-vectorized-execution/">this link</a>.</p>
 <h4 id="how-operators-are-evaluated"><a class="header" href="#how-operators-are-evaluated">How operators are evaluated</a></h4>
-<p>In this section, we'll dive deeper into the evaluation of operators, focusing on HashJoin as an example. </p>
+<p>In this section, we'll dive deeper into the evaluation of operators, focusing on HashJoin as an example.</p>
 <p>HashJoin in vectorized execution consists of the following steps:</p>
 <p><strong>Hashing Phase</strong></p>
 <p>Let's consider the table used for constructing the hash table as 't'. The data from table 't' is read into <code>Chunk</code> in batches. First, the data in the Chunk is filtered by columns based on the predicates on table 't'. The filtered results for these columns are then combined into a <code>selected</code> array. In the <code>selected</code> array, true values indicate valid rows. The relevant code is available in the <a href="https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L1252">VectorizedFilter</a> section.

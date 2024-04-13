@@ -222,7 +222,7 @@ if prewriteResp.MinCommitTs == 0 {
     c.mu.Unlock()
 }
 </code></pre>
-<p>However, if any response of prewrite is finally lost due to RPC reasons, it is impossible for us to know whether the prewriting succeeds. And it also means we cannot know whether the transaction succeeds. In this case, we can only <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L187">return an &quot;undetermined error&quot;</a> and the client connection will be closed:</p>
+<p>However, if any response of prewrite is finally lost due to RPC reasons, it is impossible for us to know whether the prewriting succeeds. And it also means we cannot know whether the transaction succeeds. In this case, we can only <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L187">return an "undetermined error"</a> and the client connection will be closed:</p>
 <pre><code class="language-go">defer func() {
     if err != nil {
         // If we fail to receive response for async commit prewrite, it will be undetermined whether this
@@ -237,7 +237,7 @@ if prewriteResp.MinCommitTs == 0 {
 </code></pre>
 <p>But don't worry, this does not happen very often. It is safe to retry a prewrite which temporarily fails due to network reasons. The above problem only happens if a prewrite request has been sent, but later retries all fail due to RPC errors.</p>
 <h3 id="commit"><a class="header" href="#commit">Commit</a></h3>
-<p>The whole commit process is <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1370">done asynchronously in background</a>. This is why the optimization is called &quot;async commit&quot;:</p>
+<p>The whole commit process is <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1370">done asynchronously in background</a>. This is why the optimization is called "async commit":</p>
 <pre><code class="language-go">if c.isAsyncCommit() {
     // For async commit protocol, the commit is considered success here.
     c.txn.commitTS = c.commitTS
@@ -292,7 +292,7 @@ status.commitTS = resolveData.commitTs
 <h2 id="tikv-part"><a class="header" href="#tikv-part">TiKV part</a></h2>
 <h3 id="concurrency-manager"><a class="header" href="#concurrency-manager">Concurrency manager</a></h3>
 <p>As discussed in the <a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">theory blog</a>, TiKV needs to record the max TS and set some memory locks for ongoing prewrite requests.</p>
-<p>For simplicity, we use a global component to implement it. We call it the &quot;concurrency manager&quot;.</p>
+<p>For simplicity, we use a global component to implement it. We call it the "concurrency manager".</p>
 <p>The methods provided by the concurrency manager can be found in <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lib.rs">this file</a>.</p>
 <p>It is very easy to update the max TS. It's just an atomic operation:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -361,7 +361,7 @@ txn.guards.push(key_guard);
 <p>The operation is done while locked to guarantee the atomicity of getting the max TS and setting the <code>min_commit_ts</code> in the lock.</p>
 <p>The key guard is saved until the lock is successfully written into RocksDB. Before that, readers are able to check the locks in order not to break any constraint. We can release the guard to remove the lock in the memory table after the readers can read the lock from the RocksDB.</p>
 <h4 id="fallback-to-non-async-commit"><a class="header" href="#fallback-to-non-async-commit">Fallback to non-async commit</a></h4>
-<p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit. </p>
+<p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit.</p>
 <p>When the <code>CommitTsTooLarge</code> error happens, the lock will still be written, but in the lock <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L406">there will be no <code>use_async_commit</code> flag</a> and no secondary keys will be recorded:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -423,7 +423,7 @@ if isolation_level == IsolationLevel::Si {
 <p>So, for safety, we choose to get a latest timestamp from PD when a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/peer.rs#L1391">becomes leader</a> or a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/fsm/peer.rs#L2992">is merged</a>.</p>
 <p>Before the max TS is updated, the corresponding region is not allowed to proceed an async-commit prewrite. The property is checked <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L364">here</a>.</p>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
-<p>This is how the &quot;async commit&quot; optimization is implemented in TiDB.</p>
+<p>This is how the "async commit" optimization is implemented in TiDB.</p>
 <p>Due to limited space, some subtle problems such as non-unique timestamps and the compatibility with follower read are not involved.</p>
 <p>During the implementation of async commit, many problems blocking one-phase commit (1PC) are solved. So it becomes relatively easy to implement 1PC in TiDB. The next document will introduce the implementation details of 1PC.</p>
 

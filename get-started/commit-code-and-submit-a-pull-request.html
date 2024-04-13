@@ -180,7 +180,7 @@
 <p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
 <p>This section addresses some of the most common questions and problems that new contributors might face. This section also covers some Git basics; however if you find that the content is a little difficult to understand, we recommend that you first read the following introductions to Git:</p>
 <ul>
-<li>The &quot;Beginner&quot; and &quot;Getting Started&quot; sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
+<li>The "Beginner" and "Getting Started" sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
 <li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
 <li>A more in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
 </ul>
@@ -222,7 +222,7 @@ git pull master
 git add path/to/changed/file.go path/to/another/changed/file.go
 
 # commit changes staged, make sure the commit message is meaningful and readable
-git commit -s -m &quot;pkg, pkg2, pkg3: what's changed&quot;
+git commit -s -m "pkg, pkg2, pkg3: what's changed"
 
 # optionally use `git status` to check if the change set is correct
 # git status
@@ -259,7 +259,7 @@ git pull
 <p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
 <h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
 <p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
-<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one "rebase conflict." This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
 <pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
 </code></pre>
 <p>When you open these files, you'll see sections of the form</p>
@@ -274,7 +274,7 @@ Your code
 <p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
 <p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
 <h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced rebasing</a></h2>
-<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
+<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or "squash" them into each other.</p>
 <p>Alternatively, you can sacrifice the commit history like this:</p>
 <pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
 git rebase -i $(git merge-base master HEAD)  # and squash all changes along the way
@@ -283,7 +283,7 @@ git rebase master
 git rebase --continue
 </code></pre>
 <p>Squashing commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
-<p>You also may want to squash together just the last few commits, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
+<p>You also may want to squash together just the last few commits, possibly because they only represent "fixups" and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
 <h2 id="setting-pre-commit"><a class="header" href="#setting-pre-commit">Setting pre-commit</a></h2>
 <p>We use <a href="https://pre-commit.com/">pre-commit</a> to check the code style before committing. To install pre-commit, run:</p>
 <pre><code class="language-bash"># Using pip:

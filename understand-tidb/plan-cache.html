@@ -208,7 +208,7 @@
 </li>
 <li>else, then
 <ol>
-<li>optimize the AST in <code>CachedPrepareStmt</code> with current parameters to get a new plan, </li>
+<li>optimize the AST in <code>CachedPrepareStmt</code> with current parameters to get a new plan,</li>
 <li>store the new plan into current session's <code>PlanCache</code>, and</li>
 <li>run the new plan.</li>
 </ol>
@@ -219,7 +219,7 @@
 <p><img src="../img/plan-cache-execute.png" alt="plan-cache-execute" /></p>
 <p>The main function of handling <code>execute</code> is <code>common_plans.go:Execute.getPhysicalPlan()</code>.</p>
 <h2 id="plan-rebuilding"><a class="header" href="#plan-rebuilding">Plan Rebuilding</a></h2>
-<p>A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range. </p>
+<p>A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range.</p>
 <p>For example, if the query is <code>select * from t where a&lt;?</code>, when you first <code>execute</code> it with <code>1</code>, then a <code>TableScan</code> with range <code>(-INF, 1)</code> could be generated and cached, and then you later <code>execute</code> it with <code>2</code>, the range has to be re-calculated to <code>(-INF, 2)</code> so that it can read correct data this time, and that is what plan rebuilding does.</p>
 <p><img src="../img/plan-cache-rebuilding.png" alt="plan-cache-rebuilding" /></p>
 <p>The entry function of plan rebuilding is <code>common_plans.go:Execute.RebuildPlan()</code>.</p>
@@ -227,7 +227,7 @@
 <p>Parameter Makers are used to propagate current parameter values to executors(operators).</p>
 <p>For example, if the query is <code>select * from t where a+?&gt;1</code>, then the filter <code>a+?&gt;1</code> will be converted to a <code>Selection</code> operator with an expression-tree <code>a+?&gt;1</code>:</p>
 <p><img src="../img/plan-cache-parameter.png" alt="plan-cache-parameter" /></p>
-<p>The parameter placeholder(<code>?</code>) is converted to a <code>ParamMaker</code> in <code>Constant</code>. </p>
+<p>The parameter placeholder(<code>?</code>) is converted to a <code>ParamMaker</code> in <code>Constant</code>.</p>
 <p>You can regard it as a special kind of pointer, and when the plan is processed and the parameter's value is needed, we can use it to get the corresponding value of this parameter.</p>
 <pre><code>type Constant struct {
     ...

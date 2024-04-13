@@ -220,7 +220,7 @@ if err = cc.dispatch(ctx, data)
 <h4 id="session"><a class="header" href="#session"><a href="session.html">Session</a></a></h4>
 <p>The most important function in <code>Session</code> is <code>ExecuteStmt</code>. It wraps calls to other modules. The SQL execution will respect environment variables in <code>Session</code> like <code>AutoCommit</code> and timezone.</p>
 <h4 id="parser"><a class="header" href="#parser"><a href="parser.html">Parser</a></a></h4>
-<p><a href="https://github.com/pingcap/tidb/blob/master/parser/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/tidb/blob/master/parser/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
+<p><a href="https://github.com/pingcap/tidb/blob/master/pkg/parser/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/tidb/blob/master/pkg/parser/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
 <pre><code class="language-go">p := parserPool.Get().(*parser.Parser)
 defer parserPool.Put(p)
 p.SetSQLMode(s.sessionVars.SQLMode)

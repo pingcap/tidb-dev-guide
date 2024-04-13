@@ -189,27 +189,27 @@
 ​                (e *SimpleExec) Next
 ​                    (e *SimpleExec) executeBegin
 </code></pre>
-<p>The function <code>(e *SimpleExec) executeBegin</code> do the main work for  a &quot;BEGIN&quot; statement，The important comment and simplified code is as followers. The completed code is <a href="https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571">here</a> .</p>
+<p>The function <code>(e *SimpleExec) executeBegin</code> do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is <a href="https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571">here</a> .</p>
 <pre><code class="language-go">/*
 
-Check the syntax &quot;start transaction read only&quot; and &quot;as of timestamp&quot; used correctly.
-If stale read timestamp was set,  creates a new stale read transaction and sets &quot;in transaction&quot; state, and return.
+Check the syntax "start transaction read only" and "as of timestamp" used correctly.
+If stale read timestamp was set,  creates a new stale read transaction and sets "in transaction" state, and return.
 create a new transaction and set some properties like snapshot, startTS etc
 */
 
 func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 ​    if s.ReadOnly {
-​       // the statement &quot;start transaction read only&quot; must be used with tidb_enable_noop_functions is true
-​       //  the statement &quot;start transaction read only  as of timestamp&quot; can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
-​       //  the statement &quot;start transaction read only  as of timestamp&quot; must ensure the timestamp is in the legal safe point range        
+​       // the statement "start transaction read only" must be used with tidb_enable_noop_functions is true
+​       //  the statement "start transaction read only  as of timestamp" can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
+​       //  the statement "start transaction read only  as of timestamp" must ensure the timestamp is in the legal safe point range        
 ​       enableNoopFuncs := e.ctx.GetSessionVars().EnableNoopFuncs
 ​       if !enableNoopFuncs &amp;&amp; s.AsOf == nil {
-​           return expression.ErrFunctionsNoopImpl.GenWithStackByArgs(&quot;READ ONLY&quot;)
+​           return expression.ErrFunctionsNoopImpl.GenWithStackByArgs("READ ONLY")
 ​       }
 
 ​       if s.AsOf != nil {
 ​           if e.ctx.GetSessionVars().TxnReadTS.PeakTxnReadTS() &gt; 0 {
-​              return errors.New(&quot;start transaction read only as of is forbidden after set transaction read only as of&quot;)
+​              return errors.New("start transaction read only as of is forbidden after set transaction read only as of")
 ​           }
 ​       }
 ​    } 
@@ -223,9 +223,9 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 
 ​       // ignore tidb_snapshot configuration if in stale read transaction
 ​       vars := e.ctx.GetSessionVars()
-​       vars.SetSystemVar(variable.TiDBSnapshot, &quot;&quot;)
+​       vars.SetSystemVar(variable.TiDBSnapshot, "")
     
-​       // set &quot;in transaction&quot; state and return
+​       // set "in transaction" state and return
 ​       vars.SetInTxn(true)
 
 ​       return nil
@@ -238,7 +238,7 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 ​       err := e.ctx.NewTxn(ctx)
 ​    }
 
-​  // set &quot;in transaction&quot; state
+​  // set "in transaction" state
    e.ctx.GetSessionVars().SetInTxn(true)
 
    // create a new transaction and set some properties like snapshot, startTS etc.
@@ -253,7 +253,7 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 </code></pre>
 <h2 id="dml-executed-in-optimistic-transaction"><a class="header" href="#dml-executed-in-optimistic-transaction">DML Executed In Optimistic Transaction</a></h2>
 <p>There are three kinds of DML operations, such as update, delete and insert. For simplicity, This article only describes the update statement execution process. DML mutations are not sended to tikv directly, but buffered in TiDB temporarily, commit operation make the mutations effective at last.</p>
-<p>The main function stack to execute an update statement such as &quot;update t1 set id2 = 2 where pk = 1&quot; is as followers.</p>
+<p>The main function stack to execute an update statement such as "update t1 set id2 = 2 where pk = 1" is as followers.</p>
 <pre><code class="language-go">(a *ExecStmt) Exec
 ​    (a *ExecStmt) handleNoDelay
 ​        (a *ExecStmt) handleNoDelayExecutor
@@ -277,7 +277,7 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 ​    totalNumRows := 0
 
 ​    for {
-​       // call &quot;Next&quot; method recursively until every executor finished, every &quot;Next&quot; returns a batch rows
+​       // call "Next" method recursively until every executor finished, every "Next" returns a batch rows
 ​       err := Next(ctx, e.children[0], chk)
 
 ​       // If all rows are updated, return
@@ -309,16 +309,16 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 }
 </code></pre>
 <h2 id="commit-optimistic-transaction"><a class="header" href="#commit-optimistic-transaction">Commit Optimistic Transaction</a></h2>
-<p>Committing transaction includes &quot;prewrite&quot; and &quot;commit&quot; two phases that are explained separately below. The function <code>(c *twoPhaseCommitter) execute</code> does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is <a href="https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112">here</a> .</p>
+<p>Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function <code>(c *twoPhaseCommitter) execute</code> does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is <a href="https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112">here</a> .</p>
 <pre><code class="language-go">/*
-do the &quot;prewrite&quot; operation first
+do the "prewrite" operation first
 if OnePC transaction, return immediately
 if AsyncCommit transaction, commit the transaction Asynchronously and return
 if not OnePC and AsyncCommit transaction, commit the transaction synchronously.
 */
 
 func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
-​    // do the &quot;prewrite&quot; operation
+​    // do the "prewrite" operation
 ​    c.prewriteStarted = true
 
 ​    start := time.Now()
@@ -336,7 +336,7 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 
 ​       return nil
 ​    } else {  
-​        // do the &quot;commit&quot; phase 
+​        // do the "commit" phase 
 ​        return c.commitTxn(ctx, commitDetail)
 ​    } 
 }
@@ -391,7 +391,7 @@ func (batchExe *batchExecutor) startWorker(exitCh chan struct{}, ch chan error, 
 ​       if exit := batchExe.rateLimiter.GetToken(exitCh); !exit {
 ​           batchExe.tokenWaitDuration += time.Since(waitStart)
 ​           batch := batch1
-​           //  call the function &quot;handleSingleBatch&quot; to prewrite every batch keys
+​           //  call the function "handleSingleBatch" to prewrite every batch keys
 ​           go func() {
 ​              defer batchExe.rateLimiter.PutToken() //  release the chan buffer
 ​              ch &lt;- batchExe.action.handleSingleBatch(batchExe.committer, singleBatchBackoffer, batch)
@@ -458,7 +458,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​       start := time.Now()
 ​       msBeforeExpired, err := c.store.GetLockResolver().ResolveLocksForWrite(bo, c.startTS, c.forUpdateTS, locks)
 ​       if msBeforeExpired &gt; 0 {
-​           err = bo.BackoffWithCfgAndMaxSleep(retry.BoTxnLock, int(msBeforeExpired), errors.Errorf(&quot;2PC prewrite lockedKeys: %d&quot;, len(locks)))
+​           err = bo.BackoffWithCfgAndMaxSleep(retry.BoTxnLock, int(msBeforeExpired), errors.Errorf("2PC prewrite lockedKeys: %d", len(locks)))
 ​           if err != nil {
 ​              return errors.Trace(err) // backoff exceeded maxtime, returns error
 ​           }

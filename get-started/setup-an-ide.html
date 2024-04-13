@@ -195,47 +195,47 @@
 <pre><code class="language-bash">mkdir -p .idea/runConfigurations/ &amp;&amp; cd .idea/runConfigurations/
 
 cat &lt;&lt;EOF &gt; unistore_4000.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;unistore 4000&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;kind value=&quot;PACKAGE&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;kind value="PACKAGE" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$" /&gt;
+    &lt;package value="github.com/pingcap/tidb/cmd/tidb-server" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
 
 cat &lt;&lt;EOF &gt; playground_attach_4001.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;playground attach 4001&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;parameters value=&quot;--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 &quot; /&gt;
-    &lt;kind value=&quot;PACKAGE&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$/cmd/tidb-server/main.go&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " /&gt;
+    &lt;kind value="PACKAGE" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" /&gt;
+    &lt;package value="github.com/pingcap/tidb/cmd/tidb-server" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
 
 cat &lt;&lt;EOF &gt; unit_test.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;unit test&quot; type=&quot;GoTestRunConfiguration&quot; factoryName=&quot;Go Test&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;go_parameters value=&quot;-race -i --tags=intest,deadlock&quot; /&gt;
-    &lt;framework value=&quot;gocheck&quot; /&gt;
-    &lt;kind value=&quot;DIRECTORY&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$/pkg/planner/core&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;pattern value=&quot;TestEnforceMPP&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;go_parameters value="-race -i --tags=intest,deadlock" /&gt;
+    &lt;framework value="gocheck" /&gt;
+    &lt;kind value="DIRECTORY" /&gt;
+    &lt;package value="github.com/pingcap/tidb" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$/pkg/planner/core" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$" /&gt;
+    &lt;pattern value="TestEnforceMPP" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
@@ -284,9 +284,9 @@ EOF
 <p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
 <pre><code>mkdir -p .vscode
 
-echo &quot;{
-    \&quot;go.testTags\&quot;: \&quot;intest,deadlock\&quot;
-}&quot; &gt; .vscode/settings.json
+echo "{
+    \"go.testTags\": \"intest,deadlock\"
+}" &gt; .vscode/settings.json
 </code></pre>
 
                     </main>

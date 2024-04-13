@@ -179,17 +179,17 @@
                         <h1 id="add-a-function"><a class="header" href="#add-a-function">Add a function</a></h1>
 <p>To add a builtin function to TiDB the best practice is to look at MySQL first and try to implement the function in such a way that it is commpatible. Avoid adding functions that are already deprecated in MySQL or that might soon be deprecrated.</p>
 <p>Here we will implement a <code>HELLO()</code> function that has one argument that is a string. For this you need <a href="../get-started/build-tidb-from-source.html#clone">a clone of the pingcap/tidb repository</a></p>
-<pre><code>sql&gt; SELECT HELLO(&quot;world&quot;);
+<pre><code>sql&gt; SELECT HELLO("world");
 ERROR: 1305 (42000): FUNCTION test.hello does not exist
 </code></pre>
 <p>The first step is to define the name of the function in <code>parser/ast/functions.go</code>:</p>
 <pre><code class="language-go">// List scalar function names.
 const (
 ...
-        Hello = &quot;hello&quot;
+        Hello = "hello"
 )
 </code></pre>
-<p>This links <code>ast.Hello</code> with &quot;hello&quot;. Note that the lookup for the function is done with the lowercase name, so always use the lowercase name, otherwise it won't find the function.</p>
+<p>This links <code>ast.Hello</code> with "hello". Note that the lookup for the function is done with the lowercase name, so always use the lowercase name, otherwise it won't find the function.</p>
 <p>The next step is to modify <code>expression/builtin.go</code></p>
 <pre><code class="language-go">var funcs = map[string]functionClass{
 ...
@@ -237,23 +237,23 @@ func (b *builtinHelloSig) evalString(row chunk.Row) (name string, isNull bool, e
         if isNull || err != nil {
                 return name, isNull, err
         }
-        return &quot;hello &quot; + name, false, nil
+        return "hello " + name, false, nil
 }
 </code></pre>
 <p>The <code>getFunction()</code> method can return different functions depending on the type and number of arguments. This example always returns the same function that has one string argument and returns a string.</p>
 <p>Here <code>evalString()</code> gets called for every row. If the function returns an integer you have to use <code>evalInt</code> and there are also functions for Decimal, Real, Time and JSON.</p>
 <p>Now you need to <a href="../get-started/build-tidb-from-source.html#build">build TiDB</a> again and try the newly added function.</p>
 <p>The final result:</p>
-<pre><code>sql&gt; SELECT HELLO(&quot;world&quot;);
+<pre><code>sql&gt; SELECT HELLO("world");
 +----------------+
-| HELLO(&quot;world&quot;) |
+| HELLO("world") |
 +----------------+
 | hello world    |
 +----------------+
 1 row in set (0.0007 sec)
 </code></pre>
 <p>To show the function with multiple rows:</p>
-<pre><code>sql&gt; WITH names AS (SELECT &quot;Europe&quot; AS &quot;name&quot; UNION ALL SELECT &quot;America&quot; UNION ALL SELECT &quot;China&quot;)
+<pre><code>sql&gt; WITH names AS (SELECT "Europe" AS "name" UNION ALL SELECT "America" UNION ALL SELECT "China")
    -&gt; SELECT HELLO(name) FROM names;
 +---------------+
 | HELLO(name)   |

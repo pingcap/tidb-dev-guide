@@ -281,134 +281,134 @@
 <p>It will fill in a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
 <p>DDL job encoded as JSON:</p>
 <pre><code class="language-json">{
-  &quot;id&quot;: 56,
-  &quot;type&quot;: 3,
-  &quot;schema_id&quot;: 1,
-  &quot;table_id&quot;: 55,
-  &quot;schema_name&quot;: &quot;test&quot;,
-  &quot;state&quot;: 0,
-  &quot;err&quot;: null,
-  &quot;err_count&quot;: 0,
-  &quot;row_count&quot;: 0,
-  &quot;raw_args&quot;: [
+  "id": 56,
+  "type": 3,
+  "schema_id": 1,
+  "table_id": 55,
+  "schema_name": "test",
+  "state": 0,
+  "err": null,
+  "err_count": 0,
+  "row_count": 0,
+  "raw_args": [
     {
-      &quot;id&quot;: 55,
-      &quot;name&quot;: {
-        &quot;O&quot;: &quot;t&quot;,
-        &quot;L&quot;: &quot;t&quot;
+      "id": 55,
+      "name": {
+        "O": "t",
+        "L": "t"
       },
-      &quot;charset&quot;: &quot;utf8mb4&quot;,
-      &quot;collate&quot;: &quot;utf8mb4_bin&quot;,
-      &quot;cols&quot;: [
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_bin",
+      "cols": [
         {
-          &quot;id&quot;: 1,
-          &quot;name&quot;: {
-            &quot;O&quot;: &quot;id&quot;,
-            &quot;L&quot;: &quot;id&quot;
+          "id": 1,
+          "name": {
+            "O": "id",
+            "L": "id"
           },
-          &quot;offset&quot;: 0,
-          &quot;origin_default&quot;: null,
-          &quot;origin_default_bit&quot;: null,
-          &quot;default&quot;: null,
-          &quot;default_bit&quot;: null,
-          &quot;default_is_expr&quot;: false,
-          &quot;generated_expr_string&quot;: &quot;&quot;,
-          &quot;generated_stored&quot;: false,
-          &quot;dependences&quot;: null,
-          &quot;type&quot;: {
-            &quot;Tp&quot;: 3,
-            &quot;Flag&quot;: 4131,
-            &quot;Flen&quot;: 10,
-            &quot;Decimal&quot;: 0,
-            &quot;Charset&quot;: &quot;binary&quot;,
-            &quot;Collate&quot;: &quot;binary&quot;,
-            &quot;Elems&quot;: null
+          "offset": 0,
+          "origin_default": null,
+          "origin_default_bit": null,
+          "default": null,
+          "default_bit": null,
+          "default_is_expr": false,
+          "generated_expr_string": "",
+          "generated_stored": false,
+          "dependences": null,
+          "type": {
+            "Tp": 3,
+            "Flag": 4131,
+            "Flen": 10,
+            "Decimal": 0,
+            "Charset": "binary",
+            "Collate": "binary",
+            "Elems": null
           },
-          &quot;state&quot;: 5,
-          &quot;comment&quot;: &quot;&quot;,
-          &quot;hidden&quot;: false,
-          &quot;change_state_info&quot;: null,
-          &quot;version&quot;: 2
+          "state": 5,
+          "comment": "",
+          "hidden": false,
+          "change_state_info": null,
+          "version": 2
         },
         {
-          &quot;id&quot;: 2,
-          &quot;name&quot;: {
-            &quot;O&quot;: &quot;notes&quot;,
-            &quot;L&quot;: &quot;notes&quot;
+          "id": 2,
+          "name": {
+            "O": "notes",
+            "L": "notes"
           },
-          &quot;offset&quot;: 1,
-          &quot;origin_default&quot;: null,
-          &quot;origin_default_bit&quot;: null,
-          &quot;default&quot;: null,
-          &quot;default_bit&quot;: null,
-          &quot;default_is_expr&quot;: false,
-          &quot;generated_expr_string&quot;: &quot;&quot;,
-          &quot;generated_stored&quot;: false,
-          &quot;dependences&quot;: null,
-          &quot;type&quot;: {
-            &quot;Tp&quot;: 15,
-            &quot;Flag&quot;: 0,
-            &quot;Flen&quot;: 255,
-            &quot;Decimal&quot;: 0,
-            &quot;Charset&quot;: &quot;utf8mb4&quot;,
-            &quot;Collate&quot;: &quot;utf8mb4_bin&quot;,
-            &quot;Elems&quot;: null
+          "offset": 1,
+          "origin_default": null,
+          "origin_default_bit": null,
+          "default": null,
+          "default_bit": null,
+          "default_is_expr": false,
+          "generated_expr_string": "",
+          "generated_stored": false,
+          "dependences": null,
+          "type": {
+            "Tp": 15,
+            "Flag": 0,
+            "Flen": 255,
+            "Decimal": 0,
+            "Charset": "utf8mb4",
+            "Collate": "utf8mb4_bin",
+            "Elems": null
           },
-          &quot;state&quot;: 5,
-          &quot;comment&quot;: &quot;&quot;,
-          &quot;hidden&quot;: false,
-          &quot;change_state_info&quot;: null,
-          &quot;version&quot;: 2
+          "state": 5,
+          "comment": "",
+          "hidden": false,
+          "change_state_info": null,
+          "version": 2
         }
       ],
-      &quot;index_info&quot;: null,
-      &quot;constraint_info&quot;: null,
-      &quot;fk_info&quot;: null,
-      &quot;state&quot;: 0,
-      &quot;pk_is_handle&quot;: true,
-      &quot;is_common_handle&quot;: false,
-      &quot;common_handle_version&quot;: 0,
-      &quot;comment&quot;: &quot;&quot;,
-      &quot;auto_inc_id&quot;: 0,
-      &quot;auto_id_cache&quot;: 0,
-      &quot;auto_rand_id&quot;: 0,
-      &quot;max_col_id&quot;: 2,
-      &quot;max_idx_id&quot;: 0,
-      &quot;max_cst_id&quot;: 0,
-      &quot;update_timestamp&quot;: 0,
-      &quot;ShardRowIDBits&quot;: 0,
-      &quot;max_shard_row_id_bits&quot;: 0,
-      &quot;auto_random_bits&quot;: 0,
-      &quot;pre_split_regions&quot;: 0,
-      &quot;partition&quot;: null,
-      &quot;compression&quot;: &quot;&quot;,
-      &quot;view&quot;: null,
-      &quot;sequence&quot;: null,
-      &quot;Lock&quot;: null,
-      &quot;version&quot;: 4,
-      &quot;tiflash_replica&quot;: null,
-      &quot;is_columnar&quot;: false,
-      &quot;temp_table_type&quot;: 0,
-      &quot;policy_ref_info&quot;: null,
-      &quot;placement_settings&quot;: null
+      "index_info": null,
+      "constraint_info": null,
+      "fk_info": null,
+      "state": 0,
+      "pk_is_handle": true,
+      "is_common_handle": false,
+      "common_handle_version": 0,
+      "comment": "",
+      "auto_inc_id": 0,
+      "auto_id_cache": 0,
+      "auto_rand_id": 0,
+      "max_col_id": 2,
+      "max_idx_id": 0,
+      "max_cst_id": 0,
+      "update_timestamp": 0,
+      "ShardRowIDBits": 0,
+      "max_shard_row_id_bits": 0,
+      "auto_random_bits": 0,
+      "pre_split_regions": 0,
+      "partition": null,
+      "compression": "",
+      "view": null,
+      "sequence": null,
+      "Lock": null,
+      "version": 4,
+      "tiflash_replica": null,
+      "is_columnar": false,
+      "temp_table_type": 0,
+      "policy_ref_info": null,
+      "placement_settings": null
     }
   ],
-  &quot;schema_state&quot;: 0,
-  &quot;snapshot_ver&quot;: 0,
-  &quot;real_start_ts&quot;: 0,
-  &quot;start_ts&quot;: 428310284267159550,
-  &quot;dependency_id&quot;: 0,
-  &quot;query&quot;: &quot;CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255))&quot;,
-  &quot;binlog&quot;: {
-    &quot;SchemaVersion&quot;: 0,
-    &quot;DBInfo&quot;: null,
-    &quot;TableInfo&quot;: null,
-    &quot;FinishedTS&quot;: 0
+  "schema_state": 0,
+  "snapshot_ver": 0,
+  "real_start_ts": 0,
+  "start_ts": 428310284267159550,
+  "dependency_id": 0,
+  "query": "CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255))",
+  "binlog": {
+    "SchemaVersion": 0,
+    "DBInfo": null,
+    "TableInfo": null,
+    "FinishedTS": 0
   },
-  &quot;version&quot;: 1,
-  &quot;reorg_meta&quot;: null,
-  &quot;multi_schema_info&quot;: null,
-  &quot;priority&quot;: 0
+  "version": 1,
+  "reorg_meta": null,
+  "multi_schema_info": null,
+  "priority": 0
 }
 </code></pre>
 <h3 id="execution-in-the-tidb-ddl-owner"><a class="header" href="#execution-in-the-tidb-ddl-owner">Execution in the TiDB DDL Owner</a></h3>
@@ -420,7 +420,7 @@
 <li>Checks if it is the owner (and if not just returns).</li>
 <li>Picks the first job from its DDL queue.</li>
 <li>Waits for dependent jobs (like reorganizations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).</li>
-<li>Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. </li>
+<li>Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version.</li>
 <li>If the job is done (completed or rolled back):
 <ol>
 <li>Clean up old physical tables or indexes, not part of the new table.</li>

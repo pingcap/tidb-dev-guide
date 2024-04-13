@@ -177,7 +177,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="write-and-run-unit-tests"><a class="header" href="#write-and-run-unit-tests">Write and run unit tests</a></h1>
-<p>The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the <a href="https://github.com/stretchr/testify"><code>testify</code></a> library. </p>
+<p>The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the <a href="https://github.com/stretchr/testify"><code>testify</code></a> library.</p>
 <blockquote>
 <p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a> in release branches before <code>release-6.1</code>, but since that framework is poorly maintained, we are migrated to testify from <code>release-6.1</code>.
 You can check the background and progress on the migration <a href="https://github.com/pingcap/tidb/issues/26022">tracking issue</a>.</p>
@@ -232,9 +232,9 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
 <pre><code class="language-go">func TestParent(t *testing.T) {
     t.Parallel()
     // &lt;setup code&gt;
-    t.Run(&quot;Serial 0&quot;, func(t *testing.T) { ... })
-    t.Run(&quot;Serial 1&quot;, func(t *testing.T) { ... })
-    t.Run(&quot;Serial 2&quot;, func(t *testing.T) { ... })
+    t.Run("Serial 0", func(t *testing.T) { ... })
+    t.Run("Serial 1", func(t *testing.T) { ... })
+    t.Run("Serial 2", func(t *testing.T) { ... })
     // &lt;tear-down code&gt;
 }
 </code></pre>
@@ -273,10 +273,10 @@ make failpoint-disable
 </code></pre>
 <p>or if it is an older test not using testify</p>
 <pre><code class="language-sh">make failpoint-enable
-(cd pkg/planner/core ; go test -v -run &quot;^TestT$&quot; -check.f TestBinaryOpFunction )
+(cd pkg/planner/core ; go test -v -run "^TestT$" -check.f TestBinaryOpFunction )
 make failpoint-disable
 </code></pre>
-<p>If one want to compile the test into a debug binary for running in a debugger, one can also use <code>go test -gcflags=&quot;all=-N -l&quot; -o ./t</code>, which removes any optimisations and outputs a <code>t</code> binary file ready to be used, like <code>dlv exec ./t</code> or combine it with the above to only debug a single test <code>dlv exec ./t -- -test.run &quot;^TestT$&quot; -check.f TestBinaryOpFunction</code>.</p>
+<p>If one want to compile the test into a debug binary for running in a debugger, one can also use <code>go test -gcflags="all=-N -l" -o ./t</code>, which removes any optimisations and outputs a <code>t</code> binary file ready to be used, like <code>dlv exec ./t</code> or combine it with the above to only debug a single test <code>dlv exec ./t -- -test.run "^TestT$" -check.f TestBinaryOpFunction</code>.</p>
 <p>Notice there is also an <code>ut</code> utility for running tests, see <code>Makefile</code> and <code>tools/bin/ut</code>.</p>
 <p>To display information on all the test flags, enter <code>go help testflag</code>.</p>
 <p>If you develop with GoLand, you can also run a test from the IDE with manually enabled and disabled fail points. See the <a href="https://www.jetbrains.com/help/go/performing-tests.html">documentation</a> for details.</p>
@@ -292,7 +292,7 @@ make failpoint-disable
 <p>Before you merge a pull request, it must pass all tests.</p>
 <p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the rerun guide comment will be sent when the CI tests failed.</p>
 <h4 id="retest"><a class="header" href="#retest"><code>/retest</code></a></h4>
-<p>Rerun all failed CI test cases. </p>
+<p>Rerun all failed CI test cases.</p>
 <h4 id="test-test1-testn"><a class="header" href="#test-test1-testn"><code>/test {{test1}} {{testN}}</code></a></h4>
 <p>Run given CI failed tests.</p>
 <h4 id="ci-parameters"><a class="header" href="#ci-parameters">CI parameters</a></h4>
@@ -321,7 +321,7 @@ pkg2: support yyy feature | tidb-test=release-6.5 tikv=pr/999
             Test:           TestTopology
 --- FAIL: TestTopology (0.76s)
 </code></pre>
-<p>To find this type of failure, enter <code>grep -i &quot;FAIL&quot;</code> to search the report output.</p>
+<p>To find this type of failure, enter <code>grep -i "FAIL"</code> to search the report output.</p>
 <h3 id="data-race"><a class="header" href="#data-race">Data race</a></h3>
 <p>Golang testing supports detecting data race by running tests with the <code>-race</code> flag. Its failure report looks like:</p>
 <pre><code>[2021-06-21T15:36:38.766Z] ==================

@@ -203,11 +203,11 @@
 <h3 id="manually-checking-with-the-privilege-manager"><a class="header" href="#manually-checking-with-the-privilege-manager">Manually checking with the privilege manager</a></h3>
 <p>For (2) above, manual checks should follow the following pattern:</p>
 <pre><code class="language-go">checker := privilege.GetPrivilegeManager(e.ctx)
-if checker != nil &amp;&amp; !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, &quot;&quot;, mysql.AllPrivMask) {
+if checker != nil &amp;&amp; !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, "", mysql.AllPrivMask) {
     /* do something */
 }
 ..
-if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().ActiveRoles, &quot;RESTRICTED_TABLES_ADMIN&quot;, false) {
+if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().ActiveRoles, "RESTRICTED_TABLES_ADMIN", false) {
     /* do something */
 }
 </code></pre>
@@ -215,13 +215,13 @@ if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().Ac
 <h3 id="static-and-dynamic-privileges"><a class="header" href="#static-and-dynamic-privileges">Static and dynamic privileges</a></h3>
 <p>Privileges fall into two categories:</p>
 <ul>
-<li>Static privileges: These are the &quot;traditional&quot; privileges such as <code>INSERT</code>, <code>UPDATE</code>, <code>SELECT</code>, <code>DELETE</code>, <code>SUPER</code>, <code>PROCESS</code> which have existed in MySQL for a long time. They can <em>usually</em> be assigned to a user on either a global or database/table level.</li>
-<li>Dynamic privileges: These are new privileges such as <code>BACKUP_ADMIN</code>, <code>RESTORE_ADMIN</code>, <code>CONNECTION_ADMIN</code>. They can only be assigned on a global level, and each have their own &quot;grantable&quot; attribute.</li>
+<li>Static privileges: These are the "traditional" privileges such as <code>INSERT</code>, <code>UPDATE</code>, <code>SELECT</code>, <code>DELETE</code>, <code>SUPER</code>, <code>PROCESS</code> which have existed in MySQL for a long time. They can <em>usually</em> be assigned to a user on either a global or database/table level.</li>
+<li>Dynamic privileges: These are new privileges such as <code>BACKUP_ADMIN</code>, <code>RESTORE_ADMIN</code>, <code>CONNECTION_ADMIN</code>. They can only be assigned on a global level, and each have their own "grantable" attribute.</li>
 </ul>
 <p>Dynamic privileges were introduced in MySQL 8.0 (and <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md">TiDB 5.1</a>) to solve a specific issue, which is that the <code>SUPER</code> privilege is too coarse. There are many scenarios where a user needs to be assigned the <code>SUPER</code> privilege to perform a specific action, but too many other privileges are granted at the same time.</p>
 <p>Any statements added to TiDB <strong>should no longer require</strong> the <code>SUPER</code> privilege directly. Instead, a dynamic privilege should be added <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/privilege/privileges/cache.go#L1009">which will be satified</a> by the <code>SUPER</code> privilege.</p>
 <h3 id="security-enhanced-mode"><a class="header" href="#security-enhanced-mode">Security Enhanced Mode</a></h3>
-<p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific &quot;restricted&quot; dynamic privileges instead. The design is inspired by features such as &quot;Security Enhanced Linux&quot; (SeLinux) and AppArmor.</p>
+<p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific "restricted" dynamic privileges instead. The design is inspired by features such as "Security Enhanced Linux" (SeLinux) and AppArmor.</p>
 <p>SEM plugs directly into the privilege manager, but the hard coded list of restricted objects lives in <a href="https://github.com/pingcap/tidb/blob/master/util/sem/sem.go"><code>./util/sem/*</code></a>. It is expected that over time SEM will protect against additional operations which are considered to be high risk or too broad.</p>
 <h3 id="recommended-reading"><a class="header" href="#recommended-reading">Recommended Reading</a></h3>
 <ul>

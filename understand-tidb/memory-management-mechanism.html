@@ -218,7 +218,7 @@ a. If the processing key exists in the Map, aggregate the result.
 b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
 <li>After all data have been processed, output the aggregate result in the map, clear the map. Then read the spilling data from disk, repeat the Step1-Step3 until all data gets aggregated.</li>
 </ol>
-<p>As we can see, unlike other spilling implementations, <code>AggSpillDiskAction</code> does not make the memory drop immediately, but keeps the memory no longer growing. </p>
+<p>As we can see, unlike other spilling implementations, <code>AggSpillDiskAction</code> does not make the memory drop immediately, but keeps the memory no longer growing.</p>
 <h3 id="logcancel"><a class="header" href="#logcancel">Log/Cancel</a></h3>
 <p>When the above methods cannot control the memory within the threshold, we will try to use <code>PanicOnExceed</code> to cancel the SQL or use <code>LogOnExceed</code> to log the SQL info.</p>
 

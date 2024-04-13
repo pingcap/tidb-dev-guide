@@ -199,7 +199,7 @@ restrictedCtx.GetSessionVars().InRestrictedSQL = true
 </ul>
 <p>The state of the variables is stored in <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L432-L958"><code>sessionVars</code></a>. The raw <em>string</em> values are stored in a map named <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L449-L450"><code>systems</code></a>. This string value is used for persistence in the <code>mysql.global_variables</code> table.</p>
 <p>For many variables, as well as a <em>string</em> value there is a typed field in <code>sessionVars</code>. For example:</p>
-<p><code>SessionVars.systems[&quot;tidb_skip_utf8_check&quot;]</code> (string) maps to <code>SessionVars.SkipUTF8Check</code> (bool).</p>
+<p><code>SessionVars.systems["tidb_skip_utf8_check"]</code> (string) maps to <code>SessionVars.SkipUTF8Check</code> (bool).</p>
 <p>The typed value is set when the <code>SetSession</code> attached to the <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1029-L1032">system variable definition</a> is called. For <code>tidb_skip_utf8_check</code> this is as follows:</p>
 <pre><code class="language-go">{Scope: ScopeGlobal | ScopeSession, Name: TiDBSkipUTF8Check, Value: BoolToOnOff(DefSkipUTF8Check), Type: TypeBool, SetSession: func(s *SessionVars, val string) error {
 	s.SkipUTF8Check = TiDBOptOn(val)
@@ -231,7 +231,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 	return err
 }
 </code></pre>
-<p>Because <code>GLOBAL</code> scoped variables are propagated to other servers, TiDB also has a special concept of &quot;instance-scoped variables&quot;. An instance scoped variable is actually a <code>SESSION</code> scoped variable that has a <code>GetSession</code> method which returns data that is specific to an instance. For example, <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1315-L1321"><code>tidb_general_log</code></a>:</p>
+<p>Because <code>GLOBAL</code> scoped variables are propagated to other servers, TiDB also has a special concept of "instance-scoped variables". An instance scoped variable is actually a <code>SESSION</code> scoped variable that has a <code>GetSession</code> method which returns data that is specific to an instance. For example, <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1315-L1321"><code>tidb_general_log</code></a>:</p>
 <pre><code class="language-go">{Scope: ScopeSession, Name: TiDBGeneralLog, Value: BoolToOnOff(DefTiDBGeneralLog), Type: TypeBool, skipInit: true, SetSession: func(s *SessionVars, val string) error {
 	ProcessGeneralLog.Store(TiDBOptOn(val))
 	return nil
@@ -240,7 +240,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 }},
 </code></pre>
 <p>The decision to make an option such as <code>tidb_general_log</code> instance scoped is because it references a file on the local filesystem. This may create issues when global, as the path may not be writable on each tidb-server in the cluster.</p>
-<p>As you can see by the <code>Scope: Session</code>, instance-scoped variables are not natively handled by the sysvar framework, but are instead denoted by the <code>GetSession()</code> function reading from a global location. The documentation for <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_general_log"><code>tidb_general_log</code></a> also notes it as &quot;instance&quot; scoped by convention.</p>
+<p>As you can see by the <code>Scope: Session</code>, instance-scoped variables are not natively handled by the sysvar framework, but are instead denoted by the <code>GetSession()</code> function reading from a global location. The documentation for <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_general_log"><code>tidb_general_log</code></a> also notes it as "instance" scoped by convention.</p>
 <h2 id="transaction-state"><a class="header" href="#transaction-state">Transaction state</a></h2>
 <p>The <code>session</code> struct (<code>s.txn</code>) is responsible for keeping modified key-value pairs in a <a href="https://github.com/pingcap/tidb/blob/bfbea9c3ef4232d76296a9c8390eb8b7da5bf45d/session/txn.go#L46-L71"><code>LazyTxn</code></a> until the transaction commits. A <code>commit</code> statement only sets the session variable state that it is <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/executor/simple.go#L701-L703">no longer in an active transaction</a>:</p>
 <pre><code class="language-go">func (e *SimpleExec) executeCommit(s *ast.CommitStmt) {
@@ -251,7 +251,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 <pre><code class="language-go">if !sessVars.InTxn() {
 	if err := se.CommitTxn(ctx); err != nil {
 		if _, ok := sql.(*executor.ExecStmt).StmtNode.(*ast.CommitStmt); ok {
-			err = errors.Annotatef(err, &quot;previous statement: %s&quot;, se.GetSessionVars().PrevStmt)
+			err = errors.Annotatef(err, "previous statement: %s", se.GetSessionVars().PrevStmt)
 		}
 		return err
 	}

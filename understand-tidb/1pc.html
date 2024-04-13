@@ -216,7 +216,7 @@ message PrewriteResponse {
 <li><code>doActionOnGroupMutations</code>
 <ul>
 <li>Divide mutations into batches</li>
-<li>⭐ <code>checkOnePCFallBack</code> </li>
+<li>⭐ <code>checkOnePCFallBack</code></li>
 <li><code>doActionOnBatches</code>
 <ul>
 <li><code>actionPrewrite</code>.<code>handleSingleBatch</code>
@@ -243,7 +243,7 @@ message PrewriteResponse {
 <p>In the <code>execute</code> method, it checks if 1PC can be used just after checking async commit, before performing any crucial part of the transaction procedure:</p>
 <pre><code class="language-go">func (c *twoPhaseCommitter) checkOnePC() bool {
     // Disable 1PC in local transactions. This is about another feature that's not compatible with
-    // async and 1PC, where transactions have two different &quot;scopes&quot; namely Global and Local.
+    // async and 1PC, where transactions have two different "scopes" namely Global and Local.
     if c.txn.GetScope() != oracle.GlobalTxnScope {
         return false
     }
@@ -267,7 +267,7 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 </code></pre>
 <p>Same as async commit, 1PC can't be enabled when using TiDB-Binlog.</p>
 <p>Note that we still don't know how many prewrite requests this transaction needs. It will be checked later.</p>
-<p>Also note that the <code>checkOnePC</code> function doesn't check the transaction's size like how async commit does. Actually, the transaction size is implicitly limited when the keys are divided into batches during prewrite phase. </p>
+<p>Also note that the <code>checkOnePC</code> function doesn't check the transaction's size like how async commit does. Actually, the transaction size is implicitly limited when the keys are divided into batches during prewrite phase.</p>
 <p>The logic then goes to the <code>prewriteMutation</code> function from <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L1222">here</a>, which then calls <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L563">the <code>doActionOnMutations</code> function</a>:</p>
 <pre><code class="language-go">func (c *twoPhaseCommitter) doActionOnMutations(bo *retry.Backoffer, action twoPhaseCommitAction, mutations CommitterMutations) error {
 	if mutations.Len() == 0 {

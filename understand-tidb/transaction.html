@@ -177,7 +177,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="transaction"><a class="header" href="#transaction">Transaction</a></h1>
-<p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository. </p>
+<p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository.</p>
 <p>This document is mainly about the TiDB part.</p>
 <h2 id="the-architecture"><a class="header" href="#the-architecture">The Architecture</a></h2>
 <p>In TiDB the transaction write flow is like this:</p>
@@ -211,7 +211,7 @@
 }
 </code></pre>
 <p>These are common interfaces the transaction will provide.</p>
-<p>For example, <code>Commit</code> will be used to commit the current ongoing transaction. The transaction is considered ongoing before the <code>Commit</code> operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted. </p>
+<p>For example, <code>Commit</code> will be used to commit the current ongoing transaction. The transaction is considered ongoing before the <code>Commit</code> operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/session/txn.go#L50-L71"><code>LazyTxn</code></a> is a wrapper of the transaction implementations, when the SQL statements are executed using a standalone session context, <code>LazyTxn</code> will be used to do things like：</p>
 <ul>
 <li>Return the memory buffer for write.</li>

@@ -185,25 +185,25 @@
 <pre><code class="language-go">package main
 
 import (
-    &quot;fmt&quot;
-    &quot;strings&quot;
+    "fmt"
+    "strings"
 )
 
 type Email string
 
 func newEmail(email string) (Email, error) {
-    if !strings.Contains(email, &quot;@&quot;) {
-        return Email(&quot;&quot;), fmt.Errorf(&quot;Expected @ in the email&quot;)
+    if !strings.Contains(email, "@") {
+        return Email(""), fmt.Errorf("Expected @ in the email")
     }
     return Email(email), nil
 }
 
 func (email Email) Domain() string {
-    return strings.Split(string(email), &quot;@&quot;)[1]
+    return strings.Split(string(email), "@")[1]
 }
 
 func main() {
-    ping, err := newEmail(&quot;go@pingcap.com&quot;)
+    ping, err := newEmail("go@pingcap.com")
     if err != nil { panic(err) }
     fmt.Println(ping.Domain())
 }
@@ -226,7 +226,7 @@ However, pointer receivers are often required to satisfy an interface or for per
 <li>What is the GC behavior of the rest of the program? GC pressure may favor value receivers.</li>
 </ul>
 <h2 id="parallel-for-loop"><a class="header" href="#parallel-for-loop">Parallel For-Loop</a></h2>
-<p>There are two types of for loop on range: &quot;with index&quot; and &quot;without index&quot;. Let's see an example for range with index.</p>
+<p>There are two types of for loop on range: "with index" and "without index". Let's see an example for range with index.</p>
 <pre><code class="language-go">func TestRangeWithIndex(t *testing.T) {
 	rows := []struct{ index int }{{index: 0}, {index: 1}, {index: 2}}
 	for _, row := range rows {
@@ -248,7 +248,7 @@ However, pointer receivers are often required to satisfy an interface or for per
 <h3 id="the-same-instance-of-the-variable"><a class="header" href="#the-same-instance-of-the-variable">The same instance of the variable</a></h3>
 <p>Since the the loop iterator variable is the same instance of the variable, it may result in tricky error with parallel for-loop.</p>
 <pre><code class="language-go">done := make(chan bool)
-values := []string{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}
+values := []string{"a", "b", "c"}
 for _, v := range values {
 	go func() {
 		fmt.Println(v)
@@ -259,7 +259,7 @@ for _ = range values {
 	&lt;-done
 }
 </code></pre>
-<p>You might expect to see <code>a</code>, <code>b</code>, <code>c</code> as the output, but you'll probably see instead is <code>c</code>, <code>c</code>, <code>c</code>. </p>
+<p>You might expect to see <code>a</code>, <code>b</code>, <code>c</code> as the output, but you'll probably see instead is <code>c</code>, <code>c</code>, <code>c</code>.</p>
 <p>This is because each iteration of the loop uses the same instance of the variable <code>v</code>, so each closure shares that single variable.</p>
 <p>This is the same reason which result wrong test when use <code>t.Parallel()</code> with range, which is covered in <a href="../get-started/write-and-run-unit-tests.html#parallel">Parallel section of Write and run unit tests</a></p>
 <h3 id="a-clone-of-iteration-target-value"><a class="header" href="#a-clone-of-iteration-target-value">A clone of iteration target value</a></h3>

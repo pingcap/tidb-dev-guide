@@ -179,7 +179,7 @@
                     <main>
                         <h1 id="tidb-development-guide"><a class="header" href="#tidb-development-guide">TiDB Development Guide</a></h1>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<p><a href="index.html#contributors-"><img src="https://img.shields.io/badge/all_contributors-37-orange.svg?style=flat-square" alt="All Contributors" /></a></p>
+<p><a href="index.html#contributors-"><img src="https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square" alt="All Contributors" /></a></p>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <h2 id="about-this-guide"><a class="header" href="#about-this-guide">About this guide</a></h2>
 <ul>
@@ -253,6 +253,7 @@
     <tr>
       <td align="center" valign="top" width="20%"><a href="https://github.com/windtalker"><img src="https://avatars.githubusercontent.com/u/1916264?v=4?s=100" width="100px;" alt="xufei"/><br /><sub><b>xufei</b></sub></a><br /><a href="index.html#content-windtalker" title="Content">🖋</a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/zanmato1984"><img src="https://avatars.githubusercontent.com/u/1061004?v=4?s=100" width="100px;" alt="ruoxi"/><br /><sub><b>ruoxi</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azanmato1984" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="20%"><a href="https://www.highpon.com/"><img src="https://avatars.githubusercontent.com/u/54130718?v=4?s=100" width="100px;" alt="s-shiraki"/><br /><sub><b>s-shiraki</b></sub></a><br /><a href="index.html#content-highpon" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
@@ -275,7 +276,7 @@
 <h2 id="install-go"><a class="header" href="#install-go">Install Go</a></h2>
 <p>TiDB periodically upgrades its Go version to keep up with Golang. Currently, upgrade plans are announced on <a href="https://internals.tidb.io/tags/c/general/announcement">TiDB Internals forum</a>.</p>
 <p>To get the right version of Go, take a look at the <a href="https://github.com/pingcap/tidb/blob/master/go.mod"><code>go.mod</code> file in TiDB's repository</a>. You should see that there is a line like <code>go 1.21</code> (the number may be different) in the first few lines of this file. You can also run the following command to get the Go version:</p>
-<pre><code class="language-bash">curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot;
+<pre><code class="language-bash">curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\""
 </code></pre>
 <p>Now that you've got the version number, go to <a href="https://golang.org/dl/">Go's download page</a>, choose the corresponding version, and then follow the <a href="https://golang.org/doc/install">installation instructions</a>.</p>
 <h2 id="manage-the-go-toolchain-using-gvm"><a class="header" href="#manage-the-go-toolchain-using-gvm">Manage the Go toolchain using gvm</a></h2>
@@ -284,7 +285,7 @@
 <pre><code class="language-bash">curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sh
 </code></pre>
 <p>Once you have gvm installed, you can use it to manage multiple different Go compilers with different versions. Let's install the corresponding Go version and set it as default:</p>
-<pre><code class="language-bash">TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot; | grep -Eo &quot;[[:digit:]]+.[[:digit:]]+&quot;)
+<pre><code class="language-bash">TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\"" | grep -Eo "[[:digit:]]+.[[:digit:]]+")
 gvm install go${TIDB_GOVERSION}
 gvm use go${TIDB_GOVERSION} --default
 </code></pre>
@@ -326,7 +327,7 @@ make
 <p>This starts the TiDB server listening on port 4000 with embedded <code>unistore</code>.</p>
 <h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
 <p>You can use the official MySQL client to connect to TiDB:</p>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt=&quot;tidb&gt; &quot; --comments
+<pre><code class="language-bash">mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb&gt; " --comments
 </code></pre>
 <p>where</p>
 <ul>
@@ -334,7 +335,7 @@ make
 <li><code>-P 4000</code> uses port 4000</li>
 <li><code>-u root</code> connects as root user (<code>-p</code> not given; the development build has no password for root.)</li>
 <li><code>-D test</code> uses the Schema/Database test</li>
-<li><code>--prompt &quot;tidb&gt; &quot;</code> sets the prompt to distinguish it from a connection to MySQL</li>
+<li><code>--prompt "tidb&gt; "</code> sets the prompt to distinguish it from a connection to MySQL</li>
 <li><code>--comments</code> preserves comments like <code>/*T![clustered_index NONCLUSTERED */</code> instead of stripping them when sending the query to the server.</li>
 </ul>
 <p>If you encounter any problems during your journey, do not hesitate to reach out on the <a href="https://internals.tidb.io/">TiDB Internals forum</a>.</p>
@@ -357,47 +358,47 @@ make
 <pre><code class="language-bash">mkdir -p .idea/runConfigurations/ &amp;&amp; cd .idea/runConfigurations/
 
 cat &lt;&lt;EOF &gt; unistore_4000.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;unistore 4000&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;kind value=&quot;PACKAGE&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="unistore 4000" type="GoApplicationRunConfiguration" factoryName="Go Application"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;kind value="PACKAGE" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$" /&gt;
+    &lt;package value="github.com/pingcap/tidb/cmd/tidb-server" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
 
 cat &lt;&lt;EOF &gt; playground_attach_4001.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;playground attach 4001&quot; type=&quot;GoApplicationRunConfiguration&quot; factoryName=&quot;Go Application&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;parameters value=&quot;--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 &quot; /&gt;
-    &lt;kind value=&quot;PACKAGE&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$/cmd/tidb-server/main.go&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb/cmd/tidb-server&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="playground attach 4001" type="GoApplicationRunConfiguration" factoryName="Go Application"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;parameters value="--path=127.0.0.1:2379 --store=tikv --status=10081 -P 4001 " /&gt;
+    &lt;kind value="PACKAGE" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$/cmd/tidb-server/main.go" /&gt;
+    &lt;package value="github.com/pingcap/tidb/cmd/tidb-server" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
 
 cat &lt;&lt;EOF &gt; unit_test.xml
-&lt;component name=&quot;ProjectRunConfigurationManager&quot;&gt;
-  &lt;configuration default=&quot;false&quot; name=&quot;unit test&quot; type=&quot;GoTestRunConfiguration&quot; factoryName=&quot;Go Test&quot;&gt;
-    &lt;module name=&quot;tidb&quot; /&gt;
-    &lt;working_directory value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;go_parameters value=&quot;-race -i --tags=intest,deadlock&quot; /&gt;
-    &lt;framework value=&quot;gocheck&quot; /&gt;
-    &lt;kind value=&quot;DIRECTORY&quot; /&gt;
-    &lt;package value=&quot;github.com/pingcap/tidb&quot; /&gt;
-    &lt;directory value=&quot;\$PROJECT_DIR\$/pkg/planner/core&quot; /&gt;
-    &lt;filePath value=&quot;\$PROJECT_DIR\$&quot; /&gt;
-    &lt;pattern value=&quot;TestEnforceMPP&quot; /&gt;
-    &lt;method v=&quot;2&quot; /&gt;
+&lt;component name="ProjectRunConfigurationManager"&gt;
+  &lt;configuration default="false" name="unit test" type="GoTestRunConfiguration" factoryName="Go Test"&gt;
+    &lt;module name="tidb" /&gt;
+    &lt;working_directory value="\$PROJECT_DIR\$" /&gt;
+    &lt;go_parameters value="-race -i --tags=intest,deadlock" /&gt;
+    &lt;framework value="gocheck" /&gt;
+    &lt;kind value="DIRECTORY" /&gt;
+    &lt;package value="github.com/pingcap/tidb" /&gt;
+    &lt;directory value="\$PROJECT_DIR\$/pkg/planner/core" /&gt;
+    &lt;filePath value="\$PROJECT_DIR\$" /&gt;
+    &lt;pattern value="TestEnforceMPP" /&gt;
+    &lt;method v="2" /&gt;
   &lt;/configuration&gt;
 &lt;/component&gt;
 EOF
@@ -446,12 +447,12 @@ EOF
 <p>Under the root directory of the TiDB source code, execute the following commands to add config files:</p>
 <pre><code>mkdir -p .vscode
 
-echo &quot;{
-    \&quot;go.testTags\&quot;: \&quot;intest,deadlock\&quot;
-}&quot; &gt; .vscode/settings.json
+echo "{
+    \"go.testTags\": \"intest,deadlock\"
+}" &gt; .vscode/settings.json
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="write-and-run-unit-tests"><a class="header" href="#write-and-run-unit-tests">Write and run unit tests</a></h1>
-<p>The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the <a href="https://github.com/stretchr/testify"><code>testify</code></a> library. </p>
+<p>The Golang testing framework provides several functionalities and conventions that help structure and execute tests efficiently. To enhance its assertion and mocking capabilities, we use the <a href="https://github.com/stretchr/testify"><code>testify</code></a> library.</p>
 <blockquote>
 <p>You may find tests using <a href="http://github.com/pingcap/check">pingcap/check</a> which is a fork of <a href="https://github.com/go-check/check">go-check/check</a> in release branches before <code>release-6.1</code>, but since that framework is poorly maintained, we are migrated to testify from <code>release-6.1</code>.
 You can check the background and progress on the migration <a href="https://github.com/pingcap/tidb/issues/26022">tracking issue</a>.</p>
@@ -506,9 +507,9 @@ func True(t TestingT, value bool, msgAndArgs ...interface{})
 <pre><code class="language-go">func TestParent(t *testing.T) {
     t.Parallel()
     // &lt;setup code&gt;
-    t.Run(&quot;Serial 0&quot;, func(t *testing.T) { ... })
-    t.Run(&quot;Serial 1&quot;, func(t *testing.T) { ... })
-    t.Run(&quot;Serial 2&quot;, func(t *testing.T) { ... })
+    t.Run("Serial 0", func(t *testing.T) { ... })
+    t.Run("Serial 1", func(t *testing.T) { ... })
+    t.Run("Serial 2", func(t *testing.T) { ... })
     // &lt;tear-down code&gt;
 }
 </code></pre>
@@ -547,10 +548,10 @@ make failpoint-disable
 </code></pre>
 <p>or if it is an older test not using testify</p>
 <pre><code class="language-sh">make failpoint-enable
-(cd pkg/planner/core ; go test -v -run &quot;^TestT$&quot; -check.f TestBinaryOpFunction )
+(cd pkg/planner/core ; go test -v -run "^TestT$" -check.f TestBinaryOpFunction )
 make failpoint-disable
 </code></pre>
-<p>If one want to compile the test into a debug binary for running in a debugger, one can also use <code>go test -gcflags=&quot;all=-N -l&quot; -o ./t</code>, which removes any optimisations and outputs a <code>t</code> binary file ready to be used, like <code>dlv exec ./t</code> or combine it with the above to only debug a single test <code>dlv exec ./t -- -test.run &quot;^TestT$&quot; -check.f TestBinaryOpFunction</code>.</p>
+<p>If one want to compile the test into a debug binary for running in a debugger, one can also use <code>go test -gcflags="all=-N -l" -o ./t</code>, which removes any optimisations and outputs a <code>t</code> binary file ready to be used, like <code>dlv exec ./t</code> or combine it with the above to only debug a single test <code>dlv exec ./t -- -test.run "^TestT$" -check.f TestBinaryOpFunction</code>.</p>
 <p>Notice there is also an <code>ut</code> utility for running tests, see <code>Makefile</code> and <code>tools/bin/ut</code>.</p>
 <p>To display information on all the test flags, enter <code>go help testflag</code>.</p>
 <p>If you develop with GoLand, you can also run a test from the IDE with manually enabled and disabled fail points. See the <a href="https://www.jetbrains.com/help/go/performing-tests.html">documentation</a> for details.</p>
@@ -566,7 +567,7 @@ make failpoint-disable
 <p>Before you merge a pull request, it must pass all tests.</p>
 <p>Generally, continuous integration (CI) runs the tests for you; however, if you want to run tests with conditions or rerun tests on failure, you should know how to do that, the rerun guide comment will be sent when the CI tests failed.</p>
 <h4 id="retest"><a class="header" href="#retest"><code>/retest</code></a></h4>
-<p>Rerun all failed CI test cases. </p>
+<p>Rerun all failed CI test cases.</p>
 <h4 id="test-test1-testn"><a class="header" href="#test-test1-testn"><code>/test {{test1}} {{testN}}</code></a></h4>
 <p>Run given CI failed tests.</p>
 <h4 id="ci-parameters"><a class="header" href="#ci-parameters">CI parameters</a></h4>
@@ -595,7 +596,7 @@ pkg2: support yyy feature | tidb-test=release-6.5 tikv=pr/999
             Test:           TestTopology
 --- FAIL: TestTopology (0.76s)
 </code></pre>
-<p>To find this type of failure, enter <code>grep -i &quot;FAIL&quot;</code> to search the report output.</p>
+<p>To find this type of failure, enter <code>grep -i "FAIL"</code> to search the report output.</p>
 <h3 id="data-race"><a class="header" href="#data-race">Data race</a></h3>
 <p>Golang testing supports detecting data race by running tests with the <code>-race</code> flag. Its failure report looks like:</p>
 <pre><code>[2021-06-21T15:36:38.766Z] ==================
@@ -661,7 +662,7 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 <pre><code class="language-bash">dlv attach 1394942
 </code></pre>
 <p>You might get error messages of the kernel security setting as follows:</p>
-<pre><code>Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing &quot;0&quot; to /proc/sys/kernel/yama/ptrace_scope
+<pre><code>Could not attach to pid 1394942: this could be caused by a kernel security setting, try writing "0" to /proc/sys/kernel/yama/ptrace_scope
 </code></pre>
 <p>To resolve the error, follow the instructions provided in the error message and execute the following command as the root user to override the kernel security setting:</p>
 <pre><code class="language-bash">echo 0 &gt; /proc/sys/kernel/yama/ptrace_scope
@@ -708,7 +709,7 @@ Build: $Id: ca5318932770ca063fc9885b4764c30bfaf8a199 $
 <p>For any database system, performance is always important. If you want to know where the performance bottleneck is, you can use a powerful Go profiling tool called <code>pprof</code>.</p>
 <h3 id="gather-runtime-profiling-information-through-http-end-points"><a class="header" href="#gather-runtime-profiling-information-through-http-end-points">Gather runtime profiling information through HTTP end points</a></h3>
 <p>Usually, when TiDB server is running, it exposes a profiling end point through HTTP at <code>http://127.0.0.1:10080/debug/pprof/profile</code>. You can get the profile result by running the following commands:</p>
-<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/profile?seconds=45&quot; &gt; profile.profile
+<pre><code class="language-bash">curl -G "127.0.0.1:10080/debug/pprof/profile?seconds=45" &gt; profile.profile
 go tool pprof -http 127.0.0.1:4001 profile.profile
 </code></pre>
 <p>The commands capture the profiling information for 45 seconds, and then provide a web view of the profiling result at <code>127.0.0.1:4001</code>. This view contains a <a href="http://www.brendangregg.com/flamegraphs.html">flame graph</a> of the execution and more views that can help you diagnose the performance bottleneck.</p>
@@ -716,18 +717,18 @@ go tool pprof -http 127.0.0.1:4001 profile.profile
 <ul>
 <li>Goroutine:</li>
 </ul>
-<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/goroutine&quot; &gt; goroutine.profile
+<pre><code class="language-bash">curl -G "127.0.0.1:10080/debug/pprof/goroutine" &gt; goroutine.profile
 </code></pre>
 <ul>
 <li>Trace:</li>
 </ul>
-<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/trace?seconds=3&quot; &gt; trace.profile
+<pre><code class="language-bash">curl -G "127.0.0.1:10080/debug/pprof/trace?seconds=3" &gt; trace.profile
 go tool trace -http 127.0.0.1:4001 trace.profile
 </code></pre>
 <ul>
 <li>Heap:</li>
 </ul>
-<pre><code class="language-bash">curl -G &quot;127.0.0.1:10080/debug/pprof/heap&quot; &gt; heap.profile
+<pre><code class="language-bash">curl -G "127.0.0.1:10080/debug/pprof/heap" &gt; heap.profile
 go tool pprof -http 127.0.0.1:4001 heap.profile
 </code></pre>
 <p>To learn how the runtime information is analyzed, see Go's <a href="https://golang.org/doc/diagnostics">diagnostics document</a>.</p>
@@ -745,7 +746,7 @@ go test -bench BenchmarkWindow -run BenchmarkWindow -benchmem
 <p>The TiDB project uses <a href="https://git-scm.com/">Git</a> to manage its source code. To contribute to the project, you need to get familiar with Git features so that your changes can be incorporated into the codebase.</p>
 <p>This section addresses some of the most common questions and problems that new contributors might face. This section also covers some Git basics; however if you find that the content is a little difficult to understand, we recommend that you first read the following introductions to Git:</p>
 <ul>
-<li>The &quot;Beginner&quot; and &quot;Getting Started&quot; sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
+<li>The "Beginner" and "Getting Started" sections of <a href="https://www.atlassian.com/git/tutorials">this tutorial</a> from Atlassian</li>
 <li><a href="https://docs.github.com/en/github/getting-started-with-github/set-up-git">Documentation</a> and <a href="https://guides.github.com/introduction/git-handbook/">guides</a> for beginners from Github</li>
 <li>A more in-depth <a href="https://git-scm.com/book/en/v2/">book</a> from Git</li>
 </ul>
@@ -787,7 +788,7 @@ git pull master
 git add path/to/changed/file.go path/to/another/changed/file.go
 
 # commit changes staged, make sure the commit message is meaningful and readable
-git commit -s -m &quot;pkg, pkg2, pkg3: what's changed&quot;
+git commit -s -m "pkg, pkg2, pkg3: what's changed"
 
 # optionally use `git status` to check if the change set is correct
 # git status
@@ -824,7 +825,7 @@ git pull
 <p>When this happens, you need to resolve the conflicts before your changes can be merged. First, get a local copy of the conflicting changes: checkout your local master branch with <code>git checkout master</code>, then <code>git pull master</code> to update it with the most recent changes.</p>
 <h3 id="rebasing"><a class="header" href="#rebasing">Rebasing</a></h3>
 <p>You're now ready to start the rebasing process. Checkout the branch with your changes and execute <code>git rebase master</code>.</p>
-<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one &quot;rebase conflict.&quot; This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
+<p>When you rebase a branch on master, all the changes on your branch are reapplied to the most recent version of master. In other words, Git tries to pretend that the changes you made to the old version of master were instead made to the new version of master. During this process, you should expect to encounter at least one "rebase conflict." This happens when Git's attempt to reapply the changes fails because your changes conflict with other changes that have been made. You can tell that this happened because you'll see lines in the output that look like:</p>
 <pre><code class="language-text">CONFLICT (content): Merge conflict in file.go
 </code></pre>
 <p>When you open these files, you'll see sections of the form</p>
@@ -839,7 +840,7 @@ Your code
 <p>Once you're all done fixing the conflicts, you need to stage the files that had conflicts in them via git add. Afterwards, run <code>git rebase --continue</code> to let Git know that you've resolved the conflicts and it should finish the rebase.</p>
 <p>Once the rebase has succeeded, you'll want to update the associated branch on your fork with <code>git push --force-with-lease</code>.</p>
 <h2 id="advanced-rebasing"><a class="header" href="#advanced-rebasing">Advanced rebasing</a></h2>
-<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or &quot;squash&quot; them into each other.</p>
+<p>If your branch contains multiple consecutive rewrites of the same code, or if the rebase conflicts are extremely severe, you can use <code>git rebase --interactive master</code> to gain more control over the process. This allows you to choose to skip commits, edit the commits that you do not skip, change the order in which they are applied, or "squash" them into each other.</p>
 <p>Alternatively, you can sacrifice the commit history like this:</p>
 <pre><code class="language-bash"># squash all the changes into one commit so you only have to worry about conflicts once
 git rebase -i $(git merge-base master HEAD)  # and squash all changes along the way
@@ -848,7 +849,7 @@ git rebase master
 git rebase --continue
 </code></pre>
 <p>Squashing commits into each other causes them to be merged into a single commit. Both the upside and downside of this is that it simplifies the history. On the one hand, you lose track of the steps in which changes were made, but the history becomes easier to work with.</p>
-<p>You also may want to squash together just the last few commits, possibly because they only represent &quot;fixups&quot; and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
+<p>You also may want to squash together just the last few commits, possibly because they only represent "fixups" and not real changes. For example, <code>git rebase --interactive HEAD~2</code> allows you to edit the two commits only.</p>
 <h2 id="setting-pre-commit"><a class="header" href="#setting-pre-commit">Setting pre-commit</a></h2>
 <p>We use <a href="https://pre-commit.com/">pre-commit</a> to check the code style before committing. To install pre-commit, run:</p>
 <pre><code class="language-bash"># Using pip:
@@ -919,8 +920,8 @@ brew install pre-commit
 <li>What did you see instead?</li>
 <li>What is your TiDB version?</li>
 </ul>
-<p>Answering these questions give the details about your problem so other contributors or TiDB users could pick up your issue more easily. </p>
-<p>As previous section shows, duplicated issues should be reduced. To help others who encountered the problem find your issue, except for problem details answered in the issue template, a descriptive title which contains information that might be unique to it also helps. This can be the components your issue belongs to or database features used in your issue, the conditions that trigger the bug, or part of the error message if there is any. </p>
+<p>Answering these questions give the details about your problem so other contributors or TiDB users could pick up your issue more easily.</p>
+<p>As previous section shows, duplicated issues should be reduced. To help others who encountered the problem find your issue, except for problem details answered in the issue template, a descriptive title which contains information that might be unique to it also helps. This can be the components your issue belongs to or database features used in your issue, the conditions that trigger the bug, or part of the error message if there is any.</p>
 <h2 id="making-good-issues"><a class="header" href="#making-good-issues">Making good issues</a></h2>
 <p>Except for a good title and detailed issue message, you can also add suitable labels to your issue via <a href="https://prow.tidb.io/command-help?repo=pingcap%2Ftidb#type">/label</a>, especially which component the issue belongs to and which versions the issue affects. Many committers and contributors only focus on certain subsystems of TiDB. Setting the appropriate component is important for getting their attention. Some issues might affect multiple releases. You can query <a href="contribute-to-tidb/issue-triage.html">Issue Triage chapter</a> for more information about what need to do with such issues.</p>
 <p>If you are able to, you should take more considerations on your issue:</p>
@@ -1137,7 +1138,7 @@ brew install pre-commit
 <p>TiDB is maintained, improved, and extended by code contributions. We welcome code contributions to TiDB. TiDB uses a workflow based on <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull requests</a>.</p>
 <h2 id="before-contributing"><a class="header" href="#before-contributing">Before contributing</a></h2>
 <p>Contributing to TiDB does <em>not</em> start with opening a pull request. We expect contributors to reach out to us first to discuss the overall approach together. Without consensus with the TiDB committers, contributions might require substantial rework or will not be reviewed. So please <a href="contribute-to-tidb/report-an-issue.html">create a GitHub issue</a>, discuss under an existing issue, or create a topic on the <a href="https://internals.tidb.io">internal.tidb.io</a> and reach consensus.</p>
-<p>For newcomers, you can check the <a href="https://github.com/pingcap/tidb/contribute">starter issues</a>, which are annotated with a &quot;good first issue&quot; label. These are issues suitable for new contributors to work with and won't take long to fix. But because the label is typically added at triage time it can turn out to be inaccurate, so do feel free to leave a comment if you think the classification no longer applies.</p>
+<p>For newcomers, you can check the <a href="https://github.com/pingcap/tidb/contribute">starter issues</a>, which are annotated with a "good first issue" label. These are issues suitable for new contributors to work with and won't take long to fix. But because the label is typically added at triage time it can turn out to be inaccurate, so do feel free to leave a comment if you think the classification no longer applies.</p>
 <p>To get your change merged you need to sign the <a href="https://cla-assistant.io/pingcap/tidb">CLA</a> to grant PingCAP ownership of your code.</p>
 <h2 id="contributing-process"><a class="header" href="#contributing-process">Contributing process</a></h2>
 <p>After a consensus is reached in issues, it's time to start the code contributing process:</p>
@@ -1172,7 +1173,7 @@ brew install pre-commit
 <li>Does the contribution alter the behavior of features or components in a way that it may break previous users' programs and setups? If yes, there needs to be a discussion and agreement that this change is desirable.</li>
 <li>Does the contribution conceptually fit well into TiDB? Is it too much of a special case such that it makes things more complicated for the common case, or bloats the abstractions/APIs?</li>
 <li>Does the contribution make a big impact on TiDB's build time?</li>
-<li>Does your contribution affect any documentation? If yes, you should add/change proper documentation. </li>
+<li>Does your contribution affect any documentation? If yes, you should add/change proper documentation.</li>
 <li>If there are any new dependencies, are they under active maintenances? What are their licenses?</li>
 </ul>
 <h2 id="making-good-commits"><a class="header" href="#making-good-commits">Making good commits</a></h2>
@@ -1223,7 +1224,7 @@ brew install pre-commit
 <li>Suppose that a pull request contains special optimization that can improve the overall performance by 30%. However, the pull request introduces a totally different code path, and every subsequent feature must consider it.</li>
 <li>Suppose that a pull request is to fix a critical bug, but the change in the pull request is risky to introduce other bugs.</li>
 </ul>
-<p>If a pull request under your review is in these tricky situations, what is the right choice, accepting the pull request or rejecting it? The answer is always &quot;it depends.&quot; Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. There are always trade-offs, and often there's no perfect solution.</p>
+<p>If a pull request under your review is in these tricky situations, what is the right choice, accepting the pull request or rejecting it? The answer is always "it depends." Software design is more like a kind of art than technology. It is about aesthetics and your taste of the code. There are always trade-offs, and often there's no perfect solution.</p>
 <h2 id="triaging-pull-requests"><a class="header" href="#triaging-pull-requests">Triaging pull requests</a></h2>
 <p>Some pull request authors may not be familiar with TiDB, TiDB development workflow or TiDB community. They don't know what labels should be added to the pull requests and which experts could be asked for review. If you are able to, it would be great for you to triage the pull requests, adding suitable labels to the pull requests, asking corresponding experts to review the pull requests. These actions could help more contributors notice the pull requests and make quick responses.</p>
 <h2 id="checking-pull-requests"><a class="header" href="#checking-pull-requests">Checking pull requests</a></h2>
@@ -1242,7 +1243,7 @@ brew install pre-commit
 <li><strong>Be respectful to pull request authors and other reviewers</strong>. Code review is a part of your community activities. You should follow the community requirements.</li>
 <li><strong>Asking questions instead of making statements</strong>. The wording of the review comments is very important. To provide review comments that are constructive rather than critical, you can try asking questions rather than making statements.</li>
 <li><strong>Offer sincere praise</strong>. Good reviewers focus not only on what is wrong with the code but also on good practices in the code. As a reviewer, you are recommended to offer your encouragement and appreciation to the authors for their good practices in the code. In terms of mentoring, telling the authors what they did is right is even more valuable than telling them what they did is wrong.</li>
-<li><strong>Provide additional details and context of your review process</strong>. Instead of simply &quot;approving&quot; the pull request. If you test the pull request, report the result and your test environment details. If you request changes, try to suggest how.</li>
+<li><strong>Provide additional details and context of your review process</strong>. Instead of simply "approving" the pull request. If you test the pull request, report the result and your test environment details. If you request changes, try to suggest how.</li>
 </ul>
 <h2 id="accepting-pull-requests"><a class="header" href="#accepting-pull-requests">Accepting pull requests</a></h2>
 <p>Once you think the pull request is ready, you can <a href="https://docs.github.com/en/github/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/approving-a-pull-request-with-required-reviews">approve</a> it, commenting with <code>/lgtm</code> is also valid.</p>
@@ -1252,7 +1253,7 @@ Finally committer can <a href="https://prow.tidb.io/command-help?repo=pingcap%2F
 <p>This page defines the best practices procedure for making a proposal in TiDB projects. This text is based on the content of <a href="https://github.com/pingcap/tidb/blob/7f4f5c02364b6578da561ec14f409a39ddf954a5/docs/design/README.md">TiDB Design Document</a>.</p>
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
 <p>Many changes, including bug fixes and documentation improvements can be implemented and reviewed via the normal GitHub pull request workflow.</p>
-<p>Some changes though are &quot;substantial&quot;, and we ask that these be put through a bit of a design process and produce a consensus among the TiDB community.</p>
+<p>Some changes though are "substantial", and we ask that these be put through a bit of a design process and produce a consensus among the TiDB community.</p>
 <p>The process described in this page is intended to provide a consistent and controlled path for new features to enter the TiDB projects, so that all stakeholders can be confident about the direction the projects is evolving in.</p>
 <h2 id="who-should-initiate-the-design-document"><a class="header" href="#who-should-initiate-the-design-document">Who should initiate the design document?</a></h2>
 <p>Everyone is encouraged to initiate a design document, but before doing it, please make sure you have an intention of getting the work done to implement it.</p>
@@ -1272,7 +1273,7 @@ Finally committer can <a href="https://prow.tidb.io/command-help?repo=pingcap%2F
 <li>Start the implementation.</li>
 </ol>
 <p>Please refer to the tracking issue from subtasks to track the progress.</p>
-<p>An example that almost fits into this model is the proposal &quot;Support global index for partition table&quot;, without following the latest template.</p>
+<p>An example that almost fits into this model is the proposal "Support global index for partition table", without following the latest template.</p>
 <ul>
 <li><a href="https://github.com/pingcap/tidb/issues/18032">tracking issue</a></li>
 <li><a href="https://github.com/pingcap/tidb/pull/18982">pull request of design document</a></li>
@@ -1286,25 +1287,25 @@ Finally committer can <a href="https://prow.tidb.io/command-help?repo=pingcap%2F
 <pre><code class="language-go">package main
 
 import (
-    &quot;fmt&quot;
-    &quot;strings&quot;
+    "fmt"
+    "strings"
 )
 
 type Email string
 
 func newEmail(email string) (Email, error) {
-    if !strings.Contains(email, &quot;@&quot;) {
-        return Email(&quot;&quot;), fmt.Errorf(&quot;Expected @ in the email&quot;)
+    if !strings.Contains(email, "@") {
+        return Email(""), fmt.Errorf("Expected @ in the email")
     }
     return Email(email), nil
 }
 
 func (email Email) Domain() string {
-    return strings.Split(string(email), &quot;@&quot;)[1]
+    return strings.Split(string(email), "@")[1]
 }
 
 func main() {
-    ping, err := newEmail(&quot;go@pingcap.com&quot;)
+    ping, err := newEmail("go@pingcap.com")
     if err != nil { panic(err) }
     fmt.Println(ping.Domain())
 }
@@ -1327,7 +1328,7 @@ However, pointer receivers are often required to satisfy an interface or for per
 <li>What is the GC behavior of the rest of the program? GC pressure may favor value receivers.</li>
 </ul>
 <h2 id="parallel-for-loop"><a class="header" href="#parallel-for-loop">Parallel For-Loop</a></h2>
-<p>There are two types of for loop on range: &quot;with index&quot; and &quot;without index&quot;. Let's see an example for range with index.</p>
+<p>There are two types of for loop on range: "with index" and "without index". Let's see an example for range with index.</p>
 <pre><code class="language-go">func TestRangeWithIndex(t *testing.T) {
 	rows := []struct{ index int }{{index: 0}, {index: 1}, {index: 2}}
 	for _, row := range rows {
@@ -1349,7 +1350,7 @@ However, pointer receivers are often required to satisfy an interface or for per
 <h3 id="the-same-instance-of-the-variable"><a class="header" href="#the-same-instance-of-the-variable">The same instance of the variable</a></h3>
 <p>Since the the loop iterator variable is the same instance of the variable, it may result in tricky error with parallel for-loop.</p>
 <pre><code class="language-go">done := make(chan bool)
-values := []string{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}
+values := []string{"a", "b", "c"}
 for _, v := range values {
 	go func() {
 		fmt.Println(v)
@@ -1360,7 +1361,7 @@ for _ = range values {
 	&lt;-done
 }
 </code></pre>
-<p>You might expect to see <code>a</code>, <code>b</code>, <code>c</code> as the output, but you'll probably see instead is <code>c</code>, <code>c</code>, <code>c</code>. </p>
+<p>You might expect to see <code>a</code>, <code>b</code>, <code>c</code> as the output, but you'll probably see instead is <code>c</code>, <code>c</code>, <code>c</code>.</p>
 <p>This is because each iteration of the loop uses the same instance of the variable <code>v</code>, so each closure shares that single variable.</p>
 <p>This is the same reason which result wrong test when use <code>t.Parallel()</code> with range, which is covered in <a href="contribute-to-tidb/../get-started/write-and-run-unit-tests.html#parallel">Parallel section of Write and run unit tests</a></p>
 <h3 id="a-clone-of-iteration-target-value"><a class="header" href="#a-clone-of-iteration-target-value">A clone of iteration target value</a></h3>
@@ -1477,8 +1478,8 @@ BenchmarkRangeStruct-12                    16171             77523 ns/op
 <li>Click the <strong>Fork</strong> button on the top right and wait it to finish.</li>
 </ol>
 <h4 id="step-2-clone-the-forked-repository-to-local-storage"><a class="header" href="#step-2-clone-the-forked-repository-to-local-storage">Step 2: Clone the forked repository to local storage</a></h4>
-<pre><code>cd $working_dir # Comes to the directory that you want put the fork in, for example, &quot;cd ~/Documents/GitHub&quot;
-git clone git@github.com:$user/docs.git # Replace &quot;$user&quot; with your GitHub ID
+<pre><code>cd $working_dir # Comes to the directory that you want put the fork in, for example, "cd ~/Documents/GitHub"
+git clone git@github.com:$user/docs.git # Replace "$user" with your GitHub ID
 
 cd $working_dir/docs
 git remote add upstream git@github.com:pingcap/docs.git # Adds the upstream repo
@@ -1505,7 +1506,7 @@ git rebase upstream/master
 <h4 id="step-5-commit-your-changes"><a class="header" href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h4>
 <pre><code>git status # Checks the local status
 git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
-git commit -m &quot;commit-message: update the xx&quot;
+git commit -m "commit-message: update the xx"
 </code></pre>
 <p>See <a href="https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message">Commit Message Style</a>.</p>
 <h4 id="step-6-keep-your-branch-in-sync-with-upstreammaster"><a class="header" href="#step-6-keep-your-branch-in-sync-with-upstreammaster">Step 6: Keep your branch in sync with upstream/master</a></h4>
@@ -1514,7 +1515,7 @@ git fetch upstream
 git rebase upstream/master
 </code></pre>
 <h4 id="step-7-push-your-changes-to-the-remote"><a class="header" href="#step-7-push-your-changes-to-the-remote">Step 7: Push your changes to the remote</a></h4>
-<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+<pre><code>git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
 </code></pre>
 <h4 id="step-8-create-a-pull-request"><a class="header" href="#step-8-create-a-pull-request">Step 8: Create a pull request</a></h4>
 <ol>
@@ -1546,31 +1547,31 @@ git fetch origin
 <p>Commit your changes. This step is the same as <a href="contribute-to-tidb/write-document.html#step-5-commit-your-changes">Step 5: Commit your changes</a> in stage 1.</p>
 <pre><code>git status # Checks the local status
 git add &lt;file&gt; ... # Adds the file(s) you want to commit. If you want to commit all changes, you can directly use `git add.`
-git commit -m &quot;commit-message: update the xx&quot;
+git commit -m "commit-message: update the xx"
 </code></pre>
 </li>
 <li>
 <p>Push your changes to the remote origin:</p>
-<pre><code>git push -u origin new-branch-name # &quot;-u&quot; is used to track the remote branch from origin
+<pre><code>git push -u origin new-branch-name # "-u" is used to track the remote branch from origin
 </code></pre>
 </li>
 <li>
-<p>After all comments are addressed, reply on the PR page: &quot;All comments are addressed. PTAL.&quot;</p>
-<p>&quot;PTAL&quot; is short for &quot;Please take a look&quot;.</p>
+<p>After all comments are addressed, reply on the PR page: "All comments are addressed. PTAL."</p>
+<p>"PTAL" is short for "Please take a look".</p>
 </li>
 </ol>
 <h5 id="accept-comments-on-the-pr-page"><a class="header" href="#accept-comments-on-the-pr-page">Accept comments on the PR page</a></h5>
-<p>If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the &quot;Commit suggestion&quot; button. Then the suggested change is automatically committed to your PR.</p>
+<p>If a review comment is in the suggestion mode where the reviewer has already made the suggested change for you (with highlighted differences), to accept the suggestion, you only need to click the "Commit suggestion" button. Then the suggested change is automatically committed to your PR.</p>
 <p>If multiple review comments are in the suggestion mode, it is recommended to accept them in a batch. To do that, perform the following steps on the PR page:</p>
 <ol>
 <li>
-<p>Click the &quot;Files changed&quot; tab and see the file changes. You can see multiple review comments in suggestion mode.</p>
+<p>Click the "Files changed" tab and see the file changes. You can see multiple review comments in suggestion mode.</p>
 </li>
 <li>
-<p>Choose the suggestions you want to commit by clicking the &quot;Add suggestion to batch&quot; button on each suggestion.</p>
+<p>Choose the suggestions you want to commit by clicking the "Add suggestion to batch" button on each suggestion.</p>
 </li>
 <li>
-<p>After all suggestions to be committed are chosen, click the &quot;Commit suggestions&quot; button on the upper right corner of the PR page. Then, you have successfully committed all suggested changes.</p>
+<p>After all suggestions to be committed are chosen, click the "Commit suggestions" button on the upper right corner of the PR page. Then, you have successfully committed all suggested changes.</p>
 </li>
 </ol>
 <blockquote>
@@ -1582,7 +1583,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>You need to perform the following steps on each one of the cherry-picked PRs:</p>
 <ul>
 <li>
-<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment &quot;LGTM&quot;, which means &quot;Looks good to me&quot;. The repository committers will merge it soon.</p>
+<p>Check whether the cherry-picked content is exactly what you want to commit to that release version. If yes, please comment "LGTM", which means "Looks good to me". The repository committers will merge it soon.</p>
 </li>
 <li>
 <p>If most of your changes apply to multiple documentation versions but some differences exist among versions, make changes by commenting in the cherry-picked PR instructing how you would like to make version-specific changes. Then the repository committers will commit to the PR according to your comment before you approve it.</p>
@@ -1616,7 +1617,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 <p>Once the assignee submits the translated content in a docs PR, he or she adds the <code>translation/from-docs-cn</code> label to the docs PR, removes the <code>translation/doing</code> label from the docs-cn PR, and adds the <code>translation/done</code> label to the docs-cn PR.</p>
 </li>
 <li>
-<p>The assignee provides the docs-cn PR link in the PR description section of the docs PR (&quot;This PR is translated from&quot;). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.</p>
+<p>The assignee provides the docs-cn PR link in the PR description section of the docs PR ("This PR is translated from"). The reviewer will know from which docs-cn PR the docs PR is translated. At the same time, a reverse link is automatically generated in the docs-cn PR.</p>
 </li>
 <li>
 <p>After the docs PR is merged. The translation tracking process is finished. The updates in Chinese documentation are synchronized to the English documentation.</p>
@@ -1665,7 +1666,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 </tbody></table>
 </div>
 <h2 id="bug-fix"><a class="header" href="#bug-fix">Bug fix</a></h2>
-<p>A bug fix note means that your PR fixes an existing bug or issue. This type of notes start with &quot;Fix&quot; followed by &quot;the issue/bug&quot;.</p>
+<p>A bug fix note means that your PR fixes an existing bug or issue. This type of notes start with "Fix" followed by "the issue/bug".</p>
 <p>Write your note clearly and adequately so that your target readers can get the main point of your bug fix. The bug or issue must be directly perceivable to the users, and you can refer to the associated GitHub issues.</p>
 <p>In addition, it is recommended to highlight the bug trigger condition or the workaround if there is any.</p>
 <p><strong>Examples:</strong></p>
@@ -1678,7 +1679,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 </div>
 <h2 id="improvement"><a class="header" href="#improvement">Improvement</a></h2>
 <p>An improvement note means that your PR improves stability or performance of the product, or enhances an existing feature. In addition to describing what your PR has changed, you should also mention how users can benefit from it.</p>
-<p>This type of release note consists of two parts: what you have changed + the benefit of your change. This type of release notes often starts with &quot;support&quot;, &quot;increase&quot;, &quot;improve&quot;, &quot;optimize&quot;, etc.</p>
+<p>This type of release note consists of two parts: what you have changed + the benefit of your change. This type of release notes often starts with "support", "increase", "improve", "optimize", etc.</p>
 <p><strong>Examples:</strong></p>
 <div class="table-wrapper"><table><thead><tr><th><strong>Not recommended</strong></th><th><strong>Clear in type</strong></th><th><strong>Adequate and clear in meaning</strong></th><th><strong>User perspective</strong></th><th>Recommended</th></tr></thead><tbody>
 <tr><td>Not use the stale read request's <code>start_ts</code> to update <code>max_ts</code> to avoid commit request keep retrying</td><td>✅</td><td>✅</td><td>❌</td><td>Improve commit performance in some edge cases</td></tr>
@@ -1715,7 +1716,7 @@ git commit -m &quot;commit-message: update the xx&quot;
 </ul>
 <h2 id="time-management"><a class="header" href="#time-management">Time Management</a></h2>
 <p>There are many things that a committer can do, such as moderating discussions, pull request reviews and code contributions.</p>
-<p>Working on an open source project can be rewarding, but also be a bit overwhelming sometimes. A little bit of time management might be helpful to alleviate the problem. For example, some committers have a &quot;community day&quot; in a week when they actively manage outstanding PRs, but watch the community less frequently in the rest of the time.</p>
+<p>Working on an open source project can be rewarding, but also be a bit overwhelming sometimes. A little bit of time management might be helpful to alleviate the problem. For example, some committers have a "community day" in a week when they actively manage outstanding PRs, but watch the community less frequently in the rest of the time.</p>
 <p>Remember that your merit will never go away, so please take your time and pace when contributing to the project:)</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="miscellaneous-topics"><a class="header" href="#miscellaneous-topics">Miscellaneous Topics</a></h1>
 <h2 id="communication-channels"><a class="header" href="#communication-channels">Communication channels</a></h2>
@@ -1803,11 +1804,11 @@ go s.onConn(clientConn)
 </code></pre>
 <p>The entry method for a single session processing command is to call the <code>dispatch</code> method of the <code>clientConn</code> class, where the protocol is parsed and passed to a different handler.</p>
 <h3 id="sql-layer"><a class="header" href="#sql-layer">SQL Layer</a></h3>
-<p>Generally speaking, a SQL statement needs to go through a series of processes: </p>
+<p>Generally speaking, a SQL statement needs to go through a series of processes:</p>
 <ol>
 <li>syntax parsing</li>
 <li>validity verification</li>
-<li>building query plan </li>
+<li>building query plan</li>
 <li>optimizing query plan</li>
 <li>generating executor according to plan</li>
 <li>executing and returning results</li>
@@ -1825,7 +1826,7 @@ go s.onConn(clientConn)
 </div>
 <h3 id="kv-api-layer"><a class="header" href="#kv-api-layer">KV API Layer</a></h3>
 <p>TiDB relies on the underlying storage engine to store and load data. It does not rely on a specific storage engine (such as TiKV), but has some requirements for the storage engine, and any engine that meets these requirements can be used (TiKV is the most suitable one).</p>
-<p>The most basic requirement is &quot;Key-Value engine with transactions and Golang driver&quot;. The more advanced requirement is &quot;support for distributed computation interface&quot;, so that TiDB can push some computation requests down to the storage engine.</p>
+<p>The most basic requirement is "Key-Value engine with transactions and Golang driver". The more advanced requirement is "support for distributed computation interface", so that TiDB can push some computation requests down to the storage engine.</p>
 <p>These requirements can be found in the interfaces of the <code>kv</code> package, and the storage engine needs to provide a Golang driver that implements these interfaces, which TiDB then uses to manipulate the underlying data.</p>
 <p>As for the most basic requirement, these interfaces are related:</p>
 <ul>
@@ -1975,7 +1976,7 @@ func (cc *clientConn) writeChunks(ctx context.Context, rs ResultSet ...) (bool, 
 | id                       | estRows | task      | access object | operator info                    |
 +--------------------------+---------+-----------+---------------+----------------------------------+
 | TableReader_7            | 0.00    | root      |               | data:Selection_6                 |
-| └─Selection_6            | 0.00    | cop[tikv] |               | eq(test.t.value, &quot;Second&quot;)       |
+| └─Selection_6            | 0.00    | cop[tikv] |               | eq(test.t.value, "Second")       |
 |   └─TableRangeScan_5     | 1.00    | cop[tikv] | table:t       | range:(1,+inf], keep order:false |
 +--------------------------+---------+-----------+---------------+----------------------------------+
 </code></pre>
@@ -2112,134 +2113,134 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <p>It will fill in a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/model.go#L269">TableInfo</a> struct according to the table definition in the statement and create a <a href="https://github.com/pingcap/tidb/blob/9f68c8e92a994e4790bfd9e567e5ad86c8daa861/parser/model/ddl.go#L213">DDL job</a> and call <a href="https://github.com/pingcap/tidb/blob/7fd60012336c46158df46c30d095a364fcc103f3/ddl/ddl.go#L541">doDDLJob</a> which goes through the <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L257">limitDDLJobs</a> goroutine and adds one or more jobs to the DDL job queue in <a href="https://github.com/pingcap/tidb/blob/6eb02fbe5ed448a2c814dd5563414fb733274329/ddl/ddl_worker.go#L279">addBatchDDLJobs</a></p>
 <p>DDL job encoded as JSON:</p>
 <pre><code class="language-json">{
-  &quot;id&quot;: 56,
-  &quot;type&quot;: 3,
-  &quot;schema_id&quot;: 1,
-  &quot;table_id&quot;: 55,
-  &quot;schema_name&quot;: &quot;test&quot;,
-  &quot;state&quot;: 0,
-  &quot;err&quot;: null,
-  &quot;err_count&quot;: 0,
-  &quot;row_count&quot;: 0,
-  &quot;raw_args&quot;: [
+  "id": 56,
+  "type": 3,
+  "schema_id": 1,
+  "table_id": 55,
+  "schema_name": "test",
+  "state": 0,
+  "err": null,
+  "err_count": 0,
+  "row_count": 0,
+  "raw_args": [
     {
-      &quot;id&quot;: 55,
-      &quot;name&quot;: {
-        &quot;O&quot;: &quot;t&quot;,
-        &quot;L&quot;: &quot;t&quot;
+      "id": 55,
+      "name": {
+        "O": "t",
+        "L": "t"
       },
-      &quot;charset&quot;: &quot;utf8mb4&quot;,
-      &quot;collate&quot;: &quot;utf8mb4_bin&quot;,
-      &quot;cols&quot;: [
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_bin",
+      "cols": [
         {
-          &quot;id&quot;: 1,
-          &quot;name&quot;: {
-            &quot;O&quot;: &quot;id&quot;,
-            &quot;L&quot;: &quot;id&quot;
+          "id": 1,
+          "name": {
+            "O": "id",
+            "L": "id"
           },
-          &quot;offset&quot;: 0,
-          &quot;origin_default&quot;: null,
-          &quot;origin_default_bit&quot;: null,
-          &quot;default&quot;: null,
-          &quot;default_bit&quot;: null,
-          &quot;default_is_expr&quot;: false,
-          &quot;generated_expr_string&quot;: &quot;&quot;,
-          &quot;generated_stored&quot;: false,
-          &quot;dependences&quot;: null,
-          &quot;type&quot;: {
-            &quot;Tp&quot;: 3,
-            &quot;Flag&quot;: 4131,
-            &quot;Flen&quot;: 10,
-            &quot;Decimal&quot;: 0,
-            &quot;Charset&quot;: &quot;binary&quot;,
-            &quot;Collate&quot;: &quot;binary&quot;,
-            &quot;Elems&quot;: null
+          "offset": 0,
+          "origin_default": null,
+          "origin_default_bit": null,
+          "default": null,
+          "default_bit": null,
+          "default_is_expr": false,
+          "generated_expr_string": "",
+          "generated_stored": false,
+          "dependences": null,
+          "type": {
+            "Tp": 3,
+            "Flag": 4131,
+            "Flen": 10,
+            "Decimal": 0,
+            "Charset": "binary",
+            "Collate": "binary",
+            "Elems": null
           },
-          &quot;state&quot;: 5,
-          &quot;comment&quot;: &quot;&quot;,
-          &quot;hidden&quot;: false,
-          &quot;change_state_info&quot;: null,
-          &quot;version&quot;: 2
+          "state": 5,
+          "comment": "",
+          "hidden": false,
+          "change_state_info": null,
+          "version": 2
         },
         {
-          &quot;id&quot;: 2,
-          &quot;name&quot;: {
-            &quot;O&quot;: &quot;notes&quot;,
-            &quot;L&quot;: &quot;notes&quot;
+          "id": 2,
+          "name": {
+            "O": "notes",
+            "L": "notes"
           },
-          &quot;offset&quot;: 1,
-          &quot;origin_default&quot;: null,
-          &quot;origin_default_bit&quot;: null,
-          &quot;default&quot;: null,
-          &quot;default_bit&quot;: null,
-          &quot;default_is_expr&quot;: false,
-          &quot;generated_expr_string&quot;: &quot;&quot;,
-          &quot;generated_stored&quot;: false,
-          &quot;dependences&quot;: null,
-          &quot;type&quot;: {
-            &quot;Tp&quot;: 15,
-            &quot;Flag&quot;: 0,
-            &quot;Flen&quot;: 255,
-            &quot;Decimal&quot;: 0,
-            &quot;Charset&quot;: &quot;utf8mb4&quot;,
-            &quot;Collate&quot;: &quot;utf8mb4_bin&quot;,
-            &quot;Elems&quot;: null
+          "offset": 1,
+          "origin_default": null,
+          "origin_default_bit": null,
+          "default": null,
+          "default_bit": null,
+          "default_is_expr": false,
+          "generated_expr_string": "",
+          "generated_stored": false,
+          "dependences": null,
+          "type": {
+            "Tp": 15,
+            "Flag": 0,
+            "Flen": 255,
+            "Decimal": 0,
+            "Charset": "utf8mb4",
+            "Collate": "utf8mb4_bin",
+            "Elems": null
           },
-          &quot;state&quot;: 5,
-          &quot;comment&quot;: &quot;&quot;,
-          &quot;hidden&quot;: false,
-          &quot;change_state_info&quot;: null,
-          &quot;version&quot;: 2
+          "state": 5,
+          "comment": "",
+          "hidden": false,
+          "change_state_info": null,
+          "version": 2
         }
       ],
-      &quot;index_info&quot;: null,
-      &quot;constraint_info&quot;: null,
-      &quot;fk_info&quot;: null,
-      &quot;state&quot;: 0,
-      &quot;pk_is_handle&quot;: true,
-      &quot;is_common_handle&quot;: false,
-      &quot;common_handle_version&quot;: 0,
-      &quot;comment&quot;: &quot;&quot;,
-      &quot;auto_inc_id&quot;: 0,
-      &quot;auto_id_cache&quot;: 0,
-      &quot;auto_rand_id&quot;: 0,
-      &quot;max_col_id&quot;: 2,
-      &quot;max_idx_id&quot;: 0,
-      &quot;max_cst_id&quot;: 0,
-      &quot;update_timestamp&quot;: 0,
-      &quot;ShardRowIDBits&quot;: 0,
-      &quot;max_shard_row_id_bits&quot;: 0,
-      &quot;auto_random_bits&quot;: 0,
-      &quot;pre_split_regions&quot;: 0,
-      &quot;partition&quot;: null,
-      &quot;compression&quot;: &quot;&quot;,
-      &quot;view&quot;: null,
-      &quot;sequence&quot;: null,
-      &quot;Lock&quot;: null,
-      &quot;version&quot;: 4,
-      &quot;tiflash_replica&quot;: null,
-      &quot;is_columnar&quot;: false,
-      &quot;temp_table_type&quot;: 0,
-      &quot;policy_ref_info&quot;: null,
-      &quot;placement_settings&quot;: null
+      "index_info": null,
+      "constraint_info": null,
+      "fk_info": null,
+      "state": 0,
+      "pk_is_handle": true,
+      "is_common_handle": false,
+      "common_handle_version": 0,
+      "comment": "",
+      "auto_inc_id": 0,
+      "auto_id_cache": 0,
+      "auto_rand_id": 0,
+      "max_col_id": 2,
+      "max_idx_id": 0,
+      "max_cst_id": 0,
+      "update_timestamp": 0,
+      "ShardRowIDBits": 0,
+      "max_shard_row_id_bits": 0,
+      "auto_random_bits": 0,
+      "pre_split_regions": 0,
+      "partition": null,
+      "compression": "",
+      "view": null,
+      "sequence": null,
+      "Lock": null,
+      "version": 4,
+      "tiflash_replica": null,
+      "is_columnar": false,
+      "temp_table_type": 0,
+      "policy_ref_info": null,
+      "placement_settings": null
     }
   ],
-  &quot;schema_state&quot;: 0,
-  &quot;snapshot_ver&quot;: 0,
-  &quot;real_start_ts&quot;: 0,
-  &quot;start_ts&quot;: 428310284267159550,
-  &quot;dependency_id&quot;: 0,
-  &quot;query&quot;: &quot;CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255))&quot;,
-  &quot;binlog&quot;: {
-    &quot;SchemaVersion&quot;: 0,
-    &quot;DBInfo&quot;: null,
-    &quot;TableInfo&quot;: null,
-    &quot;FinishedTS&quot;: 0
+  "schema_state": 0,
+  "snapshot_ver": 0,
+  "real_start_ts": 0,
+  "start_ts": 428310284267159550,
+  "dependency_id": 0,
+  "query": "CREATE TABLE t (id int unsigned NOT NULL PRIMARY KEY, notes varchar(255))",
+  "binlog": {
+    "SchemaVersion": 0,
+    "DBInfo": null,
+    "TableInfo": null,
+    "FinishedTS": 0
   },
-  &quot;version&quot;: 1,
-  &quot;reorg_meta&quot;: null,
-  &quot;multi_schema_info&quot;: null,
-  &quot;priority&quot;: 0
+  "version": 1,
+  "reorg_meta": null,
+  "multi_schema_info": null,
+  "priority": 0
 }
 </code></pre>
 <h3 id="execution-in-the-tidb-ddl-owner"><a class="header" href="#execution-in-the-tidb-ddl-owner">Execution in the TiDB DDL Owner</a></h3>
@@ -2251,7 +2252,7 @@ func (h *CoprocessorDAGHandler) HandleStreamRequest(ctx context.Context, req *co
 <li>Checks if it is the owner (and if not just returns).</li>
 <li>Picks the first job from its DDL queue.</li>
 <li>Waits for dependent jobs (like reorganizations/backfill needs to wait for its meta-data jobs to be finished first, which it is dependent on).</li>
-<li>Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version. </li>
+<li>Waits for the current/old schema version to be globally synchronized, if needed, by waiting until the lease time is passed or all tidb nodes have updated their schema version.</li>
 <li>If the job is done (completed or rolled back):
 <ol>
 <li>Clean up old physical tables or indexes, not part of the new table.</li>
@@ -2467,7 +2468,7 @@ if err = cc.dispatch(ctx, data)
 <h4 id="session"><a class="header" href="#session"><a href="understand-tidb/session.html">Session</a></a></h4>
 <p>The most important function in <code>Session</code> is <code>ExecuteStmt</code>. It wraps calls to other modules. The SQL execution will respect environment variables in <code>Session</code> like <code>AutoCommit</code> and timezone.</p>
 <h4 id="parser"><a class="header" href="#parser"><a href="understand-tidb/parser.html">Parser</a></a></h4>
-<p><a href="https://github.com/pingcap/tidb/blob/master/parser/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/tidb/blob/master/parser/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
+<p><a href="https://github.com/pingcap/tidb/blob/master/pkg/parser/yy_parser.go">Parser</a> consists of <a href="https://github.com/pingcap/tidb/blob/master/pkg/parser/lexer.go">Lexer</a> and Yacc. It turns the SQL text to AST:</p>
 <pre><code class="language-go">p := parserPool.Get().(*parser.Parser)
 defer parserPool.Put(p)
 p.SetSQLMode(s.sessionVars.SQLMode)
@@ -2569,14 +2570,14 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <p>Parser is generated by a parser generator named <a href="https://github.com/cznic/parser">yacc</a>. It takes the grammar file <code>parser.y</code> as the input and outputs the source code file <code>parser.go</code>, which is the real parser imported by TiDB. Thus, the core file is <code>parser.y</code> because when the SQL syntax changes, most of the changes take place in <code>parser.y</code>.</p>
 <p>In case you are unfamiliar with yacc, some concepts are listed here:</p>
 <ul>
-<li><strong>Terminal Symbol</strong> is also known as &quot;token&quot;. When a SQL string reaches parser, the first step is to tokenize them into an array of tokens. For example, <code>&quot;SELECT * FROM t&quot;</code> is tokenized to <code>[selectKeyword, '*', fromKeyword, identifier(t)]</code> by <a href="https://github.com/pingcap/tidb/blob/4b110036e1a7d7c3584113512a544c8350459157/parser/lexer.go#L169">lexer.Lex()</a>.</li>
+<li><strong>Terminal Symbol</strong> is also known as "token". When a SQL string reaches parser, the first step is to tokenize them into an array of tokens. For example, <code>"SELECT * FROM t"</code> is tokenized to <code>[selectKeyword, '*', fromKeyword, identifier(t)]</code> by <a href="https://github.com/pingcap/tidb/blob/4b110036e1a7d7c3584113512a544c8350459157/parser/lexer.go#L169">lexer.Lex()</a>.</li>
 <li><strong>Non-terminal Symbol</strong> is a syntactic variable, which can represent a group of terminal/non-terminal symbols.</li>
 <li><strong>Grammar Rule</strong> specifies which symbols can replace which other non-terminal symbol.</li>
 <li><strong>Semantic Action</strong> defines how an AST node is constructed.</li>
 </ul>
 <p>An example of a grammar rule is as follows:</p>
 <pre><code>AlterDatabaseStmt:
-	&quot;ALTER&quot; DatabaseSym DBName DatabaseOptionList
+	"ALTER" DatabaseSym DBName DatabaseOptionList
 	{
 		$$ = &amp;ast.AlterDatabaseStmt{
 			Name:                 $3,
@@ -2587,7 +2588,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 </code></pre>
 <ul>
 <li><code>AlterDatabaseStmt</code> is a non-terminal symbol because there is no such token.</li>
-<li><code>&quot;ALTER&quot;</code> is a terminal symbol.</li>
+<li><code>"ALTER"</code> is a terminal symbol.</li>
 <li><code>DatabaseSym</code>, <code>DBName</code> and <code>DatabaseOptionList</code> are non-terminal symbols that are defined in other grammar rules.</li>
 <li>The pseudo-code in brackets is the semantic action. It means an AST node <code>ast.AlterDatabaseStmt</code> will be constructed when the rule is reduced by the parser. Note that a dollar character <code>$</code> followed by a number represents the binding Golang value previously (in other rules), where the number is the index of symbol in rule (1-based). <code>$$</code> represents current binding value. After goyacc substitution, this code snippet will be valid Golang code.</li>
 </ul>
@@ -2624,8 +2625,8 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <ol start="2">
 <li>How to resolve shift-reduce or reduce-reduce conflicts?</li>
 </ol>
-<p>Shift means &quot;move the next token in&quot; to match the current rule. Reduce means &quot;replace current tokens/symbols to a non-terminal symbol&quot;. Shift-reduce conflicts occur when the parser cannot decide the next step is to shift or to reduce.</p>
-<p>When yacc reports such conflicts, it also keeps the file <code>y.output</code>. You can search &quot;conflict on&quot; in the file to locate which rule conflicts with other rules. Then you can try to annotate the <code>%precedence</code> to tokens, rewrite the grammar rule, or ask for help on GitHub.</p>
+<p>Shift means "move the next token in" to match the current rule. Reduce means "replace current tokens/symbols to a non-terminal symbol". Shift-reduce conflicts occur when the parser cannot decide the next step is to shift or to reduce.</p>
+<p>When yacc reports such conflicts, it also keeps the file <code>y.output</code>. You can search "conflict on" in the file to locate which rule conflicts with other rules. Then you can try to annotate the <code>%precedence</code> to tokens, rewrite the grammar rule, or ask for help on GitHub.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="planner"><a class="header" href="#planner">Planner</a></h1>
 <p>The <code>planner</code> package contains most of the codes related to SQL optimization. The input of the planner is an AST of the query returned from the parser, and the output of the planner is a plan tree that would be used for further execution.</p>
 <h2 id="package-structure"><a class="header" href="#package-structure">Package Structure</a></h2>
@@ -2638,7 +2639,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <tr><td style="text-align: left"><a href="https://github.com/pingcap/tidb/tree/master/pkg/planner/util">tidb/pkg/planner/util</a></td><td style="text-align: left">Common utility functions / structures shared by the two planners</td></tr>
 </tbody></table>
 </div>
-<p>We can see that, TiDB has two planners, one is of System R model, which is defaultly used, and the other is of Cascades model, which is still under development. The unified entry function of planner module is <code>Optimize()</code>, before diving into either of the two planners, it would firstly check if there is any intervention for the planner from the &quot;SQL Plan Management&quot; module, if yes, the AST of the query would be modified before going through the optimization procedures. &quot;SQL Plan Management&quot; module is beyond the scope of this article, and it would be introduced in the <a href="understand-tidb/sql-plan-management.html">SQL Plan Management</a> section.</p>
+<p>We can see that, TiDB has two planners, one is of System R model, which is defaultly used, and the other is of Cascades model, which is still under development. The unified entry function of planner module is <code>Optimize()</code>, before diving into either of the two planners, it would firstly check if there is any intervention for the planner from the "SQL Plan Management" module, if yes, the AST of the query would be modified before going through the optimization procedures. "SQL Plan Management" module is beyond the scope of this article, and it would be introduced in the <a href="understand-tidb/sql-plan-management.html">SQL Plan Management</a> section.</p>
 <p>This article would only focus on introducing the System R planner, i.e, the <code>core</code> package, readers who are interested in the Cascacdes planner can refer to this <a href="https://github.com/pingcap/tidb/tree/master/docs/design/2018-08-29-new-planner.md">design</a> doc.</p>
 <h2 id="optimization-procedures"><a class="header" href="#optimization-procedures">Optimization Procedures</a></h2>
 <p>Ignore the trivial steps, the query optimization procedures can be briefly divided into 4 phases:</p>
@@ -2655,7 +2656,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <p>During the plan building process, optimization flags would be collected for each operator built. For example, if a <code>Selection</code> operator is built, then an optimization flag like <code>flagPredicatePushDown</code> would be set in the plan builder. These saved flags would be used later in the logical optimization phase.</p>
 <h3 id="logical-optimization"><a class="header" href="#logical-optimization">Logical Optimization</a></h3>
 <p>The entry function of this phase (also known as rule-based optimization) is <code>logicalOptimize()</code>. This function would do logically equivalent transformations for the initial plan tree according to relational algebra, and the result plan tree should be better than the initial one from the execution efficiency perspective in principle. Specifically, <code>logicalOptimize()</code> would traverse all the logical optimization rules predefined as <code>optRuleList</code> in order, and check if a rule is applicable by referring to the optimization flags saved during the plan building phase. If the flag is set for a rule, planner would traverse the plan tree from top down, and apply the transformations implied by the rule to the subtree satisfying the rule prerequisites.</p>
-<p>An example logical optimization rule is &quot;column pruning&quot;, for each operator in the plan tree, it would collect the columns needed by the upper operators, and prune the unneeded columns from the output. Another example rule is &quot;decorrelation&quot;, it would try to pull up operators referring correlated columns, and resolve the column dependency, hence convert the <code>LogicalApply</code> operator to a regular <code>LogicalJoin</code>.</p>
+<p>An example logical optimization rule is "column pruning", for each operator in the plan tree, it would collect the columns needed by the upper operators, and prune the unneeded columns from the output. Another example rule is "decorrelation", it would try to pull up operators referring correlated columns, and resolve the column dependency, hence convert the <code>LogicalApply</code> operator to a regular <code>LogicalJoin</code>.</p>
 <h3 id="physical-optimization"><a class="header" href="#physical-optimization">Physical Optimization</a></h3>
 <p>The entry function of this phase (also known as cost-based optimization) is <code>physicalOptimize()</code>, it would do cost based enumeration for the implementations of each logical operator, and find a combination of all operators with the lowest cost as the final physical plan. Specifically, each logical operator would implement an interface function <code>exhaustPhysicalPlans()</code> to list all the possible physical algorithms, e.g, <code>LogicalAggregation</code> would have two possible implementations including <code>PhysicalStreamAggregation</code> and <code>PhysicalHashAggregation</code>. Each implementation may require specific properties for its child's output, e.g, <code>PhysicalStreamAggregation</code> would require that the child's output rows should be in order of the <code>GROUP BY</code> columns. These properties are recorded in <code>PhysicalProperty</code> structure, and passed down to the enumeration procedure of the child operators.</p>
 <p>Once the planner knows the specific implementation of the plan tree, or of a subtree, it can compute a cost for this implementation. The cost of one implementation is calculated as a sum of its resource consumptions including CPU, Memory, Network, IO, etc. For each kind of resource specifically, the consumption is measured based on a unit factor (e.g, scanFactor is the unit factor for IO consumption, which means the cost of scanning 1 byte data on TiKV or TiFlash), and the estimated number of rows / bytes to be processed by this operator. Note that, these unit factors can be customized by setting system variables like <code>tidb_opt_xxx_factor</code> to fit clusters of different hardware configurations. Each implementation of the whole logical plan tree would have a cost then, planner would choose the one with the lowest cost for execution.</p>
@@ -2677,7 +2678,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <p>The Count-Min Sketch (CM sketch) is a data structure used for query cardinality estimation for the equal predicate, or join, etc., and provides strong accuracy guarantees. Since its introduction in 2003 in the paper <a href="http://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf">An improved data stream summary: The count-min sketch and its applications</a>, it has gained widespread use given its simplicity of construction and use.</p>
 <p>CM sketch maintains an array of <code>d*w</code> counts, and for each value, maps it to a column in each row using <code>d</code> separate hash functions and modifies the count value at those <code>d</code> positions. This is shown in the following figure.</p>
 <p><img src="understand-tidb/../img/stats-cmsketch.png" alt="count-min sketch" /></p>
-<p>This way, when querying how many times a value appears, the d hash functions are still used to find the position mapped to in each row, and the minimum of these d values is used as the estimate. </p>
+<p>This way, when querying how many times a value appears, the d hash functions are still used to find the position mapped to in each row, and the minimum of these d values is used as the estimate.</p>
 <p><strong>Please note that CM sketch is not used as default statistics since version 5.1 given the increasing concerns on estimation bias under the scenarios with large distinct values of a column.</strong></p>
 <h3 id="top-n-value-most-frequent-value"><a class="header" href="#top-n-value-most-frequent-value">Top-N Value (Most Frequent Value)</a></h3>
 <p>The CM sketch would encounter severe hash collisions when the dataset grows while the histogram has its limit to estimate the selectivity of equal predicates. Thus we extract the Top-N value (a.k.a., the most frequent value) of the dataset out of the histogram to improve the accuracy of the estimation of an equal predicate. Here, the top-n statistics are stored as a pair of <code>(value, cnt)</code>. For example, for a dataset <code>1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 7</code>. if n of top-n is 1, the top-n value pair will be <code>[(1, 7)]</code>, and the rest of the histogram is constructed using the remaining data <code>2, 2, 3, 4, 4, 5, 6, 7</code>. You may refer to the paper <a href="https://dl.acm.org/doi/10.1561/1900000004">Synopses for Massive Data: Samples, Histograms, Wavelets, Sketches</a> for additional information.</p>
@@ -2706,7 +2707,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <li>If the number of buckets exceeds the limit after the histogram is merged, then the two adjacent buckets are <a href="https://github.com/pingcap/tidb/blob/466f6e77b6b01f09443043f75156de4ca2892141/statistics/histogram.go#L814">merged</a> into one.</li>
 </ul>
 <h2 id="statistics-maintenance"><a class="header" href="#statistics-maintenance">Statistics maintenance</a></h2>
-<p>From version 2.0, TiDB has introduced a dynamic update mechanism, which can dynamically adjust statistics based on the results of the query. In addition, from version 4.0, we have introduced the <code>auto analyze</code> function, which can automatically trigger the collection of (incremental) statistics based on the percentage of table data change. </p>
+<p>From version 2.0, TiDB has introduced a dynamic update mechanism, which can dynamically adjust statistics based on the results of the query. In addition, from version 4.0, we have introduced the <code>auto analyze</code> function, which can automatically trigger the collection of (incremental) statistics based on the percentage of table data change.</p>
 <p>As data changes significantly, the settings of statistics collection may need to be modified accordingly, too. For example, the histogram needs to adjust the bucket height and the boundaries of the bucket; and the CM Sketch needs to adjust the count array so that the estimated value is equal to the result of the query.</p>
 <p>What needs to be pointed out here is that dynamically adjusting statistics based on query results is turned off by default in version 4.0, and will be revisited for a possible redesign in future versions.</p>
 <h2 id="the-application-of-the-statistics"><a class="header" href="#the-application-of-the-statistics">The application of the statistics</a></h2>
@@ -2823,7 +2824,7 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 <p>As stated in the planner overview, rule-based optimization (usually used interchangeably with logical optimization in TiDB code) consists of logical optimization rules. These rules have predefined order to be iterated. Each rule has a responding flag, and a rule will be applied only if it is flagged and not disabled. The flag is set according to the SQL in the plan building stage.</p>
 <p>The rule-based optimization will produce a logical plan tree that is logically equal to the original one. Besides the original plan tree, it will also make use of table schema information to make optimizations, but it doesn't rely on the statistics to do optimization (join reorder is the only exception, we'll talk about it later).</p>
 <h2 id="implementation-patterns"><a class="header" href="#implementation-patterns">Implementation Patterns</a></h2>
-<p>Code for each rule is placed in a separated file named &quot;rule_xxx_xxx.go&quot;.</p>
+<p>Code for each rule is placed in a separated file named "rule_xxx_xxx.go".</p>
 <p>All logical rule implements the <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/optimizer.go#L85-L89"><code>logicalOptRule</code></a> interface.</p>
 <p>It is defined as follows:</p>
 <pre><code class="language-go">type logicalOptRule interface {
@@ -2839,10 +2840,10 @@ stmt, err := compiler.Compile(ctx, stmtNode)
 </ul>
 <h2 id="rules"><a class="header" href="#rules">Rules</a></h2>
 <h3 id="column-pruning"><a class="header" href="#column-pruning">Column Pruning</a></h3>
-<p>This is a very fundamental optimization. It will prune unneeded columns for each operator. </p>
+<p>This is a very fundamental optimization. It will prune unneeded columns for each operator.</p>
 <p>This main logic is in <code>PruneColumns(parentUsedCols []*expression.Column) error</code> method of the <code>LogicalPlan</code> interface. It traverses the plan tree from top to bottom. Each operator receives which columns are used by the parent operator, then uses this information to prune unneeded columns from itself (different kinds of operator would have different behaviors), then collect and pass columns needed by itself to its children.</p>
 <h3 id="decorrelation"><a class="header" href="#decorrelation">Decorrelation</a></h3>
-<p>As stated in the planner overview, the correlated subquery in the SQL becomes the <code>Apply</code> operator, which is a special kind of <code>Join</code> operator, in the plan tree. If we can transform it to a normal <code>Join</code> and keep it logically equal to the <code>Apply</code>, we can do make more optimizations that are only available to normal join operators. </p>
+<p>As stated in the planner overview, the correlated subquery in the SQL becomes the <code>Apply</code> operator, which is a special kind of <code>Join</code> operator, in the plan tree. If we can transform it to a normal <code>Join</code> and keep it logically equal to the <code>Apply</code>, we can do make more optimizations that are only available to normal join operators.</p>
 <p>An <code>Apply</code> is equivalent to a <code>Join</code> if there are no correlated columns in its inner side. Here we try to pull up operators with correlated columns in the inner side across the <code>Apply</code>, then <code>Apply</code> can be changed to <code>Join</code> directly. So this kind of transformation is called decorrelation.</p>
 <p>The main logic is in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L122"><code>(*decorrelateSolver).optimize()</code></a>. It finds <code>Apply</code> and tries to decorrelate it.</p>
 <p>Currently, there're several cases we can decorrelate.</p>
@@ -2922,11 +2923,11 @@ EXPLAIN SELECT a, (SELECT sum(t2.b) FROM t2 WHERE t2.a = t1.a) FROM t1;
 <p>This rule will keep trying to decorrelate an <code>Apply</code> until it can't be decorrelated anymore. <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L127">If there are no correlated columns in its inner side now</a>, it is converted to a <code>Join</code>.</p>
 <h4 id="decorrelation-cant-guarantee-a-better-plan"><a class="header" href="#decorrelation-cant-guarantee-a-better-plan">Decorrelation can't guarantee a better plan</a></h4>
 <p>It might be intuitive to think that a decorrelated <code>Join</code> is more efficient than the nested-loop style <code>Apply</code>. That's probably true in most cases. However, as we said above, decorrelation just enables us to make more optimizations that are only available for normal <code>Join</code>. This doesn't mean <code>Apply</code> is always a worse plan.</p>
-<p>The decorrelation involves some &quot;pull-up&quot; operation. This usually makes the execution of the inner sub-tree of the <code>Apply</code>/<code>Join</code> becomes less efficient.
+<p>The decorrelation involves some "pull-up" operation. This usually makes the execution of the inner sub-tree of the <code>Apply</code>/<code>Join</code> becomes less efficient.
 And in some cases, for example, when the outer side of the <code>Apply</code> only has one row of data, the nested-loop style <code>Apply</code> execution won't incur inefficiency compared with a normal <code>Join</code>. In such cases, the decorrelated plan is worse than the original one.</p>
 <h3 id="aggregation-elimination"><a class="header" href="#aggregation-elimination">Aggregation Elimination</a></h3>
 <p>This rule finds <code>Aggregation</code>s and tries to remove useless <code>Aggregation</code> operator or useless <code>DISTINCT</code> of aggregate functions.</p>
-<p>A <code>DISTINCT</code> of an aggregate function is useless when the argument of the aggregate function is a unique column. In this case, we can set the <code>AggFuncDesc.HasDistinct</code> to <code>false</code> directly. </p>
+<p>A <code>DISTINCT</code> of an aggregate function is useless when the argument of the aggregate function is a unique column. In this case, we can set the <code>AggFuncDesc.HasDistinct</code> to <code>false</code> directly.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a INT, b INT UNIQUE);
 EXPLAIN SELECT count(distinct b) FROM t;
@@ -2961,7 +2962,7 @@ EXPLAIN SELECT count(a), sum(a), max(a) FROM t GROUP BY b;
 <p>Generally, there are two cases we can optimize. First, if there are two <code>Projection</code>s in a row, we can merge them into one <code>Projection</code>. Second, if all expressions of a <code>Projection</code> are <code>Column</code>, which means there are no extra calculations, we can remove this <code>Projection</code>.</p>
 <p>Note that for the second case, not all <code>Projection</code> can be eliminated. For example, the <code>Projection</code> at the top of the plan tree or below <code>UnionAll</code> can't be removed. This is indicated by the <code>canEliminate</code> parameter.</p>
 <h3 id="maxmin-elimination"><a class="header" href="#maxmin-elimination">Max/Min Elimination</a></h3>
-<p>Max/Min elimination finds <code>Aggregation</code> with <code>max()</code> or <code>min()</code> aggregate function. It doesn't actually &quot;eliminate&quot; the <code>Aggregation</code>. It adds <code>Limit</code> and <code>Sort</code> to get the same effect of <code>max()</code> and <code>min()</code>, but the <code>Aggregagation</code> is remained to assure correctness.</p>
+<p>Max/Min elimination finds <code>Aggregation</code> with <code>max()</code> or <code>min()</code> aggregate function. It doesn't actually "eliminate" the <code>Aggregation</code>. It adds <code>Limit</code> and <code>Sort</code> to get the same effect of <code>max()</code> and <code>min()</code>, but the <code>Aggregagation</code> is remained to assure correctness.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a int, b int UNIQUE NOT NULL);
 EXPLAIN SELECT MAX(a) FROM t;
@@ -3015,10 +3016,10 @@ EXPLAIN SELECT MAX(a), MIN(b) FROM t;
 <h3 id="predicate-pushdown"><a class="header" href="#predicate-pushdown">Predicate Pushdown</a></h3>
 <p>This is a very fundamental and important optimization. It traverses the plan tree from top to bottom, collects predicates (filter conditions), and tries to push them down as deep as possible.</p>
 <p>The main logic is in the <code>PredicatePushDown([]expression.Expression) ([]expression.Expression, LogicalPlan)</code> method of <code>LogicalPlan</code> interface. The parament is the pushed-down predicates. The return values are predicates that can't be pushed down anymore and the child operator after pushing down predicates.</p>
-<p>The predicates mainly come from <code>Selection</code>. The predicates can be pushed across some operators, like <code>Projection</code> and <code>UnionAll</code>. For some operators, we can only push down predicates when some requirements are met. For example, we can only push predicates across <code>Window</code> if all <code>Column</code>s in the predicates are <code>Window</code>'s <code>PartitionBy</code> columns. For some operators, we can't push predicates across them, like <code>Limit</code>. </p>
+<p>The predicates mainly come from <code>Selection</code>. The predicates can be pushed across some operators, like <code>Projection</code> and <code>UnionAll</code>. For some operators, we can only push down predicates when some requirements are met. For example, we can only push predicates across <code>Window</code> if all <code>Column</code>s in the predicates are <code>Window</code>'s <code>PartitionBy</code> columns. For some operators, we can't push predicates across them, like <code>Limit</code>.</p>
 <p>In the optimal case, the predicates reach <code>DataSource</code> and can be pushed down to the storage layer in the physical optimization stage.</p>
 <p><code>Join</code> is a special case in this rule. We not only push down predicates for <code>Join</code>, but we also make some other optimizations here. They are implemented in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_predicate_push_down.go#L132"><code>(*LogicalJoin).PredicatePushDown</code></a>. Two of them are important and explained as follows.</p>
-<p>First, we will try to &quot;simplify&quot; outer joins, which means convert outer joins to inner joins. As we know, outer join is different from inner join because we will pad <code>NULL</code>s for unmatched rows from the outer side. If the predicates are guaranteed to filter such rows, this join makes no difference from an inner join. In this case, we can directly change it to an inner join.</p>
+<p>First, we will try to "simplify" outer joins, which means convert outer joins to inner joins. As we know, outer join is different from inner join because we will pad <code>NULL</code>s for unmatched rows from the outer side. If the predicates are guaranteed to filter such rows, this join makes no difference from an inner join. In this case, we can directly change it to an inner join.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a int, b int);
 CREATE TABLE t1(a int, b int);
@@ -3087,7 +3088,7 @@ EXPLAIN SELECT t1.a, t1.b FROM t1 LEFT JOIN t2 on t1.b = t2.b;
 <p>The rationale of this rule is rather simple, but there are different kinds of partition types and the pushed-down conditions can be very complicated. So the implementation details of this rule are also complicated. Some descriptions of these details can be found in the <a href="https://docs.pingcap.com/tidb/dev/partitioned-table#partition-pruning">official docs</a>.</p>
 <p>Note that there is a feature called <a href="https://docs.pingcap.com/tidb/dev/partitioned-table#dynamic-pruning-mode">dynamic pruning</a>. As of this section is written, it is an experimental feature and is not enabled by default. In this mode, we no longer build a <code>DataSource</code> for every partition. Accessing partitions is done in one operator, and the partition pruning work is done at the execution stage. So this rule is not needed in this mode.</p>
 <h3 id="aggregation-pushdown"><a class="header" href="#aggregation-pushdown">Aggregation Pushdown</a></h3>
-<p>This rule finds <code>LogicalAggregation</code> and tries to push it down. Currently, we can push it across <code>Join</code>, <code>Projection</code>, <code>UnionAll</code>, and <code>PartitionUnionAll</code>. Note that pushdown here doesn't mean &quot;move this operator below other operators&quot;. There should be one <code>Aggregation</code> remained in the original position and another <code>Aggregation</code> pushed down to assure correctness.</p>
+<p>This rule finds <code>LogicalAggregation</code> and tries to push it down. Currently, we can push it across <code>Join</code>, <code>Projection</code>, <code>UnionAll</code>, and <code>PartitionUnionAll</code>. Note that pushdown here doesn't mean "move this operator below other operators". There should be one <code>Aggregation</code> remained in the original position and another <code>Aggregation</code> pushed down to assure correctness.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L405">Pushing <code>Aggregation</code> across <code>Join</code></a> is the most complicated case of them. The aggregate functions are separated into left and right sides and we try to push them to the left and right side of <code>Join</code> respectively. There are many requirements to make this transformation. For example, the join type should be among <code>InnerJoin</code>, <code>LeftOuterJoin</code> and <code>RightOuterJoin</code>. Only specific types of aggregate functions can be pushed down. And when we try to push aggregate functions down to one side of the <code>Join</code>, there can't be <code>count()</code> and <code>sum()</code> functions in the other side. If all requirements are met, we can generate and push down <code>Aggregation</code>. The new <code>Aggregation</code> is also transformed and different from the original <code>Aggregation</code>. For example, the columns in the join conditions should be added into <code>GroupByItems</code>.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a int, b int);
@@ -3210,11 +3211,11 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 <p>Join reorder tries to find the most efficient order to join several tables together. In fact, it's not a rule-based optimization. It makes use of statistics to estimate row counts of join results. We put join reorder in this stage out of convenience.</p>
 <p>Currently, we have implemented two join reorder algorithms: greedy and dynamic programming. The dynamic programming one is not mature enough now and is disabled by default. We focus on the greedy algorithm here.</p>
 <p>There are three files relevant to join reorder. <code>rule_join_reorder.go</code> contains the entry and common logic of join reorder. <code>rule_join_reorder_dp.go</code> contains the dynamic programming algorithm. <code>rule_join_reorder_greedy.go</code> contains the greedy algorithm.</p>
-<p>At the beginning of join reorder, we extract &quot;join groups&quot; from the plan tree. A join group is some sub-trees connected together by inner <code>Join</code>s directly, which means there can't exist any other kind of operator between inner <code>Join</code>s. The join reorder algorithm optimizes one join group at a time. And join groups are optimized from bottom to top.</p>
+<p>At the beginning of join reorder, we extract "join groups" from the plan tree. A join group is some sub-trees connected together by inner <code>Join</code>s directly, which means there can't exist any other kind of operator between inner <code>Join</code>s. The join reorder algorithm optimizes one join group at a time. And join groups are optimized from bottom to top.</p>
 <p>For every node in a join group, the row count is estimated. The join result row count is estimated using the simple and classic <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/stats.go#L1084"><code>leftRowCount * rightRowCount / max(leftNDV, rightNDV)</code></a> formula. Then two of them, which can get the minimum cost (calculated in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_join_reorder.go#L135"><code>(*baseSingleGroupJoinOrderSolver).baseNodeCumCost()</code></a>), are chosen, connected by an inner join, then added into the join group. This process is repeated until all nodes in the join group are joined together.</p>
 <h3 id="build-key-information"><a class="header" href="#build-key-information">Build Key Information</a></h3>
 <p>This one is actually not an optimization rule. It collects information from bottom to top that is needed by other optimizations. Two kinds of information are collected and set up for each operator.</p>
-<p>The first information is the unique key. This is collected in <code>DataSource</code> from table schema information and stored as <code>KeyInfo</code> in the <code>Schema</code> for each operator. There is one thing tricky about the unique key: when you declare <code>UNIQUE</code> for one column when creating a table, there can be duplicated <code>NULL</code>s in this column actually. You should declare <code>UNIQUE NOT NULL</code> to get &quot;true&quot; uniqueness.</p>
+<p>The first information is the unique key. This is collected in <code>DataSource</code> from table schema information and stored as <code>KeyInfo</code> in the <code>Schema</code> for each operator. There is one thing tricky about the unique key: when you declare <code>UNIQUE</code> for one column when creating a table, there can be duplicated <code>NULL</code>s in this column actually. You should declare <code>UNIQUE NOT NULL</code> to get "true" uniqueness.</p>
 <p>The second is the <code>MaxOneRow</code> attribute, which means if this operator is guaranteed to output no more than one row.</p>
 <h2 id="ending"><a class="header" href="#ending">Ending</a></h2>
 <p>Currently, our rule-based optimization is a batch of rules executed in a fixed order. This is not enough to make some optimizations when the query is complicated. So we usually do more things than what the name of a rule implies. As stated above, we specially optimize <code>Join</code>s in predicate pushdown. Except for that, we also try to eliminate aggregations in aggregation pushdown and build key information for the newly generated <code>Aggregation</code>s. There are more examples like that.</p>
@@ -3246,12 +3247,12 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 <li><code>logic.findBestTask(property)</code>: Do a top-down memory search for logical plan according to the required property to generate possible physical plans, and select the lowest cost plan from them. We will introduce this part in detail in the later <code>Find Best Task</code> section.</li>
 </ol>
 <h3 id="derive-statistics"><a class="header" href="#derive-statistics">Derive Statistics</a></h3>
-<p>The entry function of deriving statistics is the <code>baseLogicalPlan.recursiveDeriveStats</code> function. It is used to pass the statistics of logical plan from the bottom up.  And within each operator, the statistics will be kept for subsequent cost calculations. </p>
-<p>For each operator, the logic for deriving statistics is in <code>DeriveStats(childStats []*property.StatsInfo, ...) (*property.StatsInfo, error)</code> method of the <code>LogicalPlan</code> interface. Their specific implementation is in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/stats.go"><code>planner/core/stats.go</code></a> file. </p>
+<p>The entry function of deriving statistics is the <code>baseLogicalPlan.recursiveDeriveStats</code> function. It is used to pass the statistics of logical plan from the bottom up.  And within each operator, the statistics will be kept for subsequent cost calculations.</p>
+<p>For each operator, the logic for deriving statistics is in <code>DeriveStats(childStats []*property.StatsInfo, ...) (*property.StatsInfo, error)</code> method of the <code>LogicalPlan</code> interface. Their specific implementation is in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/stats.go"><code>planner/core/stats.go</code></a> file.</p>
 <p>The function calculates its own statistics based on the statistics of the child nodes. And each operator needs to save statistics to the <code>property.StatsInfo</code> structure, which the main variables include <code>RowCount</code>(the number of rows), <code>ColNDVs</code>(the NDV of each columns), and <code>HistColl</code>(the histogram, only the <code>DataSource</code> can keep this). You can read the contents of the <a href="understand-tidb/table-statistics.html">Table Statistics chapter</a> to get more information about statistics.</p>
 <p>In addition, we need to pay more attention to the implementation of the <code>DataSource.DeriveStats</code> function. <code>DataSource.DeriveStats</code> shows where the plan's statistics originally came from. Other operators are some special implementations and you can read their implementation when you need it.</p>
 <h3 id="prepare-properties"><a class="header" href="#prepare-properties">Prepare Properties</a></h3>
-<p>The entry function of preparing properties is the  <code>preparePossibleProperties(logic)</code> function. it is used to generate possible physical properties of each operators from the bottom up. It reduces some properties related paths that do not need to be considered. In this way, the impossible paths can be cut as early as possible in the process of searching the physical plan, thereby speeding up the search. </p>
+<p>The entry function of preparing properties is the  <code>preparePossibleProperties(logic)</code> function. it is used to generate possible physical properties of each operators from the bottom up. It reduces some properties related paths that do not need to be considered. In this way, the impossible paths can be cut as early as possible in the process of searching the physical plan, thereby speeding up the search.</p>
 <p>For each operator, the logic for preparing properties is in <code>PreparePossibleProperties(schema *expression.Schema, childrenProperties ...[][]*expression.Column) [][]*expression.Column</code> method of the <code>LogicalPlan</code> interface. Their specific implementation is in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/property_cols_prune.go"><code>planner/core/property_cols_prune.go</code></a> file.</p>
 <p>The <code>preparePossibleProperties</code> function is only used for <code>Join</code> and <code>Aggregation</code> operators, because only these two operators have corresponding sorting physical implementations. The properties originally came from the <code>DataSource</code> operator, such as the corresponding primary key and index information in the <code>DataSource</code> operator. It will be passed from bottom to top, so that each operator in the plan gets its own properties. Besides, some operators with sorting effect can still generate properties for transmission, such as <code>Sort</code> operator, <code>Window</code> operator with order by, etc.</p>
 <p>We will illustrate with examples:</p>
@@ -3287,7 +3288,7 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 </code></pre>
 <p>The logical plan corresponding to this SQL is as follows:</p>
 <p><img src="understand-tidb/../img/cbo-example-logicalPlan.png" alt="logical-plan" /></p>
-<p>Then we will combine the following picture and code for a detailed introduction to explain how the <code>baseLogicalPlan.findBestTask</code> function work. </p>
+<p>Then we will combine the following picture and code for a detailed introduction to explain how the <code>baseLogicalPlan.findBestTask</code> function work.</p>
 <p>In the figure, the black font operator is a logical operator(e.g, <code>Agg</code>, <code>Join</code> and <code>DS</code>), the blue font is a physical operator(e.g, <code>Stream Agg</code>, <code>Hash Join</code> and <code>Index Scan(a)</code>...), and the yellow arrow is an operator for which the cost has been calculated. And the red dashed arrow is not in compliance with <code>prop</code> operator. The font on the arrow describes the property requirements for the lower operators(e.g, <code>s.a</code> means the the output of the lower operator needs to be ordered according to <code>s.a</code>).</p>
 <ol>
 <li><code>Step1</code>: The <code>getTask</code> function corresponds to the yellow arrow in the figure, which means that the calculated part can be used directly without repeated calculations.</li>
@@ -3296,7 +3297,7 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 </ol>
 <p><img src="understand-tidb/../img/cbo-explain-getBestTask.png" alt="find-best-plan" /></p>
 <h4 id="exhaust-physical-plans"><a class="header" href="#exhaust-physical-plans">Exhaust Physical Plans</a></h4>
-<p>For each operator, the logic for exhausting physical plans are in <code>exhaustPhysicalPlans(*property.PhysicalProperty) (physicalPlans []PhysicalPlan)</code> method of the <code>LogicalPlan</code> interface. Their specific implementation is in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/exhaust_physical_plans.go"><code>planner/core/exhaust_physical_plans.go</code></a> file. </p>
+<p>For each operator, the logic for exhausting physical plans are in <code>exhaustPhysicalPlans(*property.PhysicalProperty) (physicalPlans []PhysicalPlan)</code> method of the <code>LogicalPlan</code> interface. Their specific implementation is in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/exhaust_physical_plans.go"><code>planner/core/exhaust_physical_plans.go</code></a> file.</p>
 <p><code>exhaustPhysicalPlans</code> generates all possible plans that can match the required property. Different operators have different implementations. You can learn more about how different logical operators generate corresponding physical operators based on the required property by reading the code.</p>
 <h4 id="enumerate-physical-plans-for-task"><a class="header" href="#enumerate-physical-plans-for-task">Enumerate Physical Plans For Task</a></h4>
 <p><code>Enumerate Physical Plans For Task</code> will use the dynamic programming algorithm to select the lowest cost plan among all generated physical plans and it will return the <code>task</code> which encapsulates the selected physical plan. The <code>task</code> is a new version of physical plan. It stores cost information for a physical plan. You can see the interface definition of task in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/task.go"><code>planner/core/task.go</code></a> file. A task may be <code>copTask</code>,  <code>rootTask</code>, or a <code>mppTask</code>. <code>copTask</code> is a task that runs in a distributed kv store. <code>rootTask</code> is the task that runs in the <code>TiDB</code> compute layer. <code>mppTask</code> is a task that related to the mpp plan.</p>
@@ -3322,13 +3323,13 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 	return bestTask
 }
 </code></pre>
-<p>The input of the<code>enumeratePhysicalPlans4Task</code> function is <code>[]PhysicalPlan</code>, which represents all physical plans corresponding to logical plan <code>p</code> that meet the property requirements. And the output is the <code>task</code> which encapsulates the physical plan. This function can be divided into some parts. </p>
+<p>The input of the<code>enumeratePhysicalPlans4Task</code> function is <code>[]PhysicalPlan</code>, which represents all physical plans corresponding to logical plan <code>p</code> that meet the property requirements. And the output is the <code>task</code> which encapsulates the physical plan. This function can be divided into some parts.</p>
 <ol>
 <li>
 <p>For each physical plan, get the required property for their children first. And recursively call <code>findBestTask</code> to find the best child task that satisfies the required property.</p>
 </li>
 <li>
-<p>After we find the best children tasks, we should use the <code>pp.attach2Task</code> to combine them with the current physical operator <code>pp</code>. The <code>attach2Task(...task) task</code> is the method of <code>PhysicalPlan</code> interface. It makes the current physical plan as the father of task's physical plan and updates the cost of current task. For each operator, you can see their special implementations in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/task.go"><code>planner/core/task.go</code></a> file. </p>
+<p>After we find the best children tasks, we should use the <code>pp.attach2Task</code> to combine them with the current physical operator <code>pp</code>. The <code>attach2Task(...task) task</code> is the method of <code>PhysicalPlan</code> interface. It makes the current physical plan as the father of task's physical plan and updates the cost of current task. For each operator, you can see their special implementations in the <a href="https://github.com/pingcap/tidb/blob/master/planner/core/task.go"><code>planner/core/task.go</code></a> file.</p>
 <p>In addition, the cost of one implementation is calculated as a sum of its resource consumptions including CPU, Memory, Network, IO, etc. For each kind of resource specifically, the consumption is measured based on a unit factor (e.g, <code>scanFactor</code> is the unit factor for IO consumption, which means the cost of scanning 1 byte data on <code>TiKV</code> or <code>TiFlash</code>), and the estimated number of rows / bytes to be processed by this operator. Note that, these unit factors can be customized by setting system variables like <code>tidb_opt_xxx_factor</code> to fit clusters of different hardware configurations in the <a href="https://github.com/pingcap/tidb/blob/master/sessionctx/variable/session.go"><code>sessionctx/variable/session.go</code></a> file.</p>
 </li>
 <li>
@@ -3377,7 +3378,7 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 </li>
 <li>else, then
 <ol>
-<li>optimize the AST in <code>CachedPrepareStmt</code> with current parameters to get a new plan, </li>
+<li>optimize the AST in <code>CachedPrepareStmt</code> with current parameters to get a new plan,</li>
 <li>store the new plan into current session's <code>PlanCache</code>, and</li>
 <li>run the new plan.</li>
 </ol>
@@ -3388,7 +3389,7 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 <p><img src="understand-tidb/../img/plan-cache-execute.png" alt="plan-cache-execute" /></p>
 <p>The main function of handling <code>execute</code> is <code>common_plans.go:Execute.getPhysicalPlan()</code>.</p>
 <h2 id="plan-rebuilding"><a class="header" href="#plan-rebuilding">Plan Rebuilding</a></h2>
-<p>A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range. </p>
+<p>A cached plan cannot be reused directly unless it is rebuilt. The main goal of rebuilding is to re-calculate the access range.</p>
 <p>For example, if the query is <code>select * from t where a&lt;?</code>, when you first <code>execute</code> it with <code>1</code>, then a <code>TableScan</code> with range <code>(-INF, 1)</code> could be generated and cached, and then you later <code>execute</code> it with <code>2</code>, the range has to be re-calculated to <code>(-INF, 2)</code> so that it can read correct data this time, and that is what plan rebuilding does.</p>
 <p><img src="understand-tidb/../img/plan-cache-rebuilding.png" alt="plan-cache-rebuilding" /></p>
 <p>The entry function of plan rebuilding is <code>common_plans.go:Execute.RebuildPlan()</code>.</p>
@@ -3396,7 +3397,7 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 <p>Parameter Makers are used to propagate current parameter values to executors(operators).</p>
 <p>For example, if the query is <code>select * from t where a+?&gt;1</code>, then the filter <code>a+?&gt;1</code> will be converted to a <code>Selection</code> operator with an expression-tree <code>a+?&gt;1</code>:</p>
 <p><img src="understand-tidb/../img/plan-cache-parameter.png" alt="plan-cache-parameter" /></p>
-<p>The parameter placeholder(<code>?</code>) is converted to a <code>ParamMaker</code> in <code>Constant</code>. </p>
+<p>The parameter placeholder(<code>?</code>) is converted to a <code>ParamMaker</code> in <code>Constant</code>.</p>
 <p>You can regard it as a special kind of pointer, and when the plan is processed and the parameter's value is needed, we can use it to get the corresponding value of this parameter.</p>
 <pre><code>type Constant struct {
     ...
@@ -3422,7 +3423,7 @@ func (d *ParamMaker) GetUserVal() Datum {
 <p>It's easy to understand how the Volcano model works for single-process execution. For parallelism issues, the Volcano introduces an operator called <code>Exchange</code> at any desired point in a plan tree. Further explanation about the parallelism-related issues would be introduced in the <a href="understand-tidb/parallel-execution-framework.html">Parallel Execution Framework</a> section.</p>
 <h2 id="vectorized-execution"><a class="header" href="#vectorized-execution">Vectorized Execution</a></h2>
 <p>Vectorization uses the Volcano iteration model where each operator has a <code>Next</code> method that produces result tuples. However, each <code>Next</code> call fetches a block of tuples instead of just one tuple.</p>
-<p>The main principle of vectorized execution is batched execution on a columnar data representation: every &quot;work&quot; primitive function that manipulates data does not work on a single data item, but on a vector (an array) of such data items that represents multiple tuples. The idea behind vectorized execution is to amortize the iterator call overhead by performing as much as possible inside the data manipulation methods. For example, this work can be to hash 1000s of values, compare 1000s of string pairs, update a 1000 aggregates, or fetch a 1000 values from 1000s of addresses.</p>
+<p>The main principle of vectorized execution is batched execution on a columnar data representation: every "work" primitive function that manipulates data does not work on a single data item, but on a vector (an array) of such data items that represents multiple tuples. The idea behind vectorized execution is to amortize the iterator call overhead by performing as much as possible inside the data manipulation methods. For example, this work can be to hash 1000s of values, compare 1000s of string pairs, update a 1000 aggregates, or fetch a 1000 values from 1000s of addresses.</p>
 <p>Columnar Different from the row-oriented data representation, columnar format organize data by column rather by row. By storing data in columns rather than rows, the database can more precisely access the data it needs to answer a query rather than scanning and discarding unwanted data in rows. The memory columnar data representation in TiDB is defined as <code>Chunk</code>, which is inspired by <a href="https://arrow.apache.org/">Apache Arrow</a>.</p>
 <p>The detailed definition and usage of <code>Chunk</code> will be introduced in the <a href="understand-tidb/implementation-of-vectorized-execution.html">Implementation of Vectorized Execution</a> section.</p>
 <h2 id="memory-management-mechanism"><a class="header" href="#memory-management-mechanism">Memory Management Mechanism</a></h2>
@@ -3573,7 +3574,7 @@ func (node *columnNode) evalReal(row Row) (float64, bool) {
     return row.GetReal(node.colIdx)
 }
 </code></pre>
-<p>In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the &quot;real&quot; multiplication compared to the number of assembly instructions required to perform the function.</p>
+<p>In non-vectorized execution, the expression is iterated over rows. Every time this function performs a multiplication, only a few instructions are actually involved in the "real" multiplication compared to the number of assembly instructions required to perform the function.</p>
 <p><strong>Vectorized Execution</strong></p>
 <p>In vectorized execution, the interface to evaluate an expression in a batch manner in TiDB looks like this:</p>
 <pre><code>type VecNode interface {
@@ -3607,10 +3608,10 @@ func (node *columnNode) evalReal(row Row) (float64, bool) {
 <pre><code>BenchmarkVec-12           152166              7056 ns/op               0 B/op          0 allocs/op
 BenchmarkRow-12            28944             38461 ns/op               0 B/op          0 allocs/op
 </code></pre>
-<p>The results above show vectorized execution is four times faster than row-based execution. 
+<p>The results above show vectorized execution is four times faster than row-based execution.
 For more details about the vectorized expression evaluation, you can refer to <a href="https://www.pingcap.com/blog/10x-performance-improvement-for-expression-evaluation-made-possible-by-vectorized-execution/">this link</a>.</p>
 <h4 id="how-operators-are-evaluated"><a class="header" href="#how-operators-are-evaluated">How operators are evaluated</a></h4>
-<p>In this section, we'll dive deeper into the evaluation of operators, focusing on HashJoin as an example. </p>
+<p>In this section, we'll dive deeper into the evaluation of operators, focusing on HashJoin as an example.</p>
 <p>HashJoin in vectorized execution consists of the following steps:</p>
 <p><strong>Hashing Phase</strong></p>
 <p>Let's consider the table used for constructing the hash table as 't'. The data from table 't' is read into <code>Chunk</code> in batches. First, the data in the Chunk is filtered by columns based on the predicates on table 't'. The filtered results for these columns are then combined into a <code>selected</code> array. In the <code>selected</code> array, true values indicate valid rows. The relevant code is available in the <a href="https://github.com/pingcap/tidb/blob/fd3b2cc571a23ec5169ffe428a7b1232c8ccab96/pkg/executor/join.go#L1252">VectorizedFilter</a> section.
@@ -3666,7 +3667,7 @@ a. If the processing key exists in the Map, aggregate the result.
 b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
 <li>After all data have been processed, output the aggregate result in the map, clear the map. Then read the spilling data from disk, repeat the Step1-Step3 until all data gets aggregated.</li>
 </ol>
-<p>As we can see, unlike other spilling implementations, <code>AggSpillDiskAction</code> does not make the memory drop immediately, but keeps the memory no longer growing. </p>
+<p>As we can see, unlike other spilling implementations, <code>AggSpillDiskAction</code> does not make the memory drop immediately, but keeps the memory no longer growing.</p>
 <h3 id="logcancel"><a class="header" href="#logcancel">Log/Cancel</a></h3>
 <p>When the above methods cannot control the memory within the threshold, we will try to use <code>PanicOnExceed</code> to cancel the SQL or use <code>LogOnExceed</code> to log the SQL info.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="implementation-of-typical-operators"><a class="header" href="#implementation-of-typical-operators">Implementation of Typical Operators</a></h1>
@@ -3793,7 +3794,7 @@ b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
 <li>In the absence of potential matching rows, the <code>onMissMatch</code> function is invoked. Otherwise, the <code>tryToMatch</code> function is executed.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transaction"><a class="header" href="#transaction">Transaction</a></h1>
-<p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository. </p>
+<p>The transaction engine in TiDB is responsible to provide ACID guarantees for all the read and write requests. It consists of the client/coordinator part in the TiDB repository and the server/participant part in the TiKV repository.</p>
 <p>This document is mainly about the TiDB part.</p>
 <h2 id="the-architecture"><a class="header" href="#the-architecture">The Architecture</a></h2>
 <p>In TiDB the transaction write flow is like this:</p>
@@ -3827,7 +3828,7 @@ b. If the processing key doesn't exist in the Map, spill the data to disk.</li>
 }
 </code></pre>
 <p>These are common interfaces the transaction will provide.</p>
-<p>For example, <code>Commit</code> will be used to commit the current ongoing transaction. The transaction is considered ongoing before the <code>Commit</code> operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted. </p>
+<p>For example, <code>Commit</code> will be used to commit the current ongoing transaction. The transaction is considered ongoing before the <code>Commit</code> operation is triggered. The two-phase commit processing will be used to commit a transaction and it will finally become committed or aborted.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/af70762cd52519f025daa5e869ba37465a7fb311/session/txn.go#L50-L71"><code>LazyTxn</code></a> is a wrapper of the transaction implementations, when the SQL statements are executed using a standalone session context, <code>LazyTxn</code> will be used to do things like：</p>
 <ul>
 <li>Return the memory buffer for write.</li>
@@ -3941,7 +3942,7 @@ type Table interface {
 <p>The receiving input transaction requests will be translated into transaction <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/commands/mod.rs#L114">commands</a>. Then the transaction <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/scheduler.rs#L286">scheduler</a> will handle these transaction commands, it will first try to fetch the needed key <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/latch.rs#L22">latches</a> (latch is used to sequence all the transaction commands on the same key)，then try to fetch a storage <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/components/tikv_kv/src/lib.rs#L191">snapshot</a> for the current transaction processing.</p>
 <p>The task will be processed as a <a href="https://doc.rust-lang.org/stable/std/future/trait.Future.html">future</a>. The future processing is done in the transaction scheduler thread-pool. Usually, there will be some tasks like conflict and constraint checks, write mutation generations. For example, the prewrite request processing will need to check if there is already a conflict <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/actions/prewrite.rs#L45">lock</a> or a conflict committed write <a href="https://github.com/tikv/tikv/blob/6be3893f7f787b04bf34d99d1369092404ab5cfc/src/storage/txn/actions/prewrite.rs#L59">record</a>.</p>
 <h1 id="transaction-log-replication"><a class="header" href="#transaction-log-replication">Transaction Log Replication</a></h1>
-<p>In TiDB, the key space is split into different ranges or regions. Each region is a raft group and its leader will be responsible for handling its key range related read/write requests. </p>
+<p>In TiDB, the key space is split into different ranges or regions. Each region is a raft group and its leader will be responsible for handling its key range related read/write requests.</p>
 <p>If the transaction command processing in the transaction scheduler is successful, the generated transaction writes will be written into the raft log engine by the region leaders in <code>raftStore</code> (raft store will be introduced in other documents in details). The work flow is like this:</p>
 <p><img src="understand-tidb/../img/raftStore.png" alt="RaftStore" /></p>
 <p>The writes generated by transaction commands will be sent to the raft peer message task queue first, then the raft batch system will poll each raft peer and handle these requests in the raft thread-pool. After all the raft logs are persisted on majority raft group members, they are regarded as <code>commit</code>. Then the correspond apply task be delivered to the apply worker pool to apply the actual write contents to the storage engine, after that the transaction command processing is considered successful and the callback will be invoked to response <code>OK</code> results to the RPC client.</p>
@@ -3953,9 +3954,9 @@ type Table interface {
 <tr><td>Write</td><td style="text-align: left">{user_key}{commit_ts}</td><td>write_info</td></tr>
 </tbody></table>
 </div>
-<p>After <code>prewrite</code>, the lock correspond records for the transaction will be written into the storage. Read and write conflicts on the &quot;locked&quot; key will need to consider if it's safe to bypass the lock or it must try to resolve the encountered locks. As <code>commit_ts</code> is part of the stored key, there could be different historical versions for it, and GC is responsible to clean up all the old versions which will not be needed any more. GC mechanism will be introduced in another document.</p>
+<p>After <code>prewrite</code>, the lock correspond records for the transaction will be written into the storage. Read and write conflicts on the "locked" key will need to consider if it's safe to bypass the lock or it must try to resolve the encountered locks. As <code>commit_ts</code> is part of the stored key, there could be different historical versions for it, and GC is responsible to clean up all the old versions which will not be needed any more. GC mechanism will be introduced in another document.</p>
 <h1 id="transaction-recovery"><a class="header" href="#transaction-recovery">Transaction Recovery</a></h1>
-<p>In TiDB, the transaction coordinator (in <code>tidb-server</code>) is stateless and it will not persist any information. If the transaction coordinator fails for example the <code>tidb-server</code> crashes, the transaction context in memory will get lost, and as the coordinator is gone the normal commit processing will stop. How to recover the transaction state and make a decision if it should commit or abort? </p>
+<p>In TiDB, the transaction coordinator (in <code>tidb-server</code>) is stateless and it will not persist any information. If the transaction coordinator fails for example the <code>tidb-server</code> crashes, the transaction context in memory will get lost, and as the coordinator is gone the normal commit processing will stop. How to recover the transaction state and make a decision if it should commit or abort?</p>
 <p>Actually, there is no special mechanism to recover the undetermined-status transactions, the recovery is done by other concurrent conflict transactions, or the conflict transactions will help decide the actual states of the undetermined-status transactions. The lock resolve process will be triggered if the current ongoing transaction encounters locks of other transactions doing reads or writes. The whole resolve process will be introduced in other documents in details.</p>
 <h1 id="transaction-optimizations"><a class="header" href="#transaction-optimizations">Transaction Optimizations</a></h1>
 <p>Normally the transaction commit will need two phases, the <code>prewrite</code> phase and <code>commit</code> phase. Under certain circumstances transaction commit could be done in a single phase for example the generated transaction mutations could be processed by a single region leader. This optimization is called one-phase commit in TiDB.</p>
@@ -3976,27 +3977,27 @@ type Table interface {
 ​                (e *SimpleExec) Next
 ​                    (e *SimpleExec) executeBegin
 </code></pre>
-<p>The function <code>(e *SimpleExec) executeBegin</code> do the main work for  a &quot;BEGIN&quot; statement，The important comment and simplified code is as followers. The completed code is <a href="https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571">here</a> .</p>
+<p>The function <code>(e *SimpleExec) executeBegin</code> do the main work for  a "BEGIN" statement，The important comment and simplified code is as followers. The completed code is <a href="https://github.com/pingcap/tidb/blob/cd8fb24c5f7ebd9d479ed228bb41848bd5e97445/executor/simple.go#L571">here</a> .</p>
 <pre><code class="language-go">/*
 
-Check the syntax &quot;start transaction read only&quot; and &quot;as of timestamp&quot; used correctly.
-If stale read timestamp was set,  creates a new stale read transaction and sets &quot;in transaction&quot; state, and return.
+Check the syntax "start transaction read only" and "as of timestamp" used correctly.
+If stale read timestamp was set,  creates a new stale read transaction and sets "in transaction" state, and return.
 create a new transaction and set some properties like snapshot, startTS etc
 */
 
 func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 ​    if s.ReadOnly {
-​       // the statement &quot;start transaction read only&quot; must be used with tidb_enable_noop_functions is true
-​       //  the statement &quot;start transaction read only  as of timestamp&quot; can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
-​       //  the statement &quot;start transaction read only  as of timestamp&quot; must ensure the timestamp is in the legal safe point range        
+​       // the statement "start transaction read only" must be used with tidb_enable_noop_functions is true
+​       //  the statement "start transaction read only  as of timestamp" can be used Whether  tidb_enable_noop_functions  is true or false，but that tx_read_ts mustn't be set.
+​       //  the statement "start transaction read only  as of timestamp" must ensure the timestamp is in the legal safe point range        
 ​       enableNoopFuncs := e.ctx.GetSessionVars().EnableNoopFuncs
 ​       if !enableNoopFuncs &amp;&amp; s.AsOf == nil {
-​           return expression.ErrFunctionsNoopImpl.GenWithStackByArgs(&quot;READ ONLY&quot;)
+​           return expression.ErrFunctionsNoopImpl.GenWithStackByArgs("READ ONLY")
 ​       }
 
 ​       if s.AsOf != nil {
 ​           if e.ctx.GetSessionVars().TxnReadTS.PeakTxnReadTS() &gt; 0 {
-​              return errors.New(&quot;start transaction read only as of is forbidden after set transaction read only as of&quot;)
+​              return errors.New("start transaction read only as of is forbidden after set transaction read only as of")
 ​           }
 ​       }
 ​    } 
@@ -4010,9 +4011,9 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 
 ​       // ignore tidb_snapshot configuration if in stale read transaction
 ​       vars := e.ctx.GetSessionVars()
-​       vars.SetSystemVar(variable.TiDBSnapshot, &quot;&quot;)
+​       vars.SetSystemVar(variable.TiDBSnapshot, "")
     
-​       // set &quot;in transaction&quot; state and return
+​       // set "in transaction" state and return
 ​       vars.SetInTxn(true)
 
 ​       return nil
@@ -4025,7 +4026,7 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 ​       err := e.ctx.NewTxn(ctx)
 ​    }
 
-​  // set &quot;in transaction&quot; state
+​  // set "in transaction" state
    e.ctx.GetSessionVars().SetInTxn(true)
 
    // create a new transaction and set some properties like snapshot, startTS etc.
@@ -4040,7 +4041,7 @@ func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error {
 </code></pre>
 <h2 id="dml-executed-in-optimistic-transaction"><a class="header" href="#dml-executed-in-optimistic-transaction">DML Executed In Optimistic Transaction</a></h2>
 <p>There are three kinds of DML operations, such as update, delete and insert. For simplicity, This article only describes the update statement execution process. DML mutations are not sended to tikv directly, but buffered in TiDB temporarily, commit operation make the mutations effective at last.</p>
-<p>The main function stack to execute an update statement such as &quot;update t1 set id2 = 2 where pk = 1&quot; is as followers.</p>
+<p>The main function stack to execute an update statement such as "update t1 set id2 = 2 where pk = 1" is as followers.</p>
 <pre><code class="language-go">(a *ExecStmt) Exec
 ​    (a *ExecStmt) handleNoDelay
 ​        (a *ExecStmt) handleNoDelayExecutor
@@ -4064,7 +4065,7 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 ​    totalNumRows := 0
 
 ​    for {
-​       // call &quot;Next&quot; method recursively until every executor finished, every &quot;Next&quot; returns a batch rows
+​       // call "Next" method recursively until every executor finished, every "Next" returns a batch rows
 ​       err := Next(ctx, e.children[0], chk)
 
 ​       // If all rows are updated, return
@@ -4096,16 +4097,16 @@ func (e *UpdateExec) updateRows(ctx context.Context) (int, error) {
 }
 </code></pre>
 <h2 id="commit-optimistic-transaction"><a class="header" href="#commit-optimistic-transaction">Commit Optimistic Transaction</a></h2>
-<p>Committing transaction includes &quot;prewrite&quot; and &quot;commit&quot; two phases that are explained separately below. The function <code>(c *twoPhaseCommitter) execute</code> does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is <a href="https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112">here</a> .</p>
+<p>Committing transaction includes "prewrite" and "commit" two phases that are explained separately below. The function <code>(c *twoPhaseCommitter) execute</code> does the main work for committing transaction. The important comment and simplified code are as followers. The completed code is <a href="https://github.com/tikv/client-go/blob/391fcd842dc8dd4bc9632f1ae710584abf21fe0b/txnkv/transaction/2pc.go#L1112">here</a> .</p>
 <pre><code class="language-go">/*
-do the &quot;prewrite&quot; operation first
+do the "prewrite" operation first
 if OnePC transaction, return immediately
 if AsyncCommit transaction, commit the transaction Asynchronously and return
 if not OnePC and AsyncCommit transaction, commit the transaction synchronously.
 */
 
 func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
-​    // do the &quot;prewrite&quot; operation
+​    // do the "prewrite" operation
 ​    c.prewriteStarted = true
 
 ​    start := time.Now()
@@ -4123,7 +4124,7 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 
 ​       return nil
 ​    } else {  
-​        // do the &quot;commit&quot; phase 
+​        // do the "commit" phase 
 ​        return c.commitTxn(ctx, commitDetail)
 ​    } 
 }
@@ -4178,7 +4179,7 @@ func (batchExe *batchExecutor) startWorker(exitCh chan struct{}, ch chan error, 
 ​       if exit := batchExe.rateLimiter.GetToken(exitCh); !exit {
 ​           batchExe.tokenWaitDuration += time.Since(waitStart)
 ​           batch := batch1
-​           //  call the function &quot;handleSingleBatch&quot; to prewrite every batch keys
+​           //  call the function "handleSingleBatch" to prewrite every batch keys
 ​           go func() {
 ​              defer batchExe.rateLimiter.PutToken() //  release the chan buffer
 ​              ch &lt;- batchExe.action.handleSingleBatch(batchExe.committer, singleBatchBackoffer, batch)
@@ -4245,7 +4246,7 @@ func (action actionPrewrite) handleSingleBatch(c *twoPhaseCommitter, bo *retry.B
 ​       start := time.Now()
 ​       msBeforeExpired, err := c.store.GetLockResolver().ResolveLocksForWrite(bo, c.startTS, c.forUpdateTS, locks)
 ​       if msBeforeExpired &gt; 0 {
-​           err = bo.BackoffWithCfgAndMaxSleep(retry.BoTxnLock, int(msBeforeExpired), errors.Errorf(&quot;2PC prewrite lockedKeys: %d&quot;, len(locks)))
+​           err = bo.BackoffWithCfgAndMaxSleep(retry.BoTxnLock, int(msBeforeExpired), errors.Errorf("2PC prewrite lockedKeys: %d", len(locks)))
 ​           if err != nil {
 ​              return errors.Trace(err) // backoff exceeded maxtime, returns error
 ​           }
@@ -4381,7 +4382,7 @@ func (actionCommit) handleSingleBatch(c *twoPhaseCommitter, bo *retry.Backoffer,
 <p>As we described in <a href="understand-tidb/./transaction.html">other sections</a>, TiDB's transaction system is based on Google's <a href="https://tikv.org/deep-dive/distributed-transaction/percolator/">Percolator</a> algorithm. Which makes it necessary to resolve locks when a reading transaction meets locked keys or during <a href="understand-tidb/./mvcc-garbage-collection.html">GC</a>.</p>
 <p>So we introduced Lock Resolver in TiDB to resolve locks.</p>
 <h2 id="the-data-structure"><a class="header" href="#the-data-structure">The Data Structure</a></h2>
-<p>Lock Resolver is a quiet simple struct: </p>
+<p>Lock Resolver is a quiet simple struct:</p>
 <pre><code class="language-go">type LockResolver struct {
 	store storage
 	mu    struct {
@@ -4414,7 +4415,7 @@ And the fields inside the <code>mu</code> are used to cache the resolved transac
 <h5 id="collapse-continuous-rollbacks-tikv3290"><a class="header" href="#collapse-continuous-rollbacks-tikv3290">collapse continuous rollbacks (<a href="https://github.com/tikv/tikv/pull/3290">tikv#3290</a>)</a></h5>
 <p>Instead of keeping all rollbacks in write column family when a key rollbacked for several times, this PR collapse continuous rollbacks, and only keep the latest rollback.</p>
 <h5 id="protect-primary-locks-tikv5575"><a class="header" href="#protect-primary-locks-tikv5575">protect primary locks (<a href="https://github.com/tikv/tikv/pull/5575">tikv#5575</a>)</a></h5>
-<p>After we have pessimistic lock in TiKV, if the rollback record of the primary lock is collapsed and TiKV receives stale acquire_pessimistic_lock and prewrite, the transaction will commit successfully even if secondary locks are rolled back. To solve this problem, we can prevent the rollback records of the primary key of pessimistic transactions from being collapsed. By setting the short value of these rollback records to &quot;protected&quot;.</p>
+<p>After we have pessimistic lock in TiKV, if the rollback record of the primary lock is collapsed and TiKV receives stale acquire_pessimistic_lock and prewrite, the transaction will commit successfully even if secondary locks are rolled back. To solve this problem, we can prevent the rollback records of the primary key of pessimistic transactions from being collapsed. By setting the short value of these rollback records to "protected".</p>
 <h5 id="gc_fence-tikv9207"><a class="header" href="#gc_fence-tikv9207">gc_fence (<a href="https://github.com/tikv/tikv/pull/9207">tikv#9207</a>)</a></h5>
 <p>See the super detailed comment <a href="https://github.com/tikv/tikv/blob/a345ff7f835b49c9addf4883b339ce268e1668cc/components/txn_types/src/write.rs#L77">here</a>.</p>
 <p>After understand these, you can finally understand the code:</p>
@@ -4471,7 +4472,7 @@ And the fields inside the <code>mu</code> are used to cache the resolved transac
     	// In this case, if the current transaction is to be rolled back, the `overlapped_write` must not be overwritten.
         TxnCommitRecord::None { overlapped_write } =&gt; overlapped_write,
         TxnCommitRecord::SingleRecord { write, .. } if write.write_type != WriteType::Rollback =&gt; {
-            panic!(&quot;txn record found but not expected: {:?}&quot;, txn)
+            panic!("txn record found but not expected: {:?}", txn)
         }
         _ =&gt; return txn.unlock_key(key, is_pessimistic_txn),
     };
@@ -4611,7 +4612,7 @@ if prewriteResp.MinCommitTs == 0 {
     c.mu.Unlock()
 }
 </code></pre>
-<p>However, if any response of prewrite is finally lost due to RPC reasons, it is impossible for us to know whether the prewriting succeeds. And it also means we cannot know whether the transaction succeeds. In this case, we can only <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L187">return an &quot;undetermined error&quot;</a> and the client connection will be closed:</p>
+<p>However, if any response of prewrite is finally lost due to RPC reasons, it is impossible for us to know whether the prewriting succeeds. And it also means we cannot know whether the transaction succeeds. In this case, we can only <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/prewrite.go#L187">return an "undetermined error"</a> and the client connection will be closed:</p>
 <pre><code class="language-go">defer func() {
     if err != nil {
         // If we fail to receive response for async commit prewrite, it will be undetermined whether this
@@ -4626,7 +4627,7 @@ if prewriteResp.MinCommitTs == 0 {
 </code></pre>
 <p>But don't worry, this does not happen very often. It is safe to retry a prewrite which temporarily fails due to network reasons. The above problem only happens if a prewrite request has been sent, but later retries all fail due to RPC errors.</p>
 <h3 id="commit-1"><a class="header" href="#commit-1">Commit</a></h3>
-<p>The whole commit process is <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1370">done asynchronously in background</a>. This is why the optimization is called &quot;async commit&quot;:</p>
+<p>The whole commit process is <a href="https://github.com/tikv/client-go/blob/daddf73a07/txnkv/transaction/2pc.go#L1370">done asynchronously in background</a>. This is why the optimization is called "async commit":</p>
 <pre><code class="language-go">if c.isAsyncCommit() {
     // For async commit protocol, the commit is considered success here.
     c.txn.commitTS = c.commitTS
@@ -4681,7 +4682,7 @@ status.commitTS = resolveData.commitTs
 <h2 id="tikv-part-2"><a class="header" href="#tikv-part-2">TiKV part</a></h2>
 <h3 id="concurrency-manager"><a class="header" href="#concurrency-manager">Concurrency manager</a></h3>
 <p>As discussed in the <a href="https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5.0">theory blog</a>, TiKV needs to record the max TS and set some memory locks for ongoing prewrite requests.</p>
-<p>For simplicity, we use a global component to implement it. We call it the &quot;concurrency manager&quot;.</p>
+<p>For simplicity, we use a global component to implement it. We call it the "concurrency manager".</p>
 <p>The methods provided by the concurrency manager can be found in <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/concurrency_manager/src/lib.rs">this file</a>.</p>
 <p>It is very easy to update the max TS. It's just an atomic operation:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -4750,7 +4751,7 @@ txn.guards.push(key_guard);
 <p>The operation is done while locked to guarantee the atomicity of getting the max TS and setting the <code>min_commit_ts</code> in the lock.</p>
 <p>The key guard is saved until the lock is successfully written into RocksDB. Before that, readers are able to check the locks in order not to break any constraint. We can release the guard to remove the lock in the memory table after the readers can read the lock from the RocksDB.</p>
 <h4 id="fallback-to-non-async-commit"><a class="header" href="#fallback-to-non-async-commit">Fallback to non-async commit</a></h4>
-<p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit. </p>
+<p>The client may provide a <code>max_commit_ts</code> constraint. If the calculated <code>min_commit_ts</code> is larger than the <code>max_commit_ts</code>, we need to fallback to non-async commit.</p>
 <p>When the <code>CommitTsTooLarge</code> error happens, the lock will still be written, but in the lock <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/actions/prewrite.rs#L406">there will be no <code>use_async_commit</code> flag</a> and no secondary keys will be recorded:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -4812,7 +4813,7 @@ if isolation_level == IsolationLevel::Si {
 <p>So, for safety, we choose to get a latest timestamp from PD when a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/peer.rs#L1391">becomes leader</a> or a region <a href="https://github.com/tikv/tikv/blob/v5.2.1/components/raftstore/src/store/fsm/peer.rs#L2992">is merged</a>.</p>
 <p>Before the max TS is updated, the corresponding region is not allowed to proceed an async-commit prewrite. The property is checked <a href="https://github.com/tikv/tikv/blob/v5.2.1/src/storage/txn/commands/prewrite.rs#L364">here</a>.</p>
 <h2 id="summary-7"><a class="header" href="#summary-7">Summary</a></h2>
-<p>This is how the &quot;async commit&quot; optimization is implemented in TiDB.</p>
+<p>This is how the "async commit" optimization is implemented in TiDB.</p>
 <p>Due to limited space, some subtle problems such as non-unique timestamps and the compatibility with follower read are not involved.</p>
 <p>During the implementation of async commit, many problems blocking one-phase commit (1PC) are solved. So it becomes relatively easy to implement 1PC in TiDB. The next document will introduce the implementation details of 1PC.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="1pc"><a class="header" href="#1pc">1PC</a></h1>
@@ -4855,7 +4856,7 @@ message PrewriteResponse {
 <li><code>doActionOnGroupMutations</code>
 <ul>
 <li>Divide mutations into batches</li>
-<li>⭐ <code>checkOnePCFallBack</code> </li>
+<li>⭐ <code>checkOnePCFallBack</code></li>
 <li><code>doActionOnBatches</code>
 <ul>
 <li><code>actionPrewrite</code>.<code>handleSingleBatch</code>
@@ -4882,7 +4883,7 @@ message PrewriteResponse {
 <p>In the <code>execute</code> method, it checks if 1PC can be used just after checking async commit, before performing any crucial part of the transaction procedure:</p>
 <pre><code class="language-go">func (c *twoPhaseCommitter) checkOnePC() bool {
     // Disable 1PC in local transactions. This is about another feature that's not compatible with
-    // async and 1PC, where transactions have two different &quot;scopes&quot; namely Global and Local.
+    // async and 1PC, where transactions have two different "scopes" namely Global and Local.
     if c.txn.GetScope() != oracle.GlobalTxnScope {
         return false
     }
@@ -4906,7 +4907,7 @@ func (c *twoPhaseCommitter) execute(ctx context.Context) (err error) {
 </code></pre>
 <p>Same as async commit, 1PC can't be enabled when using TiDB-Binlog.</p>
 <p>Note that we still don't know how many prewrite requests this transaction needs. It will be checked later.</p>
-<p>Also note that the <code>checkOnePC</code> function doesn't check the transaction's size like how async commit does. Actually, the transaction size is implicitly limited when the keys are divided into batches during prewrite phase. </p>
+<p>Also note that the <code>checkOnePC</code> function doesn't check the transaction's size like how async commit does. Actually, the transaction size is implicitly limited when the keys are divided into batches during prewrite phase.</p>
 <p>The logic then goes to the <code>prewriteMutation</code> function from <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L1222">here</a>, which then calls <a href="https://github.com/tikv/client-go/blob/4fc565e203a99400d0b080a25a93fb860b3b6fd6/txnkv/transaction/2pc.go#L563">the <code>doActionOnMutations</code> function</a>:</p>
 <pre><code class="language-go">func (c *twoPhaseCommitter) doActionOnMutations(bo *retry.Backoffer, action twoPhaseCommitAction, mutations CommitterMutations) error {
 	if mutations.Len() == 0 {
@@ -5007,7 +5008,7 @@ fn handle_1pc_locks(txn: &amp;mut MvccTxn, commit_ts: TimeStamp) -&gt; ReleasedL
 <li>GC should not be frequently triggered.</li>
 </ul>
 <p>There is an inner table named <code>mysql.tidb</code> in TiDB which stores many runtime information. Actually, these variables are stored in TiKV as common KV variables. We'll talk about the usage of these variables in the GC workflow later.</p>
-<pre><code>MySQL [test]&gt; select * from mysql.tidb where variable_name like &quot;tikv_gc_%&quot;;
+<pre><code>MySQL [test]&gt; select * from mysql.tidb where variable_name like "tikv_gc_%";
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                         | COMMENT                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
@@ -5020,8 +5021,8 @@ fn handle_1pc_locks(txn: &amp;mut MvccTxn, commit_ts: TimeStamp) -&gt; ReleasedL
 | tikv_gc_last_run_time    | 20210929-17:03:35 +0800                                                                | The time when last GC starts. (DO NOT EDIT)                                                 |
 | tikv_gc_safe_point       | 20210929-16:53:35 +0800                                                                | All versions after safe point can be accessed. (DO NOT EDIT)                                |
 | tikv_gc_auto_concurrency | true                                                                                   | Let TiDB pick the concurrency automatically. If set false, tikv_gc_concurrency will be used |
-| tikv_gc_scan_lock_mode   | legacy                                                                                 | Mode of scanning locks, &quot;physical&quot; or &quot;legacy&quot;                                              |
-| tikv_gc_mode             | distributed                                                                            | Mode of GC, &quot;central&quot; or &quot;distributed&quot;                                                      |
+| tikv_gc_scan_lock_mode   | legacy                                                                                 | Mode of scanning locks, "physical" or "legacy"                                              |
+| tikv_gc_mode             | distributed                                                                            | Mode of GC, "central" or "distributed"                                                      |
 +--------------------------+----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
 11 rows in set (0.003 sec)
 </code></pre>
@@ -5101,7 +5102,7 @@ func (w *GCWorker) Start() {
 	for _, v := range kvs {
 		minStartTS, err := strconv.ParseUint(string(v.Value), 10, 64)
 		if err != nil {
-			logutil.Logger(ctx).Warn(&quot;parse minStartTS failed&quot;, zap.Error(err))
+			logutil.Logger(ctx).Warn("parse minStartTS failed", zap.Error(err))
 			continue
 		}
 		if minStartTS &lt; globalMinStartTS {
@@ -5177,12 +5178,12 @@ func (s *Server) UpdateGCSafePoint(ctx context.Context, request *pdpb.UpdateGCSa
 		if err := s.storage.SaveGCSafePoint(newSafePoint); err != nil {
 			return nil, err
 		}
-		log.Info(&quot;updated gc safe point&quot;,
-			zap.Uint64(&quot;safe-point&quot;, newSafePoint))
+		log.Info("updated gc safe point",
+			zap.Uint64("safe-point", newSafePoint))
 	} else if newSafePoint &lt; oldSafePoint {
-		log.Warn(&quot;trying to update gc safe point&quot;,
-			zap.Uint64(&quot;old-safe-point&quot;, oldSafePoint),
-			zap.Uint64(&quot;new-safe-point&quot;, newSafePoint))
+		log.Warn("trying to update gc safe point",
+			zap.Uint64("old-safe-point", oldSafePoint),
+			zap.Uint64("new-safe-point", newSafePoint))
 		newSafePoint = oldSafePoint
 	}
 
@@ -5242,7 +5243,7 @@ restrictedCtx.GetSessionVars().InRestrictedSQL = true
 </ul>
 <p>The state of the variables is stored in <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L432-L958"><code>sessionVars</code></a>. The raw <em>string</em> values are stored in a map named <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/session.go#L449-L450"><code>systems</code></a>. This string value is used for persistence in the <code>mysql.global_variables</code> table.</p>
 <p>For many variables, as well as a <em>string</em> value there is a typed field in <code>sessionVars</code>. For example:</p>
-<p><code>SessionVars.systems[&quot;tidb_skip_utf8_check&quot;]</code> (string) maps to <code>SessionVars.SkipUTF8Check</code> (bool).</p>
+<p><code>SessionVars.systems["tidb_skip_utf8_check"]</code> (string) maps to <code>SessionVars.SkipUTF8Check</code> (bool).</p>
 <p>The typed value is set when the <code>SetSession</code> attached to the <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1029-L1032">system variable definition</a> is called. For <code>tidb_skip_utf8_check</code> this is as follows:</p>
 <pre><code class="language-go">{Scope: ScopeGlobal | ScopeSession, Name: TiDBSkipUTF8Check, Value: BoolToOnOff(DefSkipUTF8Check), Type: TypeBool, SetSession: func(s *SessionVars, val string) error {
 	s.SkipUTF8Check = TiDBOptOn(val)
@@ -5274,7 +5275,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 	return err
 }
 </code></pre>
-<p>Because <code>GLOBAL</code> scoped variables are propagated to other servers, TiDB also has a special concept of &quot;instance-scoped variables&quot;. An instance scoped variable is actually a <code>SESSION</code> scoped variable that has a <code>GetSession</code> method which returns data that is specific to an instance. For example, <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1315-L1321"><code>tidb_general_log</code></a>:</p>
+<p>Because <code>GLOBAL</code> scoped variables are propagated to other servers, TiDB also has a special concept of "instance-scoped variables". An instance scoped variable is actually a <code>SESSION</code> scoped variable that has a <code>GetSession</code> method which returns data that is specific to an instance. For example, <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/sessionctx/variable/sysvar.go#L1315-L1321"><code>tidb_general_log</code></a>:</p>
 <pre><code class="language-go">{Scope: ScopeSession, Name: TiDBGeneralLog, Value: BoolToOnOff(DefTiDBGeneralLog), Type: TypeBool, skipInit: true, SetSession: func(s *SessionVars, val string) error {
 	ProcessGeneralLog.Store(TiDBOptOn(val))
 	return nil
@@ -5283,7 +5284,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 }},
 </code></pre>
 <p>The decision to make an option such as <code>tidb_general_log</code> instance scoped is because it references a file on the local filesystem. This may create issues when global, as the path may not be writable on each tidb-server in the cluster.</p>
-<p>As you can see by the <code>Scope: Session</code>, instance-scoped variables are not natively handled by the sysvar framework, but are instead denoted by the <code>GetSession()</code> function reading from a global location. The documentation for <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_general_log"><code>tidb_general_log</code></a> also notes it as &quot;instance&quot; scoped by convention.</p>
+<p>As you can see by the <code>Scope: Session</code>, instance-scoped variables are not natively handled by the sysvar framework, but are instead denoted by the <code>GetSession()</code> function reading from a global location. The documentation for <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_general_log"><code>tidb_general_log</code></a> also notes it as "instance" scoped by convention.</p>
 <h2 id="transaction-state"><a class="header" href="#transaction-state">Transaction state</a></h2>
 <p>The <code>session</code> struct (<code>s.txn</code>) is responsible for keeping modified key-value pairs in a <a href="https://github.com/pingcap/tidb/blob/bfbea9c3ef4232d76296a9c8390eb8b7da5bf45d/session/txn.go#L46-L71"><code>LazyTxn</code></a> until the transaction commits. A <code>commit</code> statement only sets the session variable state that it is <a href="https://github.com/pingcap/tidb/blob/246c59d5c926780235dd25aef27c469ffe376e21/executor/simple.go#L701-L703">no longer in an active transaction</a>:</p>
 <pre><code class="language-go">func (e *SimpleExec) executeCommit(s *ast.CommitStmt) {
@@ -5294,7 +5295,7 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 <pre><code class="language-go">if !sessVars.InTxn() {
 	if err := se.CommitTxn(ctx); err != nil {
 		if _, ok := sql.(*executor.ExecStmt).StmtNode.(*ast.CommitStmt); ok {
-			err = errors.Annotatef(err, &quot;previous statement: %s&quot;, se.GetSessionVars().PrevStmt)
+			err = errors.Annotatef(err, "previous statement: %s", se.GetSessionVars().PrevStmt)
 		}
 		return err
 	}
@@ -5335,11 +5336,11 @@ func (s *session) replaceGlobalVariablesTableValue(ctx context.Context, varName,
 <h3 id="manually-checking-with-the-privilege-manager"><a class="header" href="#manually-checking-with-the-privilege-manager">Manually checking with the privilege manager</a></h3>
 <p>For (2) above, manual checks should follow the following pattern:</p>
 <pre><code class="language-go">checker := privilege.GetPrivilegeManager(e.ctx)
-if checker != nil &amp;&amp; !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, &quot;&quot;, mysql.AllPrivMask) {
+if checker != nil &amp;&amp; !checker.RequestVerification(ctx.GetSessionVars().ActiveRoles, schema.Name.L, table.Name.L, "", mysql.AllPrivMask) {
     /* do something */
 }
 ..
-if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().ActiveRoles, &quot;RESTRICTED_TABLES_ADMIN&quot;, false) {
+if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().ActiveRoles, "RESTRICTED_TABLES_ADMIN", false) {
     /* do something */
 }
 </code></pre>
@@ -5347,13 +5348,13 @@ if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().Ac
 <h3 id="static-and-dynamic-privileges"><a class="header" href="#static-and-dynamic-privileges">Static and dynamic privileges</a></h3>
 <p>Privileges fall into two categories:</p>
 <ul>
-<li>Static privileges: These are the &quot;traditional&quot; privileges such as <code>INSERT</code>, <code>UPDATE</code>, <code>SELECT</code>, <code>DELETE</code>, <code>SUPER</code>, <code>PROCESS</code> which have existed in MySQL for a long time. They can <em>usually</em> be assigned to a user on either a global or database/table level.</li>
-<li>Dynamic privileges: These are new privileges such as <code>BACKUP_ADMIN</code>, <code>RESTORE_ADMIN</code>, <code>CONNECTION_ADMIN</code>. They can only be assigned on a global level, and each have their own &quot;grantable&quot; attribute.</li>
+<li>Static privileges: These are the "traditional" privileges such as <code>INSERT</code>, <code>UPDATE</code>, <code>SELECT</code>, <code>DELETE</code>, <code>SUPER</code>, <code>PROCESS</code> which have existed in MySQL for a long time. They can <em>usually</em> be assigned to a user on either a global or database/table level.</li>
+<li>Dynamic privileges: These are new privileges such as <code>BACKUP_ADMIN</code>, <code>RESTORE_ADMIN</code>, <code>CONNECTION_ADMIN</code>. They can only be assigned on a global level, and each have their own "grantable" attribute.</li>
 </ul>
 <p>Dynamic privileges were introduced in MySQL 8.0 (and <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-dynamic-privileges.md">TiDB 5.1</a>) to solve a specific issue, which is that the <code>SUPER</code> privilege is too coarse. There are many scenarios where a user needs to be assigned the <code>SUPER</code> privilege to perform a specific action, but too many other privileges are granted at the same time.</p>
 <p>Any statements added to TiDB <strong>should no longer require</strong> the <code>SUPER</code> privilege directly. Instead, a dynamic privilege should be added <a href="https://github.com/pingcap/tidb/blob/5e05922de6a253859cfbfe19356de8a2e2db39da/privilege/privileges/cache.go#L1009">which will be satified</a> by the <code>SUPER</code> privilege.</p>
 <h3 id="security-enhanced-mode"><a class="header" href="#security-enhanced-mode">Security Enhanced Mode</a></h3>
-<p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific &quot;restricted&quot; dynamic privileges instead. The design is inspired by features such as &quot;Security Enhanced Linux&quot; (SeLinux) and AppArmor.</p>
+<p>TiDB features an extension to MySQL called <a href="https://github.com/pingcap/tidb/blob/master/docs/design/2021-03-09-security-enhanced-mode.md">Security Enhanced Mode</a> (SEM), which is disabled by default. One of the main aims of SEM is to reduce the privileges of <code>SUPER</code> and instead require specific "restricted" dynamic privileges instead. The design is inspired by features such as "Security Enhanced Linux" (SeLinux) and AppArmor.</p>
 <p>SEM plugs directly into the privilege manager, but the hard coded list of restricted objects lives in <a href="https://github.com/pingcap/tidb/blob/master/util/sem/sem.go"><code>./util/sem/*</code></a>. It is expected that over time SEM will protect against additional operations which are considered to be high risk or too broad.</p>
 <h3 id="recommended-reading-1"><a class="header" href="#recommended-reading-1">Recommended Reading</a></h3>
 <ul>
@@ -5364,7 +5365,7 @@ if checker == nil || !checker.RequestDynamicVerification(ctx.GetSessionVars().Ac
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin"><a class="header" href="#plugin">Plugin</a></h1>
 <p>The plugin API allows TiDB to be extended with new features such as audit logging or IP allow/deny listing.</p>
 <p>Sample code is provided for a basic audit logging plugin at <a href="https://github.com/pingcap/tidb/tree/master/pkg/plugin/conn_ip_example"><code>plugin/conn_ip_example/</code></a>. For an example on compiling TiDB and this plugin:</p>
-<pre><code class="language-bash">plugin=&quot;conn_ip_example&quot;
+<pre><code class="language-bash">plugin="conn_ip_example"
 cd cmd/pluginpkg
 go install
 cd ../../plugin/$plugin
@@ -5390,17 +5391,17 @@ cd ../..
 </code></pre>
 <h2 id="customizing-the-example-plugin"><a class="header" href="#customizing-the-example-plugin">Customizing the example plugin</a></h2>
 <p>The manifest file describes the capabilities of the plugin, and which features it implements. For a basic version:</p>
-<pre><code class="language-toml">name = &quot;conn_ip_example&quot;
-kind = &quot;Audit&quot;
-description = &quot;just a test&quot;
-version = &quot;1&quot;
-license = &quot;&quot; # Suggested: APLv2 or GPLv3. See https://choosealicense.com/ for details
-validate = &quot;Validate&quot;
-onInit = &quot;OnInit&quot;
-onShutdown = &quot;OnShutdown&quot;
+<pre><code class="language-toml">name = "conn_ip_example"
+kind = "Audit"
+description = "just a test"
+version = "1"
+license = "" # Suggested: APLv2 or GPLv3. See https://choosealicense.com/ for details
+validate = "Validate"
+onInit = "OnInit"
+onShutdown = "OnShutdown"
 export = [
-    {extPoint=&quot;OnGeneralEvent&quot;, impl=&quot;OnGeneralEvent&quot;},
-    {extPoint=&quot;OnConnectionEvent&quot;, impl=&quot;OnConnectionEvent&quot;}
+    {extPoint="OnGeneralEvent", impl="OnGeneralEvent"},
+    {extPoint="OnConnectionEvent", impl="OnConnectionEvent"}
 ]
 </code></pre>
 <p>In addition to this basic example, plugins can also implement an <a href="https://github.com/pingcap/tidb/blob/d58d39e9476f2503a1e8790f78a0d25272d0aabe/plugin/spi.go#L51"><code>OnFlush</code></a> function. This is called when the statement <code>FLUSH TIDB PLUGINS pluginName</code> is executed. TiDB does not require plugins to implement a <code>OnFlush</code> function, but when specified it will call this method on all TiDB nodes in the cluster.</p>
@@ -5460,12 +5461,12 @@ export = [
 <li>With the frequent releases, users need to figure out which release to use. Also, having frequent new releases to upgrade may be a bit confusing.</li>
 <li>Frequent releases means more branches. To fix a bug of an old release, we need to work on more old branches.</li>
 </ol>
-<p>We decided to experiment with release train model and see if the benefits for us as a community exceed the drawbacks. </p>
+<p>We decided to experiment with release train model and see if the benefits for us as a community exceed the drawbacks.</p>
 <h2 id="how-will-tidb-development-process-look-like"><a class="header" href="#how-will-tidb-development-process-look-like">How will TiDB development process look like?</a></h2>
 <p>At this stage we are planning to make a release every two months.</p>
 <p>Thus, a typical development cycle takes two months, which we call a sprint. For example, the development cycle of v5.2 is from the end of June to the end of August and is called Sprint 4.</p>
 <p>Two weeks before the release date, the release manager will create a branch for the new release based on the master branch, publish a list of features to be included in the release, and also announce the code-freeze, after which only fixes for blocking bugs can be merged.</p>
-<p>For the release train model, we strictly ensure that a release happens on the planned date. For example, we decide to deliver the v5.2 release by the end of August so we will stick to it. If any features cannot be completed by the code-freeze date, we will drop them and avoid taking them into the new release branch. In this case, the development in the master branch can still work as usual and those features will be moved to the following release. </p>
+<p>For the release train model, we strictly ensure that a release happens on the planned date. For example, we decide to deliver the v5.2 release by the end of August so we will stick to it. If any features cannot be completed by the code-freeze date, we will drop them and avoid taking them into the new release branch. In this case, the development in the master branch can still work as usual and those features will be moved to the following release.</p>
 <p>Ideally, we would have started stabilization once we create the new release branch. After the code-freeze date, only pull requests of blocker bugs can be merged to the new release branch. In a rare scenario, it is possible that few features pass the code freeze bar but still fail to be completed on time. Such features will also be dropped from the release train in the end to meet the release deadline.</p>
 <p>Developers who want to contribute features to TiDB could follow the procedure described in <a href="project-management/../contribute-to-tidb/make-a-proposal.html">Make a Proposal</a>. Once all the requirements are met and all the codes are merged into the master branch, the feature will be boxed into the nearest release.</p>
 <p>Except for feature releases, there also exists patch releases. Patch releases are scheduled when needed, there is no fixed calendar for such releases. When a patch release is scheduled, there are two rounds of triage. A bug fix could only be boxed into a release when it occurs before triage. Get more information about TiDB releases and versions in <a href="project-management/tidb-versioning.html">TiDB versioning</a>.</p>
@@ -5556,17 +5557,17 @@ export = [
 <div style="break-before: page; page-break-before: always;"></div><h1 id="add-a-function"><a class="header" href="#add-a-function">Add a function</a></h1>
 <p>To add a builtin function to TiDB the best practice is to look at MySQL first and try to implement the function in such a way that it is commpatible. Avoid adding functions that are already deprecated in MySQL or that might soon be deprecrated.</p>
 <p>Here we will implement a <code>HELLO()</code> function that has one argument that is a string. For this you need <a href="extending-tidb/../get-started/build-tidb-from-source.html#clone">a clone of the pingcap/tidb repository</a></p>
-<pre><code>sql&gt; SELECT HELLO(&quot;world&quot;);
+<pre><code>sql&gt; SELECT HELLO("world");
 ERROR: 1305 (42000): FUNCTION test.hello does not exist
 </code></pre>
 <p>The first step is to define the name of the function in <code>parser/ast/functions.go</code>:</p>
 <pre><code class="language-go">// List scalar function names.
 const (
 ...
-        Hello = &quot;hello&quot;
+        Hello = "hello"
 )
 </code></pre>
-<p>This links <code>ast.Hello</code> with &quot;hello&quot;. Note that the lookup for the function is done with the lowercase name, so always use the lowercase name, otherwise it won't find the function.</p>
+<p>This links <code>ast.Hello</code> with "hello". Note that the lookup for the function is done with the lowercase name, so always use the lowercase name, otherwise it won't find the function.</p>
 <p>The next step is to modify <code>expression/builtin.go</code></p>
 <pre><code class="language-go">var funcs = map[string]functionClass{
 ...
@@ -5614,23 +5615,23 @@ func (b *builtinHelloSig) evalString(row chunk.Row) (name string, isNull bool, e
         if isNull || err != nil {
                 return name, isNull, err
         }
-        return &quot;hello &quot; + name, false, nil
+        return "hello " + name, false, nil
 }
 </code></pre>
 <p>The <code>getFunction()</code> method can return different functions depending on the type and number of arguments. This example always returns the same function that has one string argument and returns a string.</p>
 <p>Here <code>evalString()</code> gets called for every row. If the function returns an integer you have to use <code>evalInt</code> and there are also functions for Decimal, Real, Time and JSON.</p>
 <p>Now you need to <a href="extending-tidb/../get-started/build-tidb-from-source.html#build">build TiDB</a> again and try the newly added function.</p>
 <p>The final result:</p>
-<pre><code>sql&gt; SELECT HELLO(&quot;world&quot;);
+<pre><code>sql&gt; SELECT HELLO("world");
 +----------------+
-| HELLO(&quot;world&quot;) |
+| HELLO("world") |
 +----------------+
 | hello world    |
 +----------------+
 1 row in set (0.0007 sec)
 </code></pre>
 <p>To show the function with multiple rows:</p>
-<pre><code>sql&gt; WITH names AS (SELECT &quot;Europe&quot; AS &quot;name&quot; UNION ALL SELECT &quot;America&quot; UNION ALL SELECT &quot;China&quot;)
+<pre><code>sql&gt; WITH names AS (SELECT "Europe" AS "name" UNION ALL SELECT "America" UNION ALL SELECT "China")
    -&gt; SELECT HELLO(name) FROM names;
 +---------------+
 | HELLO(name)   |

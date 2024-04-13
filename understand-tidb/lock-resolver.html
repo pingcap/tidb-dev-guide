@@ -180,7 +180,7 @@
 <p>As we described in <a href="./transaction.html">other sections</a>, TiDB's transaction system is based on Google's <a href="https://tikv.org/deep-dive/distributed-transaction/percolator/">Percolator</a> algorithm. Which makes it necessary to resolve locks when a reading transaction meets locked keys or during <a href="./mvcc-garbage-collection.html">GC</a>.</p>
 <p>So we introduced Lock Resolver in TiDB to resolve locks.</p>
 <h2 id="the-data-structure"><a class="header" href="#the-data-structure">The Data Structure</a></h2>
-<p>Lock Resolver is a quiet simple struct: </p>
+<p>Lock Resolver is a quiet simple struct:</p>
 <pre><code class="language-go">type LockResolver struct {
 	store storage
 	mu    struct {
@@ -213,7 +213,7 @@ And the fields inside the <code>mu</code> are used to cache the resolved transac
 <h5 id="collapse-continuous-rollbacks-tikv3290"><a class="header" href="#collapse-continuous-rollbacks-tikv3290">collapse continuous rollbacks (<a href="https://github.com/tikv/tikv/pull/3290">tikv#3290</a>)</a></h5>
 <p>Instead of keeping all rollbacks in write column family when a key rollbacked for several times, this PR collapse continuous rollbacks, and only keep the latest rollback.</p>
 <h5 id="protect-primary-locks-tikv5575"><a class="header" href="#protect-primary-locks-tikv5575">protect primary locks (<a href="https://github.com/tikv/tikv/pull/5575">tikv#5575</a>)</a></h5>
-<p>After we have pessimistic lock in TiKV, if the rollback record of the primary lock is collapsed and TiKV receives stale acquire_pessimistic_lock and prewrite, the transaction will commit successfully even if secondary locks are rolled back. To solve this problem, we can prevent the rollback records of the primary key of pessimistic transactions from being collapsed. By setting the short value of these rollback records to &quot;protected&quot;.</p>
+<p>After we have pessimistic lock in TiKV, if the rollback record of the primary lock is collapsed and TiKV receives stale acquire_pessimistic_lock and prewrite, the transaction will commit successfully even if secondary locks are rolled back. To solve this problem, we can prevent the rollback records of the primary key of pessimistic transactions from being collapsed. By setting the short value of these rollback records to "protected".</p>
 <h5 id="gc_fence-tikv9207"><a class="header" href="#gc_fence-tikv9207">gc_fence (<a href="https://github.com/tikv/tikv/pull/9207">tikv#9207</a>)</a></h5>
 <p>See the super detailed comment <a href="https://github.com/tikv/tikv/blob/a345ff7f835b49c9addf4883b339ce268e1668cc/components/txn_types/src/write.rs#L77">here</a>.</p>
 <p>After understand these, you can finally understand the code:</p>
@@ -270,7 +270,7 @@ And the fields inside the <code>mu</code> are used to cache the resolved transac
     	// In this case, if the current transaction is to be rolled back, the `overlapped_write` must not be overwritten.
         TxnCommitRecord::None { overlapped_write } =&gt; overlapped_write,
         TxnCommitRecord::SingleRecord { write, .. } if write.write_type != WriteType::Rollback =&gt; {
-            panic!(&quot;txn record found but not expected: {:?}&quot;, txn)
+            panic!("txn record found but not expected: {:?}", txn)
         }
         _ =&gt; return txn.unlock_key(key, is_pessimistic_txn),
     };

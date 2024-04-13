@@ -181,7 +181,7 @@
 <h2 id="install-go"><a class="header" href="#install-go">Install Go</a></h2>
 <p>TiDB periodically upgrades its Go version to keep up with Golang. Currently, upgrade plans are announced on <a href="https://internals.tidb.io/tags/c/general/announcement">TiDB Internals forum</a>.</p>
 <p>To get the right version of Go, take a look at the <a href="https://github.com/pingcap/tidb/blob/master/go.mod"><code>go.mod</code> file in TiDB's repository</a>. You should see that there is a line like <code>go 1.21</code> (the number may be different) in the first few lines of this file. You can also run the following command to get the Go version:</p>
-<pre><code class="language-bash">curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot;
+<pre><code class="language-bash">curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\""
 </code></pre>
 <p>Now that you've got the version number, go to <a href="https://golang.org/dl/">Go's download page</a>, choose the corresponding version, and then follow the <a href="https://golang.org/doc/install">installation instructions</a>.</p>
 <h2 id="manage-the-go-toolchain-using-gvm"><a class="header" href="#manage-the-go-toolchain-using-gvm">Manage the Go toolchain using gvm</a></h2>
@@ -190,7 +190,7 @@
 <pre><code class="language-bash">curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sh
 </code></pre>
 <p>Once you have gvm installed, you can use it to manage multiple different Go compilers with different versions. Let's install the corresponding Go version and set it as default:</p>
-<pre><code class="language-bash">TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo &quot;\&quot;go [[:digit:]]+.[[:digit:]]+\&quot;&quot; | grep -Eo &quot;[[:digit:]]+.[[:digit:]]+&quot;)
+<pre><code class="language-bash">TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\"" | grep -Eo "[[:digit:]]+.[[:digit:]]+")
 gvm install go${TIDB_GOVERSION}
 gvm use go${TIDB_GOVERSION} --default
 </code></pre>
