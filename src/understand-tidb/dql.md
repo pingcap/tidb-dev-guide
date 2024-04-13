@@ -61,7 +61,7 @@ The most important function in `Session` is `ExecuteStmt`. It wraps calls to oth
 
 #### [Parser](parser.md)
 
-[Parser](https://github.com/pingcap/tidb/blob/master/parser/yy_parser.go) consists of [Lexer](https://github.com/pingcap/tidb/blob/master/parser/lexer.go) and Yacc. It turns the SQL text to AST:
+[Parser](https://github.com/pingcap/tidb/blob/master/pkg/parser/yy_parser.go) consists of [Lexer](https://github.com/pingcap/tidb/blob/master/pkg/parser/lexer.go) and Yacc. It turns the SQL text to AST:
 
 ```go
 p := parserPool.Get().(*parser.Parser)
