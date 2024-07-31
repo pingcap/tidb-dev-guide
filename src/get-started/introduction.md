@@ -7,4 +7,5 @@ Let's start your TiDB journey! There's a lot to learn, but every journey starts 
 * [Setup an IDE](setup-an-ide.md)
 * [Write and run unit tests](write-and-run-unit-tests.md)
 * [Debug and profile](debug-and-profile.md)
+* [Run and debug integration tests](run-and-debug-integration-tests.md)
 * [Commit code and submit a pull request](commit-code-and-submit-a-pull-request.md)

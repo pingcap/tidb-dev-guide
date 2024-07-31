@@ -16,6 +16,8 @@ Sometimes you will need to debug the test when you find out that some changes ar
 
 We use some build tags to inject some check in the testing environment. Those tags are `intest,deadlock,integrationtest`, so you need to pass `--tags intest,deadlock,integrationtest` when you're building the binary. Or you can directly run `make server_check` to build the needed binary and then use `dlv` to do the debugging.
 
+After you build the correct binary, you can follow the descriptions in [Use delve for debugging](./debug-and-profile.md#use-delve-for-debugging) to debug TiDB.
+
 ## How to use IDE to debug
 
 If you're using IDEs, you'll need to create a special build file for it.
