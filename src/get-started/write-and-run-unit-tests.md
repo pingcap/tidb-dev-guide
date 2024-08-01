@@ -269,3 +269,4 @@ If a test case takes longer, its failure report looks like:
 [2021-08-09T03:33:57.661Z] PASS: tidb_test.go:874: tidbTestSerialSuite.TestTLS  7.388s
 [2021-08-09T03:33:57.661Z] --- PASS: TestCluster (5.20s)
 ```
+And for integration tests, please refer to [Run and debug integration tests](./run-and-debug-integration-tests.md)
