@@ -25,7 +25,7 @@ The states used are defined in [tidb/parser/model/model.go](https://github.com/p
         StatePublic
 ```
 
-Note: this is a very different implementation from MySQL, which uses Meta Data Locks (MDL) for keeping a single version of the MySQL instance schemas at a time. This results in MySQL replicas can have different version of the schemas, due to lag in asyncronous replication. TiDB has always a consistent view of all schemas in the cluster.
+Note: this is a very different implementation from MySQL, which uses Meta Data Locks (MDL) for keeping a single version of the MySQL instance schemas at a time. This results in MySQL replicas can have different version of the schemas, due to lag in asynchronous replication. TiDB has always a consistent view of all schemas in the cluster.
 
 ## Implementation
 
