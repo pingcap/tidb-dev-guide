@@ -4,6 +4,8 @@ TiDB now has some integration tests inside the folder `tests/integrationtest`. T
 
 # How to run integration tests
 
+Unlike the production environment, we enable extra assertion in integration tests to do some strict checking. You'll need to run `make server_check` instead of `make`/`make server` to build the TiDB binary. The main difference between them is that the `make server_check` adds two new go build tags named `enableassert` and `deadlock`.
+
 Once you have built a TiDB binary. You can go to the folder `tests/integrationtest` and run `./run-tests.sh -s ../../bin/tidb-server` to run all the integration tests.
 
 And you can use `-t` to specify a test file to test. If you run `./run-tests.sh -s ../../bin/tidb-server -t executor/simple`, the scripts will run the tests inside the file `t/executor/simple.test`.(It's corresponding result file is `r/executor/simple.result`)
