@@ -61,7 +61,7 @@ The [TiDB Dashboard](https://docs.pingcap.com/tidb/stable/dashboard-slow-query) 
 +---------------+  +---------------+  +---------------+
 ```
 
-The protobuf messages are defined in [`diagnosticspb.proto`](https://github.com/pingcap/kvproto/blob/master/proto/diagnosticspb.proto) in the `pingcap/kvproto` repo.
+The protobuf messages are defined in [`diagnosticspb.proto`](https://github.com/pingcap/kvproto/blob/master/proto/diagnosticspb.proto) in the `pingcap/kvproto` repo. Key messages are `SearchLogRequest` and `SearchLogResponse`.
 
 This table uses the [`clusterLogRetriever`](https://github.com/pingcap/tidb/blob/1521bf723dd023da655add0f883acaab5ee69683/pkg/executor/memtable_reader.go#L361) with the [`ClusterLogTableExtractor`](https://github.com/pingcap/tidb/blob/1521bf723dd023da655add0f883acaab5ee69683/pkg/planner/core/memtable_predicate_extractor.go#L756).
 
