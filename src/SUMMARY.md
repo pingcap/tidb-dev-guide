@@ -52,6 +52,9 @@
     * [Session](understand-tidb/session.md)
     * [Privilege](understand-tidb/privilege.md)
     * [Plugin](understand-tidb/plugin.md)
+    * [System tables](understand-tidb/system-tables/introduction.md)
+        * [information_schema](understand-tidb/system-tables/information_schema/introduction.md)
+            * [slow_query](understand-tidb/system-tables/information_schema/slow_query.md)
 
 * [Project Management](project-management/introduction.md)
     * [Releases Train Model](project-management/release-train-model.md)
