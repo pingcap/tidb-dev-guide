@@ -2,7 +2,7 @@
 
 ## Overview
 
-Slow queries logs are written to `tidb-slow.log` (set with `slow-query-file` in the config) if they are over the `slow-threshold` (300ms by default). If `record-plan-in-slow-log` is enabled this will include the execution plan.
+Slow queries logs are written to `tidb-slow.log` (set with `slow-query-file` in the config) if they are over the `slow-threshold` (300ms by default). If `record-plan-in-slow-log` is enabled this will include the execution plan. This uses [`slowLogEncoder`](https://github.com/pingcap/tidb/blob/master/pkg/util/logutil/slow_query_logger.go).
 
 Each TiDB node writes its own slow logs.
 
