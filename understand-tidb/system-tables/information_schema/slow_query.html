@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Community Guideline - TiDB Development Guide</title>
+        <title>slow_query - TiDB Development Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -12,32 +12,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="../../../highlight.css">
+        <link rel="stylesheet" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
 
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "../";
+            var path_to_root = "../../../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../../../toc.js"></script>
     </head>
     <body>
     <div id="body-container">
@@ -89,7 +89,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -123,7 +123,7 @@
                     <h1 class="menu-title">TiDB Development Guide</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
@@ -155,34 +155,74 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="community-guideline"><a class="header" href="#community-guideline">Community Guideline</a></h1>
-<p>TiDB community aims to provide harassment-free, welcome and friendly experience for everyone. The first and most important thing for any participant in the community is be friendly and respectful to others. Improper behaviors will be warned and punished.</p>
-<p>We appreciate any contribution in any form to TiDB community. Thanks so much for your interest and enthusiasm on TiDB!</p>
-<h2 id="code-of-conduct"><a class="header" href="#code-of-conduct">Code of Conduct</a></h2>
-<p>TiDB community refuses any kind of harmful behavior to the community or community members. Everyone should read our <a href="https://github.com/pingcap/community/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a> and keep proper behavior while participating in the community.</p>
-<h2 id="governance"><a class="header" href="#governance">Governance</a></h2>
-<p>TiDB development governs by two kind of groups:</p>
+                        <h1 id="slow_query"><a class="header" href="#slow_query">slow_query</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Slow queries logs are written to <code>tidb-slow.log</code> (set with <code>slow-query-file</code> in the config) if they are over the <code>slow-threshold</code> (300ms by default). If <code>record-plan-in-slow-log</code> is enabled this will include the execution plan. This uses <a href="https://github.com/pingcap/tidb/blob/master/pkg/util/logutil/slow_query_logger.go"><code>slowLogEncoder</code></a>.</p>
+<p>Each TiDB node writes its own slow logs.</p>
+<h3 id="slow_query-1"><a class="header" href="#slow_query-1">SLOW_QUERY</a></h3>
+<pre><code>   +------------+
+   | App or CLI |
+   +------------+
+         |
+     SQL Query
+     SLOW_QUERY
+         |
+     +--------+
+     |  TiDB  |
+     +--------+
+         |
+  +---------------+
+  | tidb-slow.log |
+  +---------------+
+</code></pre>
+<p>The slow log can be viewed directly or via the <code>information_schema.SLOW_QUERY</code> table.</p>
+<p>The column definition is in <a href="https://github.com/pingcap/tidb/blob/1521bf723dd023da655add0f883acaab5ee69683/pkg/infoschema/tables.go#L874-L956"><code>slowQueryCols</code></a>.</p>
+<p>The <a href="https://github.com/pingcap/tidb/blob/1521bf723dd023da655add0f883acaab5ee69683/pkg/planner/core/memtable_predicate_extractor.go#L1282"><code>SlowQueryExtractor</code></a> helps to extract some predicates of <code>slow_query</code>.</p>
+<p>A lot of the other logic can be found in <a href="https://github.com/pingcap/tidb/blob/master/pkg/executor/slow_query.go"><code>slow_query.go</code></a>.</p>
+<p>This table has <a href="https://github.com/pingcap/tidb/blob/2e51209f483bb7909be1eb0b55e5f18f0c437a25/pkg/executor/slow_query.go#L1114-L1119"><code>RuntimeStats</code></a>, which adds stats to <code>EXPLAIN ANALYZE</code> output.</p>
+<h3 id="cluster_slow_query"><a class="header" href="#cluster_slow_query">CLUSTER_SLOW_QUERY</a></h3>
+<p>There is also the <code>information_schema.CLUSTER_SLOW_QUERY</code> table that combines the slow log from all nodes into a single table.</p>
+<p>The <a href="https://docs.pingcap.com/tidb/stable/dashboard-slow-query">TiDB Dashboard</a> uses the <code>CLUSTER_SLOW_QUERY</code> table to display the slow queries in a webpage.</p>
+<pre><code>                  +----------------+
+                  | TiDB Dashboard |
+                  |   or App/CLI   |
+                  +----------------+
+                         |
+                      SQL Query
+                  CLUSTER_SLOW_QUERY
+                         |
+                      +--------+
+        +--gRPC-------| TiDB 1 |------gRPC--+
+        |             +--------+            |
+   +--------+            |               +--------+
+   | TiDB 0 |            |               | TiDB 2 |
+   +--------+            |               +--------+
+      |                  |                  |
++---------------+  +---------------+  +---------------+
+| tidb-slow.log |  | tidb-slow.log |  | tidb-slow.log |
++---------------+  +---------------+  +---------------+
+</code></pre>
+<p><code>CLUSTER_SLOW_QUERY</code> is using the <code>coprocessor</code> gRPC interface to send cop requests to the TiDB node. This allows the reuse of query condition push down and column prune, to reduce unnecessary data transfer.</p>
+<p>There are no <code>RuntimeStats</code> for this table, see <a href="https://github.com/pingcap/tidb/issues/56707">this issue</a> for a request to add that.</p>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
 <ul>
-<li><a href="https://github.com/pingcap/community/tree/master/toc">TOC</a>: TOC serves as the main bridge and channel for coordinating and information sharing across companies and organizations. It is the coordination center for solving problems in terms of resource mobilization, technical research and development direction in the current community and cooperative projects.</li>
-<li><a href="https://github.com/pingcap/community/tree/master/teams">teams</a>: Teams are persistent open groups that focus on a part of the TiDB projects. A team has its reviewer, committer and maintainer, and owns one or more repositories. Team level decision making comes from its maintainers.</li>
-</ul>
-<p>A typical promoted path for a TiDB developer is from user to reviewer, then committer and maintainer, finally maybe a TOC member. But gaining more roles doesn't mean you have any privilege over other community members or even any right to control them. Everyone in TiDB community are equal and share the responsibility to collaborate constructively with other contributors, building a friendly community. The roles are a natural reward for your substantial contribution in TiDB development and provide you more rights in the development workflow to enhance your efficiency. Meanwhile, they request some additional responsibilities from you:</p>
+<li>User docs
 <ul>
-<li>Now that you are a member of team reviewers/committers/maintainers, you are representing the project and your fellow team members whenever you discuss TiDB with anyone. So please be a good person to defend the reputation of the team.</li>
-<li>Committers/maintainers have the right to approve pull requests, so bear the additional responsibility of handling the consequences of accepting a change into the codebase or documentation. That includes reverting or fixing it if it causes problems as well as helping out the release manager in resolving any problems found during the pre-release testing cycle. While all contributors are free to help out with this part of the process, and it is most welcome when they do, the actual responsibility rests with the committers/maintainers that approved the change.</li>
-<li>Reviewers/committers/maintainers also bear the primary responsibility for guiding contributors the right working procedure, like deciding when changes proposed on the issue tracker should be escalated to <a href="https://internals.tidb.io">internal.tidb.io</a> for wider discussion, as well as suggesting the use of the <a href="https://github.com/pingcap/tidb/tree/master/docs/design">TiDB Design Documents</a> process to manage the design and justification of complex changes, or changes with a potentially significant impact on end users.</li>
+<li><a href="https://docs.pingcap.com/tidb/stable/information-schema-slow-query">information_schema.slow_query</a></li>
+<li><a href="https://docs.pingcap.com/tidb/stable/identify-slow-queries#query-the-number-of-slow-queries-for-each-tidb-node-in-a-cluster">Identify Slow Queries</a></li>
 </ul>
-<p>There should be no blockers to contribute with no roles. It's totally fine for you to reject the promotion offer if you don't want to take the additional responsibilities or for any other reason. Besides, except for code or documentation contribution, any kind of contribution for the community is highly appreciated. Let's grow TiDB ecosystem through our contributions of this community.</p>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../contribute-to-tidb/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../understand-tidb/system-tables/information_schema/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../contribute-to-tidb/report-an-issue.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../project-management/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -192,11 +232,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../contribute-to-tidb/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../understand-tidb/system-tables/information_schema/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../contribute-to-tidb/report-an-issue.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../project-management/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -211,13 +251,13 @@
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../../../elasticlunr.min.js"></script>
+        <script src="../../../mark.min.js"></script>
+        <script src="../../../searcher.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../../../clipboard.min.js"></script>
+        <script src="../../../highlight.js"></script>
+        <script src="../../../book.js"></script>
 
         <!-- Custom JS scripts -->
 
