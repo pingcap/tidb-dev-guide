@@ -9,7 +9,7 @@ TiDB periodically upgrades its Go version to keep up with Golang. Currently, upg
 To get the right version of Go, take a look at the [`go.mod` file in TiDB's repository](https://github.com/pingcap/tidb/blob/master/go.mod). You should see that there is a line like `go 1.21` (the number may be different) in the first few lines of this file. You can also run the following command to get the Go version:
 
 ```bash
-curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\""
+curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+(\.[[:digit:]]+)+\""
 ```
 
 Now that you've got the version number, go to [Go's download page](https://golang.org/dl/), choose the corresponding version, and then follow the [installation instructions](https://golang.org/doc/install).
@@ -27,7 +27,7 @@ curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gv
 Once you have gvm installed, you can use it to manage multiple different Go compilers with different versions. Let's install the corresponding Go version and set it as default:
 
 ```bash
-TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+.[[:digit:]]+\"" | grep -Eo "[[:digit:]]+.[[:digit:]]+")
+TIDB_GOVERSION=$(curl -s -S -L https://github.com/pingcap/tidb/blob/master/go.mod | grep -Eo "\"go [[:digit:]]+(\.[[:digit:]]+)+\"" | grep -Eo "[[:digit:]]+\.[[:digit:]]+(\.[[:digit:]]+)?")
 gvm install go${TIDB_GOVERSION}
 gvm use go${TIDB_GOVERSION} --default
 ```
