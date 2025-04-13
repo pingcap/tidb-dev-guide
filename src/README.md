@@ -1,7 +1,7 @@
 # TiDB Development Guide
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About this guide
@@ -80,6 +80,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="20%"><a href="https://github.com/windtalker"><img src="https://avatars.githubusercontent.com/u/1916264?v=4?s=100" width="100px;" alt="xufei"/><br /><sub><b>xufei</b></sub></a><br /><a href="#content-windtalker" title="Content">🖋</a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/zanmato1984"><img src="https://avatars.githubusercontent.com/u/1061004?v=4?s=100" width="100px;" alt="ruoxi"/><br /><sub><b>ruoxi</b></sub></a><br /><a href="https://github.com/pingcap/tidb-dev-guide/pulls?q=is%3Apr+reviewed-by%3Azanmato1984" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="20%"><a href="https://www.highpon.com/"><img src="https://avatars.githubusercontent.com/u/54130718?v=4?s=100" width="100px;" alt="s-shiraki"/><br /><sub><b>s-shiraki</b></sub></a><br /><a href="#content-highpon" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/YukihiroArakawa"><img src="https://avatars.githubusercontent.com/u/54029373?v=4?s=100" width="100px;" alt="YukihiroArakawa"/><br /><sub><b>YukihiroArakawa</b></sub></a><br /><a href="#content-YukihiroArakawa" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
