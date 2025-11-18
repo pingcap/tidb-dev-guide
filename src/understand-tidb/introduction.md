@@ -116,7 +116,7 @@ These processes locate at the following modules:
 
 | Package               | Usage                                                                       |
 | :-------------------- | :-------------------------------------------------------------------------- |
-| pingcap/tidb/sever    | Interface between protocol layer and SQL layer                              |
+| pingcap/tidb/server    | Interface between protocol layer and SQL layer                              |
 | pingcap/tidb/parser   | SQL parsing and syntax analyze                                              |
 | pingcap/tidb/planner  | Validation, query plan building, query plan optimizing                      |
 | pingcap/tidb/executor | Executor generation and execution                                           |
