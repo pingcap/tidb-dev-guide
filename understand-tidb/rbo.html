@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-9dfbd86b.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,12 +35,24 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-7b8cb798.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-4f993631.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -70,56 +81,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -127,42 +141,47 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/pingcap/tidb-dev-guide" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="rule-based-optimization"><a class="header" href="#rule-based-optimization">Rule-based Optimization</a></h1>
 <p>As stated in the planner overview, rule-based optimization (usually used interchangeably with logical optimization in TiDB code) consists of logical optimization rules. These rules have predefined order to be iterated. Each rule has a responding flag, and a rule will be applied only if it is flagged and not disabled. The flag is set according to the SQL in the plan building stage.</p>
-<p>The rule-based optimization will produce a logical plan tree that is logically equal to the original one. Besides the original plan tree, it will also make use of table schema information to make optimizations, but it doesn't rely on the statistics to do optimization (join reorder is the only exception, we'll talk about it later).</p>
+<p>The rule-based optimization will produce a logical plan tree that is logically equal to the original one. Besides the original plan tree, it will also make use of table schema information to make optimizations, but it doesn’t rely on the statistics to do optimization (join reorder is the only exception, we’ll talk about it later).</p>
 <h2 id="implementation-patterns"><a class="header" href="#implementation-patterns">Implementation Patterns</a></h2>
-<p>Code for each rule is placed in a separated file named "rule_xxx_xxx.go".</p>
+<p>Code for each rule is placed in a separated file named “rule_xxx_xxx.go”.</p>
 <p>All logical rule implements the <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/optimizer.go#L85-L89"><code>logicalOptRule</code></a> interface.</p>
 <p>It is defined as follows:</p>
 <pre><code class="language-go">type logicalOptRule interface {
@@ -184,7 +203,7 @@
 <p>As stated in the planner overview, the correlated subquery in the SQL becomes the <code>Apply</code> operator, which is a special kind of <code>Join</code> operator, in the plan tree. If we can transform it to a normal <code>Join</code> and keep it logically equal to the <code>Apply</code>, we can do make more optimizations that are only available to normal join operators.</p>
 <p>An <code>Apply</code> is equivalent to a <code>Join</code> if there are no correlated columns in its inner side. Here we try to pull up operators with correlated columns in the inner side across the <code>Apply</code>, then <code>Apply</code> can be changed to <code>Join</code> directly. So this kind of transformation is called decorrelation.</p>
 <p>The main logic is in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L122"><code>(*decorrelateSolver).optimize()</code></a>. It finds <code>Apply</code> and tries to decorrelate it.</p>
-<p>Currently, there're several cases we can decorrelate.</p>
+<p>Currently, there’re several cases we can decorrelate.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L132">If the inner side is a <code>Selection</code></a>, we can directly change it to a join condition of the <code>Apply</code>.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a INT, b INT);
@@ -239,7 +258,7 @@ EXPLAIN SELECT a, (SELECT sum(t2.b) FROM t2 WHERE t2.a = t1.a) FROM t1;
 |       └─IndexFullScan_17         | 10000.00 | cop[tikv] | table:t1, index:a(a) | keep order:false, stats:pseudo                                                             |
 +----------------------------------+----------+-----------+----------------------+--------------------------------------------------------------------------------------------+
 </code></pre>
-<p>There is one more case we can decorrelate when we fail to decorrelate <code>Apply</code> with an <code>Aggregation</code> in the inner side directly. That's <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L228">when the inner side is an <code>Aggregation</code>, and the <code>Aggregation</code>'s child operator is a <code>Selection</code></a>. Here we try to pull up the equal conditions in the <code>Selection</code> to above <code>Aggregation</code>, then change it to a join condition of the <code>Apply</code>. To assure correctness, correlated columns of the pulled-up conditions should also be added into <code>LogicalAggregation.GroupByItems</code>. Note that we'll do this transformation only if the <code>Apply</code> is guaranteed can be changed to a <code>Join</code>. Otherwise, we'll keep the plan tree unchanged.</p>
+<p>There is one more case we can decorrelate when we fail to decorrelate <code>Apply</code> with an <code>Aggregation</code> in the inner side directly. That’s <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L228">when the inner side is an <code>Aggregation</code>, and the <code>Aggregation</code>’s child operator is a <code>Selection</code></a>. Here we try to pull up the equal conditions in the <code>Selection</code> to above <code>Aggregation</code>, then change it to a join condition of the <code>Apply</code>. To assure correctness, correlated columns of the pulled-up conditions should also be added into <code>LogicalAggregation.GroupByItems</code>. Note that we’ll do this transformation only if the <code>Apply</code> is guaranteed can be changed to a <code>Join</code>. Otherwise, we’ll keep the plan tree unchanged.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a INT, b INT);
 CREATE TABLE t2(a INT, b INT);
@@ -258,11 +277,11 @@ EXPLAIN SELECT a, (SELECT sum(t2.b) FROM t2 WHERE t2.a = t1.a) FROM t1;
 |   └─TableFullScan_13             | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                               |
 +----------------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------+
 </code></pre>
-<p>This rule will keep trying to decorrelate an <code>Apply</code> until it can't be decorrelated anymore. <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L127">If there are no correlated columns in its inner side now</a>, it is converted to a <code>Join</code>.</p>
-<h4 id="decorrelation-cant-guarantee-a-better-plan"><a class="header" href="#decorrelation-cant-guarantee-a-better-plan">Decorrelation can't guarantee a better plan</a></h4>
-<p>It might be intuitive to think that a decorrelated <code>Join</code> is more efficient than the nested-loop style <code>Apply</code>. That's probably true in most cases. However, as we said above, decorrelation just enables us to make more optimizations that are only available for normal <code>Join</code>. This doesn't mean <code>Apply</code> is always a worse plan.</p>
-<p>The decorrelation involves some "pull-up" operation. This usually makes the execution of the inner sub-tree of the <code>Apply</code>/<code>Join</code> becomes less efficient.
-And in some cases, for example, when the outer side of the <code>Apply</code> only has one row of data, the nested-loop style <code>Apply</code> execution won't incur inefficiency compared with a normal <code>Join</code>. In such cases, the decorrelated plan is worse than the original one.</p>
+<p>This rule will keep trying to decorrelate an <code>Apply</code> until it can’t be decorrelated anymore. <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_decorrelate.go#L127">If there are no correlated columns in its inner side now</a>, it is converted to a <code>Join</code>.</p>
+<h4 id="decorrelation-cant-guarantee-a-better-plan"><a class="header" href="#decorrelation-cant-guarantee-a-better-plan">Decorrelation can’t guarantee a better plan</a></h4>
+<p>It might be intuitive to think that a decorrelated <code>Join</code> is more efficient than the nested-loop style <code>Apply</code>. That’s probably true in most cases. However, as we said above, decorrelation just enables us to make more optimizations that are only available for normal <code>Join</code>. This doesn’t mean <code>Apply</code> is always a worse plan.</p>
+<p>The decorrelation involves some “pull-up” operation. This usually makes the execution of the inner sub-tree of the <code>Apply</code>/<code>Join</code> becomes less efficient.
+And in some cases, for example, when the outer side of the <code>Apply</code> only has one row of data, the nested-loop style <code>Apply</code> execution won’t incur inefficiency compared with a normal <code>Join</code>. In such cases, the decorrelated plan is worse than the original one.</p>
 <h3 id="aggregation-elimination"><a class="header" href="#aggregation-elimination">Aggregation Elimination</a></h3>
 <p>This rule finds <code>Aggregation</code>s and tries to remove useless <code>Aggregation</code> operator or useless <code>DISTINCT</code> of aggregate functions.</p>
 <p>A <code>DISTINCT</code> of an aggregate function is useless when the argument of the aggregate function is a unique column. In this case, we can set the <code>AggFuncDesc.HasDistinct</code> to <code>false</code> directly.</p>
@@ -298,9 +317,9 @@ EXPLAIN SELECT count(a), sum(a), max(a) FROM t GROUP BY b;
 <h3 id="projection-elimination"><a class="header" href="#projection-elimination">Projection Elimination</a></h3>
 <p>Projection elimination finds <code>Projection</code> and try to remove useless <code>Projection</code>s. The main logic is in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_eliminate_projection.go#L153"><code>(*projectionEliminator).eliminate(p LogicalPlan, replace map[string]*expression.Column, canEliminate bool)</code></a>.</p>
 <p>Generally, there are two cases we can optimize. First, if there are two <code>Projection</code>s in a row, we can merge them into one <code>Projection</code>. Second, if all expressions of a <code>Projection</code> are <code>Column</code>, which means there are no extra calculations, we can remove this <code>Projection</code>.</p>
-<p>Note that for the second case, not all <code>Projection</code> can be eliminated. For example, the <code>Projection</code> at the top of the plan tree or below <code>UnionAll</code> can't be removed. This is indicated by the <code>canEliminate</code> parameter.</p>
+<p>Note that for the second case, not all <code>Projection</code> can be eliminated. For example, the <code>Projection</code> at the top of the plan tree or below <code>UnionAll</code> can’t be removed. This is indicated by the <code>canEliminate</code> parameter.</p>
 <h3 id="maxmin-elimination"><a class="header" href="#maxmin-elimination">Max/Min Elimination</a></h3>
-<p>Max/Min elimination finds <code>Aggregation</code> with <code>max()</code> or <code>min()</code> aggregate function. It doesn't actually "eliminate" the <code>Aggregation</code>. It adds <code>Limit</code> and <code>Sort</code> to get the same effect of <code>max()</code> and <code>min()</code>, but the <code>Aggregagation</code> is remained to assure correctness.</p>
+<p>Max/Min elimination finds <code>Aggregation</code> with <code>max()</code> or <code>min()</code> aggregate function. It doesn’t actually “eliminate” the <code>Aggregation</code>. It adds <code>Limit</code> and <code>Sort</code> to get the same effect of <code>max()</code> and <code>min()</code>, but the <code>Aggregagation</code> is remained to assure correctness.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a int, b int UNIQUE NOT NULL);
 EXPLAIN SELECT MAX(a) FROM t;
@@ -330,7 +349,7 @@ EXPLAIN SELECT MAX(a) FROM t;
 +--------------------------------+----------+-----------+---------------+--------------------------------+
 </code></pre>
 <p>This change enables TiDB to make use of indexes, which are ordered by certain column(s). In the optimal case, we only need to scan one row in TiKV.</p>
-<p>This optimization will become a little more complicated when there are more than one <code>max()</code> or <code>min()</code> function. In this case, we will compose a plan tree for every <code>max()</code> or <code>min()</code> function, then put them together with a <code>Join</code>. Note that we'll only do this when we can make sure every <code>max()</code> or <code>min()</code> function can benefit from index. This is checked in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_max_min_eliminate.go#L135"><code>(*maxMinEliminator).splitAggFuncAndCheckIndices()</code></a>.</p>
+<p>This optimization will become a little more complicated when there are more than one <code>max()</code> or <code>min()</code> function. In this case, we will compose a plan tree for every <code>max()</code> or <code>min()</code> function, then put them together with a <code>Join</code>. Note that we’ll only do this when we can make sure every <code>max()</code> or <code>min()</code> function can benefit from index. This is checked in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_max_min_eliminate.go#L135"><code>(*maxMinEliminator).splitAggFuncAndCheckIndices()</code></a>.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a int, b int, INDEX ia(a), INDEX ib(b));
 EXPLAIN SELECT MAX(a), MIN(b) FROM t;
@@ -353,11 +372,11 @@ EXPLAIN SELECT MAX(a), MIN(b) FROM t;
 </code></pre>
 <h3 id="predicate-pushdown"><a class="header" href="#predicate-pushdown">Predicate Pushdown</a></h3>
 <p>This is a very fundamental and important optimization. It traverses the plan tree from top to bottom, collects predicates (filter conditions), and tries to push them down as deep as possible.</p>
-<p>The main logic is in the <code>PredicatePushDown([]expression.Expression) ([]expression.Expression, LogicalPlan)</code> method of <code>LogicalPlan</code> interface. The parament is the pushed-down predicates. The return values are predicates that can't be pushed down anymore and the child operator after pushing down predicates.</p>
-<p>The predicates mainly come from <code>Selection</code>. The predicates can be pushed across some operators, like <code>Projection</code> and <code>UnionAll</code>. For some operators, we can only push down predicates when some requirements are met. For example, we can only push predicates across <code>Window</code> if all <code>Column</code>s in the predicates are <code>Window</code>'s <code>PartitionBy</code> columns. For some operators, we can't push predicates across them, like <code>Limit</code>.</p>
+<p>The main logic is in the <code>PredicatePushDown([]expression.Expression) ([]expression.Expression, LogicalPlan)</code> method of <code>LogicalPlan</code> interface. The parament is the pushed-down predicates. The return values are predicates that can’t be pushed down anymore and the child operator after pushing down predicates.</p>
+<p>The predicates mainly come from <code>Selection</code>. The predicates can be pushed across some operators, like <code>Projection</code> and <code>UnionAll</code>. For some operators, we can only push down predicates when some requirements are met. For example, we can only push predicates across <code>Window</code> if all <code>Column</code>s in the predicates are <code>Window</code>’s <code>PartitionBy</code> columns. For some operators, we can’t push predicates across them, like <code>Limit</code>.</p>
 <p>In the optimal case, the predicates reach <code>DataSource</code> and can be pushed down to the storage layer in the physical optimization stage.</p>
 <p><code>Join</code> is a special case in this rule. We not only push down predicates for <code>Join</code>, but we also make some other optimizations here. They are implemented in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_predicate_push_down.go#L132"><code>(*LogicalJoin).PredicatePushDown</code></a>. Two of them are important and explained as follows.</p>
-<p>First, we will try to "simplify" outer joins, which means convert outer joins to inner joins. As we know, outer join is different from inner join because we will pad <code>NULL</code>s for unmatched rows from the outer side. If the predicates are guaranteed to filter such rows, this join makes no difference from an inner join. In this case, we can directly change it to an inner join.</p>
+<p>First, we will try to “simplify” outer joins, which means convert outer joins to inner joins. As we know, outer join is different from inner join because we will pad <code>NULL</code>s for unmatched rows from the outer side. If the predicates are guaranteed to filter such rows, this join makes no difference from an inner join. In this case, we can directly change it to an inner join.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t(a int, b int);
 CREATE TABLE t1(a int, b int);
@@ -397,7 +416,7 @@ EXPLAIN SELECT * FROM t LEFT JOIN t1 ON t.a = t1.a WHERE t1.a IS NOT NULL;
 <p>We can do this only when the operators above <code>Join</code> only need columns from their outer side. But this is not enough. We also need at least one of the following requirements to be met:</p>
 <ol>
 <li>The join keys from the inner side are unique. This means the <code>LogicalJoin</code> has no effects on the rows from the outer side;</li>
-<li>Duplicated rows from the output of <code>Join</code> have no effect on the calculation results. Specifically, this is when there's a <code>Aggregation</code> above the <code>Join</code> and the aggregation functions in it have <code>DISTINCT</code> or are <code>max()</code>, <code>min()</code>, <code>firstrow()</code> or <code>approx_count_distinct()</code>.</li>
+<li>Duplicated rows from the output of <code>Join</code> have no effect on the calculation results. Specifically, this is when there’s a <code>Aggregation</code> above the <code>Join</code> and the aggregation functions in it have <code>DISTINCT</code> or are <code>max()</code>, <code>min()</code>, <code>firstrow()</code> or <code>approx_count_distinct()</code>.</li>
 </ol>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a INT, b INT);
@@ -426,8 +445,8 @@ EXPLAIN SELECT t1.a, t1.b FROM t1 LEFT JOIN t2 on t1.b = t2.b;
 <p>The rationale of this rule is rather simple, but there are different kinds of partition types and the pushed-down conditions can be very complicated. So the implementation details of this rule are also complicated. Some descriptions of these details can be found in the <a href="https://docs.pingcap.com/tidb/dev/partitioned-table#partition-pruning">official docs</a>.</p>
 <p>Note that there is a feature called <a href="https://docs.pingcap.com/tidb/dev/partitioned-table#dynamic-pruning-mode">dynamic pruning</a>. As of this section is written, it is an experimental feature and is not enabled by default. In this mode, we no longer build a <code>DataSource</code> for every partition. Accessing partitions is done in one operator, and the partition pruning work is done at the execution stage. So this rule is not needed in this mode.</p>
 <h3 id="aggregation-pushdown"><a class="header" href="#aggregation-pushdown">Aggregation Pushdown</a></h3>
-<p>This rule finds <code>LogicalAggregation</code> and tries to push it down. Currently, we can push it across <code>Join</code>, <code>Projection</code>, <code>UnionAll</code>, and <code>PartitionUnionAll</code>. Note that pushdown here doesn't mean "move this operator below other operators". There should be one <code>Aggregation</code> remained in the original position and another <code>Aggregation</code> pushed down to assure correctness.</p>
-<p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L405">Pushing <code>Aggregation</code> across <code>Join</code></a> is the most complicated case of them. The aggregate functions are separated into left and right sides and we try to push them to the left and right side of <code>Join</code> respectively. There are many requirements to make this transformation. For example, the join type should be among <code>InnerJoin</code>, <code>LeftOuterJoin</code> and <code>RightOuterJoin</code>. Only specific types of aggregate functions can be pushed down. And when we try to push aggregate functions down to one side of the <code>Join</code>, there can't be <code>count()</code> and <code>sum()</code> functions in the other side. If all requirements are met, we can generate and push down <code>Aggregation</code>. The new <code>Aggregation</code> is also transformed and different from the original <code>Aggregation</code>. For example, the columns in the join conditions should be added into <code>GroupByItems</code>.</p>
+<p>This rule finds <code>LogicalAggregation</code> and tries to push it down. Currently, we can push it across <code>Join</code>, <code>Projection</code>, <code>UnionAll</code>, and <code>PartitionUnionAll</code>. Note that pushdown here doesn’t mean “move this operator below other operators”. There should be one <code>Aggregation</code> remained in the original position and another <code>Aggregation</code> pushed down to assure correctness.</p>
+<p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L405">Pushing <code>Aggregation</code> across <code>Join</code></a> is the most complicated case of them. The aggregate functions are separated into left and right sides and we try to push them to the left and right side of <code>Join</code> respectively. There are many requirements to make this transformation. For example, the join type should be among <code>InnerJoin</code>, <code>LeftOuterJoin</code> and <code>RightOuterJoin</code>. Only specific types of aggregate functions can be pushed down. And when we try to push aggregate functions down to one side of the <code>Join</code>, there can’t be <code>count()</code> and <code>sum()</code> functions in the other side. If all requirements are met, we can generate and push down <code>Aggregation</code>. The new <code>Aggregation</code> is also transformed and different from the original <code>Aggregation</code>. For example, the columns in the join conditions should be added into <code>GroupByItems</code>.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a int, b int);
 CREATE TABLE t2(a int, b int);
@@ -451,7 +470,7 @@ explain select max(t1.b), min(t2.b) from t1 left join t2 on t1.a = t2.a;
 +------------------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------+
 </code></pre>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L436">Pushing <code>Aggregation</code> across <code>Projection</code></a> is rather simple. It directly moves the calculation in the <code>Projection</code> into <code>Aggregation</code>. Then the <code>Projection</code> can be removed. And there will be only one <code>Aggregation</code>.</p>
-<p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L475-L485">Pushing <code>Aggregation</code> across <code>UnionAll</code> and <code>PartitionUnionAll</code></a> share the same logic. It's similar to the <code>LogicalJoin</code> case. There will be some checks. If all requirements are met. We can generate and push down a new <code>LogicalAggregation</code> across <code>UnionAll</code> or <code>PartitionUnionAll</code>. Note that the original <code>Aggregation</code> may also be modified here.</p>
+<p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_aggregation_push_down.go#L475-L485">Pushing <code>Aggregation</code> across <code>UnionAll</code> and <code>PartitionUnionAll</code></a> share the same logic. It’s similar to the <code>LogicalJoin</code> case. There will be some checks. If all requirements are met. We can generate and push down a new <code>LogicalAggregation</code> across <code>UnionAll</code> or <code>PartitionUnionAll</code>. Note that the original <code>Aggregation</code> may also be modified here.</p>
 <p>Example:</p>
 <pre><code class="language-sql">CREATE TABLE t1(a int, b int);
 CREATE TABLE t2(a int, b int);
@@ -474,9 +493,9 @@ explain select count(a) from (select * from t1 union all select * from t2);
 |         └─TableFullScan_47       | 10000.00 | cop[tikv] | table:t2             | keep order:false, stats:pseudo     |
 +----------------------------------+----------+-----------+----------------------+------------------------------------+
 </code></pre>
-<h4 id="aggregation-pushdown-cant-guarantee-a-better-plan"><a class="header" href="#aggregation-pushdown-cant-guarantee-a-better-plan">Aggregation Pushdown can't guarantee a better plan</a></h4>
-<p>As we know, <code>Aggregation</code> usually involves heavy calculations. After aggregation pushdown, the original <code>Aggregation</code> operator will become two different <code>Aggregation</code> operators (except for the <code>Projection</code> case), so it's possible that the plan with <code>Aggregation</code> pushed down is worse than the original plan.</p>
-<p>In TiDB's current implementation, this kind of scenario mainly happens when we push an <code>Aggregation</code> across <code>Join</code>. Because there will be additional group by keys added into the pushed-down <code>Aggregation</code>. And the NDV (number of distinct values) of the new group by keys may be very high. That will make this <code>Aggregation</code> waste lots of calculation resources. So currently we use a system variable <code>tidb_opt_agg_push_down</code> to control this optimization, which is disabled by default.</p>
+<h4 id="aggregation-pushdown-cant-guarantee-a-better-plan"><a class="header" href="#aggregation-pushdown-cant-guarantee-a-better-plan">Aggregation Pushdown can’t guarantee a better plan</a></h4>
+<p>As we know, <code>Aggregation</code> usually involves heavy calculations. After aggregation pushdown, the original <code>Aggregation</code> operator will become two different <code>Aggregation</code> operators (except for the <code>Projection</code> case), so it’s possible that the plan with <code>Aggregation</code> pushed down is worse than the original plan.</p>
+<p>In TiDB’s current implementation, this kind of scenario mainly happens when we push an <code>Aggregation</code> across <code>Join</code>. Because there will be additional group by keys added into the pushed-down <code>Aggregation</code>. And the NDV (number of distinct values) of the new group by keys may be very high. That will make this <code>Aggregation</code> waste lots of calculation resources. So currently we use a system variable <code>tidb_opt_agg_push_down</code> to control this optimization, which is disabled by default.</p>
 <h3 id="topn-pushdown"><a class="header" href="#topn-pushdown">TopN Pushdown</a></h3>
 <p><code>TopN</code> is an operator not directly corresponding to any syntax in the SQL. Its semantic is equal to a <code>Limit</code> above a <code>Sort</code>. We can execute it more efficiently when they are together, so we create a new operator for this case.</p>
 <pre><code class="language-go">type LogicalTopN struct {
@@ -504,7 +523,7 @@ type LogicalSort struct {
 </code></pre>
 <p>This rule is mainly implemented by the <code>pushDownTopN(topN *LogicalTopN) LogicalPlan</code> method of the <code>LogicalPlan</code> interface. Like the predicate push down, it traverses the plan tree from top to bottom and collects <code>TopN</code> information from operators.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_topn_push_down.go#L87">When it meets a <code>Limit</code></a>, the <code>Limit</code> itself is converted into a <code>TopN</code> and pushed down. This is where the <code>TopN</code> operator appears for the first time in a plan tree.</p>
-<p>For most kinds of operators, the pushed-down <code>TopN</code> just can't be pushed down anymore, and it becomes a <code>TopN</code> operator above this operator.</p>
+<p>For most kinds of operators, the pushed-down <code>TopN</code> just can’t be pushed down anymore, and it becomes a <code>TopN</code> operator above this operator.</p>
 <p>There are several cases we can optimize:</p>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_topn_push_down.go#L72">When it meets a <code>Sort</code></a>, it is merged into <code>ByItems</code> of the pushed-down <code>TopN</code>. If the <code>TopN</code> already has <code>ByItems</code>, this <code>Sort</code> becomes useless and can be removed directly.</p>
 <p><a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_topn_push_down.go#L112">When it meets a <code>Projection</code></a>, the <code>TopN</code> can be directly pushed down across it.</p>
@@ -546,30 +565,30 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 +----------------------------------+----------+-----------+---------------+--------------------------------+
 </code></pre>
 <h3 id="join-reorder"><a class="header" href="#join-reorder">Join Reorder</a></h3>
-<p>Join reorder tries to find the most efficient order to join several tables together. In fact, it's not a rule-based optimization. It makes use of statistics to estimate row counts of join results. We put join reorder in this stage out of convenience.</p>
+<p>Join reorder tries to find the most efficient order to join several tables together. In fact, it’s not a rule-based optimization. It makes use of statistics to estimate row counts of join results. We put join reorder in this stage out of convenience.</p>
 <p>Currently, we have implemented two join reorder algorithms: greedy and dynamic programming. The dynamic programming one is not mature enough now and is disabled by default. We focus on the greedy algorithm here.</p>
 <p>There are three files relevant to join reorder. <code>rule_join_reorder.go</code> contains the entry and common logic of join reorder. <code>rule_join_reorder_dp.go</code> contains the dynamic programming algorithm. <code>rule_join_reorder_greedy.go</code> contains the greedy algorithm.</p>
-<p>At the beginning of join reorder, we extract "join groups" from the plan tree. A join group is some sub-trees connected together by inner <code>Join</code>s directly, which means there can't exist any other kind of operator between inner <code>Join</code>s. The join reorder algorithm optimizes one join group at a time. And join groups are optimized from bottom to top.</p>
+<p>At the beginning of join reorder, we extract “join groups” from the plan tree. A join group is some sub-trees connected together by inner <code>Join</code>s directly, which means there can’t exist any other kind of operator between inner <code>Join</code>s. The join reorder algorithm optimizes one join group at a time. And join groups are optimized from bottom to top.</p>
 <p>For every node in a join group, the row count is estimated. The join result row count is estimated using the simple and classic <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/stats.go#L1084"><code>leftRowCount * rightRowCount / max(leftNDV, rightNDV)</code></a> formula. Then two of them, which can get the minimum cost (calculated in <a href="https://github.com/pingcap/tidb/blob/94e30df8e2d8ba2a1a26f153f40067ba3acd78eb/planner/core/rule_join_reorder.go#L135"><code>(*baseSingleGroupJoinOrderSolver).baseNodeCumCost()</code></a>), are chosen, connected by an inner join, then added into the join group. This process is repeated until all nodes in the join group are joined together.</p>
 <h3 id="build-key-information"><a class="header" href="#build-key-information">Build Key Information</a></h3>
 <p>This one is actually not an optimization rule. It collects information from bottom to top that is needed by other optimizations. Two kinds of information are collected and set up for each operator.</p>
-<p>The first information is the unique key. This is collected in <code>DataSource</code> from table schema information and stored as <code>KeyInfo</code> in the <code>Schema</code> for each operator. There is one thing tricky about the unique key: when you declare <code>UNIQUE</code> for one column when creating a table, there can be duplicated <code>NULL</code>s in this column actually. You should declare <code>UNIQUE NOT NULL</code> to get "true" uniqueness.</p>
+<p>The first information is the unique key. This is collected in <code>DataSource</code> from table schema information and stored as <code>KeyInfo</code> in the <code>Schema</code> for each operator. There is one thing tricky about the unique key: when you declare <code>UNIQUE</code> for one column when creating a table, there can be duplicated <code>NULL</code>s in this column actually. You should declare <code>UNIQUE NOT NULL</code> to get “true” uniqueness.</p>
 <p>The second is the <code>MaxOneRow</code> attribute, which means if this operator is guaranteed to output no more than one row.</p>
 <h2 id="ending"><a class="header" href="#ending">Ending</a></h2>
 <p>Currently, our rule-based optimization is a batch of rules executed in a fixed order. This is not enough to make some optimizations when the query is complicated. So we usually do more things than what the name of a rule implies. As stated above, we specially optimize <code>Join</code>s in predicate pushdown. Except for that, we also try to eliminate aggregations in aggregation pushdown and build key information for the newly generated <code>Aggregation</code>s. There are more examples like that.</p>
-<p>Some optimization rules are also not guaranteed to produce a better plan like decorrelation and aggregation push down. In theory, the physical distribution of data should be considered when making such optimizations. However, we don't have such a fine-grained strategy for these rules. Now we mainly rely on heuristics and variables that control the behaviors.</p>
-<p>As this section is written, TiDB doesn't record transformation steps in rule-based optimization and doesn't support printing logical plans. But usually, the transformation steps are reliably reproducible given query and table schema. So the most effective method to learn about it in depth or investigate a bug is to place breakpoints in <code>logicalOptimize()</code> and see the runtime information using debug tools.</p>
+<p>Some optimization rules are also not guaranteed to produce a better plan like decorrelation and aggregation push down. In theory, the physical distribution of data should be considered when making such optimizations. However, we don’t have such a fine-grained strategy for these rules. Now we mainly rely on heuristics and variables that control the behaviors.</p>
+<p>As this section is written, TiDB doesn’t record transformation steps in rule-based optimization and doesn’t support printing logical plans. But usually, the transformation steps are reliably reproducible given query and table schema. So the most effective method to learn about it in depth or investigate a bug is to place breakpoints in <code>logicalOptimize()</code> and see the runtime information using debug tools.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../understand-tidb/table-statistics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../understand-tidb/cbo.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -579,16 +598,21 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../understand-tidb/table-statistics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../understand-tidb/cbo.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -597,15 +621,16 @@ EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON t1.a = t2.a ORDER BY t1.b LIMIT 20, 10;
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>
