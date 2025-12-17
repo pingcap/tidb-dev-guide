@@ -1,0 +1,20 @@
+name: presubmit
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  presubmit:
+    name: Presubmit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup mdBook
+        shell: bash
+        run: |
+            cargo version
+            cargo install mdbook-llms-txt-tools mdbook@0.4.52
+
+      - run: mdbook build

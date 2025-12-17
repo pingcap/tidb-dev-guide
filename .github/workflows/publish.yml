@@ -11,15 +11,20 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v1
-        with:
-          mdbook-version: 'latest'
+        shell: bash
+        run: |
+            cargo version
+            cargo install mdbook-llms-txt-tools mdbook@0.4.52
 
       - run: mdbook build
+      - name: Fix the llms.txt location
+        run: |
+          mv book/llms-txt/llms.txt book/html/llms.txt
+          mv book/llms-txt-full/llms-full.txt book/html/llms-full.txt
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book
+          publish_dir: ./book/html

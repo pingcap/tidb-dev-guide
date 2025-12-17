@@ -3,3 +3,7 @@ title = "TiDB Development Guide"
 
 [output.html]
 git-repository-url = "https://github.com/pingcap/tidb-dev-guide"
+
+[output.llms-txt]
+
+[output.llms-txt-full]

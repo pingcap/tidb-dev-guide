@@ -26,18 +26,18 @@ your web browser.
 
 _Firefox:_
 ```bash
-$ firefox book/index.html                       # Linux
-$ open -a "Firefox" book/index.html             # OS X
-$ Start-Process "firefox.exe" .\book\index.html # Windows (PowerShell)
-$ start firefox.exe .\book\index.html           # Windows (Cmd)
+$ firefox book/html/index.html                       # Linux
+$ open -a "Firefox" book/html/index.html             # OS X
+$ Start-Process "firefox.exe" .\book\html\index.html # Windows (PowerShell)
+$ start firefox.exe .\book\html\index.html           # Windows (Cmd)
 ```
 
 _Chrome:_
 ```bash
-$ google-chrome book/index.html                 # Linux
-$ open -a "Google Chrome" book/index.html       # OS X
-$ Start-Process "chrome.exe" .\book\index.html  # Windows (PowerShell)
-$ start chrome.exe .\book\index.html            # Windows (Cmd)
+$ google-chrome book/html/index.html                 # Linux
+$ open -a "Google Chrome" book/html/index.html       # OS X
+$ Start-Process "chrome.exe" .\book\html\index.html  # Windows (PowerShell)
+$ start chrome.exe .\book\html\index.html            # Windows (Cmd)
 ```
 
 ## Contribute to this guide
