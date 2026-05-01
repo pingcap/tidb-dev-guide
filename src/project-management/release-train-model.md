@@ -58,26 +58,27 @@ Different features have different complexities. Some features can be implemented
 
 With the release train model, to ensure that ongoing features do not affect the stability of the release, TiDB chooses feature branches strategy.
 
+## Support Phases
+
+For definitions of release types (LTS, DMR, patch), see [TiDB Versioning](tidb-versioning.md). Each LTS release goes through these support phases:
+
+1. **Maintenance Support**: Regular patch releases address reported issues and security vulnerabilities.
+2. **Extended Support**: One additional year of critical security patches only.
+3. **End of Life (EOL)**: No further support is provided.
+
+Community edition and enterprise edition timelines may differ. The [TiDB Release Support Policy](https://www.pingcap.com/tidb-release-support-policy/) is the authoritative reference for current support dates.
+
 ## Current Maintained Releases
 
-| version             | branch             | status            | triage label            | latest release           | issue
-|:--------------------|:-------------------|:------------------|:------------------------|:-------------------------|:-------------------------------------------------------
-| v7.3                | release-7.3        | DMR               | affects-7.3             | v7.3.0                   |<https://github.com/pingcap/tidb/issues/45123>
-| v7.2                | release-7.2        | DMR               | affects-7.2             | v7.2.0                   |<https://github.com/pingcap/tidb/issues/44287>
-| v7.1                | release-7.1        | LTS               | affects-7.1             | v7.1.1                   |<https://github.com/pingcap/tidb/issues/44810>
-| v7.0                | release-7.0        | DMR               | affects-7.0             | v7.0.0-DMR               |<https://github.com/pingcap/tidb/issues/41567>
-| v6.6                | release-6.6        | DMR               | affects-6.6             | v6.6.0-DMR               |<https://github.com/pingcap/tidb/issues/39326>
-| v6.5                | release-6.5        | LTS               | affects-6.5             | v6.5.4                   |<https://github.com/pingcap/tidb/issues/45522>
-| v6.4                | release-6.4        | DMR               | affects-6.4             | v6.4.0-DMR               | <https://github.com/pingcap/tidb/issues/38364>
-| v6.3                | release-6.3        | DMR               | affects-6.3             | v6.3.0-DMR               | <https://github.com/pingcap/tidb/issues/37368>
-| v6.2                | release-6.2        | DMR               | affects-6.2             | v6.2.0-DMR               | <https://github.com/pingcap/tidb/issues/35452>
-| v6.1                | release-6.1        | LTS               | affects-6.1             | v6.1.7                   | <https://github.com/pingcap/tidb/issues/42918>
-| v6.0                | release-6.0        | DMR               | affects-6.0             | v6.0.0-DMR               | <https://github.com/pingcap/tidb/issues/32381>
-| v5.0                | release-5.0        | LTS               | affects-5.0             | v5.0.6                   | <https://github.com/pingcap/tidb/issues/30609>
-| v5.1                | release-5.1        | LTS               | affects-5.1             | v5.1.5                   | <https://github.com/pingcap/tidb/issues/32148>
-| v5.2                | release-5.2        | LTS               | affects-5.2             | v5.2.4                   | <https://github.com/pingcap/tidb/issues/30608>
-| v5.3                | release-5.3        | LTS               | affects-5.3             | v5.3.4                   | <https://github.com/pingcap/tidb/issues/39077>
-| v5.4                | release-5.4        | LTS               | affects-5.4             | v5.4.3                   | <https://github.com/pingcap/tidb/issues/37748>
-| v4.0                | release-4.0        | LTS               | affects-4.0             | v4.0.16                  | <https://github.com/pingcap/tidb/issues/29856>
+The community edition support dates below are sourced from the [TiDB Release Support Policy](https://www.pingcap.com/tidb-release-support-policy/), which is the authoritative reference. Refer to that page for enterprise edition timelines and any updates.
+
+| version | branch       | status | triage label | latest release | community edition support until | issue                                              |
+|:--------|:-------------|:-------|:-------------|:---------------|:--------------------------------|:---------------------------------------------------|
+| v8.5    | release-8.5  | LTS    | affects-8.5  | v8.5.6         | 2027-12-19                      | <https://github.com/pingcap/tidb/issues/65584>     |
+| v8.1    | release-8.1  | LTS    | affects-8.1  | v8.1.2         | 2027-05-24                      | <https://github.com/pingcap/tidb/issues/58699>     |
+| v7.5    | release-7.5  | LTS    | affects-7.5  | v7.5.7         | 2026-12-01                      | <https://github.com/pingcap/tidb/issues/60574>     |
+| v7.1    | release-7.1  | LTS    | affects-7.1  | v7.1.6         | 2026-05-31                      | <https://github.com/pingcap/tidb/issues/57028>     |
+| v6.5    | release-6.5  | LTS    | affects-6.5  | v6.5.12        | 2025-12-29                      | <https://github.com/pingcap/tidb/issues/59101>     |
+| v6.1    | release-6.1  | LTS    | affects-6.1  | v6.1.7         | 2025-06-13                      | <https://github.com/pingcap/tidb/issues/42918>     |
 
 For more versions' information, please check <https://github.com/pingcap/tidb/projects/63>.
